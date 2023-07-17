@@ -6,14 +6,44 @@
     --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 214, 219, 220;
     --background-end-rgb: 255, 255, 255;
+    --gray: #676767;
+    --blue: #009DE2;
 }
 
-/* body {
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+}
 
-} */
+/* Track */
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #2D2D2D; 
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #161616; 
+}
+
+html,
+body {
+    scroll-behavior: smooth;
+}
 
 .width {
     max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.sm-width {
+    max-width: 1300px;
     width: 100%;
     margin: 0 auto;
 }
