@@ -13,9 +13,9 @@ const Products = () => {
             <Image src={Map} alt='Map 1' className="absolute left-10 top-[5rem] -z-10 select-none" />
 
             <Image src={Map} alt='Map 1' className="absolute right-10 top-[70%] -z-10 select-none" />
-            <div className='sm-width md:p-10 text-center md:text-left'>
-                <div className="px-4 my-10 md:my-0">
-                    <h3 className="font-semibold text-3xl">Top Restaurants In The World</h3>
+            <div className='sm-width text-center md:text-left'>
+                <div className="px-4 my-10 md:my-20">
+                    <h3 className="font-semibold text-2xl md:text-4xl">Top Restaurants In The World</h3>
                     <p className='text-[var(--gray)]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                 </div>
 
