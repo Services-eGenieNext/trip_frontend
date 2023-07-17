@@ -4,10 +4,13 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import Logo from "/public/logo.svg"
 import Image from 'next/image'
+import PopupWithOverlay from '../UIComponents/Popup/PopupWithOverlay'
 
 const Header = () => {
     
     const [openMobileMenu, setOpenMobileMenu] = useState(false)
+    const [showPopup, setShowPopup] = useState(false)
+
 
     useEffect(() => {
         window.addEventListener('scroll', () =>{
@@ -56,7 +59,11 @@ const Header = () => {
                     </div>
                     <div className="col-span-4">
                         <div className="hidden md:flex items-center justify-between border-l md:pl-3 lg:pl-6 xl:pl-16">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+
+                            {/* Search Icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 cursor-pointer"
+                            onClick={() => setShowPopup(true)}
+                            >
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
 
@@ -67,6 +74,14 @@ const Header = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Search Popup */}
+            <PopupWithOverlay show={showPopup} onClose={() => {setShowPopup(false)}}>
+                <div className="relative">
+                <input className="border border-[#C9D2DD] rounded-2xl py-4 px-5 w-full outline-none" placeholder="Find your best ..." />
+                <label className="absolute top-[-0.7rem] left-[1rem] bg-white px-[5px]">Search</label>
+                </div>
+            </PopupWithOverlay>
 
             {/* Responsive Mobile Menu */}
             <div className={`fixed inset-0 bg-slate-100 z-10 ${!openMobileMenu ? '-translate-x-full' : 'translate-x-0'} duration-500 transition-all`}>
