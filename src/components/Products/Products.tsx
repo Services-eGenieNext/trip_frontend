@@ -22,7 +22,7 @@ const Products = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 mt-10">
                     {
                         List.map((l, index) => {
-                            return <div key={index} className="p-4 pt-0">
+                            return <div key={index} className="px-4 py-8 pt-0">
                                 <div className="rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white">
                                     <div className="relative w-full h-[300px] md:h-full">
                                         <Image src={ProductImg} fill={true} alt={'Product'} className="object-cover" />
