@@ -1,0 +1,26 @@
+name: Trip Frontend NestJS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pull:
+    runs-on: self-hosted
+
+    steps:
+      - name: Git Pull
+        run: cd /usr/share/nginx/trip_frontend && git pull
+
+      - name: Build Frontend
+        run: cd /usr/share/nginx/trip_frontend && npm run build
+
+      - name: Restart Frontend Service
+        run: sudo systemctl restart trip_frontend
+
+      - name: Restart nginx Service
+        run: sudo systemctl restart nginx
+
+    # - name: Git Pull
+    #   Description: this will only pull code when someone push to main branch
