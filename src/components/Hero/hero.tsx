@@ -29,7 +29,7 @@ const Hero = () => {
             <div className="h-full w-full px-4 relative">
                 <div className="relative m-auto">
                     <Image src={HeroBg} alt='Trip-Banner' className="mx-auto select-none" />
-                    <div className="absolute bottom-0 left-0 top-0 right-0 px-8 flex flex-wrap justify-center items-center">
+                    <div className="absolute bottom-0 left-0 top-0 right-0 px-8 flex flex-wrap justify-center items-center xl:m-[8rem]">
                         <h1 className="uppercase leading-10 text-white font-thin text-xl lg:text-3xl lg:my-5">Plan Your Dream</h1>
                         <h2 className="leading-10 text-white font-bold text-2xl lg:text-6xl lg:my-5 text-center w-full">Trip In Seconds With WePlan</h2>
                         <p className="lg:my-5 text-white text-lg max-w-[700px] text-center">We take away all the hassle associated with trip planning. Be excited about your vacation, we've got the details covered!</p>
