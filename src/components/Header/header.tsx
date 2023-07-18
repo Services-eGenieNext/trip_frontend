@@ -4,10 +4,17 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import Logo from "/public/logo.svg"
 import Image from 'next/image'
+import PopupWithOverlay from '../UIComponents/Popup/PopupWithOverlay'
+import InputField from '../UIComponents/InputField/InputField'
+import SearchPopup from './SearchPopup'
+import MobileSearchDrawer from './MobileSearchDrawer'
 
 const Header = () => {
     
     const [openMobileMenu, setOpenMobileMenu] = useState(false)
+    const [openMobileSearch, setOpenMobileSearch] = useState(false)
+    const [showPopup, setShowPopup] = useState(false)
+
 
     useEffect(() => {
         window.addEventListener('scroll', () =>{
@@ -17,12 +24,22 @@ const Header = () => {
                 {
                     document.querySelector('#header')?.classList.add('bg-white')
                 }
+
+                if(!document.querySelector('#header')?.classList.contains('shadow'))
+                {
+                    document.querySelector('#header')?.classList.add('shadow')
+                }
             }
             else
             {
                 if(document.querySelector('#header')?.classList.contains('bg-white'))
                 {
                     document.querySelector('#header')?.classList.remove('bg-white')
+                }
+
+                if(document.querySelector('#header')?.classList.contains('shadow'))
+                {
+                    document.querySelector('#header')?.classList.remove('shadow')
                 }
             }
         })
@@ -35,7 +52,7 @@ const Header = () => {
                     <div className="col-span-4">
 
                         {/* Menu Bar for Mobile Responsivness */}
-                        <div className="block md:hidden px-4">
+                        <div className="block md:hidden">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10"
                             onClick={() => setOpenMobileMenu(!openMobileMenu)}
                             >
@@ -50,13 +67,20 @@ const Header = () => {
                             <Link href={'/'} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Survey</Link>
                         </div>
                     </div>
+                        
+                    {/* WebSite Logo */}
                     <div className="m-auto col-span-4">
-                        {/* WebSite Logo */}
                         <Image src={Logo} alt='logo' />
                     </div>
+
+                    {/* Header Right Side */}
                     <div className="col-span-4">
                         <div className="hidden md:flex items-center justify-between border-l md:pl-3 lg:pl-6 xl:pl-16">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+
+                            {/* Desktop Search Icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 cursor-pointer"
+                            onClick={() => setShowPopup(true)}
+                            >
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
 
@@ -64,9 +88,21 @@ const Header = () => {
 
                             <button className="bg-black py-3 px-4 lg:px-8 rounded-md text-white">Sign Up</button>
                         </div>
+
+                        {/* Mobile Search Icon */}
+                        <div className="block md:hidden px-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 cursor-pointer ml-auto" 
+                            onClick={() => setOpenMobileSearch(!openMobileSearch)}
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            {/* Search Popup */}
+            <SearchPopup show={showPopup} onClose={() => setShowPopup(false)} />
 
             {/* Responsive Mobile Menu */}
             <div className={`fixed inset-0 bg-slate-100 z-10 ${!openMobileMenu ? '-translate-x-full' : 'translate-x-0'} duration-500 transition-all`}>
@@ -90,6 +126,9 @@ const Header = () => {
                     <button className="bg-black py-3 px-4 lg:px-8 rounded-md text-white">Sign Up</button>
                 </div>
             </div>
+
+            {/* Mobile Responsive Search Drawer */}
+            <MobileSearchDrawer show={openMobileSearch} onClose={()=>setOpenMobileSearch(!openMobileSearch)} />
         </div>
     )
 }
