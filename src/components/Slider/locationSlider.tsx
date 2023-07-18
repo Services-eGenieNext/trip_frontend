@@ -135,10 +135,10 @@ export default function LocationSlider() {
               locationSlider.map(
                 (
                   location: { images: string; location: string },
-                  index: Number
+                  index
                 ) => {
                   return (
-                    <div className="relative md:mt-0 mt-5">
+                    <div key={index} className="relative md:mt-0 mt-5">
                       <img
                       className="w-[90%]"
                         src={location.images}

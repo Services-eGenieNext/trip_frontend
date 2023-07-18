@@ -194,10 +194,10 @@ function ActivitiesSlider() {
               locationSlider.map(
                 (
                   location: { images: string; location: string },
-                  index: Number
+                  index
                 ) => {
                   return (
-                    <div>
+                    <div key={index}>
                       <div className='flex flex-col items-center'>
                       <img
                         src={location.images}
