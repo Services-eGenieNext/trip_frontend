@@ -121,7 +121,7 @@ export default function LocationSlider() {
   return (
     <div className="w-full flex justify-center mt-20 relative">
       <div className="md:w-[65%] md:w-[75%] sm:w-[80%] w-[95%]">
-        <div className="lg:w-[45%] md:w-[60%] w-[80%] flex flex-col sm:items-start items-center">
+        <div className="lg:w-[45%] md:w-[60%] w-[95%] flex flex-col sm:items-start items-center">
           <p className="md:text-4xl text-2xl font-bold">Trending Locations</p>
           <p className="text-[var(--gray)] sm:text-start text-center">
             We keep track of what cities are on the rise and which ones are
