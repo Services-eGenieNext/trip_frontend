@@ -8,8 +8,11 @@ export default function Home() {
     return (
         <main>
             <Hero />
+
             <LocationSlider/>
+            
             <ActivitiesSlider/>
+            
             <Products />
         </main>
     )
