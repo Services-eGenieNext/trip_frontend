@@ -1,17 +1,24 @@
 import { IInputField } from '@/interfaces'
 import React from 'react'
 
-const InputField = ({className, label, type, value="", placeholder="", onChange= (e)=>{}}: IInputField) => {
+const InputField = ({className, label, type, value="", placeholder="", onChange= (e)=>{}, icon}: IInputField) => {
 
     return (
-        <div className="relative">
-            <input 
-                type={type ? type : 'text'} 
-                className={`border border-[#C9D2DD] rounded-2xl py-4 px-5 w-full outline-none ${className}`} 
-                placeholder={placeholder ? placeholder : label} 
-                onChange={onChange}
-                value={value}
-            />
+        <div className={`relative ${className}`}>
+            <div className="relative">
+                <div className="border border-[#C9D2DD] bg-white rounded-2xl py-4 px-5 flex items-center">
+                    {
+                        icon && <div className="mr-1">{icon}</div>
+                    }
+                    <input 
+                        type={type ? type : 'text'} 
+                        className={`outline-none w-full`} 
+                        placeholder={placeholder ? placeholder : label} 
+                        onChange={onChange}
+                        value={value}
+                    />
+                </div>
+            </div>
             <label className="absolute top-[-0.7rem] left-[1rem] px-[5px]"
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{label}</label>
