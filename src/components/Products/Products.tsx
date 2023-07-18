@@ -15,7 +15,7 @@ const Products = () => {
             <Image src={Map} alt='Map 1' className="absolute right-10 top-[70%] -z-10 select-none" />
             <div className='sm-width text-center md:text-left'>
                 <div className="px-4 my-10 md:my-20">
-                    <h3 className="font-semibold text-2xl md:text-4xl">Top Restaurants In The World</h3>
+                    <h3 className="font-bold text-2xl md:text-4xl gilroy">Top Restaurants In The World</h3>
                     <p className='text-[var(--gray)]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                 </div>
 
@@ -28,7 +28,7 @@ const Products = () => {
                                         <Image src={ProductImg} fill={true} alt={'Product'} className="object-cover" />
                                     </div>
                                     <div className="p-7">
-                                        <h4 className="text-2xl font-medium">Lorem Ipsum</h4>
+                                        <h4 className="text-2xl font-semibold gilroy">Lorem Ipsum</h4>
                                         <div className="flex flex-wrap items-center my-2"> 
                                             <span className="p-1 bg-[#9AB044] rounded-full"> <LocationIcon className="h-5 w-5 bg-[#9AB044]" /> </span>
                                             <span className="ml-2"> Morocco </span>
