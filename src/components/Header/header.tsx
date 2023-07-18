@@ -70,7 +70,9 @@ const Header = () => {
                         
                     {/* WebSite Logo */}
                     <div className="m-auto col-span-4">
-                        <Image src={Logo} alt='logo' />
+                        <Link href={'/'}>
+                            <Image src={Logo} alt='logo' />
+                        </Link>
                     </div>
 
                     {/* Header Right Side */}
