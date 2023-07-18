@@ -119,7 +119,7 @@ export default function LocationSlider() {
   };
 
   return (
-    <div className="w-full flex justify-center mt-20 relative">
+    <div className="w-full flex justify-center mt-20  relative">
       <div className="md:w-[65%] md:w-[75%] sm:w-[80%] w-[95%]">
         <div className="lg:w-[45%] md:w-[60%] w-[95%] flex flex-col sm:items-start items-center">
           <p className="md:text-4xl text-2xl font-bold">Trending Locations</p>
@@ -138,9 +138,9 @@ export default function LocationSlider() {
                   index
                 ) => {
                   return (
-                    <div key={index} className="relative md:mt-0 mt-5">
+                    <div key={index} className="relative md:mt-0 mt-5 w-full px-3">
                       <img
-                      className="w-[90%]"
+                      className="w-full"
                         src={location.images}
                         alt="Picture of the author"
                       />
