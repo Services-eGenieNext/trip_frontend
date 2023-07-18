@@ -4,6 +4,7 @@ interface IInputField {
     type: string,
     value?: string
     placeholder?: string,
+    icon?: any,
     onChange?: (value?: any) => void
 }
 
