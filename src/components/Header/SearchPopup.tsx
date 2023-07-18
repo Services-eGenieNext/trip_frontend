@@ -18,7 +18,7 @@ const SearchPopup = ({show, onClose}: ISearchPopup)=> {
     return (
         <PopupWithOverlay show={show} onClose={() => {onClose()}}>
             <div className="px-4">
-                <InputField type="text" label="Search" placeholder='Find your best ...' onChange={(e) => setSearchInput(e.target.value)} />
+                <InputField type="text" label="Search" placeholder='Find your best ...' value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
 
                 {
                     searchInput.length > 0 && (
