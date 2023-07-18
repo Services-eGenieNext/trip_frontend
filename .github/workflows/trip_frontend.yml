@@ -1,4 +1,4 @@
-name: Trip Frontend NestJS
+name: Trip Frontend NextJS
 
 on:
   push:
