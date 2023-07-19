@@ -9,11 +9,11 @@ export default function Home() {
         <main>
             <Hero />
 
-            {/* <LocationSlider/>
+            <LocationSlider/>
             
-            <ActivitiesSlider/> */}
+            <ActivitiesSlider/>
             
-            <Products />
+            <Products title="Top Restaurants In The World" />
         </main>
     )
 }
