@@ -14,8 +14,10 @@ const PageBanner = ({title}: IPageBanner) => {
     }
 
     return (
-        <div className="h-[405px] width w-full rounded-xl flex justify-center items-center" style={style}>
-            <span className="font-extrabold text-7xl Poppins text-white">{title}</span>
+        <div className="width px-4">
+            <div className="h-[405px] w-full rounded-xl flex justify-center items-center" style={style}>
+                <span className="font-extrabold text-7xl Poppins text-white">{title}</span>
+            </div>
         </div>
     )
 }

@@ -47,7 +47,7 @@ const ClientTestimonials = () => {
     const reviewArr = new Array(5).fill(1);
 
     return (
-        <div className="sm-width py-20">
+        <div className="sm-width px-4">
             <div className="flex flex-wrap justify-between items-center">
                 <div>
                     <ComponentTitle title='Clients testimonials' /> 
@@ -64,7 +64,7 @@ const ClientTestimonials = () => {
                 </div>
             </div>
 
-            <div className="my-20">
+            <div className="my-10 md:my-20">
                 {
                     clients.map((client, index) => {
                         return <div key={index} className={`bg-white rounded-xl p-8 my-10 ${styles.testimonialCard}`}>
