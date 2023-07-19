@@ -9,9 +9,9 @@ export default function Home() {
         <main>
             <Hero />
 
-            <LocationSlider/>
+            {/* <LocationSlider/>
             
-            <ActivitiesSlider/>
+            <ActivitiesSlider/> */}
             
             <Products />
         </main>

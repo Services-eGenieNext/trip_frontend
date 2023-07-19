@@ -35,7 +35,7 @@ export default function Footer() {
         </div>
         <div className="flex items-center gap-x-6">
             {SocialIcons && SocialIcons.map((social,index)=>{
-            return <div key="index" className={`${CSS["social_icon"]} rounded-full flex justify-center items-center text-black text-[20px]`}>
+            return <div key={index} className={`${CSS["social_icon"]} rounded-full flex justify-center items-center text-black text-[20px]`}>
                 {<social.icon/>}
             </div>
             })}

@@ -90,7 +90,6 @@
 html,
 body {
     scroll-behavior: smooth;
-    overflow-x: hidden;
 }
 
 .width {
@@ -107,4 +106,10 @@ body {
 
 .gilroy {
     font-family: 'Gilroy';
+}
+
+.fit-screen {
+    overflow: hidden;
+    max-height: 100vh;
+    height: 100vh;
 }
