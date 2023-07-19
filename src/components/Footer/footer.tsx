@@ -20,16 +20,16 @@ export default function Footer() {
           <Image src={Logo} alt="logo" />
         </div>
         <div className={`h-[70px] px-6 flex items-center ${CSS["border_gradient"]}`}>
-            <div className="md:w-[180px] sm:w-[130px] sm:px-0 px-3 flex items-center justify-center text-[20px] font-medium border-r-2 border-[#444658]">
+            <div className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium border-r-2 border-[#444658]">
             Results
             </div>
-            <div className="md:w-[180px] sm:w-[130px] sm:px-0 px-3 flex items-center justify-center text-[20px] font-medium border-r-2 border-[#444658]">
+            <div className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium border-r-2 border-[#444658]">
             Itinerary
             </div>
-            <div className="md:w-[180px] sm:w-[130px] sm:px-0 px-3 flex items-center justify-center text-[20px] font-medium border-r-2 border-[#444658]">
+            <div className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium border-r-2 border-[#444658]">
             Survey
             </div>
-            <div className="md:w-[180px] sm:w-[130px] sm:px-0 px-3 flex items-center justify-center text-[20px] font-medium">
+            <div className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium">
             Reviews
             </div>
         </div>

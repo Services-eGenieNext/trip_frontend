@@ -178,7 +178,7 @@ function ActivitiesSlider() {
       <Image src={Ballon} alt='Baloon 1' className={`absolute left-12 top-[-10%] select-none ${CSS["image_opacity"]}`} />
       <Image src={Ballon} alt='Baloon 1' className={`absolute lg:right-24 lg:flex hidden right-18 bottom-[12%] select-none ${CSS["image_opacity"]}`} />
       <Image src={Ballon} alt='Baloon 1' className={`absolute right-[13%] md:flex hidden bottom-[-14%] select-none w-[70px]`} />
-      <div className="md:w-[65%] md:w-[75%] w-[80%] flex flex-col items-center relative">
+      <div className="sm-width flex flex-col items-center relative">
         <div className="flex flex-col items-center">
           <p className="text-2xl md:text-4xl font-bold">
             Popular Activities For You
