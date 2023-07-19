@@ -18,7 +18,7 @@ const Header = () => {
 
     useEffect(() => {
         window.addEventListener('scroll', () =>{
-            if(window.scrollY > 100)
+            if(window.scrollY > 50)
             {
                 if(!document.querySelector('#header')?.classList.contains('bg-white'))
                 {
