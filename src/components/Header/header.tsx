@@ -18,7 +18,7 @@ const Header = () => {
 
     useEffect(() => {
         window.addEventListener('scroll', () =>{
-            if(window.scrollY > 100)
+            if(window.scrollY > 10)
             {
                 if(!document.querySelector('#header')?.classList.contains('bg-white'))
                 {
@@ -77,7 +77,7 @@ const Header = () => {
 
                     {/* Header Right Side */}
                     <div className="col-span-4">
-                        <div className="hidden md:flex items-center justify-between border-l md:pl-3 lg:pl-6 xl:pl-16">
+                        <div className="hidden md:flex items-center justify-end border-l md:pl-3 lg:pl-6 xl:pl-16">
 
                             {/* Desktop Search Icon */}
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 cursor-pointer"
@@ -86,9 +86,9 @@ const Header = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                             </svg>
 
-                            <Link href={'/'} >Login</Link>
+                            {/* <Link href={'/'} >Login</Link>
 
-                            <button className="bg-black py-3 px-4 lg:px-8 rounded-md text-white">Sign Up</button>
+                            <button className="bg-black py-3 px-4 lg:px-8 rounded-md text-white">Sign Up</button> */}
                         </div>
 
                         {/* Mobile Search Icon */}

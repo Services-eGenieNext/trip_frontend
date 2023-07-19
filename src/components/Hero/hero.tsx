@@ -27,14 +27,14 @@ const Hero = () => {
             <Image src={Ballon} alt='Baloon 3' className="absolute right-[150px] top-[20%] -z-10 select-none" />
             <Image src={Map} alt='Map' className="absolute left-0 bottom-0 -z-10 select-none" />
             <div className="h-full w-full px-4 relative">
-                <div className="relative m-auto">
-                    <Image src={HeroBg} alt='Trip-Banner' className="mx-auto select-none" />
-                    <div className="absolute bottom-0 left-0 top-0 right-0 px-8 flex flex-wrap justify-center items-center xl:m-[8rem]">
+                <div className="relative m-auto width">
+                    <Image src={HeroBg} alt='Trip-Banner' className="mx-auto select-none w-full" />
+                    <div className="absolute bottom-0 left-0 top-0 right-0 px-8 flex flex-wrap justify-center items-center xl:my-[8rem] sm-width">
                         <h1 className="uppercase leading-10 text-white font-thin text-xl lg:text-3xl lg:my-5 gilroy">Plan Your Dream</h1>
                         <h2 className="leading-10 text-white font-bold text-2xl lg:text-6xl lg:my-5 text-center w-full gilroy">Trip In Seconds With WePlan</h2>
                         <p className="lg:my-5 text-white text-lg max-w-[700px] text-center">We take away all the hassle associated with trip planning. Be excited about your vacation, we&lsquo;ve got the details covered!</p>
 
-                        <div id={styles.filter} className={`bg-white p-8 flex flex-wrap rounded-xl ${openAdvanceSearch ? styles.show : ''}`}>
+                        <div id={styles.filter} className={`bg-white p-8 flex flex-wrap justify-center rounded-xl sm-width ${openAdvanceSearch ? styles.show : ''}`}>
 
                             <span className="absolute top-2 right-2 block md:hidden"
                             onClick={() => setOpenAdvanceSearch(!openAdvanceSearch)}
@@ -73,7 +73,7 @@ const Hero = () => {
                             label="Occassion"
                             placeholder='Birthday' 
                             type="text" 
-                            className={`mr-2 my-2 w-[150px] ${styles.inputWrapper}`} 
+                            className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`} 
                             value={locationSearch.occassion} 
                             onChange={(e) => setLocationSearch({...locationSearch, occassion: e.target.value})} 
                             />
