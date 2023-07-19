@@ -69,7 +69,7 @@ const ClientTestimonials = () => {
                     clients.map((client, index) => {
                         return <div key={index} className={`bg-white rounded-xl p-8 my-10 ${styles.testimonialCard}`}>
                             <div className="flex flex-wrap justify-between items-center mb-4">
-                                <h3 className="text-[#333333] italic text-[23px] leading-[52px]">"{client.title}"</h3>
+                                <h3 className="text-[#333333] italic text-[23px] leading-[52px]"> &ldquo;{client.title}&rdquo;</h3>
                                 <span className="text-black text-[15px] leading-[18px]">{client.created_data}</span>
                             </div>
                             <p className="text-[#5C5B5B] italic text-[17px] leading-[27px] mb-4">{client.desc}</p>
@@ -83,11 +83,11 @@ const ClientTestimonials = () => {
                                         reviewArr && reviewArr.map((review, index) => {
                                             if(index < client.reviews)
                                             {
-                                                return <FilledStar />
+                                                return <FilledStar key={index} />
                                             }
                                             else
                                             {
-                                                return <BlankStar />
+                                                return <BlankStar key={index} />
                                             }
                                         })
                                     }
