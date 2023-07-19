@@ -8,7 +8,6 @@ import TripPlanningCard from '@/components/tripPlanningCard/tripPlanning'
 
 const TripPlanPage = () => {
     return (
-        <div style={{fontFamily: "Gilroy"}}>
         <div>
             <PageBanner title='Bali, Indonesia' />
           
