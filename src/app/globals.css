@@ -6,9 +6,11 @@
     --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 214, 219, 220;
     --background-end-rgb: 255, 255, 255;
+    --lite-gray: #938E8E;
     --gray: #676767;
     --blue: #009DE2;
     --green: #9AB044;
+    --lite-green: #F1F9D3;
 }
 
 /* width */
