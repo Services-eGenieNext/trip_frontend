@@ -2,6 +2,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CSS from "./location.module.css";
+import ComponentTitle from "../UIComponents/ComponentTitle";
 
 const locationSlider = [
   {
@@ -122,7 +123,7 @@ export default function LocationSlider() {
     <div className="w-full flex justify-center mt-20  relative">
       <div className="sm-width">
         <div className="lg:w-[45%] md:w-[60%] w-[95%] flex flex-col sm:items-start items-center">
-          <p className="md:text-4xl text-2xl font-bold">Trending Locations</p>
+          <ComponentTitle title="Trending Locations" />
           <p className="text-[var(--gray)] sm:text-start text-center">
             We keep track of what cities are on the rise and which ones are
             falling so you can stress less and focus more on living your best

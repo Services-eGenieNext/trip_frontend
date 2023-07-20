@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 interface IPopupOverlay {
     show: boolean
     onClose: () => void
-    children: any
+    children: React.ReactNode
 }
 
-const PopupWithOverlay = ({children, show=false, onClose=()=> {}}: IPopupOverlay) => {
+const PopupWithOverlay = ({show, onClose=()=> {}, children}: IPopupOverlay) => {
 
     const [showPopup, setShowPopup] = useState(false)
+    const overlayRef = useRef<null | HTMLDivElement>(null)
 
     useEffect(() => {
         setShowPopup(show)
@@ -17,22 +18,24 @@ const PopupWithOverlay = ({children, show=false, onClose=()=> {}}: IPopupOverlay
     useEffect(() => {
         if(showPopup)
         {
-            document.querySelector('#overlayPopup')?.classList.remove('hidden')
+            overlayRef?.current?.classList.remove('hidden')
+            document.body?.classList.add('fit-screen')
             setTimeout(() => {
-                document.querySelector('#overlayPopup')?.classList.remove('opacity-0')
+                overlayRef?.current?.classList.remove('opacity-0')
             }, 100);
         }
         else
         {
-            document.querySelector('#overlayPopup')?.classList.add('opacity-0')
+            overlayRef?.current?.classList.add('opacity-0')
             setTimeout(() => {
-                document.querySelector('#overlayPopup')?.classList.add('hidden')
+                overlayRef?.current?.classList.add('hidden')
+                document.body?.classList.remove('fit-screen')
             }, 300);
         }
     }, [showPopup])
 
     return (
-        <div id='overlayPopup' className={`hidden opacity-0 fixed inset-0 z-10 bg-[rgba(0,0,0,0.5)] max-h-screen h-screen transition-all duration-300`}>
+        <div id={`overlayPopup`} ref={overlayRef} className={`hidden opacity-0 fixed inset-0 z-10 bg-[rgba(0,0,0,0.5)] max-h-screen h-screen transition-all duration-300`}>
             <div className="flex justify-center items-center mt-[5vh] mx-[1rem]">
                 <div className="bg-white p-10 w-[900px] rounded-xl relative">
                     <span 

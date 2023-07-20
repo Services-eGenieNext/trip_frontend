@@ -4,6 +4,7 @@ import ProductImg from "/public/static/restaurants.jpg"
 import LocationIcon from '../icons/Location'
 import Map from "/public/images/full-map-transparent.png"
 import Link from 'next/link'
+import ComponentTitle from '../UIComponents/ComponentTitle'
 
 interface IProduct {
     title: string
@@ -20,7 +21,7 @@ const Products = ({ title = "Title" }: IProduct) => {
             <Image src={Map} alt='Map 1' className="absolute right-10 top-[70%] -z-10 select-none" />
             <div className='sm-width text-center md:text-left'>
                 <div className="px-4 my-10 md:mt-20">
-                    <h3 className="font-bold text-2xl md:text-4xl gilroy">{title}</h3>
+                    <ComponentTitle title={title} />
                     <p className='text-[var(--gray)]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                 </div>
 
