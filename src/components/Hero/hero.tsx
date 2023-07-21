@@ -7,6 +7,8 @@ import Image from 'next/image'
 import InputField from '../UIComponents/InputField/InputField'
 import SimpleLocation from '../icons/SimpleLocation'
 import CalenderIcon from '../icons/Calender'
+import BlueButton from '../UIComponents/Buttons/BlueButton'
+import SelectField from '../UIComponents/InputField/SelectField'
 
 const Hero = () => {
 
@@ -54,7 +56,7 @@ const Hero = () => {
                             icon={<SimpleLocation />} />
 
                             <InputField 
-                            label="Travel start date" 
+                            label="Date" 
                             type="date" 
                             className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`}  
                             value={locationSearch.startDate} 
@@ -69,35 +71,34 @@ const Hero = () => {
                             onChange={(e) => setLocationSearch({...locationSearch, endDate: e.target.value})} 
                             icon={<CalenderIcon />} /> */}
 
-                            <InputField 
-                            label="Occassion"
-                            placeholder='Birthday' 
-                            type="text" 
-                            className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`} 
-                            value={locationSearch.occassion} 
-                            onChange={(e) => setLocationSearch({...locationSearch, occassion: e.target.value})} 
+                            <SelectField 
+                                label="Occassion"
+                                placeholder='Birthday' 
+                                data={['Birthday','Bachelor Party','Bachelorette party','Wedding','Engagement','Traveling for fun']}
+                                className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`} 
+                                value={locationSearch.occassion} 
+                                onChange={(val) => setLocationSearch({...locationSearch, occassion: val})} 
                             />
 
-                            <InputField 
-                            label="Priority" 
-                            placeholder='Beaches'
-                            type="text" 
-                            className={`mr-2 my-2 w-[150px] ${styles.inputWrapper}`} 
-                            value={locationSearch.priority} 
-                            onChange={(e) => setLocationSearch({...locationSearch, priority: e.target.value})} 
+                            <SelectField 
+                                label="Priority" 
+                                placeholder="Beaches ..."
+                                data={['Beaches','Mountains','Clubs','Restaurants','Romance','Aquatic Activities']}
+                                className={`mr-2 my-2 w-[150px] ${styles.inputWrapper}`} 
+                                value={locationSearch.priority} 
+                                onChange={(val) => setLocationSearch({...locationSearch, priority: val})} 
                             />
 
-                            <InputField 
+                            <SelectField 
                             label="Travelers" 
-                            type="text" 
+                            placeholder="Select ..."
+                            data={[1,2,3,4,5,6]}
                             className={`mr-2 my-2 w-[150px] ${styles.inputWrapper}`} 
                             value={locationSearch.travelers} 
-                            onChange={(e) => setLocationSearch({...locationSearch, travelers: e.target.value})} 
+                            onChange={(val) => setLocationSearch({...locationSearch, travelers: val})} 
                             />
 
-                            <button className="py-4 bg-[#009DE2] text-white rounded-xl w-[200px] my-2">
-                                {'Automate My trip'}
-                            </button>
+                            <BlueButton title='Automate My trip' />
                         </div>
                     </div>
                 </div>
