@@ -15,7 +15,7 @@ const SliderComponent = ({children}: ISliderComponent) => {
         const { style, onClick } = props;
         return (
         <div
-            className={CSS["slick-next"]}
+            className={`cursor-pointer select-none ${CSS["slick-next"]}`}
             style={{
             ...style,
             display: "flex",
@@ -46,7 +46,7 @@ const SliderComponent = ({children}: ISliderComponent) => {
         const { style, onClick } = props;
         return (
         <div
-            className={CSS["slick-prev"]}
+            className={`cursor-pointer select-none ${CSS["slick-prev"]}`}
             style={{
             ...style,
             display: "flex",
