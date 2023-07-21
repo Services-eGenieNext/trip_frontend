@@ -1,5 +1,10 @@
 import IInputField from "./input"
+import { IProductHorizontalSlide } from "./product"
+import { IPlanningCard, ITripPlanningHeader } from "./TripPlan"
 
 export type {
-    IInputField
+    IInputField,
+    IProductHorizontalSlide,
+    IPlanningCard,
+    ITripPlanningHeader
 }

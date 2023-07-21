@@ -1,15 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Section from '../UIComponents/Section'
 import ComponentTitle from '../UIComponents/ComponentTitle'
-import Slider from 'react-slick'
 import SliderComponent from '../UIComponents/Sliders/Slider'
 import { BlankStar, FilledStar } from '../icons/Stars'
 import InputField from '../UIComponents/InputField/InputField'
 import TimerOutlined from '../icons/TimerOutlined'
-import styles from "./LocationToVisit.module.css"
 import BlueButton, { BlueButtonOutLined } from '../UIComponents/Buttons/BlueButton'
+import { IProductHorizontalSlide } from '@/interfaces'
+import styles from "./ProductHorizontalSlide.module.css"
 
-const LocationToVisit = () => {
+const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, isDesc }: IProductHorizontalSlide) => {
 
     let List = [0,0,0,0,0]
     const slideRef = useRef<null | HTMLDivElement>(null)
@@ -31,40 +31,42 @@ const LocationToVisit = () => {
             let xposition = (event.clientX - slideRef.current?.offsetLeft - slideRef.current?.offsetWidth/3);
             let yposition = (event.clientY - slideRef.current?.offsetTop - slideRef.current?.offsetHeight/3);
 
-            console.log('object', xposition, yposition)
             setXPosition(xposition)
             setYPosition(yposition)
             setVisible(true)
         }
     }
-    
+
     return (
         <Section className="relative">
-            <ComponentTitle title="Bali location to visit" />
-            <p className='text-[var(--gray)]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.</p>
+            <ComponentTitle title={Title} />
+            <p className='text-[var(--gray)]'>{Description}</p>
             <div ref={slideRef} id='location-to-visit-slide' className="mt-10">
                 <SliderComponent>
                     {
                         List && List.map((d, index) => {
                             return <div key={index} className={`px-2 w-[270px]`}> 
-                                <div className="grid grid-cols-1 rounded-xl border shadow-sm">
+                                <div className="grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden">
                                     <div className="h-[178px] bg-gray-100">
 
                                     </div>
                                     <div className="p-4">
                                         <div className="grid grid-cols-2 items-center mb-2 relative">
-                                            <h4>{'Sacred Monkey Forest Sanctuary'}</h4>
-
-                                            <div className="flex justify-end items-center gap-2 cursor-pointer"
-                                            onClick={(e) => placeForm(e)}
-                                            >
-                                                <span className="text-[11px] text-[var(--green)]">Add</span>
-                                                <span className="w-[23px] h-[23px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-[15px] h-[15px]">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                                    </svg>
-                                                </span>
-                                            </div>
+                                            <h4 className={isAddButton ? "col-span-1" : "col-span-2"}>{'Sacred Monkey Forest Sanctuary'}</h4>
+                                            {
+                                                isAddButton && (
+                                                    <div className="flex justify-end items-center gap-2 cursor-pointer"
+                                                    onClick={(e) => placeForm(e)}
+                                                    >
+                                                        <span className="text-[11px] text-[var(--green)]">Add</span>
+                                                        <span className="w-[23px] h-[23px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-[15px] h-[15px]">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+                                                )
+                                            }
                                         </div>
 
                                         <div className="flex flex-wrap gap-2 items-center my-2">
@@ -74,10 +76,11 @@ const LocationToVisit = () => {
                                             <FilledStar />
                                             <FilledStar />
                                             <BlankStar />
-                                            <span>{'(2,456)'}</span>
+                                            <span className="text-[var(--lite-gray)]">{'(2,456)'}</span>
                                         </div>
-
-                                        <p className="text-[15px] text-[var(--gray)]">{'Simply dummy text of the printing'}</p>
+                                        {
+                                            isDesc && <p className="text-[15px] text-[var(--gray)]">{'Simply dummy text of the printing'}</p>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -133,4 +136,4 @@ const LocationToVisit = () => {
     )
 }
 
-export default LocationToVisit
+export default ProductHorizontalSlide

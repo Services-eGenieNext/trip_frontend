@@ -5,7 +5,7 @@ import Products from '@/components/Products/Products'
 import SmallStory from '@/components/Story/SmallStory'
 import React from 'react'
 import TripPlanningCard from '@/components/tripPlanningCard/tripPlanning'
-import LocationToVisit from '@/components/Location-To-Visit/LocationToVisit'
+import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide'
 
 const TripPlanPage = () => {
     return (
@@ -14,7 +14,7 @@ const TripPlanPage = () => {
           
             <TripPlanningCard/>
 
-            <LocationToVisit />
+            <ProductHorizontalSlide Title='Bali Location To Visit' Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} />
 
             <Products title="Most popular Restaurants" />
 
