@@ -61,13 +61,13 @@ const Hero = () => {
                             onChange={(e) => setLocationSearch({...locationSearch, startDate: e.target.value})} 
                             icon={<CalenderIcon />} />
 
-                            <InputField 
+                            {/* <InputField 
                             label="Travel End date" 
                             type="date" 
                             className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`}  
                             value={locationSearch.endDate} 
                             onChange={(e) => setLocationSearch({...locationSearch, endDate: e.target.value})} 
-                            icon={<CalenderIcon />} />
+                            icon={<CalenderIcon />} /> */}
 
                             <InputField 
                             label="Occassion"
