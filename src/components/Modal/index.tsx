@@ -80,11 +80,13 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
                         </p>
                         <div className="mt-5 flex justify-center items-center w-full">
                           <div className="flex lg:flex-row flex-col items-center lg:justify-between justify-center w-full lg:gap-x-8 gap-x-0 lg:gap-y-0 md:gap-y-8 gap-y-2">
-                            <p className="uppercase text-[12px] font-medium">
-                              please rate us
-                            </p>
-                            <div className="flex items-center md:gap-x-1 gap-x-0">
-                              <RatingStars />
+                            <div className="flex flex-col">
+                              <p className="uppercase text-[12px] font-medium">
+                                please rate us
+                              </p>
+                              <div className="flex items-center md:gap-x-1 gap-x-0">
+                                <RatingStars />
+                              </div>
                             </div>
                             <InputField
                               type="text"

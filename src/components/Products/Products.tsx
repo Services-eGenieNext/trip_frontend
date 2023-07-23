@@ -61,7 +61,7 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
                                     </div>
                                     <div className="p-7">
                                         <div className='flex justify-between items-center'>
-                                        <Link href={'/trip-plan/1'}>
+                                        <Link href={'/trip-plan-v1'}>
                                             <h4 className="text-2xl font-semibold gilroy">Lorem Ipsum</h4>
                                         </Link>
                                         {
