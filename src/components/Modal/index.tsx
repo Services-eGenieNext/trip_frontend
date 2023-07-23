@@ -4,6 +4,7 @@ import RatingStars from "@/components/UIComponents/RatingStars";
 import InputField from "../UIComponents/InputField/InputField";
 import { validateHeaderValue } from "http";
 import Textarea from "../UIComponents/InputField/textarea";
+import { AiOutlineClose } from "react-icons/ai";
 
 interface IReview {
   first_name: string;
@@ -69,21 +70,22 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-auto1">
-                <div className="bg-white md:px-10 px-5 pt-14 pb-10">
-                  <div className="w-full">
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <p className="text-[#2D2D2D] text-[33px] font-medium">
-                        Write Your Review
-                      </p>
-                      <div className="mt-5 flex justify-center items-center w-full">
-                        <div className="flex lg:flex-row flex-col items-center lg:justify-between justify-center w-full lg:gap-x-8 gap-x-0 lg:gap-y-0 md:gap-y-8 gap-y-2">
-                          <p className="uppercase text-[12px] font-medium">
-                            please rate us
-                          </p>
-                          <div className="flex items-center md:gap-x-1 gap-x-0">
-                            <RatingStars />
-                          </div>
+              {modalFor == "review" && (
+                <Dialog.Panel className="relative transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-auto realtive">
+                  <div className="bg-white md:px-10 px-5 pt-14 pb-10">
+                    <div className="w-full">
+                      <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                        <p className="text-[#2D2D2D] text-[33px] font-medium">
+                          Write Your Review
+                        </p>
+                        <div className="mt-5 flex justify-center items-center w-full">
+                          <div className="flex lg:flex-row flex-col items-center lg:justify-between justify-center w-full lg:gap-x-8 gap-x-0 lg:gap-y-0 md:gap-y-8 gap-y-2">
+                            <p className="uppercase text-[12px] font-medium">
+                              please rate us
+                            </p>
+                            <div className="flex items-center md:gap-x-1 gap-x-0">
+                              <RatingStars />
+                            </div>
                             <InputField
                               type="text"
                               label="FIRST NAME"
@@ -106,39 +108,43 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
                               name="last_name"
                               className="md:mt-0 mt-7"
                             />
+                          </div>
                         </div>
+                        <Textarea
+                          label="WRITE YOUR REVIEW"
+                          value={value.review}
+                          onChange={(e) => {
+                            handleValue(e);
+                          }}
+                          placeholder="Jhon"
+                          name="review"
+                          className="mt-7"
+                        />
                       </div>
-                      <Textarea
-                              label="WRITE YOUR REVIEW"
-                              value={value.review}
-                              onChange={(e) => {
-                                handleValue(e);
-                              }}
-                              placeholder="Jhon"
-                              name="review"
-                              className="mt-7"
-                            />
                     </div>
                   </div>
-                </div>
-                <div className="bg-gray-50 px-4 pb-14 sm:flex sm:flex-row-reverse sm:px-6">
-                  <button
-                    type="button"
-                    className="inline-flex w-full justify-center rounded-md bg-[#009DE2] px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto"
-                    onClick={() => setOpen(false)}
-                  >
-                    Submit
-                  </button>
-                  <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => setOpen(false)}
-                    ref={cancelButtonRef}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </Dialog.Panel>
+                  <div className="bg-gray-50 px-4 pb-14 sm:flex sm:flex-row-reverse sm:px-6">
+                    <button
+                      type="button"
+                      className="inline-flex w-full justify-center rounded-md bg-[#009DE2] px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto"
+                      onClick={() => setOpen(false)}
+                    >
+                      Submit
+                    </button>
+                    <button
+                      type="button"
+                      className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                      onClick={() => setOpen(false)}
+                      ref={cancelButtonRef}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <div className="absolute z-10 top-[-30px] right-[-20px] w-[53px] h-[53px] rounded-full bg-white flex justify-center items-center" onClick={()=>{setOpen(false)}}>
+                    <AiOutlineClose />
+                  </div>
+                </Dialog.Panel>
+              )}
             </Transition.Child>
           </div>
         </div>
