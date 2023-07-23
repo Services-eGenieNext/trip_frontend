@@ -13,7 +13,7 @@ export default function Home() {
             
             <ActivitiesSlider/>
             
-            <Products title="Top Restaurants In The World" />
+            <Products title="Top Restaurants In The World" isAddButton={false} />
         </main>
     )
 }

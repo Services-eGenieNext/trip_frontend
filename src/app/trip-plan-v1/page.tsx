@@ -14,11 +14,11 @@ const TripPlanPage = () => {
           
             <TripPlanningCard/>
 
-            <ProductHorizontalSlide Title='Bali Location To Visit' Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} />
+            <ProductHorizontalSlide url="variation_2" Title='Bali Location To Visit' Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} />
 
-            <Products title="Most popular Restaurants" />
+            <Products title="Most popular Restaurants" isAddButton={true} />
 
-            <SmallStory />
+            <SmallStory positioning="inline" />
 
             <ClientTestimonials />
         </div>

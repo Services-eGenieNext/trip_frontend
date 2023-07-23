@@ -29,7 +29,7 @@ export default function TripPlanningCard() {
                     {DemiData.PricingPlans &&
                         DemiData.PricingPlans.map((items, index) => {
                         return (
-                            <PricingCard variation="cards" key={index} data={items} onOpen={(item) => {
+                            <PricingCard isDropdownButton={false} variation="cards" rows = "2" key={index} data={items} onOpen={(item) => {
                                 setShowTripPopup(true)
                                 setItem(item)
                             }} />

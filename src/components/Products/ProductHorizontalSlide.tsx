@@ -9,7 +9,7 @@ import BlueButton, { BlueButtonOutLined } from '../UIComponents/Buttons/BlueButt
 import { IProductHorizontalSlide } from '@/interfaces'
 import styles from "./ProductHorizontalSlide.module.css"
 
-const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, isDesc }: IProductHorizontalSlide) => {
+const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, isDesc, url }: IProductHorizontalSlide) => {
 
     let List = [0,0,0,0,0]
     const slideRef = useRef<null | HTMLDivElement>(null)
@@ -46,7 +46,7 @@ const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, is
                     {
                         List && List.map((d, index) => {
                             return <div key={index} className={`px-2 w-[270px]`}> 
-                                <div className="grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden">
+                                <div className="grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden relative">
                                     <div className="h-[178px] bg-gray-100">
 
                                     </div>
@@ -68,7 +68,7 @@ const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, is
                                                 )
                                             }
                                         </div>
-
+                                            {url == "variation_2" && (
                                         <div className="flex flex-wrap gap-2 items-center my-2">
                                             <span>4.4</span>
                                             <FilledStar />
@@ -78,6 +78,13 @@ const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, is
                                             <BlankStar />
                                             <span className="text-[var(--lite-gray)]">{'(2,456)'}</span>
                                         </div>
+                                            )}
+                                            {url == "variation_3" && (
+                                        <div className="flex gap-2 items-center absolute top-[7px] right-[7px] bg-white px-3 border rounded-lg">
+                                            <span>4.4</span>
+                                            <FilledStar />
+                                        </div>
+                                            )}
                                         {
                                             isDesc && <p className="text-[15px] text-[var(--gray)]">{'Simply dummy text of the printing'}</p>
                                         }

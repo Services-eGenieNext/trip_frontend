@@ -3,12 +3,14 @@ import CSS from "./tripPlanning.module.css";
 import { FiLock } from "react-icons/fi";
 import { IPlanningCard } from "@/interfaces/TripPlan";
 
-export default function PricingCard({ data , onOpen = () => {}, variation = "cards"}: IPlanningCard) {
+export default function PricingCard({ data , onOpen = () => {}, variation = "cards", rows, isDropdownButton}: IPlanningCard) {
     return (
         variation === "cards" ?
         <div className="relative mt-10 bg-[#F6FDFF] rounded-lg border-2 border-dashed border-[#AEDCF0] px-5 py-8">
             <div className={`${data.active == false ? "blur-sm select-none" : ""}`}>
                 <h1 className="text-2xl font-bold">DAY - {data.day}</h1>
+                {rows == "2" ? (
+                    <>
                 <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
                 <div className="p-5 flex flex-col justify-between">
                     {data.schedule &&
@@ -67,6 +69,39 @@ export default function PricingCard({ data , onOpen = () => {}, variation = "car
                     })}
                 </div>
                 </div>
+                </>
+                ):(
+<div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
+                <div className="p-5 flex flex-col justify-between">
+                    {data.schedule &&
+                    data.schedule.map((items: any, index: any) => {
+                        return (
+                        <div
+                            key={index}
+                            className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
+                        >
+                            <div>
+                            <div>
+                                <div className="w-[20px] h-[20px] bg-[#AEDCF0] rounded-full flex justify-center items-center">
+                                <div className="w-[10px] h-[10px] bg-[#009DE2] rounded-full"></div>
+                                </div>
+                            </div>
+                            <div className={`h-full ml-2 ${CSS["divider"]}`}></div>
+                            </div>
+                            <span className="text-[13px] text-black hover:text-[#009DE2]"
+                            onClick={() => {
+                            onOpen(items)
+                            }}
+                            >
+                            <h1 className="gilroy font-semibold">{items.time} - </h1>
+                            <p className="font-medium">{items.detail}</p>
+                            </span>
+                        </div>
+                        );
+                    })}
+                </div>
+                </div>
+                )}
             </div>
             {data && data.active == false ? (
             <div className={`absolute top-0 right-0 p-5 w-full h-full flex justify-end items-start select-none ${CSS["overlay"]}`}>
@@ -110,11 +145,18 @@ export default function PricingCard({ data , onOpen = () => {}, variation = "car
                                 <p className="gilroy font-semibold">{items.time} - </p>
                                 <div className="flex flex-wrap justify-center items-center">
                                     <p className="font-medium w-[100px]">{items.detail}</p>
-                                    <span className={`w-[18px] h-[13px] rounded ${CSS['svg']}`}>
+                                    {isDropdownButton == true ? (
+                                    <span className={`w-[18px] h-[13px] rounded ${CSS['svg']} relative`}>
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-[14px] h-[12px] mx-auto">
                                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                                         </svg>
+                                        {/* <div className="absolute top-2 right-0 w-[122px] h-[110px] rounded-md shadow-lg border z-10 bg-white"> 
+
+                                        </div> */}
                                     </span>
+                                    ):(
+                                        ""
+                                    )}
                                 </div>
                             </span>
                         </div>

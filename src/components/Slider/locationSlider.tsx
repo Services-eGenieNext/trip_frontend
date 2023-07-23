@@ -79,7 +79,7 @@ export default function LocationSlider() {
     infinite: false,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 1,
+    slidesToScroll: 4,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     responsive: [
@@ -87,7 +87,7 @@ export default function LocationSlider() {
         breakpoint: 1550,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 1,
+          slidesToScroll: 3,
           infinite: false,
           dots: false,
           nextArrow: <SampleNextArrow />,
@@ -98,7 +98,7 @@ export default function LocationSlider() {
         breakpoint: 1160,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
           infinite: false,
           dots: false,
           nextArrow: <SampleNextArrow />,

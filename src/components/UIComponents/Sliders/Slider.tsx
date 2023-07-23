@@ -67,7 +67,7 @@ const SliderComponent = ({children}: ISliderComponent) => {
         infinite: false,
         speed: 500,
         slidesToShow: 4,
-        slidesToScroll: 1,
+        slidesToScroll: 4,
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />,
         responsive: [
@@ -75,7 +75,7 @@ const SliderComponent = ({children}: ISliderComponent) => {
             breakpoint: 1550,
             settings: {
             slidesToShow: 3,
-            slidesToScroll: 1,
+            slidesToScroll: 3,
             infinite: false,
             dots: false,
             nextArrow: <SampleNextArrow />,
@@ -86,7 +86,7 @@ const SliderComponent = ({children}: ISliderComponent) => {
             breakpoint: 1160,
             settings: {
             slidesToShow: 2,
-            slidesToScroll: 1,
+            slidesToScroll: 2,
             infinite: false,
             dots: false,
             nextArrow: <SampleNextArrow />,

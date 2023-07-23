@@ -101,7 +101,7 @@ function ActivitiesSlider() {
     infinite: false,
     speed: 500,
     slidesToShow: 7,
-    slidesToScroll: 1,
+    slidesToScroll: 7,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     responsive: [
@@ -109,7 +109,7 @@ function ActivitiesSlider() {
         breakpoint: 1550,
         settings: {
           slidesToShow: 6,
-          slidesToScroll: 1,
+          slidesToScroll: 6,
           infinite: false,
           dots: false,
           nextArrow: <SampleNextArrow />,
@@ -120,7 +120,7 @@ function ActivitiesSlider() {
         breakpoint: 1330,
         settings: {
           slidesToShow: 5,
-          slidesToScroll: 1,
+          slidesToScroll: 5,
           infinite: false,
           dots: false,
           nextArrow: <SampleNextArrow />,
@@ -131,7 +131,7 @@ function ActivitiesSlider() {
         breakpoint: 1000,
         settings: {
           slidesToShow: 4,
-          slidesToScroll: 1,
+          slidesToScroll: 4,
           infinite: false,
           dots: false,
           nextArrow: <SampleNextArrow />,
@@ -142,7 +142,7 @@ function ActivitiesSlider() {
         breakpoint: 800,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 1,
+          slidesToScroll: 3,
           infinite: false,
           dots: false,
           nextArrow: <SampleNextArrow />,
@@ -153,7 +153,7 @@ function ActivitiesSlider() {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
           infinite: false,
           dots: false,
           nextArrow: <SampleNextArrow />,
