@@ -1,10 +1,13 @@
-import React from 'react'
+import React, {useState} from 'react'
 import ComponentTitle from '../UIComponents/ComponentTitle'
 import { BlankStar, FilledStar } from '../icons/Stars'
 import BlueButton from '../UIComponents/Buttons/BlueButton'
 import styles from "./client-testimonials.module.css"
+import Modal from '../Modal/index'
 
 const ClientTestimonials = () => {
+
+    const [openModal, setOpenModal] = useState(true)
 
     const clients = [
         {
@@ -59,7 +62,7 @@ const ClientTestimonials = () => {
                         10 Reviews
                     </span>
                 </div>
-                <div>
+                <div onClick={()=>{setOpenModal(true)}}>
                     <BlueButton title={"Write Your review"} />
                 </div>
             </div>
@@ -97,6 +100,11 @@ const ClientTestimonials = () => {
                     })
                 }
             </div>
+            {openModal == true ? (
+                <Modal openModal={openModal} setOpenModal={setOpenModal} modalFor="review" />
+            ):(
+                ""
+            )}
         </div>
     )
 }

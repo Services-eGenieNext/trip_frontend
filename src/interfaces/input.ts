@@ -5,7 +5,8 @@ interface IInputField {
     value?: string
     placeholder?: string,
     icon?: any,
-    onChange?: (value?: any) => void
+    onChange?: (value?: any) => void,
+    name?: string
 }
 
 export interface ISelectField extends IInputField  {

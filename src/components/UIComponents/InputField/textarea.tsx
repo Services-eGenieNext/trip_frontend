@@ -1,7 +1,7 @@
 import { IInputField } from '@/interfaces'
 import React from 'react'
 
-const InputField = ({className,name, label, type, value="", placeholder="", onChange= (e)=>{}, icon}: IInputField) => {
+const Textarea = ({className,name, label, value="", placeholder="", onChange= (e)=>{}, icon}: IInputField) => {
 
     return (
         <div className={`relative ${className}`}>
@@ -10,14 +10,13 @@ const InputField = ({className,name, label, type, value="", placeholder="", onCh
                     {
                         icon && <div className="mr-1">{icon}</div>
                     }
-                    <input 
-                        type={type ? type : 'text'} 
+                    <textarea 
                         className={`outline-none w-full`} 
                         placeholder={placeholder ? placeholder : label} 
                         onChange={onChange}
                         value={value}
                         name={name}
-                    />
+                    ></textarea>
                 </div>
             </div>
             <label className="absolute top-[-0.7rem] left-[1rem] px-[5px]"
@@ -28,4 +27,4 @@ const InputField = ({className,name, label, type, value="", placeholder="", onCh
 
 }
 
-export default InputField
+export default Textarea
