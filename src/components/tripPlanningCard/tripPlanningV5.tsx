@@ -6,7 +6,8 @@ import PricingCard from './pricingCard';
 import TripDetail from './TripDetail';
 import ProductHorizontalSlide from '../Products/ProductHorizontalSlide';
 
-const TripPlanningV2 = () => {
+const TripPlanningV5
+ = () => {
     return (
         <Section>
             <div className="my-20">
@@ -50,4 +51,4 @@ const TripPlanningV2 = () => {
     )
 }
 
-export default TripPlanningV2
+export default TripPlanningV5
