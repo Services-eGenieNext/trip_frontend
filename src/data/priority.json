@@ -1,0 +1,43 @@
+[
+    {
+        "key": 1,
+        "value":"Beaches"
+    },
+    {
+        "key": 2,
+        "value":"Mountains"
+    },
+    {
+        "key": 3,
+        "value":"Clubs"
+    },
+    {
+        "key": 4,
+        "value":"Restaurants"
+    },
+    {
+        "key": 5,
+        "value":"Romance"
+    },
+    {
+        "key": 6,
+        "value":"Aquatic Activities"
+    },
+    {
+        "key": 7,
+        "value":"Outdoor Activities"
+    },
+    {
+        "key": 8,
+        "value":"Music Festivals"
+    },
+    {
+        "key": 9,
+        "value":"Camping"
+    },
+    {
+        "key": 0,
+        "additional": true,
+        "value":"Insert my own activity"
+    }
+]

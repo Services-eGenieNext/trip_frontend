@@ -9,17 +9,28 @@ import SimpleLocation from '../icons/SimpleLocation'
 import CalenderIcon from '../icons/Calender'
 import BlueButton from '../UIComponents/Buttons/BlueButton'
 import SelectField from '../UIComponents/InputField/SelectField'
+import Occasion from "@/data/occasion.json"
+import Travelers from "@/data/travelers.json"
+import Priority from "@/data/priority.json"
+import DateRangeField from '../UIComponents/InputField/DateRangeField'
+import {Range} from "react-date-range"
+import { addDays } from 'date-fns';
 
 const Hero = () => {
 
+    const [date, setDate] = useState<Range>({
+        startDate: new Date(),
+        endDate: addDays(new Date(), 7),
+        key: 'selection',
+    })
+
     const [locationSearch, setLocationSearch] = useState({
         location: "",
-        startDate: "",
-        endDate: "",
         occassion: "",
         priority: "",
         travelers: "",
     })
+
     const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false)
 
     return (
@@ -48,54 +59,59 @@ const Hero = () => {
                             </span>
                             
                             <InputField 
-                            label="Location" 
-                            type="text" 
-                            className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`} 
-                            value={locationSearch.location} 
-                            onChange={(e) => setLocationSearch({...locationSearch, location: e.target.value})} 
-                            icon={<SimpleLocation />} />
-
-                            <InputField 
-                            label="Date" 
-                            type="date" 
-                            className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`}  
-                            value={locationSearch.startDate} 
-                            onChange={(e) => setLocationSearch({...locationSearch, startDate: e.target.value})} 
-                            icon={<CalenderIcon />} />
+                                label="Location" 
+                                type="text" 
+                                className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`} 
+                                value={locationSearch.location} 
+                                onChange={(e) => setLocationSearch({...locationSearch, location: e.target.value})} 
+                                icon={<SimpleLocation />}
+                            />
 
                             {/* <InputField 
-                            label="Travel End date" 
-                            type="date" 
-                            className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`}  
-                            value={locationSearch.endDate} 
-                            onChange={(e) => setLocationSearch({...locationSearch, endDate: e.target.value})} 
-                            icon={<CalenderIcon />} /> */}
+                                label="Date" 
+                                type="text" 
+                                className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`}  
+                                value={locationSearch.startDate} 
+                                onChange={(e) => setLocationSearch({...locationSearch, startDate: e.target.value})} 
+                                icon={<CalenderIcon />} 
+                            /> */}
+
+                            <DateRangeField
+                                label="Date" 
+                                className={`mr-2 my-2 w-[250px] ${styles.inputWrapper}`}  
+                                value={date} 
+                                onChange={(value) => setDate(value)} 
+                                icon={<CalenderIcon />}
+                            />
 
                             <SelectField 
                                 label="Occassion"
-                                placeholder='Birthday' 
-                                data={['Birthday','Bachelor Party','Bachelorette party','Wedding','Engagement','Traveling for fun']}
+                                placeholder='Select ...' 
+                                data={Occasion}
                                 className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`} 
                                 value={locationSearch.occassion} 
                                 onChange={(val) => setLocationSearch({...locationSearch, occassion: val})} 
+                                onAdditionalChange={(_data) => {}}
                             />
 
                             <SelectField 
                                 label="Priority" 
-                                placeholder="Beaches ..."
-                                data={['Beaches','Mountains','Clubs','Restaurants','Romance','Aquatic Activities']}
+                                placeholder="Select ..."
+                                data={Priority}
                                 className={`mr-2 my-2 w-[150px] ${styles.inputWrapper}`} 
                                 value={locationSearch.priority} 
                                 onChange={(val) => setLocationSearch({...locationSearch, priority: val})} 
+                                onAdditionalChange={(_data) => {}}
                             />
 
                             <SelectField 
-                            label="Travelers" 
-                            placeholder="Select ..."
-                            data={[1,2,3,4,5,6]}
-                            className={`mr-2 my-2 w-[150px] ${styles.inputWrapper}`} 
-                            value={locationSearch.travelers} 
-                            onChange={(val) => setLocationSearch({...locationSearch, travelers: val})} 
+                                label="Travelers" 
+                                placeholder="Select ..."
+                                data={Travelers}
+                                className={`mr-2 my-2 w-[150px] ${styles.inputWrapper}`} 
+                                value={locationSearch.travelers} 
+                                onChange={(val) => setLocationSearch({...locationSearch, travelers: val})} 
+                                onAdditionalChange={(_data) => {}}
                             />
 
                             <BlueButton title='Automate My trip' />
