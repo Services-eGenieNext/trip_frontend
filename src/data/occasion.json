@@ -1,0 +1,51 @@
+[
+    {
+        "key": 1,
+        "value":"Birthday"
+    },
+    {
+        "key": 2,
+        "value":"Bachelor Party"
+    },
+    {
+        "key": 3,
+        "value":"Bachelorette party"
+    },
+    {
+        "key": 4,
+        "value":"Wedding"
+    },
+    {
+        "key": 5,
+        "value":"Engagement"
+    },
+    {
+        "key": 6,
+        "value":"Traveling for fun"
+    },
+    {
+        "key": 7,
+        "value":"Family vacation"
+    },
+    {
+        "key": 8,
+        "value":"Just looking to party"
+    },
+    {
+        "key": 9,
+        "value":"Reunion"
+    },
+    {
+        "key": 10,
+        "value":"Honeymoon"
+    },
+    {
+        "key": 5,
+        "value":"Anniversary"
+    },
+    {
+        "key": 0,
+        "additional": true,
+        "value":"Insert my own occasion"
+    }
+]
