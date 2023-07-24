@@ -6,6 +6,7 @@ import LocationIcon from '../icons/Location'
 import Map from "/public/images/full-map-transparent.png"
 import Link from 'next/link'
 import ComponentTitle from '../UIComponents/ComponentTitle'
+import Modal from '../Modal'
 
 interface IProduct {
     title: string
@@ -21,6 +22,7 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
     const [visible, setVisible] = useState(false)
     const [xPosition, setXPosition] = useState(0)
     const [yPosition, setYPosition] = useState(0)
+    const [openModal, setOpenModal] = useState(false)
 
     const placeForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 
@@ -67,7 +69,7 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
                                         {
                                                 isAddButton && (
                                                     <div className="flex justify-end items-center gap-2 cursor-pointer"
-                                                    onClick={(e) => placeForm(e)}
+                                                    onClick={() => {setOpenModal(true)}}
                                                     >
                                                         <span className="text-[11px] text-[var(--green)]">Add</span>
                                                         <span className="w-[23px] h-[23px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
@@ -91,6 +93,11 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
                     }
                 </div>
             </div>
+            {openModal == true ? (
+                <Modal openModal={openModal} setOpenModal={setOpenModal} modalFor="view_otehr_places" />
+            ):(
+                ""
+            )}
         </div>
     )
 }

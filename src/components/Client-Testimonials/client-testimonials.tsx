@@ -7,7 +7,7 @@ import Modal from '../Modal/index'
 
 const ClientTestimonials = () => {
 
-    const [openModal, setOpenModal] = useState(true)
+    const [openModal, setOpenModal] = useState(false)
 
     const clients = [
         {
