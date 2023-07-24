@@ -1,9 +1,10 @@
 export interface IPlanningCard {
-    data: any,
+    data?: any,
     onOpen: (value?: any) => void,
-    variation: "list" | "cards"
-    rows: string
-    isDropdownButton: boolean
+    variation?: "list" | "cards"
+    rows?: string
+    isDropdownButton?: boolean
+    items?: any
 }
 
 export interface ITripPlanningHeader {

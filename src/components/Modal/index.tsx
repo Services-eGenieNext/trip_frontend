@@ -7,17 +7,20 @@ import Textarea from "../UIComponents/InputField/textarea";
 import { AiOutlineClose } from "react-icons/ai";
 
 interface IReview {
-  first_name: string;
-  last_name: string;
-  review: string;
+  first_name?: string;
+  last_name?: string;
+  review?: string;
+  email?: string
 }
 
 export default function Modal({ openModal, setOpenModal, modalFor }: any) {
+
   const [open, setOpen] = useState(true);
   const [value, setValue] = useState<IReview>({
     first_name: "",
     last_name: "",
     review: "",
+    email: "",
   });
 
   const handleValue = (e: any) => {
@@ -70,9 +73,10 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
+              <div ref={cancelButtonRef}>
               {modalFor == "review" && (
                 <Dialog.Panel className="relative transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-auto realtive">
-                  <div className="bg-white md:px-10 px-5 pt-14 pb-10">
+                  <div className="bg-white md:px-10 px-5 pt-14 pb-10 rounded-xl">
                     <div className="w-full">
                       <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                         <p className="text-[#2D2D2D] text-[33px] font-medium">
@@ -80,14 +84,12 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
                         </p>
                         <div className="mt-5 flex justify-center items-center w-full">
                           <div className="flex lg:flex-row flex-col items-center lg:justify-between justify-center w-full lg:gap-x-8 gap-x-0 lg:gap-y-0 md:gap-y-8 gap-y-2">
-                            <div className="flex flex-col">
                               <p className="uppercase text-[12px] font-medium">
                                 please rate us
                               </p>
                               <div className="flex items-center md:gap-x-1 gap-x-0">
                                 <RatingStars />
                               </div>
-                            </div>
                             <InputField
                               type="text"
                               label="FIRST NAME"
@@ -147,6 +149,58 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
                   </div>
                 </Dialog.Panel>
               )}
+              {modalFor == "view_otehr_places" && (
+                <Dialog.Panel className="relative transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-auto realtive">
+                <div className="bg-white md:px-10 px-5 pt-14 pb-10 rounded-xl">
+                  <div className="w-full">
+                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left flex flex-col items-center">
+                      <p className="text-[#2D2D2D] text-[33px] font-medium capitalize">
+                      Enter your email to view other plans
+                      </p>
+                      <div className="flex justify-center items-center w-full mt-10">
+                        <div className="flex lg:flex-row flex-col items-center lg:justify-between justify-center w-full lg:gap-x-8 gap-x-0 lg:gap-y-0 md:gap-y-8 gap-y-2">
+                          <InputField
+                            type="text"
+                            label="FIRST NAME"
+                            value={value.first_name}
+                            onChange={(e) => {
+                              handleValue(e);
+                            }}
+                            placeholder="Jhon"
+                            name="first_name"
+                            className="md:mt-0 mt-7"
+                          />
+                          <InputField
+                            type="email"
+                            label="Email"
+                            value={value.last_name}
+                            onChange={(e) => {
+                              handleValue(e);
+                            }}
+                            placeholder="Jhon"
+                            name="email"
+                            className="md:mt-0 mt-7"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-center pb-6">
+                  <button
+                    type="button"
+                    className="inline-flex w-full justify-center rounded-md bg-[#009DE2] px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto"
+                    onClick={() => setOpen(false)}
+                  >
+                    Submit
+                  </button>
+                </div>
+                <div className="absolute z-10 top-[-30px] right-[-20px] w-[53px] h-[53px] rounded-full bg-white flex justify-center items-center" onClick={()=>{setOpen(false)}}>
+                  <AiOutlineClose />
+                </div>
+              </Dialog.Panel>
+              )}
+              </div>
             </Transition.Child>
           </div>
         </div>

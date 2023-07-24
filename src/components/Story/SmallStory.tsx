@@ -3,7 +3,7 @@ import styles from "./SmallStory.module.css"
 
 const SmallStory = ({positioning}:any) => {
     return (
-        <div className={`sm-width shadow-2xl`}>
+        <div className={`sm-width`}>
             <div className={`${positioning == "inline" ? "grid grid-cols-12 items-center" : "flex flex-col"}  my-10 md:my-20 mx-4 p-10 rounded-xl bg-white ${styles.small_story_wrapper}`}>
                 <p className="gilroy font-bold text-[38px] leading-[45.94px] col-span-3">Story Of bali.</p>
                 <div className={`col-span-8 text-[#656262] ${positioning == "inline" ? "mt-0" : "mt-10"}`}>
