@@ -13,7 +13,7 @@ export default function Lisitngs() {
       <div className="flex flex-wrap itemns-center justify-between my-8 px-10 gap-y-14">
         {list.length && list.map((list:any,index:number)=>{
           return (
-        <div className="w-[260px] h-[370px] overflow-hidden rounded-lg flex flex-col justify-between">
+        <div key={index} className="w-[260px] h-[370px] overflow-hidden rounded-lg flex flex-col justify-between">
           <div className="h-[235px] w-full relative">
             <Image src={PlaceImg} alt="PlaceImg" className="h-full w-full" />
             <div className="absolute top-2 right-2 flex items-center gap-x-2 bg-white py-1 px-4 rounded-full">
