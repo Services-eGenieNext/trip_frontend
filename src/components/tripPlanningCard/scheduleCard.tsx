@@ -73,7 +73,10 @@ export default function ScheduleCard({items, isDropdownButton, onOpen}:IPlanning
                 <div className="absolute top-2 -right-40 sm:w-[462px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-center py-10 px-8 text-black">
                 <InputField type="text" label="Add Destination" placeholder='Which place are you suggesting?' value={addNewEventValue} onChange={(e) => setaddNewEventValue(e.target.value)} />
                 <div className="mt-4 w-full" onClick={()=>{console.log(addNewEventValue)}}>
-                <button className="w-full font-bold text-[18px] bg-[#009DE2] text-white py-3 rounded-lg" onClick={()=>{setAddEvent(false)}}>Add Now</button>
+                <button className="w-full font-bold text-[18px] bg-[#009DE2] text-white py-3 rounded-lg" onClick={()=>{
+                    setAddEvent(false)
+                    setaddNewEventValue("")
+                    }}>Add Now</button>
                 </div>
             </div>
               )}
