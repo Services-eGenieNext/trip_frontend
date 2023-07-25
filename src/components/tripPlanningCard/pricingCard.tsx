@@ -84,14 +84,15 @@ export default function PricingCard({
               {data.schedule &&
                 data.schedule.map((items: any, index: any) => {
 
-                  const [detail , setDetail] = useState(items.detail)
+                  // const [detail , setDetail] = useState(items.detail)
                   const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
                     e.preventDefault()
                     let detail: any = e.dataTransfer.getData('product')
-                    if(detail)
+                    let detailEle: HTMLElement | null = document.getElementById(`detail_${index}`)
+                    if(detail && detailEle && detailEle !== undefined)
                     {
                       detail = JSON.parse(detail)
-                      setDetail(detail.name)
+                      detailEle.innerText = detail.name
                     }
                   }
 
@@ -119,7 +120,7 @@ export default function PricingCard({
                         <h1 className="gilroy font-semibold">
                           {items.time} -{" "}
                         </h1>
-                        <p className="font-medium">{detail}</p>
+                        <p className="font-medium" id={`detail_${index}`}>{items.detail}</p>
                       </span>
                     </div>
                   );
