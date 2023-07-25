@@ -2,10 +2,40 @@ import BlueButton from '@/components/UIComponents/Buttons/BlueButton'
 import PopupWithOverlay from '@/components/UIComponents/Popup/PopupWithOverlay'
 import { ISurvey } from '@/interfaces'
 import React, { useState } from 'react'
+import Occasions from '@/data/occasion.json'
 
 const Survey = ({show, onClose}:ISurvey) => {
 
     const [step, setStep] = useState(1)
+
+    const questions = [
+        {
+            title: "Do you have any ideas where you want to go?",
+            options: [
+                "Yes, I think I have it sorted by continent",
+                "Yes, I think I have it sorted by country",
+                "Yes, I think I have it sorted by sorted",
+                "I’m open to all suggestions",
+                "No, but I know where I don’t want to go"
+            ]
+        },
+        {
+            title: "Are you celebrating anything special?",
+            occasions: true
+        },
+        {
+            title: "What sorts of activities would you like prioritized?",
+            options: []
+        },
+        {
+            title: "Rank your favorite cuisines",
+            options: []
+        },
+        {
+            title: "Anything else you’d like us to know?",
+            text_box: true
+        }
+    ]
 
     return (
         <PopupWithOverlay show={show} onClose={() => {onClose()}} >
@@ -40,17 +70,27 @@ const Survey = ({show, onClose}:ISurvey) => {
                 </div>
 
                 <div className="my-10 mx-auto text-center">
-                    <p className="">Lorem ipsum dolor sit amet, consectetur adipiscing elit?</p>
-                    <div className="my-4 flex justify-center">
-                        <label className="mx-2">
-                            <input type="radio" name="option" id="" /> Curabitur diam
-                        </label>
-                        <label className="mx-2">
-                            <input type="radio" name="option" id="" /> Curabitur diam
-                        </label>
-                        <label className="mx-2">
-                            <input type="radio" name="option" id="" /> Curabitur diam
-                        </label>
+                    <p className="">{questions[step-1]?.title}</p>
+                    <div className="my-4 flex flex-wrap gap-2 justify-center">
+                        {
+                            questions[step-1]?.options && questions[step-1].options?.map((option, index) => {
+                                return <label className="mx-2" key={index}>
+                                    <input type="radio" name="option" id="" /> {option}
+                                </label>
+                            })
+                        }
+                        {
+                            questions[step-1]?.occasions && Occasions.map((occ, index) => {
+                                return <label className="mx-2" key={index}>
+                                    <input type="checkbox" name="occasions[]" id="" /> {occ.value}
+                                </label>
+                            })
+                        }
+                        {
+                            questions[step-1]?.text_box && (
+                                <textarea className="border border-solid border-[var(--blue)] rounded-xl w-full p-4 outline-none" rows={5} placeholder="Type here ..."></textarea>
+                            )
+                        }
                     </div>
                     <BlueButton type="button" className="text-[20px] py-[10px]" title={step < 5 ? 'Next' : 'Finish'} onClick={() => {
                         if(step<5)
@@ -59,7 +99,7 @@ const Survey = ({show, onClose}:ISurvey) => {
                         }
                         else
                         {
-                            setStep(0)
+                            setStep(1)
                             onClose()
                         }
                     }} />
