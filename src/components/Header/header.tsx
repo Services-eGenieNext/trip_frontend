@@ -8,12 +8,14 @@ import PopupWithOverlay from '../UIComponents/Popup/PopupWithOverlay'
 import InputField from '../UIComponents/InputField/InputField'
 import SearchPopup from './SearchPopup'
 import MobileSearchDrawer from './MobileSearchDrawer'
+import Survey from './survey/survey'
 
 const Header = () => {
     
     const [openMobileMenu, setOpenMobileMenu] = useState(false)
     const [openMobileSearch, setOpenMobileSearch] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
+    const [showSurvey, setShowSurvey] = useState(false)
 
 
     useEffect(() => {
@@ -63,8 +65,11 @@ const Header = () => {
                         {/* Menu Bar for Desktop */}
                         <div className="hidden md:block">
                             <Link href={'/'} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Results</Link>
-                            <Link href={'/'} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Itinerary</Link>
-                            <Link href={'/'} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Survey</Link>
+                            <Link href={'/trip-plan-v1'} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Itinerary</Link>
+                            <Link href={'/'} onClick={(e) => {
+                                e.preventDefault()
+                                setShowSurvey(true)
+                            }} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Survey</Link>
                         </div>
                     </div>
                         
@@ -131,6 +136,8 @@ const Header = () => {
 
             {/* Mobile Responsive Search Drawer */}
             <MobileSearchDrawer show={openMobileSearch} onClose={()=>setOpenMobileSearch(!openMobileSearch)} />
+
+            <Survey show={showSurvey} onClose={() => setShowSurvey(false)} />
         </div>
     )
 }

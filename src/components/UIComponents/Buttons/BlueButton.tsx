@@ -7,9 +7,8 @@ interface IBlueButton extends React.DetailedHTMLProps<React.ButtonHTMLAttributes
 const BlueButton:React.FC<IBlueButton> = (props) => {
 
     const {children, title, className, ...rest} = props;
-    let ClassName = `py-4 border border-[var(--blue)] bg-[var(--blue)] hover:bg-white text-white hover:text-[var(--blue)] rounded-xl w-[200px] my-2 transition-all duration-300 ${className}`
     return (
-        <button className={ClassName}
+        <button className={`py-3 border border-solid border-[var(--blue)] bg-[var(--blue)] hover:bg-white text-white hover:text-[var(--blue)] rounded-xl w-[200px] my-2 transition-all duration-300 ${className}`}
         {...rest}
         >
             {title}
@@ -20,7 +19,7 @@ const BlueButton:React.FC<IBlueButton> = (props) => {
 export const BlueButtonOutLined:React.FC<IBlueButton> = (props) => {
 
     const {children, title, className, ...rest} = props;
-    let ClassName = `py-2 border border-[var(--blue)] bg-white hover:bg-[var(--blue)] text-[var(--blue)] hover:text-white rounded-xl w-[200px] my-2 transition-all duration-300 ${className}`
+    let ClassName = `py-2 border border-solid border-[var(--blue)] bg-white hover:bg-[var(--blue)] text-[var(--blue)] hover:text-white rounded-xl w-[200px] my-2 transition-all duration-300 ${className}`
     return (
         <button className={ClassName}
         {...rest}
