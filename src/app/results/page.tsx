@@ -10,7 +10,7 @@ export default function Results() {
     <div>
       <PageBanner />
       <Section>
-        <div className="my-20">
+        <div className="lg:my-20 mb-20">
           <div className="grid grid-cols-4">
             <div className="col-span-1">
               <FilterSidebar />
