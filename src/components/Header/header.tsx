@@ -9,6 +9,10 @@ import InputField from '../UIComponents/InputField/InputField'
 import SearchPopup from './SearchPopup'
 import MobileSearchDrawer from './MobileSearchDrawer'
 import Survey from './survey/survey'
+import { useAppDispatch } from '@/redux/hooks'
+import axios from "axios"
+import { API_URL } from '@/config/constant'
+import { setLocations } from '@/redux/reducers/locationSlice'
 
 const Header = () => {
     
@@ -17,6 +21,18 @@ const Header = () => {
     const [showPopup, setShowPopup] = useState(false)
     const [showSurvey, setShowSurvey] = useState(false)
 
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        const _def = () => {
+            let res = axios.get(`${API_URL}/location/search/best hotels`)
+            .then(response => {
+                response.data.data
+                dispatch(setLocations(response.data.data))
+            })
+        }
+        _def()
+    }, [])
 
     useEffect(() => {
         window.addEventListener('scroll', () =>{
