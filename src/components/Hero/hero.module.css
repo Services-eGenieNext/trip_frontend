@@ -37,3 +37,7 @@
         width: 100%;
     }
 }
+
+.shadow_box {
+    box-shadow: 0px 4px 44px 0px #80899665;
+}

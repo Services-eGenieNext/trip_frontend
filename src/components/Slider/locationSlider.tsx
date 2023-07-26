@@ -124,7 +124,7 @@ export default function LocationSlider() {
   };
 
   return (
-    <div className="w-full flex justify-center mt-20  relative">
+    <div className="w-full flex justify-center mt-20  relative px-10">
       <div className="sm-width">
         <div className="lg:w-[45%] md:w-[60%] w-[95%] flex flex-col sm:items-start items-center">
           <ComponentTitle title="Trending Locations" />
