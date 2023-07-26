@@ -64,7 +64,7 @@ const Header = () => {
 
                         {/* Menu Bar for Desktop */}
                         <div className="hidden md:block">
-                            <Link href={'/'} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Results</Link>
+                            <Link href={'/results'} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Results</Link>
                             <Link href={'/trip-plan-v1'} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Itinerary</Link>
                             <Link href={'/'} onClick={(e) => {
                                 e.preventDefault()

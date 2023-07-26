@@ -6,11 +6,11 @@ import { FilledStar } from '../icons/Stars'
 export default function Lisitngs() {
   const list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
   return (
-    <div className="px-8">
+    <div className="px-16">
       <p className="text-[18px] text-[#3F3F3F]">
         Show listing of 100 Places...
       </p>
-      <div className="flex flex-wrap itemns-center justify-between my-8 px-10 gap-y-14">
+      <div className="flex flex-wrap itemns-center my-8 gap-y-14 gap-x-10">
         {list.length && list.map((list:any,index:number)=>{
           return (
         <div key={index} className="w-[260px] h-[370px] overflow-hidden rounded-lg flex flex-col justify-between">
