@@ -21,10 +21,18 @@ export default function PricingCard({
               <div className="p-5 flex flex-col justify-between">
                 {data.schedule &&
                   data.schedule.map((items: any, index: any) => {
+
+
+                    const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
+                      console.log(e.dataTransfer.getData('product'))
+                    }
+
                     return (
                       <div
                         key={index}
                         className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
+                        onDrop={(e) => onDropFunc(e)}
+                        onDragOver={(e) => {e.preventDefault()}}
                       >
                         <div>
                           <div>
@@ -75,10 +83,24 @@ export default function PricingCard({
             <div className="p-5 flex flex-col justify-between">
               {data.schedule &&
                 data.schedule.map((items: any, index: any) => {
+
+                  const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
+                    e.preventDefault()
+                    let detail: any = e.dataTransfer.getData('product')
+                    let detailEle: HTMLElement | null = document.getElementById(`detail_${data.day + index}`)
+                    if(detail && detailEle && detailEle !== undefined)
+                    {
+                      detail = JSON.parse(detail)
+                      detailEle.innerHTML = detail.name
+                    }
+                  }
+
                   return (
                     <div
                       key={index}
                       className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
+                      onDrop={(e) => onDropFunc(e)}
+                      onDragOver={(e) => {e.preventDefault()}}
                     >
                       <div>
                         <div>
@@ -97,7 +119,7 @@ export default function PricingCard({
                         <h1 className="gilroy font-semibold">
                           {items.time} -{" "}
                         </h1>
-                        <p className="font-medium">{items.detail}</p>
+                        <p className="font-medium" id={`detail_${data.day + index}`}>{items.detail}</p>
                       </span>
                     </div>
                   );

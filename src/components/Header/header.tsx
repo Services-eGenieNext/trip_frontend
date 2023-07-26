@@ -9,6 +9,9 @@ import InputField from '../UIComponents/InputField/InputField'
 import SearchPopup from './SearchPopup'
 import MobileSearchDrawer from './MobileSearchDrawer'
 import Survey from './survey/survey'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { setLocations } from '@/redux/reducers/locationSlice'
+import { LocationsCall } from '@/api-calls'
 
 const Header = () => {
     
@@ -17,6 +20,16 @@ const Header = () => {
     const [showPopup, setShowPopup] = useState(false)
     const [showSurvey, setShowSurvey] = useState(false)
 
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
+        const _def = async () => {
+            let res = await LocationsCall()
+            console.log('object', res)
+            dispatch(setLocations(res))
+        }
+        _def()
+    }, [])
 
     useEffect(() => {
         window.addEventListener('scroll', () =>{
