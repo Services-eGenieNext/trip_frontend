@@ -9,9 +9,17 @@ export default function ScheduleCard({items, isDropdownButton, onOpen}:IPlanning
     const [deleteTime, setDeleteTime] = useState(false)
     const [addEvent, setAddEvent] = useState(false)
     const [addNewEventValue, setaddNewEventValue] = useState("")
+
+    const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
+      console.log(e.dataTransfer.getData('product'))
+    }
+
   return (
     <div
       className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
+
+      onDrop={(e) => onDropFunc(e)}
+      onDragOver={(e) => {e.preventDefault()}}
     >
       <div className="mt-6">
         <div>
@@ -27,7 +35,7 @@ export default function ScheduleCard({items, isDropdownButton, onOpen}:IPlanning
           onOpen(items);
         }}
       >
-        <p className="gilroy font-semibold">{items.time} - </p>
+        <p className="gilroy font-semibold">{items.time} -  asfds</p>
         <div className="flex flex-wrap justify-center items-center">
           <p className="font-medium w-[100px]">{items.detail}</p>
           {isDropdownButton == true ? (

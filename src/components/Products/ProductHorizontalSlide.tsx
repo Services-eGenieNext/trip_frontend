@@ -37,6 +37,11 @@ const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, is
         }
     }
 
+    const dragStartFunc = (e: React.DragEvent<HTMLDivElement>, item: any) => {
+        e.dataTransfer?.setData("product", JSON.stringify(item))
+        console.log('on drap', e.dataTransfer.getData("product"));
+    }
+
     return (
         <Section className="relative">
             <ComponentTitle title={Title} />
@@ -45,14 +50,16 @@ const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, is
                 <SliderComponent>
                     {
                         List && List.map((d, index) => {
-                            return <div key={index} className={`px-2 w-[270px]`}> 
+
+                            let title = 'Sacred Monkey Forest Sanctuary'
+                            return <div key={index} className={`px-2 w-[270px] cursor-pointer`} draggable={true} onDragStart={(event) => dragStartFunc(event, {name: title})}> 
                                 <div className="grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden relative">
                                     <div className="h-[178px] bg-gray-100">
 
                                     </div>
                                     <div className="p-4">
                                         <div className="grid grid-cols-2 items-center mb-2 relative">
-                                            <h4 className={isAddButton ? "col-span-1" : "col-span-2"}>{'Sacred Monkey Forest Sanctuary'}</h4>
+                                            <h4 className={isAddButton ? "col-span-1" : "col-span-2"}>{title}</h4>
                                             {
                                                 isAddButton && (
                                                     <div className="flex justify-end items-center gap-2 cursor-pointer"
