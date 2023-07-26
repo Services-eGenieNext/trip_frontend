@@ -3,6 +3,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CSS from "./location.module.css";
 import ComponentTitle from "../UIComponents/ComponentTitle";
+import { useAppSelector } from "@/redux/hooks";
+import Image from "next/image";
 
 const locationSlider = [
   {
@@ -22,6 +24,8 @@ const locationSlider = [
 ];
 
 export default function LocationSlider() {
+
+  const { locationsState } = useAppSelector((state) => state.locationReducer)
 
   function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
@@ -132,20 +136,20 @@ export default function LocationSlider() {
         </div>
         <div className="mt-10">
           <Slider {...settings}>
-            {locationSlider &&
-              locationSlider.map(
+            {locationsState.length > 0 &&
+              locationsState.map(
                 (
-                  location: { images: string; location: string },
+                  location,
                   index
                 ) => {
+                  let image_path = location.images[0].images?.original?.url ?? location.images[0].images?.large?.url
                   return (
-                    <div key={index} className="relative md:mt-0 mt-5 w-full px-3">
-                      <img
-                      className="w-full"
-                        src={location.images}
-                        alt="Picture of the author"
-                      />
-                      <h1 className="absolute bottom-4 left-6 text-white font-bold text-[25px]">{location.location}</h1>
+                    <div key={index} className="px-3">
+                      <div className="relative md:mt-0 mt-5 h-[350px] w-full rounded-xl overflow-hidden">
+                          <Image src={image_path} fill={true} alt={location.location.address_obj.address_string} style={{objectFit: "cover"}} />
+                          <div className="absolute inset-0" style={{background: 'linear-gradient(0deg, rgb(0 0 0 / 70%), transparent)'}}></div>
+                        <h1 className="absolute bottom-4 left-6 text-white font-bold text-[25px]">{location.location.address_obj.address_string}</h1>
+                      </div>
                     </div>
                   );
                 }
