@@ -144,11 +144,12 @@ export default function LocationSlider() {
                 ) => {
                   let image_path = location.images[0].images?.original?.url ?? location.images[0].images?.large?.url
                   return (
-                    <div key={index} className="relative md:mt-0 mt-5 h-[350px] w-full px-3">
-                      <div className="rounded-xl overflow-hidden block" style={{background: `url(${image_path})`}}>
-                        <Image src={image_path} fill={true} alt={location.location.address_obj.address_string} style={{objectFit: "cover"}} />
+                    <div key={index} className="px-3">
+                      <div className="relative md:mt-0 mt-5 h-[350px] w-full rounded-xl overflow-hidden">
+                          <Image src={image_path} fill={true} alt={location.location.address_obj.address_string} style={{objectFit: "cover"}} />
+                          <div className="absolute inset-0" style={{background: 'linear-gradient(0deg, rgb(0 0 0 / 70%), transparent)'}}></div>
+                        <h1 className="absolute bottom-4 left-6 text-white font-bold text-[25px]">{location.location.address_obj.address_string}</h1>
                       </div>
-                      <h1 className="absolute bottom-4 left-6 text-white font-bold text-[25px]">{location.location.address_obj.address_string}</h1>
                     </div>
                   );
                 }
