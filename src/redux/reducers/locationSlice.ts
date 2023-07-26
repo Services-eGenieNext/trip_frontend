@@ -9,7 +9,7 @@ const initialState = {
 } as LocationState;
 
 export const locationSlice = createSlice({
-    name: "counter",
+    name: "locations",
     initialState,
     reducers: {
         reset: () => initialState,

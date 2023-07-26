@@ -1,4 +1,4 @@
-import {useState, useRef} from 'react'
+import {useState, useRef, useEffect} from 'react'
 import Image from 'next/image'
 import React from 'react'
 import ProductImg from "/public/static/restaurants.jpg"
@@ -7,6 +7,7 @@ import Map from "/public/images/full-map-transparent.png"
 import Link from 'next/link'
 import ComponentTitle from '../UIComponents/ComponentTitle'
 import Modal from '../Modal'
+import { useAppSelector } from '@/redux/hooks'
 
 interface IProduct {
     title: string
@@ -23,6 +24,8 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
     const [xPosition, setXPosition] = useState(0)
     const [yPosition, setYPosition] = useState(0)
     const [openModal, setOpenModal] = useState(false)
+
+    const { restaurantsState } = useAppSelector((state) => state.restaurantsReducer)
 
     const placeForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 
@@ -41,6 +44,8 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
             setVisible(true)
         }
     }
+
+
     return (
         <div className="relative px-10">
 
@@ -55,16 +60,18 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                     {
-                        List.map((l, index) => {
-                            return <div key={index} className="">
-                                <div className="rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white sm:m-4 my-4 mx-0">
+                        restaurantsState.map((restaurant, index) => {
+                            let image_path = restaurant.images[0]?.images?.original?.url ?? restaurant.images[0]?.images?.large?.url
+                            let caption = restaurant.images.length > 0 ? restaurant.images[0].caption : restaurant.name
+                            return <div key={index} className="sm:m-4 my-4 mx-0">
+                                <div className="rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white h-full">
                                     <div className="relative w-full h-[300px] md:h-full">
-                                        <Image src={ProductImg} fill={true} alt={'Product'} className="object-cover" />
+                                        <Image src={image_path} fill={true} alt={caption} className="object-cover" />
                                     </div>
                                     <div className="p-7">
                                         <div className='flex justify-between items-center'>
                                         <Link href={'/trip-plan-v1'}>
-                                            <h4 className="text-2xl font-semibold gilroy">Lorem Ipsum</h4>
+                                            <h4 className="text-2xl font-semibold gilroy">{caption}</h4>
                                         </Link>
                                         {
                                                 isAddButton && (
@@ -83,9 +90,9 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
                                         </div>
                                         <div className="flex flex-wrap items-center my-2"> 
                                             <span className="p-1 bg-[#9AB044] rounded-full"> <LocationIcon className="h-5 w-5 bg-[#9AB044]" /> </span>
-                                            <span className="ml-2"> Morocco </span>
+                                            <span className="ml-2"> {restaurant.address_obj.city} </span>
                                         </div>
-                                        <p className="text-[var(--gray)]">It is a long established fact that a reader will be distracted by the readable content.</p>
+                                        <p className="text-[var(--gray)]">{restaurant.address_obj.address_string}</p>
                                     </div>
                                 </div>
                             </div>

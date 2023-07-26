@@ -11,7 +11,8 @@ import MobileSearchDrawer from './MobileSearchDrawer'
 import Survey from './survey/survey'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setLocations } from '@/redux/reducers/locationSlice'
-import { LocationsCall } from '@/api-calls'
+import { LocationsCall, RestaurantsCall } from '@/api-calls'
+import { setRestaurants } from '@/redux/reducers/restaurantsSlice'
 
 const Header = () => {
     
@@ -29,6 +30,12 @@ const Header = () => {
             dispatch(setLocations(res))
         }
         _def()
+
+        const _defRestaurants = async () => {
+            let res = await RestaurantsCall()
+            dispatch(setRestaurants(res))
+        }
+        _defRestaurants()
     }, [])
 
     useEffect(() => {
