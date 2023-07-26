@@ -8,7 +8,7 @@ interface ISection {
 const Section = ({children, className}: ISection) => {
     return (
         <div className={`sm-width text-center md:text-left ${className}`}>
-            <div className="px-4 my-10 md:my-20">
+            <div className="sm:px-4 my-10 md:my-20">
                 {children}
             </div>
         </div>

@@ -13,8 +13,8 @@ const TripPlanningV5
             <div className="my-20">
                 <TripPlanningHeader variation="space-arround" />
 
-                <div className="grid grid-cols-1 md:grid-cols-3">
-                    <div className="md:col-span-1">
+                <div className="grid grid-cols-1 lg:grid-cols-3">
+                    <div className="lg:col-span-1 flex flex-wrap justify-center">
                         {
                             DemiData.PricingPlans &&
                             DemiData.PricingPlans.map((items, index) => {
@@ -24,8 +24,8 @@ const TripPlanningV5
                             })
                         }
                     </div>
-                    <div className="md:col-span-2 mt-10 ">
-                        <div className="large-shadow p-8 rounded-xl">
+                    <div className="lg:col-span-2 mt-10 ">
+                        <div className="large-shadow sm:p-8 py-8 rounded-xl">
                             <TripDetail />
 
                             <ProductHorizontalSlide 

@@ -42,13 +42,13 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
         }
     }
     return (
-        <div className="relative">
+        <div className="relative px-10">
 
             <Image src={Map} alt='Map 1' className="absolute left-10 top-[5rem] -z-10 select-none" />
 
             <Image src={Map} alt='Map 1' className="absolute right-10 top-[70%] -z-10 select-none" />
             <div className='sm-width text-center md:text-left'>
-                <div className="px-4 my-10 md:mt-20">
+                <div className="sm:px-4 my-10 md:mt-20">
                     <ComponentTitle title={title} />
                     <p className='text-[var(--gray)]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                 </div>
@@ -57,7 +57,7 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
                     {
                         List.map((l, index) => {
                             return <div key={index} className="">
-                                <div className="rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white m-4">
+                                <div className="rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white sm:m-4 my-4 mx-0">
                                     <div className="relative w-full h-[300px] md:h-full">
                                         <Image src={ProductImg} fill={true} alt={'Product'} className="object-cover" />
                                     </div>
