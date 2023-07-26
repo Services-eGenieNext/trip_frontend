@@ -5,6 +5,7 @@ import CSS from "./location.module.css";
 import ComponentTitle from "../UIComponents/ComponentTitle";
 import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
+import BlankLocation from "public/images/blank-location.jpg"
 
 const locationSlider = [
   {
@@ -142,7 +143,7 @@ export default function LocationSlider() {
                   location,
                   index
                 ) => {
-                  let image_path = location.images[0].images?.original?.url ?? location.images[0].images?.large?.url
+                  let image_path = location.images.length == 0 ? BlankLocation.src  : location.images[0]?.images?.original?.url ?? (location.images[0]?.images?.large?.url ?? location.images[0]?.images?.medium?.url)
                   return (
                     <div key={index} className="px-3">
                       <div className="relative md:mt-0 mt-5 h-[350px] w-full rounded-xl overflow-hidden">
