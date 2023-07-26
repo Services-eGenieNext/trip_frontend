@@ -1,9 +1,12 @@
+import {useEffect} from 'react'
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CSS from "./location.module.css";
 import Ballon from "/public/images/baloon-transparent.png"
 import Image from 'next/image';
+import { useAppSelector } from "@/redux/hooks";
+import BlankLocation from "public/images/blank-location.jpg"
 
 const locationSlider = [
   {
@@ -35,6 +38,7 @@ const locationSlider = [
 ];
 
 function ActivitiesSlider() {
+  const { activitiesState } = useAppSelector((state) => state.popularActivities)
   function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
     return (
@@ -173,6 +177,10 @@ function ActivitiesSlider() {
       },
     ],
   };
+
+  useEffect(()=>{
+console.log(activitiesState,"activitiesState")
+  },[activitiesState])
   return (
     <div className="w-full flex justify-center relative mt-20 bg-[#F9FDFF] py-12 px-10">
       <Image src={Ballon} alt='Baloon 1' className={`absolute left-12 top-[-10%] select-none ${CSS["image_opacity"]}`} />
@@ -190,21 +198,23 @@ function ActivitiesSlider() {
         </div>
         <div className="mt-10 w-[90%] arrow_remove">
           <Slider {...settings}>
-            {locationSlider &&
-              locationSlider.map(
+            {activitiesState.length > 0 &&
+              activitiesState.map(
                 (
-                  location: { images: string; location: string },
+                  activities: any,
                   index
                 ) => {
+                  let image_path = activities.images.length == 0 ? BlankLocation.src  : activities.images[0]?.images?.original?.url ?? (activities.images[0]?.images?.large?.url ?? activities.images[0]?.images?.medium?.url)
                   return (
                     <div key={index}>
-                      <div className='flex flex-col items-center'>
+                      <div className='flex flex-col items-center w-[133px]'>
                       <img
-                        src={location.images}
-                        alt="Picture of the author"
+                      className='w-full h-[110px]'
+                        src={image_path}
+                       alt={activities.address_obj.address_string}
                       />
-                      <h1 className="text-[18px] mt-3">
-                        {location.location}
+                      <h1 className="text-[18px] mt-3 text-center">
+                        {activities.name}
                       </h1>
                       </div>
                     </div>

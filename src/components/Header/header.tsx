@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setLocations } from '@/redux/reducers/locationSlice'
 import { LocationsCall, RestaurantsCall } from '@/api-calls'
 import { setRestaurants } from '@/redux/reducers/restaurantsSlice'
+import {setActivities} from '@/redux/reducers/popularActivities'
 
 const Header = () => {
     
@@ -36,6 +37,13 @@ const Header = () => {
             dispatch(setRestaurants(res))
         }
         _defRestaurants()
+
+        const activities = async () => {
+            let res = await LocationsCall("Popular Activities")
+            console.log('object activities', res)
+            dispatch(setActivities(res))
+        }
+        activities()
     }, [])
 
     useEffect(() => {

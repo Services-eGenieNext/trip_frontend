@@ -7,17 +7,16 @@ const _getlocationImages = async (location_id: string | number) => {
     return images_Data
 }
 
-const LocationsCall = async () => {
+const LocationsCall = async (query="best locations") => {
 
-    return await axios.get(`${API_URL}/location/search/best locations`)
+    return await axios.get(`${API_URL}/location/search/${query}`)
     .then(async (response) => {
         let location_res = response.data.data
         let _store_locations: any = []
         for (let index = 0; index < location_res.length; index++) {
             let images_Data: any = await _getlocationImages(location_res[index].location_id)
             _store_locations.push({
-                location: location_res[index],
-                images: images_Data
+                ...location_res[index], images: images_Data
             })
         }
         return _store_locations
