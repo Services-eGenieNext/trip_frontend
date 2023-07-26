@@ -2,7 +2,7 @@ import React from 'react'
 
 const TripDetail = () => {
     return (
-        <div>
+        <div className=' sm:px-0 px-4'>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 <div className="h-[200px] bg-gray-100 rounded-xl">
 
