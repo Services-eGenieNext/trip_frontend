@@ -6,7 +6,7 @@ import { FilledStar } from '../icons/Stars'
 export default function Lisitngs() {
   const list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
   return (
-    <div className="px-16">
+    <div className="lg:px-16 md:px-12 px-6">
       <p className="text-[18px] text-[#3F3F3F]">
         Show listing of 100 Places...
       </p>

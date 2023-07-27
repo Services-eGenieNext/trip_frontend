@@ -20,6 +20,9 @@ const RestaurantsCall = async () => {
         }
         return _store_restaurants
     })
+    .catch((error)=>{
+        console.log(error,"error")
+    })
 }
 
 export default RestaurantsCall

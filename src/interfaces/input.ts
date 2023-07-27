@@ -6,7 +6,8 @@ interface DefaultField {
     placeholder?: string,
     icon?: any,
     onChange?: (value?: any) => void,
-    name?: string
+    name?: string,
+    styling?: any ,
 }
 interface IInputField {
     className?: string,
@@ -17,7 +18,8 @@ interface IInputField {
     icon?: any,
     onChange?: (value?: any) => void,
     onAdditionalChange?: (value?: any) => void,
-    name?: string
+    name?: string,
+    styling?: any ,
 }
 
 export interface ISelectField extends IInputField  {

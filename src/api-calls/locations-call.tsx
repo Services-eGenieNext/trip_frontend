@@ -7,7 +7,7 @@ const _getlocationImages = async (location_id: string | number) => {
     return images_Data
 }
 
-const LocationsCall = async (query="best locations") => {
+const LocationsCall = async (query="best resturants") => {
 
     return await axios.get(`${API_URL}/location/search/${query}`)
     .then(async (response) => {
@@ -20,6 +20,9 @@ const LocationsCall = async (query="best locations") => {
             })
         }
         return _store_locations
+    })
+    .catch((error)=>{
+        console.log(error,"error")
     })
 }
 

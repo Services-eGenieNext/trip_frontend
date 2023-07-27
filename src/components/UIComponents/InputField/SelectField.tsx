@@ -1,7 +1,7 @@
 import { ISelectField, ISelectOptions } from '@/interfaces/input'
 import React, { useEffect, useRef, useState } from 'react'
 
-const SelectField = ({className, label, data=[], value, placeholder="", icon, onChange= (val)=>{}, onAdditionalChange = (val) => {}}: ISelectField) => {
+const SelectField = ({className,styling, label, data=[], value, placeholder="", icon, onChange= (val)=>{}, onAdditionalChange = (val) => {}}: ISelectField) => {
 
     const [openDropDown, setOpenDropDown] = useState(false)
     const selectRef = useRef<HTMLDivElement | null>(null)
@@ -44,7 +44,7 @@ const SelectField = ({className, label, data=[], value, placeholder="", icon, on
         console.log('openDropDown', openDropDown)
     }, [openDropDown])
 
-    const stringVal: string = data.find(d => d.key!==0 && d.key == value)?.value ?? ''
+    const stringVal: string = data.find(d => d.key!==0 && d.value == value)?.value ?? ''
 
     return (
         <div ref={selectRef} className={`relative cursor-pointer select-none ${className}`}>
@@ -69,8 +69,8 @@ const SelectField = ({className, label, data=[], value, placeholder="", icon, on
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{label}</label>
 
-            <div ref={dropDownRef} className={`hidden opacity-0 absolute top-[50px] min-w-[250px] w-full bg-white border-gray-100 rounded-xl large-shadow overflow-hidden large-shadow z-[9] transition-all duration-300`}>
-                <ul className="list-none max-h-[300px] overflow-auto">
+            <div ref={dropDownRef} className={`hidden opacity-0 absolute min-w-[250px] w-full bg-white border-gray-100 rounded-xl large-shadow overflow-hidden large-shadow z-[9] transition-all duration-300 ${styling?.shadow ? styling.shadow : ""} ${styling?.top ? styling.top : "top-[50px]"}`}>
+                <ul className={`list-none overflow-auto ${styling?.dropdownHeight ? styling.dropdownHeight : "max-h-[300px]"}`}>
                     {
                         data.map((d: ISelectOptions, i: number) => {
                             return <li key={i} className={`px-3 py-2 cursor-pointer hover:bg-gray-50 ${value === d.key ? 'bg-[var(--dim-gray)]' : ''}`}
@@ -78,7 +78,7 @@ const SelectField = ({className, label, data=[], value, placeholder="", icon, on
                                 setOpenDropDown(false)
                                 if(!d.additional)
                                 {
-                                    onChange(d.key)
+                                    onChange(d.value)
                                 }
                                 else
                                 {

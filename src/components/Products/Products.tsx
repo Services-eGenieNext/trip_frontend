@@ -60,7 +60,7 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                     {
-                        restaurantsState.map((restaurant, index) => {
+                        restaurantsState?.map((restaurant, index) => {
                             let image_path = restaurant.images[0]?.images?.original?.url ?? restaurant.images[0]?.images?.large?.url
                             let caption = restaurant.images.length > 0 ? restaurant.images[0].caption : restaurant.name
                             return <div key={index} className="sm:m-4 my-4 mx-0">

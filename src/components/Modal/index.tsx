@@ -5,22 +5,25 @@ import InputField from "../UIComponents/InputField/InputField";
 import { validateHeaderValue } from "http";
 import Textarea from "../UIComponents/InputField/textarea";
 import { AiOutlineClose } from "react-icons/ai";
+import axios from 'axios';
+import { API_URL } from '@/config/constant'
 
 interface IReview {
   first_name?: string;
-  last_name?: string;
+  second_name?: string;
   review?: string;
-  email?: string
+  rating?: number
 }
 
 export default function Modal({ openModal, setOpenModal, modalFor }: any) {
-
+  const [submitDisabled, setSubmitDisabled] = useState(true)
+  const [ratingNumber, setRating] = useState(0)
   const [open, setOpen] = useState(true);
   const [value, setValue] = useState<IReview>({
     first_name: "",
-    last_name: "",
+    second_name: "",
     review: "",
-    email: "",
+    rating: 0,
   });
 
   const handleValue = (e: any) => {
@@ -28,8 +31,8 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
   };
 
   useEffect(() => {
-    console.log(value, "vlauessss");
-  }, [value]);
+    setValue({...value, rating: ratingNumber});
+  }, [ratingNumber]);
 
   const cancelButtonRef = useRef(null);
 
@@ -41,6 +44,31 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
       setOpenModal(open);
     }
   }, [openModal, open]);
+
+  useEffect(()=>{
+if(value.first_name !== "" && value.second_name !== "" && value.review !== ""){
+  setSubmitDisabled(false)
+}else{
+  setSubmitDisabled(true)
+}
+  },[value])
+ 
+  const handlePostReview = () => {
+    axios.post(`${API_URL}/reviews`,value)
+    .then((res)=>{
+      console.log(res,"review submit")
+      setValue({
+        first_name: "",
+    second_name: "",
+    review: "",
+    rating: 0,
+      })
+      setOpen(false)
+    })
+    .catch((error)=>{
+      console.log(error,"review not submit")
+    })
+  }
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -88,7 +116,7 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
                                 please rate us
                               </p>
                               <div className="flex items-center md:gap-x-1 gap-x-0">
-                                <RatingStars />
+                                <RatingStars setRating={setRating} />
                               </div>
                             <InputField
                               type="text"
@@ -104,12 +132,12 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
                             <InputField
                               type="text"
                               label="LAST NAME"
-                              value={value.last_name}
+                              value={value.second_name}
                               onChange={(e) => {
                                 handleValue(e);
                               }}
                               placeholder="Jhon"
-                              name="last_name"
+                              name="second_name"
                               className="md:mt-0 mt-7"
                             />
                           </div>
@@ -130,8 +158,9 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
                   <div className="bg-gray-50 px-4 pb-14 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
-                      className="inline-flex w-full justify-center rounded-md bg-[#009DE2] px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto"
-                      onClick={() => setOpen(false)}
+                      className={`inline-flex text-white w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm sm:ml-3 sm:w-auto ${submitDisabled === false ? "bg-[#009DE2]" : "bg-gray-300"}`}
+                      onClick={handlePostReview}
+                      disabled={submitDisabled}
                     >
                       Submit
                     </button>
@@ -173,7 +202,7 @@ export default function Modal({ openModal, setOpenModal, modalFor }: any) {
                           <InputField
                             type="email"
                             label="Email"
-                            value={value.last_name}
+                            value={value.second_name}
                             onChange={(e) => {
                               handleValue(e);
                             }}

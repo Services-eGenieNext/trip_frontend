@@ -11,9 +11,10 @@ import MobileSearchDrawer from './MobileSearchDrawer'
 import Survey from './survey/survey'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setLocations } from '@/redux/reducers/locationSlice'
-import { LocationsCall, RestaurantsCall } from '@/api-calls'
+import { LocationsCall, RestaurantsCall, ReviewsCall } from '@/api-calls'
 import { setRestaurants } from '@/redux/reducers/restaurantsSlice'
 import {setActivities} from '@/redux/reducers/popularActivities'
+import { setReviews } from '@/redux/reducers/reviews'
 
 const Header = () => {
     
@@ -44,6 +45,13 @@ const Header = () => {
             dispatch(setActivities(res))
         }
         activities()
+
+        const reviews = async () => {
+            let reviewsRes = await ReviewsCall()
+            console.log("reviewsRes",reviewsRes)
+            dispatch(setReviews(reviewsRes))
+        }
+        reviews()
     }, [])
 
     useEffect(() => {

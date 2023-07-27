@@ -44,7 +44,6 @@ const Filter_option = {
       { id: 3, label: "Uluwatu" },
       { id: 4, label: "Denpasar" },
       { id: 5, label: "Canggu" },
-      { id: 6, label: "Seminyak" },
     ],
     popularLocations: [
       { id: 1, label: "Kuta Beach" },
@@ -52,14 +51,12 @@ const Filter_option = {
       { id: 3, label: "Ubud Monkey Forest" },
       { id: 4, label: "Denpasar" },
       { id: 5, label: "Canggu" },
-      { id: 6, label: "Kuta Beach" },
     ],
     mealPlansAvailable: [
       { id: 1, label: "Breakfast included" },
       { id: 2, label: "Lunch included" },
       { id: 3, label: "Dinner included" },
       { id: 4, label: "All-inclusive" },
-      { id: 5, label: "Tea included" },
     ],
     amenities: [
       { id: 1, label: "Sea view" },
