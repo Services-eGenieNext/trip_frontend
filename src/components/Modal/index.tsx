@@ -7,6 +7,9 @@ import Textarea from "../UIComponents/InputField/textarea";
 import { AiOutlineClose } from "react-icons/ai";
 import axios from 'axios';
 import { API_URL } from '@/config/constant'
+import {ReviewsCall} from '@/api-calls'
+import { setReviews } from '@/redux/reducers/reviews'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 
 interface IReview {
   first_name?: string;
@@ -16,6 +19,7 @@ interface IReview {
 }
 
 export default function Modal({ openModal, setOpenModal, modalFor }: any) {
+  const dispatch = useAppDispatch()
   const [submitDisabled, setSubmitDisabled] = useState(true)
   const [ratingNumber, setRating] = useState(0)
   const [open, setOpen] = useState(true);
@@ -64,6 +68,12 @@ if(value.first_name !== "" && value.second_name !== "" && value.review !== ""){
     rating: 0,
       })
       setOpen(false)
+      const reviews = async () => {
+        let reviewsRes = await ReviewsCall()
+        console.log("reviewsRes",reviewsRes)
+        dispatch(setReviews(reviewsRes))
+    }
+    reviews()
     })
     .catch((error)=>{
       console.log(error,"review not submit")
