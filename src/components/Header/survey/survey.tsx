@@ -88,6 +88,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
+            onClick={()=>{setStep(1)}}
           >
             01
           </span>
@@ -99,6 +100,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
+            onClick={()=>{setStep(2)}}
           >
             02
           </span>
@@ -110,6 +112,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
+            onClick={()=>{setStep(3)}}
           >
             03
           </span>
@@ -121,6 +124,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
+            onClick={()=>{setStep(4)}}
           >
             04
           </span>
@@ -132,6 +136,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
+            onClick={()=>{setStep(5)}}
           >
             05
           </span>
@@ -155,17 +160,19 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 }
                 icon={<SimpleLocation />}
               />
-              <div className="absolute top-[60px] border left-0 min-w-[250px] sm:w-[200px] bg-white rounded-xl large-shadow overflow-hidden large-shadow z-[9] transition-all duration-300 py-2 px-2">
-              <ul className={`list-none overflow-auto max-h-[120px] flex flex-col items-start`}>
-                    {
-                        locations.map((location:any, i: number) => {
-                            return <li key={i} className={`px-3 py-2 cursor-pointer hover:bg-gray-50 text-start`}
-                            onClick={(e)=>{fetchingCuisines(location.location_id)}}
-                            >{location.name}</li>
-                        })
-                    }
-                </ul>
-              </div>
+              {locations.length > 0 && (
+                <div className="absolute top-[60px] border left-0 min-w-[250px] sm:w-[200px] bg-white rounded-xl large-shadow overflow-hidden large-shadow z-[9] transition-all duration-300 py-2 px-2">
+                <ul className={`list-none overflow-auto max-h-[120px] flex flex-col items-start`}>
+                      {
+                          locations.map((location:any, i: number) => {
+                              return <li key={i} className={`px-3 py-2 cursor-pointer hover:bg-gray-50 text-start`}
+                              onClick={(e)=>{fetchingCuisines(location.location_id)}}
+                              >{location.name}</li>
+                          })
+                      }
+                  </ul>
+                </div>
+              )}
               </div>
             )}
             {questions[step - 1]?.occasions && (
