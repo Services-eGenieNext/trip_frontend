@@ -10,7 +10,7 @@ export default function Lisitngs() {
       <p className="text-[18px] text-[#3F3F3F]">
         Show listing of 100 Places...
       </p>
-      <div className="flex flex-wrap itemns-center my-8 gap-y-14 gap-x-10">
+      <div className="flex flex-wrap itemns-center justify-between my-8 gap-y-14 gap-x-10">
         {list.length && list.map((list:any,index:number)=>{
           return (
         <div key={index} className="w-[260px] h-[370px] overflow-hidden rounded-lg flex flex-col justify-between">
