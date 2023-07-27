@@ -11,7 +11,7 @@ export default function Results() {
       <PageBanner />
       <Section>
         <div className="lg:my-20 mb-20">
-          <div className="grid md:grid-cols-4 grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-4">
             <div className="md:col-span-1">
               <FilterSidebar />
             </div>
