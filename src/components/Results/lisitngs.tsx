@@ -11,7 +11,7 @@ export default function Lisitngs({ locations }: any) {
       <p className="text-[18px] text-[#3F3F3F]">
         Show listing of 100 Places...
       </p>
-      <div className="flex flex-wrap itemns-center my-8 gap-y-14 gap-x-10">
+      <div className="flex flex-wrap itemns-center justify-between my-8 gap-y-14 gap-x-10">
         {locations?.length > 0 &&
           locations?.map((location: any, index:number) => {
             let image_path =

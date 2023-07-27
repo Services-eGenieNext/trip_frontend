@@ -11,6 +11,7 @@ import DateRangeField from "../UIComponents/InputField/DateRangeField";
 import styles from "./hero.module.css";
 import { Range } from "react-date-range";
 import { addDays } from "date-fns";
+import { useRouter } from 'next/navigation'
 
 export default function HeroFilterSection() {
   const [date, setDate] = useState<Range>({
@@ -25,6 +26,8 @@ export default function HeroFilterSection() {
     priority: "",
     travelers: "",
   });
+
+  const route = useRouter()
 
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
   return (
@@ -116,7 +119,7 @@ export default function HeroFilterSection() {
         onAdditionalChange={(_data) => {}}
       />
 
-      <BlueButton title="Automate My trip" className="sm:w-[200px] w-full" />
+      <BlueButton onClick={() => route.push('/results')} title="Automate My trip" className="sm:w-[200px] w-full" />
     </div>
   );
 }
