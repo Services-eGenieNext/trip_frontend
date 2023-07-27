@@ -198,8 +198,8 @@ console.log(activitiesState,"activitiesState")
         </div>
         <div className="mt-10 w-[90%] arrow_remove">
           <Slider {...settings}>
-            {activitiesState.length > 0 &&
-              activitiesState.map(
+            {activitiesState?.length > 0 &&
+              activitiesState?.map(
                 (
                   activities: any,
                   index

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Rating } from 'react-simple-star-rating'
 
-export default function index() {
+export default function index({setRating}:any) {
     
     const handleRating1 = (rate: number) => {
         console.log(rate)
+        setRating(rate)
     };
 
     const tooltipArray = [

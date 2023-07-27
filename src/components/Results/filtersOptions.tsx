@@ -12,7 +12,7 @@ export default function FiltersOptions({
   title,
 }: IFilters) {
   const [post, setpost] = useState([]);
-  const [postPerPage, setPostPerPage] = useState(5);
+  const [postPerPage, setPostPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {

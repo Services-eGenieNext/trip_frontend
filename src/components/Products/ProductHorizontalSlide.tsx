@@ -8,9 +8,12 @@ import TimerOutlined from '../icons/TimerOutlined'
 import BlueButton, { BlueButtonOutLined } from '../UIComponents/Buttons/BlueButton'
 import { IProductHorizontalSlide } from '@/interfaces'
 import styles from "./ProductHorizontalSlide.module.css"
+import { useAppSelector } from "@/redux/hooks";
+import BlankLocation from "public/images/blank-location.jpg"
+import Image from 'next/image'
 
 const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, isDesc, url }: IProductHorizontalSlide) => {
-
+    const { locationsState } = useAppSelector((state) => state.locationReducer)
     let List = [0,0,0,0,0]
     const slideRef = useRef<null | HTMLDivElement>(null)
     const formRef = useRef<null | HTMLDivElement>(null)
@@ -48,18 +51,22 @@ const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, is
             <p className='text-[var(--gray)]'>{Description}</p>
             <div ref={slideRef} id='location-to-visit-slide' className="mt-10">
                 <SliderComponent>
-                    {
-                        List && List.map((d, index) => {
-
-                            let title = 'Sacred Monkey Forest Sanctuary'
-                            return <div key={index} className={`px-2 w-[270px] cursor-pointer`} draggable={true} onDragStart={(event) => dragStartFunc(event, {name: title})}> 
+                {locationsState?.length > 0 &&
+              locationsState?.map(
+                (
+                  location: any,
+                  index
+                ) => {
+                  let image_path = location.images.length == 0 ? BlankLocation.src  : location.images[0]?.images?.original?.url ?? (location.images[0]?.images?.large?.url ?? location.images[0]?.images?.medium?.url)
+                  return (
+                     <div key={index} className={`px-2 w-[270px] cursor-pointer`} draggable={true} onDragStart={(event) => dragStartFunc(event, {name: location.address_obj.address_string})}> 
                                 <div className="grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden relative">
                                     <div className="h-[178px] bg-gray-100">
-
+                                    <Image src={image_path} fill={true} alt={location.address_obj.address_string} style={{objectFit: "cover"}} />
                                     </div>
                                     <div className="p-4">
                                         <div className="grid grid-cols-2 items-center mb-2 relative">
-                                            <h4 className={isAddButton ? "col-span-1" : "col-span-2"}>{title}</h4>
+                                            <h4 className={isAddButton ? "col-span-1" : "col-span-2"}>{location.address_obj.address_string}</h4>
                                             {
                                                 isAddButton && (
                                                     <div className="flex justify-end items-center gap-2 cursor-pointer"
@@ -98,6 +105,7 @@ const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, is
                                     </div>
                                 </div>
                             </div>
+                  )
                         })
                     }
                 </SliderComponent>

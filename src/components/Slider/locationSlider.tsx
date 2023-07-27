@@ -137,8 +137,8 @@ export default function LocationSlider() {
         </div>
         <div className="mt-10">
           <Slider {...settings}>
-            {locationsState.length > 0 &&
-              locationsState.map(
+            {locationsState?.length > 0 &&
+              locationsState?.map(
                 (
                   location: any,
                   index
