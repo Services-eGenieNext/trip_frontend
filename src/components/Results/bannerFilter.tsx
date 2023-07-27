@@ -29,7 +29,7 @@ export default function HeroFilterSection() {
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
   return (
     <div
-    //   id={styles.filter}
+      //   id={styles.filter}
       className={`bg-white p-8 sm:flex block flex-wrap justify-center rounded-xl sm-width`}
     >
       {/* <span
@@ -105,7 +105,19 @@ export default function HeroFilterSection() {
       />
 
       <SelectField
-        label="Travelers"
+        label="Person"
+        placeholder="Select ..."
+        data={Travelers}
+        className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
+        value={locationSearch.travelers}
+        onChange={(val) =>
+          setLocationSearch({ ...locationSearch, travelers: val })
+        }
+        onAdditionalChange={(_data) => {}}
+      />
+
+      <SelectField
+        label="Spending"
         placeholder="Select ..."
         data={Travelers}
         className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
