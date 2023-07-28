@@ -73,10 +73,12 @@ const ClientTestimonials = () => {
             <div className="my-10 md:my-20">
                 {reviewsState.length &&
                     reviewsState.map((client, index) => {
+                        let createed_datetime_arr = client.createdAt.split('T')
+                        let created_date_arr = createed_datetime_arr[0].split('-')
                         return <div key={index} className={`bg-white rounded-xl p-8 my-10 ${styles.testimonialCard}`}>
                             <div className="flex flex-wrap justify-between items-center mb-4">
                                 <h3 className="text-[#333333] italic text-[23px] leading-[52px]"> &ldquo;{client.review}&rdquo;</h3>
-                                <span className="text-black text-[15px] leading-[18px]">{client.createdAt}</span>
+                                <span className="font-semibold text-[15px] leading-[18px]">{`${created_date_arr[2]}/${created_date_arr[1]}/${created_date_arr[0]}`}</span>
                             </div>
                             {/* <p className="text-[#5C5B5B] italic text-[17px] leading-[27px] mb-4">{client.desc}</p> */}
 

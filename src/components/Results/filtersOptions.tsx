@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 interface IFilters {
   filters?: any;
@@ -14,6 +14,7 @@ export default function FiltersOptions({
   const [post, setpost] = useState([]);
   const [postPerPage, setPostPerPage] = useState(4);
   const [currentPage, setCurrentPage] = useState(1);
+  const ref = useRef(null)
 
   useEffect(() => {
     setpost(filters);
@@ -24,7 +25,7 @@ export default function FiltersOptions({
   const currentPost = post.slice(indexOfFirstPost, indexOfLastPost);
 
   return (
-    <div className="py-7 border-b border-[#E3E3E3]">
+    <div ref={ref} className="py-7 border-b border-[#E3E3E3]">
       <h1 className="text-[18px] font-bold">{title}</h1>
       {currentPost.length &&
         currentPost.map((filters: any, index: number) => {

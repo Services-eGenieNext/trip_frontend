@@ -6,6 +6,9 @@ import ComponentTitle from "../UIComponents/ComponentTitle";
 import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 import BlankLocation from "public/images/blank-location.jpg"
+import { useRouter } from "next/navigation";
+import { setLocationAddress } from "@/redux/reducers/locationSlice";
+import Link from "next/link";
 
 const locationSlider = [
   {
@@ -124,6 +127,14 @@ export default function LocationSlider() {
     ],
   };
 
+  const route = useRouter()
+
+  const onSetAddress = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, address: string) => {
+    e.preventDefault()
+    setLocationAddress(address)
+    route.push('trip-plan?address='+address)
+  }
+
   return (
     <div className="w-full flex justify-center mt-20  relative px-10">
       <div className="sm-width">
@@ -145,13 +156,13 @@ export default function LocationSlider() {
                 ) => {
                   let image_path = location.images.length == 0 ? BlankLocation.src  : location.images[0]?.images?.original?.url ?? (location.images[0]?.images?.large?.url ?? location.images[0]?.images?.medium?.url)
                   return (
-                    <div key={index} className="px-3">
+                    <Link href={'/trip-plan?address='+location.address_obj.address_string} onClick={(e) => onSetAddress(e, location.address_obj.address_string)} key={index} className="px-3">
                       <div className="relative md:mt-0 mt-5 h-[350px] w-full rounded-xl overflow-hidden">
                           <Image src={image_path} fill={true} alt={location.address_obj.address_string} style={{objectFit: "cover"}} />
                           <div className="absolute inset-0" style={{background: 'linear-gradient(0deg, rgb(0 0 0 / 70%), transparent)'}}></div>
                         <h1 className="absolute bottom-4 left-6 text-white font-bold text-[25px]">{location.address_obj.address_string}</h1>
                       </div>
-                    </div>
+                    </Link>
                   );
                 }
               )}

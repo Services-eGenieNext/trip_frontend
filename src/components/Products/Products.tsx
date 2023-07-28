@@ -8,6 +8,8 @@ import Link from 'next/link'
 import ComponentTitle from '../UIComponents/ComponentTitle'
 import Modal from '../Modal'
 import { useAppSelector } from '@/redux/hooks'
+import { useRouter } from 'next/navigation'
+import { setLocationAddress } from '@/redux/reducers/locationSlice'
 
 interface IProduct {
     title: string
@@ -26,6 +28,7 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
     const [openModal, setOpenModal] = useState(false)
 
     const { restaurantsState } = useAppSelector((state) => state.restaurantsReducer)
+    const { locationAddress } = useAppSelector((state) => state.locationReducer)
 
     const placeForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 
@@ -45,6 +48,12 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
         }
     }
 
+    const route = useRouter()
+    const onSetAddress = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, address: string) => {
+        e.preventDefault()
+        setLocationAddress(address)
+        route.push('trip-plan')
+    }
 
     return (
         <div className="relative px-10">
@@ -70,7 +79,7 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
                                     </div>
                                     <div className="p-7">
                                         <div className='flex justify-between items-center'>
-                                        <Link href={'/trip-plan-v1'}>
+                                        <Link href={'/trip-plan'} onClick={(e) => {onSetAddress(e, restaurant.address_obj.address_string)}}>
                                             <h4 className="text-2xl font-semibold gilroy">{caption}</h4>
                                         </Link>
                                         {

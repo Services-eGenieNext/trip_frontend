@@ -34,14 +34,12 @@ const SelectField = ({className,styling, label, data=[], value, placeholder="", 
         }
         else
         {
-            console.log('openDropDown', openDropDown)
             dropDownRef.current?.classList.add('opacity-0')
             dropDownRef.current?.classList.add('-translate-y-5')
             setTimeout(() => {
                 dropDownRef.current?.classList.add('hidden')
             }, 200);
         }
-        console.log('openDropDown', openDropDown)
     }, [openDropDown])
 
     const stringVal: string = data.find(d => d.key!==0 && d.value == value)?.value ?? ''
