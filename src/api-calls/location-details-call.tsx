@@ -11,4 +11,17 @@ const DetailsCall = async (query:string) => {
         })
 }
 
+const DetailsCallByGoogle = async (query:string) => {
+    return await axios.get(`${API_URL}/google/placedetails?name=${query}`)
+    .then(async (response) => response)
+    .catch((error)=>{
+        console.log(error,"error")
+    })
+}
+
+export {
+    DetailsCallByGoogle
+}
+
+
 export default DetailsCall

@@ -4,7 +4,7 @@ import Section from "../UIComponents/Section";
 import TripPlanningHeader from "./Header/Header";
 import axios from "axios";
 import { PY_API_URL } from "@/config/constant";
-import DetailsCall from "@/api-calls/location-details-call";
+import DetailsCall, { DetailsCallByGoogle } from "@/api-calls/location-details-call";
 import PricingCards from "./pricing-cards/PricingCards";
 
 export default function TripPlanningCard({address}: {address: string}) {
@@ -29,22 +29,29 @@ export default function TripPlanningCard({address}: {address: string}) {
         const _recomendFunc = async () => {
             if(recommendations.length > 0) {
                 let _locationDetails: any[] = locationDetails
-                let _recommendations = await recommendations.filter(recommend => recommend.location_id !== '')
+                let _recommendations = recommendations.slice(0, 4)
                 for (let index = 0; index < _recommendations.length; index++) {
-                    let res: any = await DetailsCall(_recommendations[index].location_id)
-                    _locationDetails.push(res.data)
+                    if(_recommendations[index].location_id && _recommendations[index].location_id !== '')
+                    {
+                        let res: any = await DetailsCall(_recommendations[index].location_id)
+                        _locationDetails.push(res.data)
+                    }
+                    if(_recommendations[index].place_id && _recommendations[index].place_id !== '')
+                    {
+                        let res: any = await DetailsCallByGoogle(_recommendations[index].place_id)
+                        _locationDetails.push(res.data.result)
+                    }
                 }
                 console.log('_locationDetails', _locationDetails)
                 setLocationDetails(_locationDetails)
             }
         }
-        // _recomendFunc()
+        _recomendFunc()
     }, [recommendations])
 
     useEffect(() => {
         axios.post(`${PY_API_URL}/get-recommendation`, {input: address}).then(response => {
             setRecommendations(response.data.recommendations)
-            console.log('recommendations', response.data.recommendations)
         })
     }, [address])
 

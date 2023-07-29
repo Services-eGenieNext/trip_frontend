@@ -22,9 +22,11 @@ export default function PricingCard({
             <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
               <div className="p-5 flex flex-col justify-between">
                 {data &&
-                  data.times.map((time: any, index: any) => {
+                  data.times.slice(0,5).map((time: any, index: any) => {
                     let time_location = filteredLocations?.filter(location => 
-                      location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
+                      (location.place_id && location.place_id != "") ? 
+                        location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
+                        location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
                     )
                     const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
                       console.log(e.dataTransfer.getData('product'))
@@ -52,7 +54,7 @@ export default function PricingCard({
                             <span
                               className="text-[13px] text-black hover:text-[#009DE2]"
                               onClick={() => {
-                                onOpen(time);
+                                onOpen(locat);
                               }}
                             >
                               <h1 className="gilroy font-semibold">
@@ -124,7 +126,7 @@ export default function PricingCard({
                       <span
                         className="text-[13px] text-black hover:text-[#009DE2]"
                         onClick={() => {
-                          onOpen(items);
+                          onOpen({});
                         }}
                       >
                         <h1 className="gilroy font-semibold">

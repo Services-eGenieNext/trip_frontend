@@ -7,6 +7,7 @@ import location_testing from "./test.json"
 const PricingCards = ({locationDetails}: any) => {
 
     // console.log('locationDetails', locationDetails)
+    const [LocationDetails, setLocationDetails] = useState<any>(locationDetails)
     const [showTripPopup, setShowTripPopup] = useState(false);
     const [item, setItem] = useState({});
     const [filteredLocations, setFilteredLocations] = useState<any[]>([]);
@@ -78,15 +79,21 @@ const PricingCards = ({locationDetails}: any) => {
             let _days = days
             for (let i = 0; i < _days.length; i++)
             {
-                let filter_locaiton: any[] = await location_testing.filter((loc: any) => 
-                loc.hours?.weekday_text.filter( (weekd: any) => {
-                    return weekd.split(': ')[0] == _days[i].day && weekd.search('Closed') == -1
-                }
-                ))
+                let filter_locaiton: any[] = await LocationDetails.filter((loc: any) => 
+                    (loc.place_id && loc.place_id != "") ? 
+                    loc.current_opening_hours?.weekday_text.filter( (weekd: any) => {
+                        return weekd.split(': ')[0] == _days[i].day && weekd.search('Closed') == -1
+                    }) : loc.hours?.weekday_text.filter( (weekd: any) => {
+                        return weekd.split(': ')[0] == _days[i].day && weekd.search('Closed') == -1
+                    })
+                )
+                console.log('filter_locaiton', filter_locaiton)
                 setFilteredLocations(filter_locaiton)
 
                 let time_loop: any = filter_locaiton.map(loc => {
-                    return loc.hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1])
+                    return (loc.place_id && loc.place_id != "") ? 
+                        loc.current_opening_hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1]) :
+                        loc.hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1])
                 })
 
                 let times = [].concat(...time_loop)
@@ -100,10 +107,10 @@ const PricingCards = ({locationDetails}: any) => {
                 // _days[i].locations = uniqueLocations
             }
             setDays(_days)
-            console.log('_final_days', _days)
+            // console.log('_final_days', _days)
         }
         _locateFunc()
-    }, [])
+    }, [LocationDetails])
 
     return (
         <>

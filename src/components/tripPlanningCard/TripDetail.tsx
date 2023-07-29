@@ -1,6 +1,13 @@
 import React from 'react'
 
-const TripDetail = () => {
+interface ITripDetail {
+    item: any
+}
+
+const TripDetail = ({item}: ITripDetail) => {
+
+    console.log('item', item)
+
     return (
         <div className=' sm:px-0 px-4'>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
