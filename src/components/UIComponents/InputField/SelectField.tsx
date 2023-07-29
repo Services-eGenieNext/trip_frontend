@@ -6,6 +6,7 @@ const SelectField = ({className,styling, label, data=[], value, placeholder="", 
     const [openDropDown, setOpenDropDown] = useState(false)
     const selectRef = useRef<HTMLDivElement | null>(null)
     const dropDownRef = useRef<HTMLDivElement | null>(null)
+    const [inputVal, setInputVal] = useState<any>("")
 
     useEffect(() => {
         if(selectRef)
@@ -44,6 +45,16 @@ const SelectField = ({className,styling, label, data=[], value, placeholder="", 
         console.log('openDropDown', openDropDown)
     }, [openDropDown])
 
+    useEffect(()=>{
+        onChange(inputVal)
+    },[inputVal])
+
+    useEffect(()=>{
+if(value !== ""){
+    setInputVal(value)
+}
+    },[value])
+
     const stringVal: string = data.find(d => d.key!==0 && d.value == value)?.value ?? ''
 
     return (
@@ -56,7 +67,8 @@ const SelectField = ({className,styling, label, data=[], value, placeholder="", 
                         icon && <span className="mr-1">{icon}</span>
                     }
                     <span className={`${value ? 'text-black' : `text-[var(--lite-gray)]`} overflow-ellipsis overflow-hidden whitespace-nowrap`}>
-                        {stringVal ? stringVal : (placeholder ? placeholder : label)}
+                        <input type="text" className='border-none outline-none h-full' value={inputVal} placeholder={placeholder} onChange={(e)=>{setInputVal(e.target.value)}} />
+                        
                     </span>
                     <span className="">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
@@ -76,14 +88,15 @@ const SelectField = ({className,styling, label, data=[], value, placeholder="", 
                             return <li key={i} className={`px-3 py-2 cursor-pointer hover:bg-gray-50 ${value === d.key ? 'bg-[var(--dim-gray)]' : ''}`}
                             onClick={() => {
                                 setOpenDropDown(false)
-                                if(!d.additional)
-                                {
-                                    onChange(d.value)
-                                }
-                                else
-                                {
-                                    onAdditionalChange(d)
-                                }
+                                setInputVal(d.value)
+                                // if(!d.additional)
+                                // {
+                                //     onChange(d.value)
+                                // }
+                                // else
+                                // {
+                                //     onAdditionalChange(d)
+                                // }
                             }}
                             >{d.value}</li>
                         })

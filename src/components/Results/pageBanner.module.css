@@ -1,4 +1,4 @@
-@media screen and (max-width: 769px) {
+@media screen and (max-width: 1080px) {
     #filter {
         flex-direction: column;
         justify-content: flex-start;

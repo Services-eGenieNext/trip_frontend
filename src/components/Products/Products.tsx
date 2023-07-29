@@ -8,15 +8,19 @@ import Link from 'next/link'
 import ComponentTitle from '../UIComponents/ComponentTitle'
 import Modal from '../Modal'
 import { useAppSelector } from '@/redux/hooks'
+import BlankLocation from "public/images/blank-location.jpg"
 
 interface IProduct {
     title: string
     isAddButton?: boolean
+    rows?:string
 }
 
-const Products = ({ title = "Title", isAddButton }: IProduct) => {
+const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
 
-    const List = [0,1,2,3,4,5,6,7]
+    const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  const [loading, setLoading] = useState(true);
+  const [restaurantData, setRestaurant] = useState([])
     const slideRef = useRef<null | HTMLDivElement>(null)
     const formRef = useRef<null | HTMLDivElement>(null)
     
@@ -25,7 +29,17 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
     const [yPosition, setYPosition] = useState(0)
     const [openModal, setOpenModal] = useState(false)
 
-    const { restaurantsState } = useAppSelector((state) => state.restaurantsReducer)
+    const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
+
+    useEffect(() => {
+        setRestaurant(restaurantsState)
+      }, [restaurantsState]);
+    
+      useEffect(()=>{
+        if(restaurantData.length > 0){
+          setLoading(false)
+        }
+      },[restaurantData])
 
     const placeForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
 
@@ -58,20 +72,54 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
                     <p className='text-[var(--gray)]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2">
-                    {
-                        restaurantsState?.map((restaurant, index) => {
-                            let image_path = restaurant.images[0]?.images?.original?.url ?? restaurant.images[0]?.images?.large?.url
-                            let caption = restaurant.images.length > 0 ? restaurant.images[0].caption : restaurant.name
-                            return <div key={index} className="sm:m-4 my-4 mx-0">
-                                <div className="rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white h-full">
-                                    <div className="relative w-full h-[300px] md:h-full">
-                                        <Image src={image_path} fill={true} alt={caption} className="object-cover" />
+                <div className={`grid grid-cols-1 lg:grid-cols-${rows}`}>
+                    {loading === true ? (
+                        skelton.map((show:string,index:number)=>{
+                            return (
+                                <div key={index} role="status" className="md:mx-4 md:my-4 my-8 mx-0 rounded shadow animate-pulse">
+                                    <div className='rounded-xl overflow-hidden grid grid-cols-1 md:grid-cols-2 h-full w-full'>
+                        <div className="flex items-center justify-center h-full mb-4 bg-gray-300 rounded dark:bg-gray-700">
+                            <svg className="w-10 h-10 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 20">
+                                <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z"/>
+                                <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z"/>
+                            </svg>
+                        </div>
+                        <div className='p-7'>
+                        <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+                        <div className="flex items-center mt-4 space-x-3">
+                        <svg
+                          className="w-10 h-10 text-gray-200 dark:text-gray-600"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 16 20"
+                        >
+                          <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+                          <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+                        </svg>
+                            <div>
+                                <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
+                                <div className="w-32 h-2.5 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                        </div>
+                        </div>
+                        <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                            )
+                        })
+                    ):(
+                        restaurantData?.map((restaurant:any, index:number) => {
+                            let image_path = restaurant.images === "" ? BlankLocation : restaurant.images
+                            return <div key={index} className="md:mx-4 md:my-4 my-8 mx-0">
+                                <div className="rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white h-full w-full">
+                                    <div className="relative w-full h-full">
+                                        <img src={image_path} alt={image_path} className="object-cover h-[200px] w-full" />
                                     </div>
                                     <div className="p-7">
                                         <div className='flex justify-between items-center'>
                                         <Link href={'/trip-plan-v1'}>
-                                            <h4 className="text-2xl font-semibold gilroy">{caption}</h4>
+                                            <h4 className="text-2xl font-semibold gilroy">{restaurant.name}</h4>
                                         </Link>
                                         {
                                                 isAddButton && (
@@ -88,15 +136,17 @@ const Products = ({ title = "Title", isAddButton }: IProduct) => {
                                                 )
                                             }
                                         </div>
-                                        <div className="flex flex-wrap items-center my-2"> 
-                                            <span className="p-1 bg-[#9AB044] rounded-full"> <LocationIcon className="h-5 w-5 bg-[#9AB044]" /> </span>
-                                            <span className="ml-2"> {restaurant.address_obj.city} </span>
+                                        <div className="flex my-2"> 
+                                            <span className="p-1 bg-[#9AB044] flex justify-center items-center rounded-full w-[24px] h-[22px]"> 
+                                            <LocationIcon className="h-5 w-5" /> 
+                                            </span>
+                                            <span className="ml-4">{restaurant?.formatted_address}</span>
                                         </div>
-                                        <p className="text-[var(--gray)]">{restaurant.address_obj.address_string}</p>
                                     </div>
                                 </div>
                             </div>
                         })
+                    )
                     }
                 </div>
             </div>

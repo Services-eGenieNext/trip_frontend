@@ -6,9 +6,12 @@ import DemiData from "@/api/DemiData";
 import TripDetail from "./TripDetail";
 import ProductHorizontalSlide from "../Products/ProductHorizontalSlide";
 import Products from "../Products/Products";
+import { useAppSelector } from "@/redux/hooks";
 
 
 export default function TripPlanningV3() {
+  const { locationsState } = useAppSelector((state) => state.locationReducer)
+    const { restaurantsState } = useAppSelector((state) => state.restaurantsReducer)
   return (
     <Section>
       <div className="my-20">
@@ -39,9 +42,10 @@ export default function TripPlanningV3() {
                                 Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'  
                                 isAddButton={false} 
                                 isDesc={false} 
+                                locationsState={locationsState}
                             />
 
-<Products title="Most popular Restaurants" isAddButton={false} />
+<Products title="Most popular Restaurants" isAddButton={false} rows="1" />
                         </div>
                     </div>
         </div>

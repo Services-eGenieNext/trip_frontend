@@ -5,12 +5,18 @@ import { ISurvey } from "@/interfaces";
 import React, { useState } from "react";
 import Occasions from "@/data/occasion.json";
 import Priorities from "@/data/priority.json";
+import LocationJson from '@/data/location.json'
 import InputField from "@/components/UIComponents/InputField/InputField";
 import SimpleLocation from "../../icons/SimpleLocation";
 import SelectField from "@/components/UIComponents/InputField/SelectField";
 import { LocationsCall, DetailCall } from "@/api-calls";
+import { useAppDispatch } from '@/redux/hooks';
+import { setSurveyValue } from "@/redux/reducers/surveySlice";
+import { useRouter } from "next/navigation";
 
 const Survey = ({ show, onClose }: ISurvey) => {
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   const [survey, setSurvey] = useState<any>({
     location: "",
     occassion: "",
@@ -30,7 +36,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
     },
     {
       title: "Are you celebrating anything special?",
-      occasions: true,
+      options: "occasions",
     },
     {
       title: "What sorts of activities would you like prioritized?",
@@ -65,6 +71,14 @@ const Survey = ({ show, onClose }: ISurvey) => {
     details()
   }
 
+  const handleSurvey = () => {
+    console.log(survey,"survey")
+    dispatch(setSurveyValue(survey))
+    router.push('/results')
+    onClose()
+    setStep(1)
+  }
+
   return (
     <PopupWithOverlay
       show={show}
@@ -88,6 +102,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
+            onClick={()=>{setStep(1)}}
           >
             01
           </span>
@@ -99,6 +114,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
+            onClick={()=>{setStep(2)}}
           >
             02
           </span>
@@ -110,6 +126,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
+            onClick={()=>{setStep(3)}}
           >
             03
           </span>
@@ -121,6 +138,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
+            onClick={()=>{setStep(4)}}
           >
             04
           </span>
@@ -132,6 +150,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
+            onClick={()=>{setStep(5)}}
           >
             05
           </span>
@@ -141,7 +160,8 @@ const Survey = ({ show, onClose }: ISurvey) => {
           <p className="">{questions[step - 1]?.title}</p>
           <div className="my-4 pt-3 flex flex-wrap gap-2 justify-center">
             {questions[step - 1]?.options === "location" && (
-                <div className="relative">
+              <>
+              {/* <div className="relative">
               <InputField
                 label="Location"
                 type="text"
@@ -166,9 +186,25 @@ const Survey = ({ show, onClose }: ISurvey) => {
                     }
                 </ul>
               </div>
-              </div>
+              </div> */}
+                <SelectField
+                label="Trending Location"
+                placeholder="Select ..."
+                data={LocationJson}
+                className={`mr-2 sm:my-2 my-5 sm:w-[200px]`}
+                styling={{
+                  dropdownHeight: "max-h-[140px]",
+                  shadow: "drop-shadow-xl ",
+                  left: "0px",
+                  top: "70px",
+                }}
+                value={survey.location}
+                onChange={(val) => setSurvey({ ...survey, location: val })}
+                onAdditionalChange={(_data) => {}}
+              />
+              </>
             )}
-            {questions[step - 1]?.occasions && (
+            {questions[step - 1]?.options === "occasions" && (
               <SelectField
                 label="Occassion"
                 placeholder="Select ..."
@@ -222,8 +258,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
               if (step < 5) {
                 setStep(step + 1);
               } else {
-                setStep(1);
-                onClose();
+                handleSurvey()
               }
             }}
           />

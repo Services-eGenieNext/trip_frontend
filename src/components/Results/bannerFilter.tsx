@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputField from "../UIComponents/InputField/InputField";
 import SimpleLocation from "../icons/SimpleLocation";
 import CalenderIcon from "../icons/Calender";
@@ -11,8 +11,12 @@ import DateRangeField from "../UIComponents/InputField/DateRangeField";
 import styles from "./pageBanner.module.css";
 import { Range } from "react-date-range";
 import { addDays } from "date-fns";
+import { setLocations } from '@/redux/reducers/locationSlice'
+import { LocationsCall, ReviewsCall } from '@/api-calls'
+import { useAppDispatch } from '@/redux/hooks'
 
-export default function HeroFilterSection() {
+export default function HeroFilterSection({surveyData}:any) {
+  const dispatch = useAppDispatch()
   const [date, setDate] = useState<Range>({
     startDate: new Date(),
     endDate: addDays(new Date(), 7),
@@ -22,9 +26,24 @@ export default function HeroFilterSection() {
   const [locationSearch, setLocationSearch] = useState({
     location: "",
     occassion: "",
-    priority: "",
+    activities: "",
     travelers: "",
   });
+
+  useEffect(()=>{
+setLocationSearch({...locationSearch, location: surveyData.location, occassion: surveyData.occassion, activities: surveyData.activities})
+  },[surveyData])
+
+  useEffect(()=>{
+if(locationSearch.location !== ""){
+  const _def = async () => {
+    let res = await LocationsCall(`best locations in ${locationSearch.location}`)
+    console.log("locations from results filters",res)
+    dispatch(setLocations(res))
+}
+_def()
+}
+  },[locationSearch])
 
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
   return (
@@ -97,9 +116,9 @@ export default function HeroFilterSection() {
         placeholder="Select ..."
         data={Priority}
         className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
-        value={locationSearch.priority}
+        value={locationSearch.activities}
         onChange={(val) =>
-          setLocationSearch({ ...locationSearch, priority: val })
+          setLocationSearch({ ...locationSearch, activities: val })
         }
         onAdditionalChange={(_data) => {}}
       />
