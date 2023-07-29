@@ -34,10 +34,5 @@
     {
         "key": 9,
         "value":"Camping"
-    },
-    {
-        "key": 0,
-        "additional": true,
-        "value":"Insert my own activity"
     }
 ]

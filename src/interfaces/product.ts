@@ -5,4 +5,5 @@ export interface IProductHorizontalSlide {
     isAddButton?: boolean
     isDesc?: boolean
     url? : string
+    locationsState : [] | any
 }

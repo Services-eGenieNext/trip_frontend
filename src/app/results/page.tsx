@@ -6,27 +6,32 @@ import Section from "@/components/UIComponents/Section";
 import FilterSidebar from "@/components/Results/filterSidebar";
 import Lisitngs from "@/components/Results/lisitngs";
 import {LocationsCall} from '@/api-calls'
+import { useAppSelector } from '@/redux/hooks';
 
 export default function Results() {
+  const { surveySlice } = useAppSelector((state) => state.surveyReducer)
+  const { locationsState }: any = useAppSelector((state) => state.locationReducer);
   const [locations, setLocations] = useState([])
   useEffect(()=>{
     const locationSearch = async () => {
       let res = await LocationsCall("best locations")
-      console.log('object', res)
       setLocations(res)
   }
   locationSearch()
   },[])
+  useEffect(()=>{
+setLocations(locationsState)
+  },[locationsState])
   return (
     <div>
-      <PageBanner />
+      <PageBanner survey={surveySlice} />
       <Section>
         <div className="lg:my-20 mb-20">
           <div className="grid grid-cols-1 md:grid-cols-4">
-            <div className="md:col-span-1">
+            <div className="lg:col-span-1 w-[300px]">
               <FilterSidebar />
             </div>
-            <div className="md:col-span-3">
+            <div className="lg:col-span-3 col-span-4">
               <Lisitngs locations={locations} />
             </div>
           </div>
