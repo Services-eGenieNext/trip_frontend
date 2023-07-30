@@ -82,6 +82,7 @@ const ClientTestimonials = () => {
               );
             })
           : reviewsData.map((client: any, index: number) => {
+              let date_arr = client.createdAt.split('T')[0].split('-')
               return (
                 <div
                   key={index}
@@ -92,8 +93,8 @@ const ClientTestimonials = () => {
                       {" "}
                       &ldquo;{client.review}&rdquo;
                     </h3>
-                    <span className="text-black text-[15px] leading-[18px]">
-                      {client.createdAt}
+                    <span className="text-black font-semibold text-[15px] leading-[18px]">
+                      {`${date_arr[2]}/${date_arr[1]}/${date_arr[0]}`}
                     </span>
                   </div>
                   {/* <p className="text-[#5C5B5B] italic text-[17px] leading-[27px] mb-4">{client.desc}</p> */}
