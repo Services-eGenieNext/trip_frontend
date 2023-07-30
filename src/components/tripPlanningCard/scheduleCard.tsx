@@ -32,7 +32,7 @@ export default function ScheduleCard({items, isDropdownButton, onOpen}:IPlanning
       <span
         className={`text-[13px] max-w-[259px] w-full text-black hover:text-[#009DE2] p-4 rounded-lg flex justify-between items-center gap-2 ${CSS["plan-time-wrapper"]}`}
         onClick={() => {
-          onOpen(items);
+          onOpen({});
         }}
       >
         <p className="gilroy font-semibold">{items.time} -  asfds</p>

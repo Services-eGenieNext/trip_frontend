@@ -10,57 +10,70 @@ export default function PricingCard({
   variation = "cards",
   rows,
   isDropdownButton,
+  filteredLocations
 }: IPlanningCard) {
+
   return variation === "cards" ? (
     <div className="relative mt-10 bg-[#F6FDFF] rounded-lg border-2 border-dashed border-[#AEDCF0] px-5 py-8">
-      <div className={`${data.active == false ? "blur-sm select-none" : ""}`}>
-        <h1 className="text-2xl font-bold">DAY - {data.day}</h1>
+      <div className={`${data.loading ? "blur-sm select-none" : ""}`}>
+        <h1 className="text-2xl font-bold">{data.day}</h1>
         {rows == "2" ? (
           <>
             <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
               <div className="p-5 flex flex-col justify-between">
-                {data.schedule &&
-                  data.schedule.map((items: any, index: any) => {
-
-
+                {data &&
+                  data.times.slice(0,5).map((time: any, index: any) => {
+                    let time_location = filteredLocations?.filter(location => 
+                      (location.place_id && location.place_id != "") ? 
+                        location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
+                        location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
+                    )
                     const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
                       console.log(e.dataTransfer.getData('product'))
                     }
-
-                    return (
-                      <div
-                        key={index}
-                        className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
-                        onDrop={(e) => onDropFunc(e)}
-                        onDragOver={(e) => {e.preventDefault()}}
-                      >
-                        <div>
-                          <div>
-                            <div className="w-[20px] h-[20px] bg-[#AEDCF0] rounded-full flex justify-center items-center">
-                              <div className="w-[10px] h-[10px] bg-[#009DE2] rounded-full"></div>
-                            </div>
-                          </div>
+                    
+                    if(time_location && time_location?.length > 0) {
+                      return time_location.map((locat, index2: number) => {
+                        return (
                           <div
-                            className={`h-full ml-2 ${CSS["divider"]}`}
-                          ></div>
-                        </div>
-                        <span
-                          className="text-[13px] text-black hover:text-[#009DE2]"
-                          onClick={() => {
-                            onOpen(items);
-                          }}
-                        >
-                          <h1 className="gilroy font-semibold">
-                            {items.time} -{" "}
-                          </h1>
-                          <p className="font-medium">{items.detail}</p>
-                        </span>
-                      </div>
-                    );
+                            key={index2}
+                            className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
+                            onDrop={(e) => onDropFunc(e)}
+                            onDragOver={(e) => {e.preventDefault()}}
+                          >
+                            <div>
+                              <div>
+                                <div className="w-[20px] h-[20px] bg-[#AEDCF0] rounded-full flex justify-center items-center">
+                                  <div className="w-[10px] h-[10px] bg-[#009DE2] rounded-full"></div>
+                                </div>
+                              </div>
+                              <div
+                                className={`h-full ml-2 ${CSS["divider"]}`}
+                              ></div>
+                            </div>
+                            <span
+                              className="text-[13px] text-black hover:text-[#009DE2]"
+                              onClick={() => {
+                                onOpen(locat);
+                              }}
+                            >
+                              <h1 className="gilroy font-semibold">
+                                {time} -{" "}
+                              </h1>
+                              <p className="font-medium">{locat.name}</p>
+                            </span>
+                          </div>
+                        );
+                      })
+                    }
+                    else
+                    {
+                      return <></>;
+                    }
                   })}
               </div>
             </div>
-            <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
+            {/* <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
               <div
                 className={`p-5 flex flex-col justify-between ${CSS["pricing"]}`}
               >
@@ -76,7 +89,7 @@ export default function PricingCard({
                     );
                   })}
               </div>
-            </div>
+            </div> */}
           </>
         ) : (
           <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
@@ -113,7 +126,7 @@ export default function PricingCard({
                       <span
                         className="text-[13px] text-black hover:text-[#009DE2]"
                         onClick={() => {
-                          onOpen(items);
+                          onOpen({});
                         }}
                       >
                         <h1 className="gilroy font-semibold">

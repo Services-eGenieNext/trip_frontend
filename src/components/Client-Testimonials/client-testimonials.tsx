@@ -24,44 +24,6 @@ const ClientTestimonials = () => {
     }
   }, [reviewsData]);
 
-  const clients = [
-    {
-      title: "Pellentesque habitant morbi tristique",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text .",
-      name: "Anastya Deo",
-      created_data: "16/02/2023",
-      reviews: 3,
-    },
-    {
-      title: "Pellentesque habitant morbi tristique",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text .",
-      name: "Anastya Deo",
-      created_data: "17/05/2023",
-      reviews: 4,
-    },
-    {
-      title: "Pellentesque habitant morbi tristique",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text .",
-      name: "Anastya Deo",
-      created_data: "13/07/2023",
-      reviews: 1,
-    },
-    {
-      title: "Pellentesque habitant morbi tristique",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text .",
-      name: "Anastya Deo",
-      created_data: "13/10/2023",
-      reviews: 2,
-    },
-    {
-      title: "Pellentesque habitant morbi tristique",
-      desc: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text .",
-      name: "Anastya Deo",
-      created_data: "16/11/2023",
-      reviews: 5,
-    },
-  ];
-
   const reviewArr = new Array(5).fill(1);
 
   return (
@@ -93,7 +55,7 @@ const ClientTestimonials = () => {
                 <div
                 key={index}
                   role="status"
-                  className="w-full rounded animate-pulse p-8 my-10 shadow rounded-xl"
+                  className="w-full animate-pulse p-8 my-10 shadow rounded-xl"
                 >
                     <div className="flex flex-wrap justify-between items-center mb-4">
                     <div className="h-[40px] bg-gray-200 rounded-md dark:bg-gray-700 w-[300px] mb-4"></div>

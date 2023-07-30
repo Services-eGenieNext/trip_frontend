@@ -5,6 +5,7 @@ export interface IPlanningCard {
     rows?: string
     isDropdownButton?: boolean
     items?: any
+    filteredLocations?: any[]
 }
 
 export interface ITripPlanningHeader {

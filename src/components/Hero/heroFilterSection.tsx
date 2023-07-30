@@ -15,8 +15,6 @@ import { useRouter } from 'next/navigation'
 
 export default function HeroFilterSection() {
   const [date, setDate] = useState<Range>({
-    startDate: new Date(),
-    endDate: addDays(new Date(), 7),
     key: "selection",
   });
 
@@ -76,7 +74,8 @@ export default function HeroFilterSection() {
                             /> */}
 
       <DateRangeField
-        label="Date"
+        label="Select ..."
+        placeholder="Select ..."
         className={`mr-2 sm:my-2 my-5 sm:w-[250px] ${styles.inputWrapper}`}
         value={date}
         onChange={(value) => setDate(value)}
