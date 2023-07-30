@@ -1,12 +1,10 @@
 import React from 'react'
 
 interface ITripDetail {
-    item: any
+    item?: any
 }
 
 const TripDetail = ({item}: ITripDetail) => {
-
-    console.log('item', item)
 
     return (
         <div className=' sm:px-0 px-4'>

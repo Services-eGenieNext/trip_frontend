@@ -24,6 +24,8 @@ const ClientTestimonials = () => {
     }
   }, [reviewsData]);
 
+  const reviewArr = new Array(5).fill(1);
+
   return (
     <div className="sm-width px-4">
       <div className="flex flex-wrap justify-between items-center">
@@ -53,7 +55,7 @@ const ClientTestimonials = () => {
                 <div
                 key={index}
                   role="status"
-                  className="w-full rounded animate-pulse p-8 my-10 shadow rounded-xl"
+                  className="w-full animate-pulse p-8 my-10 shadow rounded-xl"
                 >
                     <div className="flex flex-wrap justify-between items-center mb-4">
                     <div className="h-[40px] bg-gray-200 rounded-md dark:bg-gray-700 w-[300px] mb-4"></div>
