@@ -9,6 +9,7 @@ import ComponentTitle from '../UIComponents/ComponentTitle'
 import Modal from '../Modal'
 import { useAppSelector } from '@/redux/hooks'
 import BlankLocation from "public/images/blank-location.jpg"
+import styles from './ProductHorizontalSlide.module.css'
 
 interface IProduct {
     title: string
@@ -72,7 +73,7 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                     <p className='text-[var(--gray)]'>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
                 </div>
 
-                <div className={`grid grid-cols-1 lg:grid-cols-${rows}`}>
+                <div className={`grid grid-cols-1 md:grid-cols-${rows}`}>
                     {loading === true ? (
                         skelton.map((show:string,index:number)=>{
                             return (
@@ -112,9 +113,17 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                         restaurantData?.map((restaurant:any, index:number) => {
                             let image_path = restaurant.images === "" ? BlankLocation : restaurant.images
                             return <div key={index} className="md:mx-4 md:my-4 my-8 mx-0">
-                                <div className="rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white h-full w-full">
+                                <div className={`rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white h-full w-full relative cursor-pointer ${styles['slider_card']}`}>
                                     <div className="relative w-full h-full">
-                                        <img src={image_path} alt={image_path} className="object-cover h-[200px] w-full" />
+                                        <img src={image_path} alt={image_path} className="object-cover lg:h-[200px] h-[250px] w-full" />
+                                        <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}>
+                      <button className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px]">
+                        Automate My Trip
+                      </button>
+                      <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]">
+                        More Info
+                      </button>
+                      </div>
                                     </div>
                                     <div className="p-7">
                                         <div className='flex justify-between items-center'>
