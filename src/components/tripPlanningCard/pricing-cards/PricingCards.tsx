@@ -6,8 +6,7 @@ import location_testing from "./test.json"
 
 const PricingCards = ({locationDetails}: any) => {
 
-    // console.log('locationDetails', locationDetails)
-    const [LocationDetails, setLocationDetails] = useState<any>(locationDetails)
+    const [LocationDetails, setLocationDetails] = useState<any>([])
     const [showTripPopup, setShowTripPopup] = useState(false);
     const [item, setItem] = useState({});
     const [filteredLocations, setFilteredLocations] = useState<any[]>([]);
@@ -49,66 +48,71 @@ const PricingCards = ({locationDetails}: any) => {
         }
     ])
 
+
+    const _locateFunc = async () => {
+
+        // let test = await location_testing.map(loc => {
+        //     return {weekdays: loc.hours?.weekday_text.map(weekd => weekd.split(': ')), location_id: loc.location_id}
+        // })
+
+        // let _days: any = []
+        // for (let index = 0; index < test.length; index++) {
+        //     const weekDays = test[index].weekdays;
+        //     _days.push(weekDays.filter(wd => wd[0] !== _days.day).map(wd => {
+        //         return {
+        //             day: wd[0],
+        //             times: test.map((t: any) => t.weekdays.filter((_wd: any) => _wd[0] == wd[0])),
+        //             locations: test.filter((t:any) => t.weekdays.filter((_wd: any) => _wd[0] == wd[0]).length > 0).map((t: any) => t.location_id)
+        //         }
+        //     }))
+        // }
+        // _days = [].concat(..._days)
+
+        // console.log('_days', _days)
+        // setDays(_days)
+
+        let _days = days
+        for (let i = 0; i < _days.length; i++)
+        {
+            let filter_locaiton: any[] = await LocationDetails.filter((loc: any) => 
+                (loc.place_id && loc.place_id != "") ? 
+                loc.current_opening_hours?.weekday_text.filter( (weekd: any) => {
+                    return weekd.split(': ')[0] == _days[i].day && weekd.search('Closed') == -1
+                }) : loc.hours?.weekday_text.filter( (weekd: any) => {
+                    return weekd.split(': ')[0] == _days[i].day && weekd.search('Closed') == -1
+                })
+            )
+
+            setFilteredLocations(filter_locaiton)
+
+            let time_loop: any = filter_locaiton.map(loc => {
+                return (loc.place_id && loc.place_id != "") ? 
+                    loc.current_opening_hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1]) :
+                    loc.hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1])
+            })
+
+            let times = [].concat(...time_loop)
+            let uniqueTimes = [...new Set(times)];
+            _days[i].times = uniqueTimes
+
+            // let location_loop: any = await filter_locaiton.map(loc => loc.location_id)
+            // let location_loop_arr = [].concat(...location_loop)
+            // let uniqueLocations = [...new Set(location_loop_arr)];
+
+            // _days[i].locations = uniqueLocations
+        }
+        setDays([..._days])
+    }
+
     useEffect(() => {
         console.log('days', days)
     }, [days])
 
     useEffect(() => {
-        const _locateFunc = async () => {
+        setLocationDetails([...locationDetails])
+    }, [locationDetails])
 
-            // let test = await location_testing.map(loc => {
-            //     return {weekdays: loc.hours?.weekday_text.map(weekd => weekd.split(': ')), location_id: loc.location_id}
-            // })
-
-            // let _days: any = []
-            // for (let index = 0; index < test.length; index++) {
-            //     const weekDays = test[index].weekdays;
-            //     _days.push(weekDays.filter(wd => wd[0] !== _days.day).map(wd => {
-            //         return {
-            //             day: wd[0],
-            //             times: test.map((t: any) => t.weekdays.filter((_wd: any) => _wd[0] == wd[0])),
-            //             locations: test.filter((t:any) => t.weekdays.filter((_wd: any) => _wd[0] == wd[0]).length > 0).map((t: any) => t.location_id)
-            //         }
-            //     }))
-            // }
-            // _days = [].concat(..._days)
-
-            // console.log('_days', _days)
-            // setDays(_days)
-
-            let _days = days
-            for (let i = 0; i < _days.length; i++)
-            {
-                let filter_locaiton: any[] = await LocationDetails.filter((loc: any) => 
-                    (loc.place_id && loc.place_id != "") ? 
-                    loc.current_opening_hours?.weekday_text.filter( (weekd: any) => {
-                        return weekd.split(': ')[0] == _days[i].day && weekd.search('Closed') == -1
-                    }) : loc.hours?.weekday_text.filter( (weekd: any) => {
-                        return weekd.split(': ')[0] == _days[i].day && weekd.search('Closed') == -1
-                    })
-                )
-                console.log('filter_locaiton', filter_locaiton)
-                setFilteredLocations(filter_locaiton)
-
-                let time_loop: any = filter_locaiton.map(loc => {
-                    return (loc.place_id && loc.place_id != "") ? 
-                        loc.current_opening_hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1]) :
-                        loc.hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1])
-                })
-
-                let times = [].concat(...time_loop)
-                let uniqueTimes = [...new Set(times)];
-                _days[i].times = uniqueTimes
-
-                // let location_loop: any = await filter_locaiton.map(loc => loc.location_id)
-                // let location_loop_arr = [].concat(...location_loop)
-                // let uniqueLocations = [...new Set(location_loop_arr)];
-
-                // _days[i].locations = uniqueLocations
-            }
-            setDays(_days)
-            // console.log('_final_days', _days)
-        }
+    useEffect(() => {
         _locateFunc()
     }, [LocationDetails])
 

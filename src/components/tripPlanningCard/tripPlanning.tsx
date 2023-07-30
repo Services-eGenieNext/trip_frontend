@@ -42,12 +42,11 @@ export default function TripPlanningCard({address}: {address: string}) {
                         _locationDetails.push(res.data.result)
                     }
                 }
-                console.log('_locationDetails', _locationDetails)
                 setLocationDetails(_locationDetails)
             }
         }
         _recomendFunc()
-    }, [recommendations])
+    }, [recommendations, locationDetails, setLocationDetails])
 
     useEffect(() => {
         axios.post(`${PY_API_URL}/get-recommendation`, {input: address}).then(response => {

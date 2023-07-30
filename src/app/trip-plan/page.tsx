@@ -13,10 +13,6 @@ const TripPlan = () => {
 
     const params = useSearchParams()
 
-    useEffect(() => {
-        
-    }, [])
-
     return (
         <div>
             <PageBanner title='Bali, Indonesia' />
