@@ -6,9 +6,10 @@ import DemiData from "@/api/DemiData";
 import TripDetail from "./TripDetail";
 import ProductHorizontalSlide from "../Products/ProductHorizontalSlide";
 import Products from "../Products/Products";
-
+import { useAppSelector } from "@/redux/hooks";
 
 export default function TripPlanningV6() {
+  const { locationsState } = useAppSelector((state) => state.locationReducer);
   return (
     <Section>
       <div className="my-20">
@@ -21,7 +22,7 @@ export default function TripPlanningV6() {
                   <PricingCard
                     variation="cards"
                     isDropdownButton={false}
-                    rows = "1"
+                    rows="1"
                     key={index}
                     data={items}
                     onOpen={(item) => {}}
@@ -30,20 +31,21 @@ export default function TripPlanningV6() {
               })}
           </div>
           <div className="lg:col-span-2 mt-10 ">
-                        <div className="large-shadow sm:p-8 py-8 rounded-xl">
-                            <TripDetail />
+            <div className="large-shadow sm:p-8 py-8 rounded-xl">
+              <TripDetail />
 
-                            <ProductHorizontalSlide 
-                            url = 'variation_3'
-                                Title='Bali location to visit'
-                                Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'  
-                                isAddButton={false} 
-                                isDesc={false} 
-                            />
+              <ProductHorizontalSlide
+                url="variation_3"
+                Title="Bali location to visit"
+                Description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                isAddButton={false}
+                isDesc={false}
+                locationsState={locationsState}
+              />
 
-<Products title="Most popular Restaurants" isAddButton={false} />
-                        </div>
-                    </div>
+              <Products title="Most popular Restaurants" isAddButton={false} rows="1" />
+            </div>
+          </div>
         </div>
       </div>
     </Section>

@@ -6,17 +6,19 @@ import SmallStory from '@/components/Story/SmallStory'
 import React from 'react'
 import TripPlanningCard from '@/components/tripPlanningCard/tripPlanning'
 import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide'
+import { useAppSelector } from '@/redux/hooks'
 
 const TripPlanPage = () => {
+    const { locationsState } = useAppSelector((state) => state.locationReducer)
     return (
         <div>
             <PageBanner title='Bali, Indonesia' />
           
             <TripPlanningCard address='' />
 
-            <ProductHorizontalSlide url="variation_2" Title='Bali Location To Visit' Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} />
+            <ProductHorizontalSlide url="variation_2" Title='Bali Location To Visit' Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} locationsState={locationsState} />
 
-            <Products title="Most popular Restaurants" isAddButton={true} />
+            <Products title="Most popular Restaurants" isAddButton={true} rows="2" />
 
             <SmallStory positioning="inline" />
 

@@ -1,13 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./pageBanner.module.css";
 import HeroBg from "/public/images/results_page_banner.png";
 import Ballon from "/public/images/baloon-transparent.png";
 import Image from "next/image";
 import { Range } from "react-date-range";
 import { addDays } from "date-fns";
-import BannerFilter from './bannerFilter'
+import BannerFilter from "./bannerFilter";
+import { useAppDispatch } from "@/redux/hooks";
 
-const Hero = () => {
+interface ISurvey {
+  survey?: any;
+}
+
+const Hero = ({ survey }: ISurvey) => {
+  const dispatch = useAppDispatch()
   const [date, setDate] = useState<Range>({
     startDate: new Date(),
     endDate: addDays(new Date(), 7),
@@ -17,9 +23,14 @@ const Hero = () => {
   const [locationSearch, setLocationSearch] = useState({
     location: "",
     occassion: "",
-    priority: "",
-    travelers: "",
+    activities: "",
+    cuisines: "",
+    message: "",
   });
+
+  useEffect(() => {
+setLocationSearch(survey)
+  }, [survey]);
 
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
 
@@ -59,14 +70,16 @@ const Hero = () => {
             <p className="lg:mt-4 lg:mb-8 text-white text-lg max-w-[700px] text-center">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
             </p>
-          <div className={`lg:block hidden mt-4 rounded-xl ${styles["result_banner"]}`}>
-              <BannerFilter />
+            <div
+              className={`lg:block hidden mt-4 rounded-xl ${styles["result_banner"]}`}
+            >
+              <BannerFilter surveyData={locationSearch} />
             </div>
           </div>
         </div>
-      <div className={`block lg:hidden ${styles["result_banner"]}`}>
-              <BannerFilter />
-            </div>
+        <div className={`block lg:hidden ${styles["result_banner"]}`}>
+          <BannerFilter surveyData={locationSearch} />
+        </div>
       </div>
     </div>
   );

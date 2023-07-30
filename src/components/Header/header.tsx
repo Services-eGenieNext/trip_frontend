@@ -4,14 +4,12 @@ import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import Logo from "/public/logo.svg"
 import Image from 'next/image'
-import PopupWithOverlay from '../UIComponents/Popup/PopupWithOverlay'
-import InputField from '../UIComponents/InputField/InputField'
 import SearchPopup from './SearchPopup'
 import MobileSearchDrawer from './MobileSearchDrawer'
 import Survey from './survey/survey'
-import { useAppDispatch, useAppSelector } from '@/redux/hooks'
+import { useAppDispatch } from '@/redux/hooks'
 import { setLocations } from '@/redux/reducers/locationSlice'
-import { LocationsCall, RestaurantsCall, ReviewsCall } from '@/api-calls'
+import { LocationsCall, ReviewsCall } from '@/api-calls'
 import { setRestaurants } from '@/redux/reducers/restaurantsSlice'
 import {setActivities} from '@/redux/reducers/popularActivities'
 import { setReviews } from '@/redux/reducers/reviews'
@@ -27,14 +25,15 @@ const Header = () => {
 
     useEffect(() => {
         const _def = async () => {
-            let res = await LocationsCall()
-            console.log('object', res)
+            let res = await LocationsCall("best locations")
+            console.log("locations",res)
             dispatch(setLocations(res))
         }
         _def()
 
         const _defRestaurants = async () => {
-            let res = await RestaurantsCall()
+            let res = await LocationsCall("best resturants")
+            console.log('resturants',res)
             dispatch(setRestaurants(res))
         }
         _defRestaurants()

@@ -47,3 +47,11 @@
 .image_opacity{
   opacity: 0.3;
 }
+
+.hover_overlay{
+  background: rgba(0,0,0,.8);
+  visibility: hidden;
+}
+.slider_card:hover .hover_overlay{
+  visibility: visible;
+}

@@ -1,3 +1,11 @@
 .visitCard {
     box-shadow: 0px 30px 46px 0px #2028341A;
 }
+
+.hover_overlay{
+    background: rgba(0,0,0,.8);
+    visibility: hidden;
+  }
+  .slider_card:hover .hover_overlay{
+    visibility: visible;
+  }

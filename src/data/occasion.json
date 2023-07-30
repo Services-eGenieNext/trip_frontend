@@ -42,10 +42,5 @@
     {
         "key": 5,
         "value":"Anniversary"
-    },
-    {
-        "key": 0,
-        "additional": true,
-        "value":"Insert my own occasion"
     }
 ]

@@ -5,8 +5,11 @@ import DemiData from "@/api/DemiData";
 import PricingCard from './pricingCard';
 import TripDetail from './TripDetail';
 import ProductHorizontalSlide from '../Products/ProductHorizontalSlide';
+import { useAppSelector } from "@/redux/hooks";
 
 const TripPlanningV2 = () => {
+    const { locationsState } = useAppSelector((state) => state.locationReducer)
+    const { restaurantsState } = useAppSelector((state) => state.restaurantsReducer)
     return (
         <Section>
             <div className="my-20">
@@ -33,6 +36,7 @@ const TripPlanningV2 = () => {
                                 Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'  
                                 isAddButton={false} 
                                 isDesc={false} 
+                                locationsState = {locationsState}
                             />
 
                             <ProductHorizontalSlide 
@@ -41,6 +45,7 @@ const TripPlanningV2 = () => {
                                 Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit.'  
                                 isAddButton={false} 
                                 isDesc={false} 
+                                locationsState={restaurantsState}
                             />
                         </div>
                     </div>
