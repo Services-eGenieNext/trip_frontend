@@ -60,7 +60,11 @@ export default function TripPlanningCard({address}: {address: string}) {
                 <div className="flex flex-col sm-width gilroy">
                     <TripPlanningHeader variation="space-between" />
                     <div className="flex flex-wrap justify-center gap-x-12">
-                        <PricingCards locationDetails={locationDetails} />
+                        {
+                            locationDetails.length > 0 && (
+                                <PricingCards locationDetails={locationDetails} />
+                            )
+                        }
                     </div>
                 </div>
             </div>

@@ -10,6 +10,7 @@ const PricingCards = ({locationDetails}: any) => {
     const [showTripPopup, setShowTripPopup] = useState(false);
     const [item, setItem] = useState({});
     const [filteredLocations, setFilteredLocations] = useState<any[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
     const [days, setDays] = useState<any[]>([
         {
             day: "Monday",
@@ -72,6 +73,7 @@ const PricingCards = ({locationDetails}: any) => {
         // setDays(_days)
 
         let _days = days
+        let filter_locaitonArr : any[] = []
         for (let i = 0; i < _days.length; i++)
         {
             let filter_locaiton: any[] = await LocationDetails.filter((loc: any) => 
@@ -82,8 +84,9 @@ const PricingCards = ({locationDetails}: any) => {
                     return weekd.split(': ')[0] == _days[i].day && weekd.search('Closed') == -1
                 })
             )
-
-            setFilteredLocations(filter_locaiton)
+            // console.log('filter_locaiton', filter_locaiton)
+            await filter_locaitonArr.concat(filter_locaiton)
+            console.log('filter_locaiton', filter_locaitonArr)
 
             let time_loop: any = filter_locaiton.map(loc => {
                 return (loc.place_id && loc.place_id != "") ? 
@@ -105,21 +108,62 @@ const PricingCards = ({locationDetails}: any) => {
     }
 
     useEffect(() => {
-        console.log('days', days)
-    }, [days])
+        const timeLoopFunc = async (filter_locaiton: any[]) => {
+            return await filter_locaiton?.map(loc => {
+                return (loc.place_id && loc.place_id != "") ? 
+                    loc.current_opening_hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1]) :
+                    loc.hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1])
+            })
+            // for (let i = 0; i < filter_locaiton.length; i++)
+            // {
 
-    useEffect(() => {
-        setLocationDetails([...locationDetails])
-    }, [locationDetails])
-
-    useEffect(() => {
-        _locateFunc()
+            // }
+        }
+        const _loadDays = async () => {
+            let _days = days
+            for (let i = 0; i < _days.length; i++) {
+                
+                let time_loop: any = await timeLoopFunc(LocationDetails[i])
+                
+                let times = [].concat(...time_loop)
+                let uniqueTimes = [...new Set(times)];
+                _days[i].times = uniqueTimes
+                _days[i].locations = LocationDetails[i]
+            
+            }
+            setDays(_days)
+            setLoading(false)
+        }
+        if(LocationDetails.length > 0) {
+            _loadDays()
+        }
     }, [LocationDetails])
+
+    useEffect(() => {
+        const _loadLocations = async () => {
+            let locations = []
+            for (let i = 0; i < days.length; i++) {
+                
+                let filter_locaiton: any[] = await locationDetails.filter((loc: any) => 
+                    (loc.place_id && loc.place_id != "") ? 
+                    loc.current_opening_hours?.weekday_text.filter( (weekd: any) => {
+                        return weekd.split(': ')[0] == days[i].day && weekd.search('Closed') == -1
+                    }) : loc.hours?.weekday_text.filter( (weekd: any) => {
+                        return weekd.split(': ')[0] == days[i].day && weekd.search('Closed') == -1
+                    })
+                )
+
+                locations.push(filter_locaiton)
+            }
+            setLocationDetails(locations)
+        }
+        _loadLocations()
+    }, [locationDetails])
 
     return (
         <>
             {
-                days &&
+                (!loading && days) &&
                 days.map((_item, index) => {
                     return (
                         <PricingCard key={index} 
