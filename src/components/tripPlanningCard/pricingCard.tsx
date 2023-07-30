@@ -13,7 +13,6 @@ export default function PricingCard({
   filteredLocations
 }: IPlanningCard) {
 
-  console.log('pricing data', data)
   return variation === "cards" ? (
     <div className="relative mt-10 bg-[#F6FDFF] rounded-lg border-2 border-dashed border-[#AEDCF0] px-5 py-8">
       <div className={`${data.loading ? "blur-sm select-none" : ""}`}>
