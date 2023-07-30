@@ -13,6 +13,11 @@ import { LocationsCall, DetailCall } from "@/api-calls";
 import { useAppDispatch } from '@/redux/hooks';
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { useRouter } from "next/navigation";
+import { Range } from "react-date-range";
+import { addDays } from "date-fns";
+import DateRangeField from "../../UIComponents/InputField/DateRangeField";
+import CalenderIcon from "../../icons/Calender";
+import styles from '../Header.module.css'
 
 const Survey = ({ show, onClose }: ISurvey) => {
   const dispatch = useAppDispatch()
@@ -23,6 +28,12 @@ const Survey = ({ show, onClose }: ISurvey) => {
     activities: "",
     cuisines: "",
     message: "",
+  });
+
+  const [date, setDate] = useState<Range>({
+    startDate: new Date(),
+    endDate: addDays(new Date(), 7),
+    key: "selection",
   });
 
   const [locations,setLocations] = useState([])
@@ -43,8 +54,8 @@ const Survey = ({ show, onClose }: ISurvey) => {
       options: "activities",
     },
     {
-      title: "Rank your favorite cuisines",
-      options: "cuisines",
+      title: "Select Your Trip Dates",
+      options: "dates",
     },
     {
       title: "Anything else you’d like us to know?",
@@ -237,6 +248,15 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 onChange={(val) => setSurvey({ ...survey, activities: val })}
                 onAdditionalChange={(_data) => {}}
               />
+            )}
+            {questions[step - 1]?.options === "dates" && (
+              <DateRangeField
+              label="Date"
+              className={`mr-2 sm:my-2 my-5 sm:w-[250px] ${styles.inputWrapper}`}
+              value={date}
+              onChange={(value) => setDate(value)}
+              icon={<CalenderIcon />}
+            />
             )}
             {questions[step - 1]?.text_box && (
               <textarea

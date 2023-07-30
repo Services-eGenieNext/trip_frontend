@@ -132,7 +132,7 @@ export default function LocationSlider() {
   };
 
   return (
-    <div className="w-full flex justify-center mt-20  relative px-10">
+    <div className="w-full flex justify-center mt-20 relative px-10">
       <div className="sm-width">
         <div className="lg:w-[45%] md:w-[60%] w-[95%] flex flex-col sm:items-start items-center">
           <ComponentTitle title="Trending Locations" />
@@ -178,10 +178,18 @@ export default function LocationSlider() {
                   let image_path = location.images === "" ? BlankLocation.src  : location.images
                   return (
                     <div key={index} className="px-3">
-                      <div className="relative md:mt-0 mt-5 h-[350px] w-full rounded-xl overflow-hidden">
-                          <img   style={{objectFit: "cover"}} />
+                      <div className={`relative md:mt-0 mt-5 h-[350px] w-full rounded-xl overflow-hidden cursor-pointer ${CSS["slider_card"]}`}>
+                          <img src={image_path} alt={image_path} style={{objectFit: "cover"}} />
                           <div className="absolute inset-0" style={{background: 'linear-gradient(0deg, rgb(0 0 0 / 70%), transparent)'}}></div>
-                        <h1 className="absolute bottom-4 left-6 text-white font-bold text-[25px]">{location.name}</h1>
+                          <h1 className="absolute bottom-4 left-6 text-white font-bold text-[25px] pe-5">{location.name}</h1>
+                      <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
+                      <button className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px]">
+                        Automate My Trip
+                      </button>
+                      <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]">
+                        More Info
+                      </button>
+                      </div>
                       </div>
                     </div>
                   );
