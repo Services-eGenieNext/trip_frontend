@@ -189,7 +189,6 @@ export default function LocationSlider() {
                   location: any,
                   index
                 ) => {
-                  console.log(location,"images")
                   let image_path = location.images === "" ? BlankLocation.src  : location.images
                   let address = location.formatted_address ? location.formatted_address : location.address_obj?.address_string
                   return (
@@ -202,7 +201,13 @@ export default function LocationSlider() {
                           <Link href={'/trip-plan?address='+location.formatted_address} onClick={(e) => onSetAddress(e, location.formatted_address)} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
                             Automate My Trip
                           </Link>
-                          <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" onClick={()=>setShowTripPopup(true)}>
+                          <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" onClick={()=> {
+                            setItem({
+                              location_id: location.location_id,
+                              place_id: location.place_id,
+                            })
+                            setShowTripPopup(true)
+                            }}>
                             More Info
                           </button>
                         </div>
