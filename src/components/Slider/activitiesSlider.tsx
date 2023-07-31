@@ -253,7 +253,13 @@ function ActivitiesSlider() {
                             {activities.name}
                           </h1>
                           <div className={`absolute top-0 left-0 w-full h-[124px] flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
-                      <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[110px] hover:bg-[#009DE2]" onClick={()=>setShowTripPopup(true)}>
+                      <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[110px] hover:bg-[#009DE2]" onClick={()=> {
+                        setItem({
+                          location_id: activities.location_id,
+                          place_id: activities.place_id,
+                        })
+                        setShowTripPopup(true)
+                        }}>
                         More Info
                       </button>
                       </div>

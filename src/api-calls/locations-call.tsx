@@ -49,4 +49,8 @@ const LocationsCall = async (query:any) => {
     })
 }
 
+export {
+    _getlocationImages
+}
+
 export default LocationsCall

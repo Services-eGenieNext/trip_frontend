@@ -22,7 +22,7 @@ const TripPlan = () => {
 
             <ProductHorizontalSlide locationsState={locationsState} url="variation_2" Title='Bali Location To Visit' Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} />
 
-            <Products title="Most popular Restaurants" isAddButton={true} />
+            <Products title="Most popular Restaurants" isAddButton={true} rows="2" />
 
             <SmallStory positioning="inline" />
 
