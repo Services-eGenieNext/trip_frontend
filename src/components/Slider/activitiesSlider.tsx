@@ -7,6 +7,7 @@ import Ballon from "/public/images/baloon-transparent.png"
 import Image from 'next/image';
 import { useAppSelector } from "@/redux/hooks";
 import BlankLocation from "public/images/blank-location.jpg"
+import DetailModal from '../tripPlanningCard/TripPlanPopup';
 
 const locationSlider = [
   {
@@ -42,6 +43,8 @@ function ActivitiesSlider() {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const [loading, setLoading] = useState(true);
   const [activity, setActivity] = useState([])
+  const [showTripPopup, setShowTripPopup] = useState(false);
+  const [item, setItem] = useState({});
 
   useEffect(() => {
     setActivity(activitiesState)
@@ -250,7 +253,7 @@ function ActivitiesSlider() {
                             {activities.name}
                           </h1>
                           <div className={`absolute top-0 left-0 w-full h-[124px] flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
-                      <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[110px] hover:bg-[#009DE2]">
+                      <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[110px] hover:bg-[#009DE2]" onClick={()=>setShowTripPopup(true)}>
                         More Info
                       </button>
                       </div>
@@ -263,6 +266,9 @@ function ActivitiesSlider() {
           </Slider>
         </div>
       </div>
+      <DetailModal item={item} show={showTripPopup} onClose={() => {
+                setShowTripPopup(false)
+            }} />
     </div>
   );
 }

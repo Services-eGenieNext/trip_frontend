@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { setLocationAddress } from '@/redux/reducers/locationSlice'
 import BlankLocation from "public/images/blank-location.jpg"
 import styles from './ProductHorizontalSlide.module.css'
+import DetailModal from '../tripPlanningCard/TripPlanPopup';
 
 interface IProduct {
     title: string
@@ -31,6 +32,8 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
     const [xPosition, setXPosition] = useState(0)
     const [yPosition, setYPosition] = useState(0)
     const [openModal, setOpenModal] = useState(false)
+    const [showTripPopup, setShowTripPopup] = useState(false);
+  const [item, setItem] = useState({});
 
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
 
@@ -121,14 +124,14 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                         restaurantData?.map((restaurant:any, index:number) => {
                             let image_path = restaurant.images === "" ? BlankLocation : restaurant.images
                             return <div key={index} className="md:mx-4 md:my-4 my-8 mx-0">
-                                <div className={`rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white h-full w-full relative cursor-pointer ${styles['slider_card']}`}>
+                                <div className={`rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white h-full w-full relative ${styles['slider_card']}`}>
                                     <div className="relative w-full h-full">
-                                        <img src={image_path} alt={image_path} className="object-cover lg:h-[200px] h-[250px] w-full" />
-                                        <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}>
+                                        <img src={image_path} alt={image_path} className="object-cover lg:h-[200px] h-[250px] w-full cursor-pointer " />
+                                        <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center cursor-pointer ${styles["hover_overlay"]}`}>
                       <button className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px]">
                         Automate My Trip
                       </button>
-                      <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]">
+                      <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" onClick={()=>{setShowTripPopup(true)}}>
                         More Info
                       </button>
                       </div>
@@ -167,6 +170,9 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                     }
                 </div>
             </div>
+            <DetailModal item={item} show={showTripPopup} onClose={() => {
+                setShowTripPopup(false)
+            }} />
             {openModal == true ? (
                 <Modal openModal={openModal} setOpenModal={setOpenModal} modalFor="view_otehr_places" />
             ):(
