@@ -5,6 +5,7 @@ import CalenderIcon from "../icons/Calender";
 import BlueButton from "../UIComponents/Buttons/BlueButton";
 import SelectField from "../UIComponents/InputField/SelectField";
 import Occasion from "@/data/occasion.json";
+import LocationJson from '@/data/location.json'
 import Travelers from "@/data/travelers.json";
 import Priority from "@/data/priority.json";
 import DateRangeField from "../UIComponents/InputField/DateRangeField";
@@ -12,8 +13,11 @@ import styles from "./hero.module.css";
 import { Range } from "react-date-range";
 import { addDays } from "date-fns";
 import { useRouter } from 'next/navigation'
+import { useAppDispatch } from "@/redux/hooks";
+import { setSurveyValue } from "@/redux/reducers/surveySlice";
 
 export default function HeroFilterSection() {
+  const dispatch = useAppDispatch()
   const router = useRouter()
   const [date, setDate] = useState<Range>({
     key: "selection",
@@ -23,7 +27,7 @@ export default function HeroFilterSection() {
     location: "",
     occassion: "",
     priority: "",
-    travelers: "",
+    person: "",
     dates: "",
   });
 
@@ -37,6 +41,7 @@ export default function HeroFilterSection() {
     if(locationSearch.dates.startDate){
       router.push('/trip-plan?address='+locationSearch.location)
     }else{
+      dispatch(setSurveyValue(locationSearch))
       route.push('/results')
     }
   }
@@ -66,8 +71,25 @@ export default function HeroFilterSection() {
           />
         </svg>
       </span> */}
+      <SelectField
+                label="Trending Location"
+                placeholder="Select ..."
+                data={LocationJson}
+                className={`mr-2 sm:my-2 my-5 sm:w-[200px]`}
+                styling={{
+                  dropdownHeight: "max-h-[140px]",
+                  shadow: "drop-shadow-xl ",
+                  left: "0px",
+                  top: "70px",
+                }}
+                value={locationSearch.location}
+                onChange={(val) =>
+                  setLocationSearch({ ...locationSearch, location: val })
+                }
+                onAdditionalChange={(_data) => {}}
+              />
 
-      <InputField
+      {/* <InputField
         label="Location"
         type="text"
         className={`mr-2 my-2 sm:w-[200px] ${styles.inputWrapper}`}
@@ -76,7 +98,7 @@ export default function HeroFilterSection() {
           setLocationSearch({ ...locationSearch, location: e.target.value })
         }
         icon={<SimpleLocation />}
-      />
+      /> */}
 
       {/* <InputField 
                                 label="Date" 
@@ -127,7 +149,7 @@ export default function HeroFilterSection() {
         className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
         value={locationSearch.travelers}
         onChange={(val) =>
-          setLocationSearch({ ...locationSearch, travelers: val })
+          setLocationSearch({ ...locationSearch, person: val })
         }
         onAdditionalChange={(_data) => {}}
       />

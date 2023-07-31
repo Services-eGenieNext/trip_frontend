@@ -26,13 +26,14 @@ export default function HeroFilterSection({surveyData}:any) {
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: "",
-    activities: "",
-    travelers: "",
+    priority: "",
+    person: "",
     dates:"",
   });
 
   useEffect(()=>{
-setLocationSearch({...locationSearch, location: surveyData.location, occassion: surveyData.occassion, activities: surveyData.activities})
+setLocationSearch({...locationSearch, location: surveyData.location, occassion: surveyData.occassion, priority: surveyData.priority, person: surveyData.person ? surveyData.person : ""})
+_def()
   },[surveyData])
 
   useEffect(()=>{
@@ -133,9 +134,9 @@ setLocationSearch({...locationSearch, dates: date})
         placeholder="Select ..."
         data={Priority}
         className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
-        value={locationSearch.activities}
+        value={locationSearch.priority}
         onChange={(val) =>
-          setLocationSearch({ ...locationSearch, activities: val })
+          setLocationSearch({ ...locationSearch, priority: val })
         }
         onAdditionalChange={(_data) => {}}
       />
@@ -145,9 +146,9 @@ setLocationSearch({...locationSearch, dates: date})
         placeholder="Select ..."
         data={Travelers}
         className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
-        value={locationSearch.travelers}
+        value={locationSearch.person}
         onChange={(val) =>
-          setLocationSearch({ ...locationSearch, travelers: val })
+          setLocationSearch({ ...locationSearch, person: val })
         }
         onAdditionalChange={(_data) => {}}
       />
