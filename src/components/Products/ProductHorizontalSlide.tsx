@@ -11,11 +11,14 @@ import styles from "./ProductHorizontalSlide.module.css"
 import BlankLocation from "public/images/blank-location.jpg"
 import Image from 'next/image'
 import Link from 'next/link'
+import DetailModal from '../tripPlanningCard/TripPlanPopup';
 
 const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, isDesc, url, locationsState }: IProductHorizontalSlide) => {
     const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState([])
+  const [showTripPopup, setShowTripPopup] = useState(false);
+  const [item, setItem] = useState({});
     const slideRef = useRef<null | HTMLDivElement>(null)
     const formRef = useRef<null | HTMLDivElement>(null)
 
@@ -104,7 +107,7 @@ const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, is
                           <Link href={'/trip-plan?address='+address} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px]">
                             Automate My Trip
                           </Link>
-                          <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]">
+                          <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" onClick={()=>{setShowTripPopup(true)}}>
                             More Info
                           </button>
                         </div>
@@ -158,6 +161,9 @@ const ProductHorizontalSlide = ({ Title, Description = "", data, isAddButton, is
                     <BlueButton title='Save' className="w-[150px]" />
                 </div>
             </div>
+            <DetailModal item={item} show={showTripPopup} onClose={() => {
+                setShowTripPopup(false)
+            }} />
         </Section>
     )
 }

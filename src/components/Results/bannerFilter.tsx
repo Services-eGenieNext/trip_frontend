@@ -14,20 +14,21 @@ import { addDays } from "date-fns";
 import { setLocations } from '@/redux/reducers/locationSlice'
 import { LocationsCall, ReviewsCall } from '@/api-calls'
 import { useAppDispatch } from '@/redux/hooks'
+import { useRouter } from "next/navigation";
 
 export default function HeroFilterSection({surveyData}:any) {
   const dispatch = useAppDispatch()
-  const [date, setDate] = useState<Range>({
-    startDate: new Date(),
-    endDate: addDays(new Date(), 7),
+  const router = useRouter()
+  const [date, setDate] = useState<any>({
     key: "selection",
   });
 
-  const [locationSearch, setLocationSearch] = useState({
+  const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: "",
     activities: "",
     travelers: "",
+    dates:"",
   });
 
   useEffect(()=>{
@@ -35,15 +36,31 @@ setLocationSearch({...locationSearch, location: surveyData.location, occassion: 
   },[surveyData])
 
   useEffect(()=>{
-if(locationSearch.location !== ""){
+setLocationSearch({...locationSearch, dates: date})
+  },[date])
+
   const _def = async () => {
-    let res = await LocationsCall(`best locations in ${locationSearch.location}`)
-    console.log("locations from results filters",res)
-    dispatch(setLocations(res))
+    if(surveyData.location !== ""){
+      let res = await LocationsCall(`best locations in ${locationSearch.location}`)
+      console.log("locations from results filters",res)
+      dispatch(setLocations(res))
+    }
 }
-_def()
-}
-  },[locationSearch])
+//   useEffect(()=>{
+// if(locationSearch.location !== ""){
+// _def()
+// }
+//   },[locationSearch])
+
+  const handleRoute = () => {
+    if(locationSearch.dates.startDate){
+      console.log(locationSearch.dates,"dates test")
+      router.push('/trip-plan?address='+locationSearch.location)
+    }else{
+      console.log(locationSearch.dates,"dates test")
+      _def()
+    }
+  }
 
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
   return (
@@ -147,7 +164,7 @@ _def()
         onAdditionalChange={(_data) => {}}
       />
 
-      <BlueButton title="Automate My trip" className="sm:w-[200px] w-full" />
+      <BlueButton title="Automate My trip" className="sm:w-[200px] w-full" onClick={handleRoute} />
     </div>
   );
 }

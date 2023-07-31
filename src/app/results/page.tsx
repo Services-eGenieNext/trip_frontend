@@ -28,7 +28,7 @@ setLocations(locationsState)
       <Section>
         <div className="lg:my-20 mb-20">
           <div className="grid grid-cols-1 md:grid-cols-4">
-            <div className="lg:col-span-1 w-[300px]">
+            <div className="lg:col-span-1 w-[300px] -z-10">
               <FilterSidebar />
             </div>
             <div className="lg:col-span-3 col-span-4">
