@@ -23,7 +23,7 @@ export default function PricingCard({
               <div className="p-5 flex flex-col justify-between">
                 {data &&
                   data.times.slice(0,5).map((time: any, index: any) => {
-                    let time_location = filteredLocations?.filter(location => 
+                    let time_location = data.locations?.filter((location: any) => 
                       (location.place_id && location.place_id != "") ? 
                         location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
                         location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
@@ -33,7 +33,7 @@ export default function PricingCard({
                     }
                     
                     if(time_location && time_location?.length > 0) {
-                      return time_location.map((locat, index2: number) => {
+                      return time_location.map((locat: any, index2: number) => {
                         return (
                           <div
                             key={index2}

@@ -189,8 +189,9 @@ export default function LocationSlider() {
                   location: any,
                   index
                 ) => {
-                  console.log(location.images,"images")
+                  console.log(location,"images")
                   let image_path = location.images === "" ? BlankLocation.src  : location.images
+                  let address = location.formatted_address ? location.formatted_address : location.address_obj?.address_string
                   return (
                     <div key={index} className="px-3">
                       <div className={`relative md:mt-0 mt-5 h-[350px] w-full rounded-xl overflow-hidden cursor-pointer ${CSS["slider_card"]}`}>
@@ -198,7 +199,11 @@ export default function LocationSlider() {
                         <div className="absolute inset-0" style={{background: 'linear-gradient(0deg, rgb(0 0 0 / 70%), transparent)'}}></div>
                         <h1 className="absolute bottom-4 left-6 text-white font-bold text-[25px] pe-5">{location.name}</h1>
                         <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
+<<<<<<< HEAD
                           <Link href={'/trip-plan?address='+location.formatted_address} onClick={(e) => onSetAddress(e, location.formatted_address)} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
+=======
+                          <Link href={'/trip-plan?address='+address} onClick={(e) => onSetAddress(e, location.address_obj.address_string)} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px]">
+>>>>>>> main
                             Automate My Trip
                           </Link>
                           <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" onClick={()=>setShowTripPopup(true)}>
