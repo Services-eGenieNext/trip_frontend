@@ -3,11 +3,14 @@ import Image from "next/image";
 import PlaceImg from "/public/images/placeImg_01.png";
 import { FilledStar } from "../icons/Stars";
 import BlankLocation from "public/images/blank-location.jpg";
+import DetailModal from '../tripPlanningCard/TripPlanPopup';
 
 export default function Lisitngs({ locations }: any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","9"];
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
+  const [showTripPopup, setShowTripPopup] = useState(false);
+  const [item, setItem] = useState({});
   useEffect(() => {
     setLoading(true)
     setResults(locations);
@@ -96,7 +99,7 @@ export default function Lisitngs({ locations }: any) {
                       <button className="w-[133px] h-[32px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-[#2D2D2D]">
                         Automate My Trip
                       </button>
-                      <button className="w-[106px] h-[32px] rounded-md text-[#2D2D2D] border border-[#2D2D2D]">
+                      <button className="w-[106px] h-[32px] rounded-md text-[#2D2D2D] border border-[#2D2D2D]" onClick={()=>{setShowTripPopup(true)}}>
                         More Info
                       </button>
                     </div>
@@ -105,6 +108,9 @@ export default function Lisitngs({ locations }: any) {
               })
           )}
       </div>
+      <DetailModal item={item} show={showTripPopup} onClose={() => {
+                setShowTripPopup(false)
+            }} />
     </div>
   );
 }

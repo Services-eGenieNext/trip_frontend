@@ -18,6 +18,7 @@ import { addDays } from "date-fns";
 import DateRangeField from "../../UIComponents/InputField/DateRangeField";
 import CalenderIcon from "../../icons/Calender";
 import styles from '../Header.module.css'
+import Link from "next/link";
 
 const Survey = ({ show, onClose }: ISurvey) => {
   const dispatch = useAppDispatch()
@@ -26,13 +27,11 @@ const Survey = ({ show, onClose }: ISurvey) => {
     location: "",
     occassion: "",
     activities: "",
-    cuisines: "",
+    dates: "",
     message: "",
   });
 
   const [date, setDate] = useState<Range>({
-    startDate: new Date(),
-    endDate: addDays(new Date(), 7),
     key: "selection",
   });
 
@@ -74,20 +73,28 @@ const Survey = ({ show, onClose }: ISurvey) => {
     }
   }, [survey]);
 
-  const fetchingCuisines = (location_id:string) => {
-    const details = async () => {
-        let res = await DetailCall(location_id)
-        console.log('object', res)
-    }
-    details()
-  }
+  useEffect(()=>{
+setSurvey({...survey, dates: date})
+  },[date])
+
+  // const fetchingCuisines = (location_id:string) => {
+  //   const details = async () => {
+  //       let res = await DetailCall(location_id)
+  //       console.log('object', res)
+  //   }
+  //   details()
+  // }
 
   const handleSurvey = () => {
-    console.log(survey,"survey")
-    dispatch(setSurveyValue(survey))
-    router.push('/results')
-    onClose()
-    setStep(1)
+    if(survey.dates.startDate){
+      router.push('/trip-plan?address='+survey.location)
+      onClose()
+    }else{
+      dispatch(setSurveyValue(survey))
+      router.push('/results')
+      onClose()
+      setStep(1)
+    }
   }
 
   return (

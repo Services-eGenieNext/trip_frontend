@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputField from "../UIComponents/InputField/InputField";
 import SimpleLocation from "../icons/SimpleLocation";
 import CalenderIcon from "../icons/Calender";
@@ -14,18 +14,32 @@ import { addDays } from "date-fns";
 import { useRouter } from 'next/navigation'
 
 export default function HeroFilterSection() {
+  const router = useRouter()
   const [date, setDate] = useState<Range>({
     key: "selection",
   });
 
-  const [locationSearch, setLocationSearch] = useState({
+  const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: "",
     priority: "",
     travelers: "",
+    dates: "",
   });
 
   const route = useRouter()
+
+  useEffect(()=>{
+    setLocationSearch({...locationSearch, dates: date})
+      },[date])
+
+  const handleRoute = () => {
+    if(locationSearch.dates.startDate){
+      router.push('/trip-plan?address='+locationSearch.location)
+    }else{
+      route.push('/results')
+    }
+  }
 
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
   return (
@@ -118,7 +132,7 @@ export default function HeroFilterSection() {
         onAdditionalChange={(_data) => {}}
       />
 
-      <BlueButton onClick={() => route.push('/results')} title="Automate My trip" className="sm:w-[200px] w-full" />
+      <BlueButton title="Automate My trip" className="sm:w-[200px] w-full" onClick={handleRoute} />
     </div>
   );
 }
