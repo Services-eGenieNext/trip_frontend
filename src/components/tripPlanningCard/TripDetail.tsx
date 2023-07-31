@@ -28,7 +28,7 @@ const TripDetail = ({item}: ITripDetail) => {
                     for (let index = 0; index < res.data.data.length; index++) {
                         let _imagesObject = res.data.data[index].images
                         
-                        let selectedImage = _imagesObject.original ? _imagesObject.original.url : _imagesObject.original.medium.url
+                        let selectedImage = _imagesObject.original ? _imagesObject.original.url : _imagesObject.medium.url
                         _images.push(selectedImage)
                     }
                     setImages(_images)
@@ -55,8 +55,8 @@ const TripDetail = ({item}: ITripDetail) => {
             setDetailLoading(true)
             if(item.location_id)
             {
-                let item_Detail: any = await DetailCall(item.place_id)
-                setItemDetail(item_Detail.data.result)
+                let item_Detail: any = await DetailCall(item.location_id)
+                setItemDetail(item_Detail.data)
             }
             else if(item.place_id)
             {

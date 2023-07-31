@@ -7,7 +7,7 @@ import { PY_API_URL } from "@/config/constant";
 import DetailsCall, { DetailsCallByGoogle } from "@/api-calls/location-details-call";
 import PricingCards from "./pricing-cards/PricingCards";
 
-export default function TripPlanningCard({address}: {address: string}) {
+export default function TripPlanningCard({address, totalOpeningHours}: {address: string, totalOpeningHours: number | null}) {
     const ref = useRef<HTMLInputElement>(null);
     const [read, setRead] = useState(false);
     const [showTripPopup, setShowTripPopup] = useState(false);
@@ -42,16 +42,19 @@ export default function TripPlanningCard({address}: {address: string}) {
                         _locationDetails.push(res.data.result)
                     }
                 }
-                setLocationDetails(_locationDetails)
+                setLocationDetails([..._locationDetails])
             }
         }
         _recomendFunc()
-    }, [recommendations, locationDetails, setLocationDetails])
+    }, [recommendations])
 
     useEffect(() => {
-        axios.post(`${PY_API_URL}/get-recommendation`, {input: address}).then(response => {
-            setRecommendations(response.data.recommendations)
-        })
+        if(address && address!='')
+        {
+            axios.post(`${PY_API_URL}/get-recommendation`, {input: address}).then(response => {
+                setRecommendations(response.data.recommendations)
+            })
+        }
     }, [address])
 
     return (
@@ -62,7 +65,7 @@ export default function TripPlanningCard({address}: {address: string}) {
                     <div className="flex flex-wrap justify-center gap-x-12">
                         {
                             locationDetails.length > 0 && (
-                                <PricingCards locationDetails={locationDetails} />
+                                <PricingCards locationDetails={locationDetails} totalOpeningHours={totalOpeningHours} />
                             )
                         }
                     </div>

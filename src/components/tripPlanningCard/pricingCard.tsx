@@ -94,8 +94,8 @@ export default function PricingCard({
         ) : (
           <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
             <div className="p-5 flex flex-col justify-between">
-              {data.schedule &&
-                data.schedule.map((items: any, index: any) => {
+              {data &&
+                data.times.slice(0,4).map((items: any, index: any) => {
 
                   const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
                     e.preventDefault()
