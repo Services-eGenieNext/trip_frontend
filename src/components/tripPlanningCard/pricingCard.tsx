@@ -94,7 +94,7 @@ export default function PricingCard({
         ) : (
           <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
             <div className="p-5 flex flex-col justify-between">
-              {data &&
+              {data.times &&
                 data.times.slice(0,4).map((items: any, index: any) => {
 
                   const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
@@ -168,7 +168,7 @@ export default function PricingCard({
       </div>
       <div className="col-span-5">
         <div className="pl-5 flex flex-col justify-between">
-          {data &&
+          {data.times &&
             data.times.slice(0,5).map((time: any, index: any) => {
 
               let time_location = data.locations?.filter((location: any) => 
