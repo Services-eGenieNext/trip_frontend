@@ -3,7 +3,11 @@ import CSS from './tripPlanning.module.css'
 import { IPlanningCard } from "@/interfaces/TripPlan";
 import InputField from "../UIComponents/InputField/InputField";
 
-export default function ScheduleCard({items, isDropdownButton, onOpen}:IPlanningCard) {
+interface IScheduleCard extends IPlanningCard {
+  time?: string
+}
+
+export default function ScheduleCard({items, isDropdownButton, onOpen, time}:IScheduleCard) {
     const [isShowTooltip, setIsShowTooltip] = useState(false);
     const [editTime, setEditTime] = useState(false)
     const [deleteTime, setDeleteTime] = useState(false)
@@ -35,9 +39,9 @@ export default function ScheduleCard({items, isDropdownButton, onOpen}:IPlanning
           onOpen({});
         }}
       >
-        <p className="gilroy font-semibold">{items.time} -  asfds</p>
+        <p className="gilroy font-semibold">{time} - </p>
         <div className="flex flex-wrap justify-center items-center">
-          <p className="font-medium w-[100px]">{items.detail}</p>
+          <p className="font-medium w-[100px]">{items.name}</p>
           {isDropdownButton == true ? (
             <div className="relative">
             <span

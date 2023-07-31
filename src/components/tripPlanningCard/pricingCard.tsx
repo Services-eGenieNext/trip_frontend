@@ -160,24 +160,35 @@ export default function PricingCard({
     <div className="grid grid-cols-6 my-10">
       <div className="col-span-1">
         <span className="uppercase flex flex-col md:flex-row justify-between items-center text-sm md:text-base">
-          Day -{" "}
-          <span className="w-[38px] h-[29px] text-[var(--green)] bg-[var(--lite-green)] flex justify-center items-center rounded-lg">
+          {data.day}
+          {/* <span className="w-[38px] h-[29px] text-[var(--green)] bg-[var(--lite-green)] flex justify-center items-center rounded-lg">
             {data.day}
-          </span>{" "}
+          </span>{" "} */}
         </span>
       </div>
       <div className="col-span-5">
         <div className="pl-5 flex flex-col justify-between">
-          {data.schedule &&
-            data.schedule.map((items: any, index: any) => {
-              return (
-                <ScheduleCard
-                  key={index}
-                  isDropdownButton={isDropdownButton}
-                  onOpen={onOpen}
-                  items={items}
-                />
-              );
+          {data &&
+            data.times.slice(0,5).map((time: any, index: any) => {
+
+              let time_location = data.locations?.filter((location: any) => 
+                (location.place_id && location.place_id != "") ? 
+                  location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
+                  location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
+                )
+                if(time_location && time_location?.length > 0) {
+                  return time_location.map((locat: any, index2: number) => {
+                    return (
+                      <ScheduleCard
+                        key={index2}
+                        isDropdownButton={isDropdownButton}
+                        onOpen={onOpen}
+                        time={time}
+                        items={locat}
+                      />
+                    );
+                })
+              }
             })}
         </div>
       </div>
