@@ -19,8 +19,17 @@ const DetailsCallByGoogle = async (query:string) => {
     })
 }
 
+const getLocationImagesById = async (id:string) => {
+    return await axios.get(`${API_URL}/location/photos/${id}`)
+    .then(async (response) => response)
+    .catch((error)=>{
+        console.log(error,"error")
+    })
+}
+
 export {
-    DetailsCallByGoogle
+    DetailsCallByGoogle,
+    getLocationImagesById
 }
 
 

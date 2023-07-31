@@ -9,6 +9,7 @@ interface ITripPlanPopup {
 }
 
 const TripPlanPopup = ({item, show, onClose}: ITripPlanPopup) => {
+
     return (
         <PopupWithOverlay show={show} onClose={() => onClose()}  >
             <TripDetail item={item} />

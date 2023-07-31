@@ -2,7 +2,7 @@
 const nextConfig = {
     reactStrictMode: false,
     images: {
-        domains: ['media-cdn.tripadvisor.com']
+        domains: ['media-cdn.tripadvisor.com', 'lh3.googleusercontent.com']
     }
 }
 
