@@ -26,7 +26,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
   const [survey, setSurvey] = useState<any>({
     location: "",
     occassion: "",
-    activities: "",
+    priority: "",
     dates: "",
     message: "",
   });
@@ -252,7 +252,7 @@ setSurvey({...survey, dates: date})
                   top: "70px",
                 }}
                 value={survey.activities}
-                onChange={(val) => setSurvey({ ...survey, activities: val })}
+                onChange={(val) => setSurvey({ ...survey, priority: val })}
                 onAdditionalChange={(_data) => {}}
               />
             )}

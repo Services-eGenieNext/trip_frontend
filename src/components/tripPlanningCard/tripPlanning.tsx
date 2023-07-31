@@ -6,12 +6,15 @@ import axios from "axios";
 import { PY_API_URL } from "@/config/constant";
 import DetailsCall, { DetailsCallByGoogle } from "@/api-calls/location-details-call";
 import PricingCards from "./pricing-cards/PricingCards";
+import Card_skelton from '@/components/UIComponents/card_skelton';
 
 export default function TripPlanningCard({address}: {address: string}) {
+    const skelton = ["1","2","3","4","5","6","7","8"]
     const ref = useRef<HTMLInputElement>(null);
     const [read, setRead] = useState(false);
     const [showTripPopup, setShowTripPopup] = useState(false);
     const [item, setItem] = useState({});
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const handleClickOutside = (event:any) => {
@@ -43,6 +46,7 @@ export default function TripPlanningCard({address}: {address: string}) {
                     }
                 }
                 setLocationDetails(_locationDetails)
+                setLoading(false)
             }
         }
         _recomendFunc()
@@ -59,11 +63,14 @@ export default function TripPlanningCard({address}: {address: string}) {
             <div className="w-full flex justify-center relative">
                 <div className="flex flex-col sm-width gilroy">
                     <TripPlanningHeader variation="space-between" />
-                    <div className="flex flex-wrap justify-center gap-x-12">
-                        {
-                            locationDetails.length > 0 && (
-                                <PricingCards locationDetails={locationDetails} />
-                            )
+                    <div className="flex flex-wrap justify-center gap-x-12 gap-y-12">
+                        {loading === true ? (
+                            skelton.map((list:string,index:number)=>{
+                                return <Card_skelton key={index}/>
+                            })
+                        ):(
+                            <PricingCards locationDetails={locationDetails} />
+                        )
                         }
                     </div>
                 </div>

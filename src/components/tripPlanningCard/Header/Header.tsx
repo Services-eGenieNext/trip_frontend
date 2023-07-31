@@ -57,7 +57,7 @@ const TripPlanningHeader = ({ variation = "space-arround" }: ITripPlanningHeader
     }, [ref]);
 
     return (
-        <div className={`flex md:flex-row flex-col sm:justify-between items-center ${variation == "space-arround" && 'md:items-end'} w-full`}>
+        <div className={`flex md:flex-row flex-col sm:justify-between items-center mb-10 ${variation == "space-arround" && 'md:items-end'} w-full`}>
             {/* <h1 className="md:text-4xl text-2xl font-bold">Trip Planning</h1> */}
             <ComponentTitle title="Trip Planning" />
 

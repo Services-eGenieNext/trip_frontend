@@ -14,7 +14,7 @@ export default function PricingCard({
 }: IPlanningCard) {
 
   return variation === "cards" ? (
-    <div className="relative mt-10 bg-[#F6FDFF] rounded-lg border-2 border-dashed border-[#AEDCF0] px-5 py-8">
+    <div className="relative bg-[#F6FDFF] rounded-lg border-2 border-dashed border-[#AEDCF0] px-5 py-8">
       <div className={`${data.loading ? "blur-sm select-none" : ""}`}>
         <h1 className="text-2xl font-bold">{data.day}</h1>
         {rows == "2" ? (
