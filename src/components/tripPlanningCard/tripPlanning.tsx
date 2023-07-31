@@ -8,7 +8,7 @@ import DetailsCall, { DetailsCallByGoogle } from "@/api-calls/location-details-c
 import PricingCards from "./pricing-cards/PricingCards";
 import Card_skelton from '@/components/UIComponents/card_skelton';
 
-export default function TripPlanningCard({address}: {address: string}) {
+export default function TripPlanningCard({address, totalOpeningHours}: {address: string, totalOpeningHours: number | null}) {
     const skelton = ["1","2","3","4","5","6","7","8"]
     const ref = useRef<HTMLInputElement>(null);
     const [read, setRead] = useState(false);
@@ -45,17 +45,20 @@ export default function TripPlanningCard({address}: {address: string}) {
                         _locationDetails.push(res.data.result)
                     }
                 }
-                setLocationDetails(_locationDetails)
+                setLocationDetails([..._locationDetails])
                 setLoading(false)
             }
         }
         _recomendFunc()
-    }, [recommendations, locationDetails, setLocationDetails])
+    }, [recommendations])
 
     useEffect(() => {
-        axios.post(`${PY_API_URL}/get-recommendation`, {input: address}).then(response => {
-            setRecommendations(response.data.recommendations)
-        })
+        if(address && address!='')
+        {
+            axios.post(`${PY_API_URL}/get-recommendation`, {input: address}).then(response => {
+                setRecommendations(response.data.recommendations)
+            })
+        }
     }, [address])
 
     return (
@@ -69,7 +72,7 @@ export default function TripPlanningCard({address}: {address: string}) {
                                 return <Card_skelton key={index}/>
                             })
                         ):(
-                            <PricingCards locationDetails={locationDetails} />
+                            <PricingCards locationDetails={locationDetails} totalOpeningHours={totalOpeningHours} />
                         )
                         }
                     </div>

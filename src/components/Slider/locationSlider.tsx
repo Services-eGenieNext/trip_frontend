@@ -7,7 +7,6 @@ import ComponentTitle from "../UIComponents/ComponentTitle";
 import { useAppSelector } from "@/redux/hooks";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { setLocationAddress } from "@/redux/reducers/locationSlice";
 import Link from "next/link";
 import BlankLocation from "public/images/blank-location.jpg";
 import CardSkelton from "../UIComponents/card_skelton";
@@ -140,12 +139,6 @@ export default function LocationSlider() {
 
   const route = useRouter()
 
-  const onSetAddress = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, address: string) => {
-    e.preventDefault()
-    setLocationAddress(address)
-    route.push('trip-plan?address='+address)
-  }
-
   return (
     <div className="w-full flex justify-center mt-20 relative px-10">
       <div className="sm-width">
@@ -198,7 +191,7 @@ export default function LocationSlider() {
                         <div className="absolute inset-0" style={{background: 'linear-gradient(0deg, rgb(0 0 0 / 70%), transparent)'}}></div>
                         <h1 className="absolute bottom-4 left-6 text-white font-bold text-[25px] pe-5">{location.name}</h1>
                         <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
-                          <Link href={'/trip-plan?address='+location.formatted_address} onClick={(e) => onSetAddress(e, location.formatted_address)} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
+                          <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
                             Automate My Trip
                           </Link>
                           <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" onClick={()=> {
