@@ -110,7 +110,7 @@ const PricingCards = ({locationDetails, totalOpeningHours}: IPricingCards) => {
     return (
         <>
         {
-            totalOpeningHours && totalOpeningHours < 4 ? (
+            totalOpeningHours && totalOpeningHours > 4 ? (
                 <>
                 {
                     (!loading && days) &&
