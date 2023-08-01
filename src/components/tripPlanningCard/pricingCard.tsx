@@ -157,7 +157,7 @@ export default function PricingCard({
       )}
     </div>
   ) : (
-    <div className="grid grid-cols-6 my-10">
+    <div className="grid grid-cols-6 mb-10">
       <div className="col-span-1 w-[90px]">
         <span className="uppercase flex flex-col md:flex-row justify-between items-center text-sm md:text-base">
           {data.day}

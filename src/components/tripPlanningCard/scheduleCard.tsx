@@ -13,6 +13,7 @@ export default function ScheduleCard({items, isDropdownButton, onOpen, time}:ISc
     const [deleteTime, setDeleteTime] = useState(false)
     const [addEvent, setAddEvent] = useState(false)
     const [addNewEventValue, setaddNewEventValue] = useState("")
+    const [suggestedLocation, setSuggestedLocation] = useState('')
 
     const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
       console.log(e.dataTransfer.getData('product'))
@@ -41,59 +42,67 @@ export default function ScheduleCard({items, isDropdownButton, onOpen, time}:ISc
           window.scrollTo(0, number)
         }}
       >
-        <p className="gilroy font-semibold">{time} - </p>
-        <div className="flex flex-wrap justify-center items-center">
-          <p className="font-medium w-[100px]">{items.name}</p>
+        <p className="gilroy text-[11px] font-semibold">{time} - </p>
+        <div className="flex justify-between items-center">
+          <p className="font-medium w-[90px]">{suggestedLocation ? suggestedLocation : items.name}</p>
           {isDropdownButton == true ? (
             <div className="relative">
-            <span
-              className={`w-[18px] h-[13px] rounded ${CSS["svg"]}`}
-              onClick={() => {
-                setIsShowTooltip(true);
-              }}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-[14px] h-[12px] mx-auto"
+              <span
+                className={`w-[18px] block h-[13px] rounded ${CSS["svg"]}`}
+                onClick={() => {
+                  setIsShowTooltip(!isShowTooltip);
+                }}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                />
-              </svg>
-            </span>
-              {isShowTooltip === true && (
-                <div className="absolute top-2 right-0 w-[122px] h-[110px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-between py-3 px-4">
-                    <p className="text-black hover:text-[#9AB044]" onClick={()=>{
-                        setIsShowTooltip(false)
-                        setEditTime(true)
-                    }}>Edit time</p>
-                    <p className="text-black hover:text-[#9AB044]" onClick={()=>{
-                        setIsShowTooltip(false)
-                        setDeleteTime(true)
-                    }}>Delete event</p>
-                    <p className="text-black hover:text-[#9AB044]" onClick={()=>{
-                        setIsShowTooltip(false)
-                        setAddEvent(true)
-                        }}>Add event</p>
-                </div>
-              )}
-              {addEvent === true && (
-                <div className="absolute top-2 -right-40 sm:w-[462px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-center py-10 px-8 text-black">
-                <InputField type="text" label="Add Destination" placeholder='Which place are you suggesting?' value={addNewEventValue} onChange={(e) => setaddNewEventValue(e.target.value)} />
-                <div className="mt-4 w-full" onClick={()=>{console.log(addNewEventValue)}}>
-                <button className="w-full font-bold text-[18px] bg-[#009DE2] text-white py-3 rounded-lg" onClick={()=>{
-                    setAddEvent(false)
-                    setaddNewEventValue("")
-                    }}>Add Now</button>
-                </div>
-            </div>
-              )}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-[14px] h-[12px] mx-auto"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </span>
+              {
+                isShowTooltip === true && (
+                  <div className="absolute top-2 right-0 w-[122px] h-[110px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-between py-3 px-4">
+                      <p className="text-black hover:text-[#9AB044]" onClick={()=>{
+                          setIsShowTooltip(false)
+                          setEditTime(true)
+                      }}>Edit time</p>
+                      <p className="text-black hover:text-[#9AB044]" onClick={()=>{
+                          setIsShowTooltip(false)
+                          setDeleteTime(true)
+                      }}>Delete event</p>
+                      <p className="text-black hover:text-[#9AB044]" onClick={()=>{
+                          setIsShowTooltip(false)
+                          setAddEvent(true)
+                          }}>Add event</p>
+                  </div>
+                )
+              }
+              {
+                editTime === true && (
+                  <div className="absolute top-2 -right-40 sm:w-[462px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-center py-10 px-8 text-black">
+                    
+                    <InputField type="text" label="Add Destination" placeholder='Which place are you suggesting?' value={addNewEventValue} onChange={(e) => setaddNewEventValue(e.target.value)} />
+
+                    <div className="mt-4 w-full">
+                      <button className="w-full font-bold text-[18px] bg-[#009DE2] text-white py-3 rounded-lg" onClick={()=>{
+                        setEditTime(false)
+                        setSuggestedLocation(addNewEventValue)
+                        setaddNewEventValue("")
+                        }}>Add Now</button>
+                    </div>
+                    
+                  </div>
+                )
+              }
             </div>
           ) : (
             ""
