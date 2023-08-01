@@ -79,7 +79,10 @@ const ProductHorizontalSlide = ({
   return (
     <Section className="relative">
       <ComponentTitle title={Title} />
-      <p className="text-[var(--gray)]">{Description}</p>
+      {
+        !loading ? <p className="text-[var(--gray)]">{Description}</p> :
+        <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[900px] w-full h-[10px]"></div>
+      }
       <div ref={slideRef} id="location-to-visit-slide" className="mt-10">
         <SliderComponent>
           {loading === true

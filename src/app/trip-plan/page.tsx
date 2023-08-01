@@ -71,7 +71,7 @@ const TripPlan = () => {
           
             <TripPlanningCard address={`${params_list.address}`} totalOpeningHours={openingHours} automateLocation={automateLocation} />
 
-            <ProductHorizontalSlide locationsState={locationsState} url="variation_2" Title={`${automateLocation?.name} Location To Visit`} Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} />
+            <ProductHorizontalSlide locationsState={locationsState} url="variation_2" Title={`${automateLocation?.name} Location To Visit`} Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} isAddButton={true} isDesc={true} />
 
             <Products title="Most popular Restaurants" isAddButton={true} rows="2" />
 
