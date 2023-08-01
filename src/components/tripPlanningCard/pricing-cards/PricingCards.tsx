@@ -5,20 +5,27 @@ import TripPlanPopup from '../TripPlanPopup';
 import location_testing from "./test.json"
 import TripDetail from '../TripDetail';
 import SmallStory from '@/components/Story/SmallStory';
+import { VariationType } from '@/interfaces/product';
+import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide';
+import { useAppSelector } from '@/redux/hooks';
 
 interface IPricingCards {
     locationDetails: any
     totalOpeningHours?: number | null
     automateLocation?: any
+    v_type?: VariationType
 }
 
-const PricingCards = ({locationDetails, totalOpeningHours, automateLocation}: IPricingCards) => {
+const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_type}: IPricingCards) => {
 
     const [LocationDetails, setLocationDetails] = useState<any>([])
     const [showTripPopup, setShowTripPopup] = useState(false);
     const [item, setItem] = useState({});
     const [filteredLocations, setFilteredLocations] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const { locationsState } = useAppSelector((state) => state.locationReducer)
+    const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
+    
     const [days, setDays] = useState<any[]>([
         {
             day: "Monday",
@@ -115,7 +122,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation}: IP
     return (
         <>
         {
-            totalOpeningHours && totalOpeningHours > 4 ? (
+            (v_type !== '2' && totalOpeningHours && totalOpeningHours > 4) ? (
                 <>
                 {
                     (!loading && days) &&
@@ -162,7 +169,32 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation}: IP
                     <div className="lg:col-span-2 mt-10 ">
                         <div className="large-shadow sm:p-8 py-8 rounded-xl">
                         <TripDetail item={item} />
-                        <SmallStory positioning="block" item={item} />
+                        {
+                        v_type !== '2' ? (
+                            <SmallStory positioning="block" item={item} />
+                        ) : (
+                            <>
+                            <ProductHorizontalSlide 
+                                url = 'variation_2'
+                                Title={`${automateLocation?.name} Location To Visit`} 
+                                Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} 
+                                isAddButton={false} 
+                                isDesc={false} 
+                                locationsState = {locationsState}
+                                slidesToShow={3}
+                            />
+
+                            <ProductHorizontalSlide 
+                                url = 'variation_2'
+                                Title={`Most popular restaurants`} 
+                                isAddButton={false} 
+                                isDesc={false} 
+                                locationsState = {restaurantsState}
+                                slidesToShow={3}
+                            />
+                            </>
+                        )
+                        }
                         </div>
                     </div>
                 </div>

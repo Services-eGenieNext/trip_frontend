@@ -23,6 +23,9 @@ const ProductHorizontalSlide = ({
   isDesc,
   url,
   locationsState,
+  type = "detail-card",
+  v_type = "",
+  slidesToShow = 4
 }: IProductHorizontalSlide) => {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const [loading, setLoading] = useState(true);
@@ -78,9 +81,12 @@ const ProductHorizontalSlide = ({
   return (
     <Section className="relative">
       <ComponentTitle title={Title} />
-      <p className="text-[var(--gray)]">{Description}</p>
+      {
+        !loading ? <p className="text-[var(--gray)]">{Description}</p> :
+        <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[900px] w-full h-[10px]"></div>
+      }
       <div ref={slideRef} id="location-to-visit-slide" className="mt-10">
-        <SliderComponent>
+        <SliderComponent slidesToShow={slidesToShow} >
           {loading === true
             ? skelton.map((limit: string, index: number) => {
                 return (
@@ -114,9 +120,9 @@ const ProductHorizontalSlide = ({
                   : location.address_obj?.address_string;
                 return (
                   <>
-                    <div key={index} className={`px-2 w-[300px]`}>
+                    <div key={index} className={`px-2 max-w-[300px] w-full`}>
                       <div className={`grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden relative cursor-pointer ${styles["slider_card"]}`}>
-                        <div className="h-[178px] bg-gray-100 relative">
+                        <div className={`${ type == "title-card" ? 'h-[350px]' : 'h-[178px]'} bg-gray-100 relative`}>
                           <Image
                             src={image_path}
                             alt={location.name}
@@ -131,12 +137,10 @@ const ProductHorizontalSlide = ({
                             }}
                           ></div>
                         </div>
-                        <div className="p-4">
+                        <div className={`p-4 ${type == "title-card" ? "absolute bottom-4 left-6 text-white font-bold text-[25px] pe-5" : ""}`}>
                           <div className="grid grid-cols-2 items-center mb-2 relative">
                             <h4
-                              className={
-                                isAddButton ? "col-span-1" : "col-span-2"
-                              }
+                              className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${isAddButton ? "col-span-1" : "col-span-2"} `}
                             >
                               {location.name}
                             </h4>
@@ -167,22 +171,26 @@ const ProductHorizontalSlide = ({
                               </div>
                             )}
                           </div>
-                          {url == "variation_2" && (
-                            <div className="flex flex-wrap gap-2 items-center my-2">
-                              <span>{location?.rating}</span>
-                              {reviewArr &&
-                        reviewArr.map((review, index) => {
-                          if (index < location.rating) {
-                            return <FilledStar key={index} />;
-                          } else {
-                            return <BlankStar key={index} />;
+                          {
+                            url == "variation_2" && (
+                              <div className="flex flex-wrap gap-2 items-center my-2">
+                                <span>{location?.rating}</span>
+                                {
+                                  reviewArr &&
+                                  reviewArr.map((review, index) => {
+                                    if (index < location.rating) {
+                                      return <FilledStar key={index} />;
+                                    } else {
+                                      return <BlankStar key={index} />;
+                                    }
+                                  })
+                                }
+                                <span className="text-[var(--lite-gray)]">
+                                  {`(${location.user_ratings_total})`}
+                                </span>
+                              </div>
+                            )
                           }
-                        })}
-                              <span className="text-[var(--lite-gray)]">
-                                {`(${location.user_ratings_total})`}
-                              </span>
-                            </div>
-                          )}
                           {url == "variation_3" && (
                             <div className="flex gap-2 items-center absolute top-[7px] right-[7px] bg-white px-3 border rounded-lg">
                               <span>{location?.rating}</span>
@@ -199,7 +207,7 @@ const ProductHorizontalSlide = ({
                           className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}
                         >
                           <Link
-                            href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`}
+                            href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}
                             className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
                           >
                             Automate My Trip

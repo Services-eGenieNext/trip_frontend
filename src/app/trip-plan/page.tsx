@@ -17,38 +17,42 @@ import { useDispatch } from 'react-redux'
 const TripPlan = () => {
 
     const params = useSearchParams()
-    const [params_list, setParamsList] = useState({address: '', location_id: '', place_id: ''})
+    const [params_list, setParamsList] = useState<any>({address: '', location_id: '', place_id: '', v_type: ''})
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const [automateLocation, setAutomateLocation] = useState<any | null>(null)
     const [openingHours, setOpeningHours] = useState<number | null>(null)
 
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        const _defLocationToVisit = async () => {
-            let res = await LocationsCall("locations near " + automateLocation.name)
-            dispatch(setLocations(res))
-        }
-        if(automateLocation && automateLocation.name)
-        {
-            _defLocationToVisit()
-        }
-    }, [automateLocation])
+    const _defLocationToVisit = async (query: string) => {
+        let res = await LocationsCall("locations arround " + query)
+        dispatch(setLocations(res))
+    }
+
+    // useEffect(() => {
+        
+    // }, [automateLocation])
 
     useEffect(() => {
         const _defLocation = async () => {
+            let locationString = ''
             if(params_list.location_id)
             {
                 let item_Detail: any = await DetailCall(params_list.location_id)
                 setAutomateLocation(item_Detail.data)
+                let _locationStringArr = item_Detail.data.address_obj.address_string.split(' ')
+                locationString = _locationStringArr[_locationStringArr.length - 1]
             }
             else if(params_list.place_id)
             {
                 let item_Detail: any = await DetailsCallByGoogle(params_list.place_id)
                 setAutomateLocation(item_Detail.data.result)
-                console.log('automate locations',item_Detail.data.result)
+                let _locationStringArr = item_Detail.data.result.formatted_address.split(', ')
+                locationString = `${_locationStringArr[_locationStringArr.length - 2]} ${_locationStringArr[_locationStringArr.length - 1]}`
+
                 setOpeningHours(item_Detail.data.result.opening_hours.weekday_text?.filter((_week: any) => _week.toLowerCase().search('closed') == -1 ).length)
             }
+            _defLocationToVisit(locationString)
         }
         _defLocation()
 
@@ -58,10 +62,13 @@ const TripPlan = () => {
         let _address: any = params.get('address')
         let _location_id: any = params.get('location_id')
         let _place_id: any = params.get('place_id')
+        let _v_type: any = params.get('v_type')
+
         setParamsList({
             address: _address ?? 'best locations',
             location_id: _location_id ?? '',
-            place_id: _place_id ?? ''
+            place_id: _place_id ?? '',
+            v_type: _v_type ? _v_type : ''
         })
     }, [params])
 
@@ -69,11 +76,27 @@ const TripPlan = () => {
         <div>
             <PageBanner title={automateLocation?.name ?? 'Trip Plan'} automateLocation={automateLocation} />
           
-            <TripPlanningCard address={`${params_list.address}`} totalOpeningHours={openingHours} automateLocation={automateLocation} />
+            <TripPlanningCard 
+                address={`${params_list.address}`} 
+                totalOpeningHours={openingHours} 
+                automateLocation={automateLocation} 
+                v_type={params_list.v_type}
+            />
 
-            <ProductHorizontalSlide locationsState={locationsState} url="variation_2" Title={`${automateLocation?.name} Location To Visit`} Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} />
-
-            <Products title="Most popular Restaurants" isAddButton={true} rows="2" />
+            {
+                params_list.v_type !== "2" && 
+                <>
+                    <ProductHorizontalSlide 
+                        locationsState={locationsState} 
+                        url="variation_2" 
+                        Title={`${automateLocation?.name} Location To Visit`} 
+                        Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} isAddButton={true} 
+                        isDesc={true}
+                        v_type={"2"} />
+                    <Products title="Most popular Restaurants" isAddButton={true} rows="2" />
+                </>
+            }
+            
 
             <SmallStory positioning="inline" />
 

@@ -7,14 +7,16 @@ import { PY_API_URL } from "@/config/constant";
 import DetailsCall, { DetailsCallByGoogle } from "@/api-calls/location-details-call";
 import PricingCards from "./pricing-cards/PricingCards";
 import Card_skelton from '@/components/UIComponents/card_skelton';
+import { VariationType } from "@/interfaces/product";
 
 interface ITripPlanningCard {
     address: string
     totalOpeningHours: number | null
     automateLocation?: any
+    v_type?: VariationType
 }
 
-export default function TripPlanningCard({address, totalOpeningHours, automateLocation}: ITripPlanningCard) {
+export default function TripPlanningCard({address, totalOpeningHours, automateLocation, v_type=""}: ITripPlanningCard) {
     const skelton = ["1","2","3","4","5","6","7","8"]
     const ref = useRef<HTMLInputElement>(null);
     const [read, setRead] = useState(false);
@@ -82,6 +84,7 @@ export default function TripPlanningCard({address, totalOpeningHours, automateLo
                                 locationDetails={locationDetails} 
                                 totalOpeningHours={totalOpeningHours} 
                                 automateLocation={automateLocation}
+                                v_type={v_type}
                             />
                         )
                         }
