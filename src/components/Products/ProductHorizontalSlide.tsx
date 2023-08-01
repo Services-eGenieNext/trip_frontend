@@ -23,6 +23,7 @@ const ProductHorizontalSlide = ({
   isDesc,
   url,
   locationsState,
+  type = "detail-card"
 }: IProductHorizontalSlide) => {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const [loading, setLoading] = useState(true);
@@ -116,7 +117,7 @@ const ProductHorizontalSlide = ({
                   <>
                     <div key={index} className={`px-2 w-[300px]`}>
                       <div className={`grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden relative cursor-pointer ${styles["slider_card"]}`}>
-                        <div className="h-[178px] bg-gray-100 relative">
+                        <div className={`${ type == "title-card" ? 'h-[350px]' : 'h-[178px]'} bg-gray-100 relative`}>
                           <Image
                             src={image_path}
                             alt={location.name}
@@ -131,7 +132,7 @@ const ProductHorizontalSlide = ({
                             }}
                           ></div>
                         </div>
-                        <div className="p-4">
+                        <div className={`p-4 ${type == "title-card" ? "absolute bottom-4 left-6 text-white font-bold text-[25px] pe-5" : ""}`}>
                           <div className="grid grid-cols-2 items-center mb-2 relative">
                             <h4
                               className={
@@ -167,22 +168,26 @@ const ProductHorizontalSlide = ({
                               </div>
                             )}
                           </div>
-                          {url == "variation_2" && (
-                            <div className="flex flex-wrap gap-2 items-center my-2">
-                              <span>{location?.rating}</span>
-                              {reviewArr &&
-                        reviewArr.map((review, index) => {
-                          if (index < location.rating) {
-                            return <FilledStar key={index} />;
-                          } else {
-                            return <BlankStar key={index} />;
+                          {
+                            url == "variation_2" && (
+                              <div className="flex flex-wrap gap-2 items-center my-2">
+                                <span>{location?.rating}</span>
+                                {
+                                  reviewArr &&
+                                  reviewArr.map((review, index) => {
+                                    if (index < location.rating) {
+                                      return <FilledStar key={index} />;
+                                    } else {
+                                      return <BlankStar key={index} />;
+                                    }
+                                  })
+                                }
+                                <span className="text-[var(--lite-gray)]">
+                                  {`(${location.user_ratings_total})`}
+                                </span>
+                              </div>
+                            )
                           }
-                        })}
-                              <span className="text-[var(--lite-gray)]">
-                                {`(${location.user_ratings_total})`}
-                              </span>
-                            </div>
-                          )}
                           {url == "variation_3" && (
                             <div className="flex gap-2 items-center absolute top-[7px] right-[7px] bg-white px-3 border rounded-lg">
                               <span>{location?.rating}</span>

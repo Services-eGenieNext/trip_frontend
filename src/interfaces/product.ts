@@ -6,4 +6,5 @@ export interface IProductHorizontalSlide {
     isDesc?: boolean
     url? : string
     locationsState : [] | any
+    type?: 'detail-card' | 'title-card'
 }
