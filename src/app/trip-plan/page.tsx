@@ -1,6 +1,6 @@
 "use client"
 
-import { DetailCall } from '@/api-calls'
+import { DetailCall, LocationsCall } from '@/api-calls'
 import { DetailsCallByGoogle } from '@/api-calls/location-details-call'
 import ClientTestimonials from '@/components/Client-Testimonials/client-testimonials'
 import PageBanner from '@/components/PageBanner/PageBanner'
@@ -9,8 +9,10 @@ import Products from '@/components/Products/Products'
 import SmallStory from '@/components/Story/SmallStory'
 import TripPlanningCard from '@/components/tripPlanningCard/tripPlanning'
 import { useAppSelector } from '@/redux/hooks'
+import { setLocations } from '@/redux/reducers/locationSlice'
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 const TripPlan = () => {
 
@@ -19,6 +21,19 @@ const TripPlan = () => {
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const [automateLocation, setAutomateLocation] = useState<any | null>(null)
     const [openingHours, setOpeningHours] = useState<number | null>(null)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        const _defLocationToVisit = async () => {
+            let res = await LocationsCall("locations near " + automateLocation.name)
+            dispatch(setLocations(res))
+        }
+        if(automateLocation && automateLocation.name)
+        {
+            _defLocationToVisit()
+        }
+    }, [automateLocation])
 
     useEffect(() => {
         const _defLocation = async () => {
@@ -36,6 +51,7 @@ const TripPlan = () => {
             }
         }
         _defLocation()
+
     }, [params_list])
 
     useEffect(() => {
@@ -47,15 +63,15 @@ const TripPlan = () => {
             location_id: _location_id ?? '',
             place_id: _place_id ?? ''
         })
-    }, [])
+    }, [params])
 
     return (
         <div>
             <PageBanner title={automateLocation?.name ?? 'Trip Plan'} automateLocation={automateLocation} />
           
-            <TripPlanningCard address={`${params_list.address}`} totalOpeningHours={openingHours} />
+            <TripPlanningCard address={`${params_list.address}`} totalOpeningHours={openingHours} automateLocation={automateLocation} />
 
-            <ProductHorizontalSlide locationsState={locationsState} url="variation_2" Title='Bali Location To Visit' Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} />
+            <ProductHorizontalSlide locationsState={locationsState} url="variation_2" Title={`${automateLocation?.name} Location To Visit`} Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} />
 
             <Products title="Most popular Restaurants" isAddButton={true} rows="2" />
 

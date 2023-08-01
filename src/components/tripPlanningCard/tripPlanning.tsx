@@ -8,7 +8,13 @@ import DetailsCall, { DetailsCallByGoogle } from "@/api-calls/location-details-c
 import PricingCards from "./pricing-cards/PricingCards";
 import Card_skelton from '@/components/UIComponents/card_skelton';
 
-export default function TripPlanningCard({address, totalOpeningHours}: {address: string, totalOpeningHours: number | null}) {
+interface ITripPlanningCard {
+    address: string
+    totalOpeningHours: number | null
+    automateLocation?: any
+}
+
+export default function TripPlanningCard({address, totalOpeningHours, automateLocation}: ITripPlanningCard) {
     const skelton = ["1","2","3","4","5","6","7","8"]
     const ref = useRef<HTMLInputElement>(null);
     const [read, setRead] = useState(false);
@@ -72,7 +78,11 @@ export default function TripPlanningCard({address, totalOpeningHours}: {address:
                                 return <Card_skelton key={index}/>
                             })
                         ):(
-                            <PricingCards locationDetails={locationDetails} totalOpeningHours={totalOpeningHours} />
+                            <PricingCards 
+                                locationDetails={locationDetails} 
+                                totalOpeningHours={totalOpeningHours} 
+                                automateLocation={automateLocation}
+                            />
                         )
                         }
                     </div>

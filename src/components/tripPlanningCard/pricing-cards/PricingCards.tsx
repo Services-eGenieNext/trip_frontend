@@ -9,9 +9,10 @@ import SmallStory from '@/components/Story/SmallStory';
 interface IPricingCards {
     locationDetails: any
     totalOpeningHours?: number | null
+    automateLocation?: any
 }
 
-const PricingCards = ({locationDetails, totalOpeningHours}: IPricingCards) => {
+const PricingCards = ({locationDetails, totalOpeningHours, automateLocation}: IPricingCards) => {
 
     const [LocationDetails, setLocationDetails] = useState<any>([])
     const [showTripPopup, setShowTripPopup] = useState(false);
@@ -107,6 +108,10 @@ const PricingCards = ({locationDetails, totalOpeningHours}: IPricingCards) => {
         _loadLocations()
     }, [locationDetails])
 
+    useEffect(() => {
+        setItem({...automateLocation})
+    }, [automateLocation])
+
     return (
         <>
         {
@@ -147,15 +152,17 @@ const PricingCards = ({locationDetails, totalOpeningHours}: IPricingCards) => {
                                 rows="1"
                                 key={index}
                                 data={_item}
-                                onOpen={(item) => {}}
+                                onOpen={(item) => {
+                                    setItem(item)
+                                }}
                             />
                             );
                         })}
                     </div>
                     <div className="lg:col-span-2 mt-10 ">
                         <div className="large-shadow sm:p-8 py-8 rounded-xl">
-                        <TripDetail />
-                        <SmallStory positioning="block" />
+                        <TripDetail item={item} />
+                        <SmallStory positioning="block" item={item} />
                         </div>
                     </div>
                 </div>

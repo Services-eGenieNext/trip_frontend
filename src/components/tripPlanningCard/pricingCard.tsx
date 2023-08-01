@@ -158,7 +158,7 @@ export default function PricingCard({
     </div>
   ) : (
     <div className="grid grid-cols-6 my-10">
-      <div className="col-span-1">
+      <div className="col-span-1 w-[90px]">
         <span className="uppercase flex flex-col md:flex-row justify-between items-center text-sm md:text-base">
           {data.day}
           {/* <span className="w-[38px] h-[29px] text-[var(--green)] bg-[var(--lite-green)] flex justify-center items-center rounded-lg">
@@ -182,7 +182,7 @@ export default function PricingCard({
                       <ScheduleCard
                         key={index2}
                         isDropdownButton={isDropdownButton}
-                        onOpen={onOpen}
+                        onOpen={(_item) => onOpen(_item)}
                         time={time}
                         items={locat}
                       />

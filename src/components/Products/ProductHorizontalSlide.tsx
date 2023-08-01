@@ -117,10 +117,10 @@ const ProductHorizontalSlide = ({
                     <div key={index} className={`px-2 w-[300px]`}>
                       <div className={`grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden relative cursor-pointer ${styles["slider_card"]}`}>
                         <div className="h-[178px] bg-gray-100 relative">
-                          <img
+                          <Image
                             src={image_path}
-                            alt={image_path}
-                            className="w-full h-full"
+                            alt={location.name}
+                            fill={true}
                             style={{ objectFit: "cover" }}
                           />
                           <div
@@ -199,7 +199,7 @@ const ProductHorizontalSlide = ({
                           className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}
                         >
                           <Link
-                            href={"/trip-plan?address=" + address}
+                            href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`}
                             className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
                           >
                             Automate My Trip
