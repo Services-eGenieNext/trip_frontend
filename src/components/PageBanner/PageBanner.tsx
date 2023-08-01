@@ -29,7 +29,7 @@ const PageBanner = ({title, automateLocation}: IPageBanner) => {
             }
             if(automateLocation?.place_id)
             {
-                let res = await _getlocationImages(automateLocation.photos[0].photo_reference)
+                let res = await _getlocationImages(automateLocation.photos[0].photo_reference, "3000")
                 setBgImage(res)
             }
         }
