@@ -148,14 +148,14 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                 </>       
             ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-3">
-                    <div className="lg:col-span-1 flex flex-wrap justify-center">
+                    <div className="lg:col-span-1 flex flex-wrap justify-center max-h-[1550px] h-full overflow-auto">
                         {
                         (!loading && days) &&
                         days.map((_item, index) => {
                             return (
                             <PricingCard
-                                variation="list"
-                                isDropdownButton={false}
+                                variation={'list'}
+                                isDropdownButton={v_type == "2" ? true : false}
                                 rows="1"
                                 key={index}
                                 data={_item}
@@ -166,7 +166,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                             );
                         })}
                     </div>
-                    <div className="lg:col-span-2 mt-10 ">
+                    <div className="lg:col-span-2">
                         <div className="large-shadow sm:p-8 py-8 rounded-xl">
                         <TripDetail item={item} />
                         {
