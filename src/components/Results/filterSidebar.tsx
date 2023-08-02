@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FiltersOptions from "./filtersOptions";
 import ReviewFilterBox from './reviewFilterBox'
 import Filter_option from '@/api/filters'
 import PriceSlider from './priceSlider'
+import Occasion from '@/data/occasion.json'
+import Activities from '@/data/priority.json'
 
-export default function FilterSidebar() {
+export default function FilterSidebar({locations}:any) {
 
   const [showFilter, setShowFilter] = useState(false)
+  const [Ranking, setRanking] = useState("")
+  const [filteredData, setFilteredData] = useState([])
+
+  useEffect(()=>{
+    console.log(Ranking,"Ranking")
+    // const filteredArray = locations.filter((list:any)=>{
+    // })
+    console.log(locations,"locations")
+// console.log(filteredArray,"filteredArray")
+  },[Ranking])
 
   return (
     <>
-      <span className="lg:hidden fixed left-0 top-1/2 translate-y-[-50%] flex justify-center items-center text-white w-[40px] h-[40px] bg-[#009ee2] rounded-r-lg z-10 "
+      <span className="lg:hidden fixed left-0 top-1/2 translate-y-[-50%] flex justify-center items-center text-white w-[40px] h-[40px] bg-[#009ee2] rounded-r-lg  "
             onClick={() => setShowFilter(!showFilter)}
         >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-8 h-8">
@@ -40,58 +52,39 @@ export default function FilterSidebar() {
       <h1 className="text-[30px] font-semibold border-b border-[#E3E3E3] pb-7">
         Filter By
       </h1>
-      <FiltersOptions
-        filters={Filter_option.popularFilters}
+      {Activities.length > 0 && (
+        <FiltersOptions
+        filters={Activities}
         inputType="checkbox"
-        title="Popular Filters"
+        title="Activities"
       />
+      )}
       <PriceSlider
       title="Price Per Night"
       />
-      <FiltersOptions
+      {Occasion.length > 0 && (
+        <FiltersOptions
+        filters={Occasion}
+        inputType="checkbox"
+        title="Occasion"
+      />
+      )}
+      {/* <FiltersOptions
         filters={Filter_option.guestRating}
-        inputType="radio"
-        title="Guest Rating"
+        inputType="checkbox"
+        title="Cuisines"
+      /> */}
+      <ReviewFilterBox
+        filters={Filter_option.propertyClass}
+        title="City Ranking"
+        type = "review"
+        setRanking={setRanking}
       />
       <ReviewFilterBox
         filters={Filter_option.propertyClass}
-        title="Property Class"
+        title="Activity Ranking"
         type = "review"
-      />
-      <FiltersOptions
-        filters={Filter_option.paymentType}
-        inputType="checkbox"
-        title="Payment Type"
-      />
-      <FiltersOptions
-        filters={Filter_option.roomType}
-        inputType="checkbox"
-        title="Room Type"
-      />
-      <ReviewFilterBox
-        filters={Filter_option.holidayRentalBedrooms}
-        title="Holiday Rental Bedrooms"
-        type = "holidayRentalBedrooms"
-      />
-      <FiltersOptions
-        filters={Filter_option.area}
-        inputType="checkbox"
-        title="Area"
-      />
-      <FiltersOptions
-        filters={Filter_option.popularLocations}
-        inputType="checkbox"
-        title="Popular Location"
-      />
-      <FiltersOptions
-        filters={Filter_option.mealPlansAvailable}
-        inputType="checkbox"
-        title="Meal plans available"
-      />
-      <FiltersOptions
-        filters={Filter_option.amenities}
-        inputType="checkbox"
-        title="Amenities"
+        setRanking={setRanking}
       />
     </div>
     </>

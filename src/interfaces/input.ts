@@ -23,13 +23,13 @@ interface IInputField {
 }
 
 export interface ISelectField extends IInputField  {
-    data: ISelectOptions[]
+    data: any
 }
 
 export interface ISelectOptions {
     additional?: boolean
-    key: string | number
-    value: string
+    id: string | number
+    name: string
 }
 
 export interface IDateRangeField extends DefaultField  {

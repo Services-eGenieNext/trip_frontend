@@ -1,38 +1,38 @@
 [
     {
-        "key": 1,
-        "value":"Beaches"
+        "id": 1,
+        "name":"Beaches"
     },
     {
-        "key": 2,
-        "value":"Mountains"
+        "id": 2,
+        "name":"Mountains"
     },
     {
-        "key": 3,
-        "value":"Clubs"
+        "id": 3,
+        "name":"Clubs"
     },
     {
-        "key": 4,
-        "value":"Restaurants"
+        "id": 4,
+        "name":"Restaurants"
     },
     {
-        "key": 5,
-        "value":"Romance"
+        "id": 5,
+        "name":"Romance"
     },
     {
-        "key": 6,
-        "value":"Aquatic Activities"
+        "id": 6,
+        "name":"Aquatic Activities"
     },
     {
-        "key": 7,
-        "value":"Outdoor Activities"
+        "id": 7,
+        "name":"Outdoor Activities"
     },
     {
-        "key": 8,
-        "value":"Music Festivals"
+        "id": 8,
+        "name":"Music Festivals"
     },
     {
-        "key": 9,
-        "value":"Camping"
+        "id": 9,
+        "name":"Camping"
     }
 ]

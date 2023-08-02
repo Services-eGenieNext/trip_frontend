@@ -15,6 +15,7 @@ import { addDays } from "date-fns";
 import { useRouter } from 'next/navigation'
 import { useAppDispatch } from "@/redux/hooks";
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
+import MultiSelectDropdown from '@/components/UIComponents/MultiSelectDropdown'
 
 export default function HeroFilterSection() {
   const dispatch = useAppDispatch()
@@ -77,7 +78,6 @@ export default function HeroFilterSection() {
                 data={LocationJson}
                 className={`mr-2 sm:my-2 my-5 sm:w-[200px]`}
                 styling={{
-                  dropdownHeight: "max-h-[140px]",
                   shadow: "drop-shadow-xl ",
                   left: "0px",
                   top: "70px",
@@ -118,28 +118,26 @@ export default function HeroFilterSection() {
         icon={<CalenderIcon />}
       />
 
-      <SelectField
-        label="Occassion"
-        placeholder="Select ..."
-        data={Occasion}
-        className={`mr-2 sm:my-2 my-5 sm:w-[200px] ${styles.inputWrapper}`}
-        value={locationSearch.occassion}
-        onChange={(val) =>
+<MultiSelectDropdown
+        searchBar
+        items={Occasion}
+        Label={"Occasion"}
+        heightItemsContainer="300px"
+        placeholder="Select..."
+        onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
         }
-        onAdditionalChange={(_data) => {}}
       />
 
-      <SelectField
-        label="Priority"
-        placeholder="Select ..."
-        data={Priority}
-        className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
-        value={locationSearch.priority}
-        onChange={(val) =>
-          setLocationSearch({ ...locationSearch, priority: val })
+<MultiSelectDropdown
+        searchBar
+        items={Priority}
+        Label={"Priority"}
+        heightItemsContainer="300px"
+        placeholder="Select..."
+        onChange={(val: any) =>
+          setLocationSearch({ ...locationSearch, occassion: val })
         }
-        onAdditionalChange={(_data) => {}}
       />
 
       <SelectField

@@ -6,9 +6,10 @@ interface IFilters {
   filters?: any;
   title?: string;
   type?: string;
+  setRanking?:any;
 }
 
-export default function ReviewFilterBox({ filters, title, type }: IFilters) {
+export default function ReviewFilterBox({ filters, title, type,setRanking }: IFilters) {
   return (
     <div className="py-7 border-b border-[#E3E3E3]">
       <h1 className="text-[18px] font-bold">{title}</h1>
@@ -19,6 +20,9 @@ export default function ReviewFilterBox({ filters, title, type }: IFilters) {
               <div
                 key={index}
                 className="flex items-center justify-center py-2 px-3 rounded-md border border-[#898989] cursor-pointer"
+                onClick={()=>[
+                  setRanking(filters.label)
+                ]}
               >
                 <span className="text-[#898989] text-[14px] font-bold">{filters.label}</span>
                 {type === "review" ? (
