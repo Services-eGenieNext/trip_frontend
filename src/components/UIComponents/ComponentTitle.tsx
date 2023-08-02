@@ -5,9 +5,9 @@ interface IComponentTitle {
 }
 
 const ComponentTitle = ({title}: IComponentTitle) => {
-    return (
-        <h3 className="font-bold text-2xl md:text-4xl gilroy capitalize">{title}</h3>
-    )
+    return title ? 
+    <h3 className="font-bold text-2xl md:text-4xl gilroy capitalize">{title}</h3> :
+    <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[300px] w-full h-[30px]"></div>
 }
 
 export default ComponentTitle

@@ -7,9 +7,10 @@ import "./slide.css"
 
 interface ISliderComponent {
     children: React.ReactNode
+    slidesToShow?: number
 }
 
-const SliderComponent = ({children}: ISliderComponent) => {
+const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
 
     function SampleNextArrow(props: any) {
         const { style, onClick } = props;
@@ -66,8 +67,8 @@ const SliderComponent = ({children}: ISliderComponent) => {
         dots: false,
         infinite: false,
         speed: 500,
-        slidesToShow: 4,
-        slidesToScroll: 4,
+        slidesToShow: slidesToShow,
+        slidesToScroll: slidesToShow,
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />,
         responsive: [

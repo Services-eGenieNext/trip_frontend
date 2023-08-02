@@ -1,3 +1,4 @@
+export type VariationType = '1' | '2' | '' | null
 export interface IProductHorizontalSlide {
     Title: string
     Description?: string
@@ -6,4 +7,7 @@ export interface IProductHorizontalSlide {
     isDesc?: boolean
     url? : string
     locationsState : [] | any
+    type?: 'detail-card' | 'title-card'
+    v_type?: VariationType
+    slidesToShow?: number
 }
