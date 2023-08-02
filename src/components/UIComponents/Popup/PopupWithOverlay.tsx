@@ -35,7 +35,7 @@ const PopupWithOverlay = ({show, onClose=()=> {}, children}: IPopupOverlay) => {
     }, [showPopup])
 
     return (
-        <div id={`overlayPopup`} ref={overlayRef} className={`hidden opacity-0 fixed inset-0 z-10 bg-[rgba(0,0,0,0.5)] max-h-screen h-screen transition-all duration-300`}>
+        <div id={`overlayPopup`} ref={overlayRef} className={`hidden opacity-0 fixed inset-0 z-20 bg-[rgba(0,0,0,0.5)] max-h-screen h-screen transition-all duration-300`}>
             <div className="flex justify-center items-center mt-[5vh] mx-[1rem]">
                 <div className="bg-white p-10 w-[900px] rounded-xl relative">
                     <span 

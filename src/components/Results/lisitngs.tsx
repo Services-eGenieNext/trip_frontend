@@ -26,7 +26,7 @@ export default function Lisitngs({ locations }: any) {
       <p className="text-[18px] text-[#3F3F3F]">
         Show listing of {results ? results.length : "0"} Places...
       </p>
-      <div className="flex flex-wrap itemns-center lg:justify-between justify-center my-8 gap-y-14 gap-x-3">
+      <div className="flex flex-wrap itemns-center lg:justify-start justify-center my-8 gap-y-14 gap-x-10">
         {loading === true
           ? skelton.map((show: any, index: number) => {
               return (
@@ -46,7 +46,7 @@ export default function Lisitngs({ locations }: any) {
                       <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
                       <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
                     </svg>
-                  <div className="h-[25px] bg-white rounded-full dark:bg-gray-700 w-[50px] absolute top-2 right-2 z-10"></div>
+                  <div className="h-[25px] bg-white rounded-full dark:bg-gray-700 w-[50px] absolute top-2 right-2"></div>
                   </div>
                   <div className="w-full">
                   <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 mx-4"></div>
@@ -71,7 +71,7 @@ export default function Lisitngs({ locations }: any) {
                     className="sm:w-[260px] w-[320px] overflow-hidden rounded-lg flex flex-col justify-between sm:items-start items-center"
                   >
                     <div className="sm:h-[235px] h-[260px] w-full relative">
-                    <img src={image_path} alt={image_path} style={{objectFit: "cover"}} className="h-full w-full" />
+                    <img src={image_path} alt={image_path} style={{objectFit: "cover",}} className="h-full w-full" />
                       <div className="absolute top-2 right-2 flex items-center gap-x-2 bg-white py-1 px-4 rounded-full">
                         <FilledStar />
                         <p className="text-[#009DE2] font-semibold">{location.rating}</p>

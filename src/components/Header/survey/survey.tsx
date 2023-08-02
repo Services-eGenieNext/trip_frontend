@@ -65,7 +65,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
   useEffect(() => {
     if (survey.location !== "") {
       const activities = async () => {
-        let res = await LocationsCall(survey.location);
+        let res = await LocationsCall(`best places for visit in ${survey.location} for tourist`);
         console.log("survey locations", res);
         setLocations(res)
       };

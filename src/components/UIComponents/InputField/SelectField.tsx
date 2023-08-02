@@ -53,8 +53,6 @@ if(value !== ""){
 }
     },[value])
 
-    const stringVal: string = data.find(d => d.key!==0 && d.value == value)?.value ?? ''
-
     return (
         <div ref={selectRef} className={`relative cursor-pointer select-none ${className}`}>
             <div className="relative">
@@ -83,20 +81,20 @@ if(value !== ""){
                 <ul className={`list-none overflow-auto ${styling?.dropdownHeight ? styling.dropdownHeight : "max-h-[300px]"}`}>
                     {
                         data.map((d: ISelectOptions, i: number) => {
-                            return <li key={i} className={`px-3 py-2 cursor-pointer hover:bg-gray-50 ${value === d.key ? 'bg-[var(--dim-gray)]' : ''}`}
+                            return <li key={i} className={`px-3 py-2 cursor-pointer hover:bg-gray-50 ${value === d.id ? 'bg-[var(--dim-gray)]' : ''}`}
                             onClick={() => {
                                 setOpenDropDown(false)
-                                setInputVal(d.value)
+                                setInputVal(d.name)
                                 // if(!d.additional)
                                 // {
-                                //     onChange(d.value)
+                                //     onChange(d.name)
                                 // }
                                 // else
                                 // {
                                 //     onAdditionalChange(d)
                                 // }
                             }}
-                            >{d.value}</li>
+                            >{d.name}</li>
                         })
                     }
                 </ul>

@@ -1,46 +1,46 @@
 [
     {
-        "key": 1,
-        "value":"Birthday"
+        "id": 1,
+        "name":"Birthday"
     },
     {
-        "key": 2,
-        "value":"Bachelor Party"
+        "id": 2,
+        "name":"Bachelor Party"
     },
     {
-        "key": 3,
-        "value":"Bachelorette party"
+        "id": 3,
+        "name":"Bachelorette party"
     },
     {
-        "key": 4,
-        "value":"Wedding"
+        "id": 4,
+        "name":"Wedding"
     },
     {
-        "key": 5,
-        "value":"Engagement"
+        "id": 5,
+        "name":"Engagement"
     },
     {
-        "key": 6,
-        "value":"Traveling for fun"
+        "id": 6,
+        "name":"Traveling for fun"
     },
     {
-        "key": 7,
-        "value":"Family vacation"
+        "id": 7,
+        "name":"Family vacation"
     },
     {
-        "key": 8,
-        "value":"Just looking to party"
+        "id": 8,
+        "name":"Just looking to party"
     },
     {
-        "key": 9,
-        "value":"Reunion"
+        "id": 9,
+        "name":"Reunion"
     },
     {
-        "key": 10,
-        "value":"Honeymoon"
+        "id": 10,
+        "name":"Honeymoon"
     },
     {
-        "key": 5,
-        "value":"Anniversary"
+        "id": 5,
+        "name":"Anniversary"
     }
 ]
