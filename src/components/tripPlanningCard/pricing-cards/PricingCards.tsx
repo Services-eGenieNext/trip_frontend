@@ -7,8 +7,10 @@ import TripDetail from '../TripDetail';
 import SmallStory from '@/components/Story/SmallStory';
 import { VariationType } from '@/interfaces/product';
 import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import styles from "./pricing-cards.module.css"
+import { setDays } from '@/redux/reducers/itinerarySlice';
+import { IDays } from '@/interfaces';
 
 interface IPricingCards {
     locationDetails: any
@@ -25,9 +27,11 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
     const [loading, setLoading] = useState<boolean>(true);
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
+    // const { days } = useAppSelector((state) => state.itineraryReducer)
     
-    const [filterDays, setFilterDays] = useState<any[]>([])
+    const [filterDays, setFilterDays] = useState<IDays[]>([])
 
+    // const dispatch = useAppDispatch()
     const [days, setDays] = useState<any[]>([
         {
             day: "Monday",
@@ -67,7 +71,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
     useEffect(() => {
 
         setFilterDays(days.filter((_day: any) => _day.times.length > 0))
-    
+        console.log('days', days)
     }, [days])
 
     useEffect(() => {
@@ -104,7 +108,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
             })
         }
 
-        const timeLocaitonLoopFunc = async (_days: any[], index: number) => {
+        const timeLocaitonLoopFunc = async (_days: IDays[], index: number) => {
             let time: any[] = []
             
             for (let i = 0; i < _days[index].times.length; i++) {
@@ -170,6 +174,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
 
             setLoading(false)
         }
+
         if(LocationDetails.length > 0) {
             _loadDays()
         }
@@ -194,7 +199,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
             }
             locations = [].concat(...locations)
             locations = [...new Set(locations)];
-            setLocationDetails(locations)
+            setLocationDetails([...locations])
         }
         _loadLocations()
     }, [locationDetails])

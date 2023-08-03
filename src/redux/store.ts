@@ -4,6 +4,7 @@ import restaurantsReducer from "./reducers/restaurantsSlice";
 import popularActivities from "./reducers/popularActivities";
 import reviewsReducer from './reducers/reviews'
 import surveyReducer from "./reducers/surveySlice";
+import itineraryReducer from "./reducers/itinerarySlice";
 
 export const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
         popularActivities,
         reviewsReducer,
         surveyReducer,
+        itineraryReducer
     },
     devTools: process.env.NODE_ENV !== "production",
 });
