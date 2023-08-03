@@ -17,10 +17,14 @@ import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
 import LocationJson from '@/data/location.json'
+import { setSurveyValue } from "@/redux/reducers/surveySlice";
+import { useSearchParams } from 'next/navigation'
 
 export default function HeroFilterSection({ surveyData }: any) {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const params = useSearchParams()
+  const paramsAddress = params.get("address")
   const [date, setDate] = useState<any>({
     key: "selection",
   });
@@ -36,39 +40,45 @@ export default function HeroFilterSection({ surveyData }: any) {
   });
 
   useEffect(() => {
-    setLocationSearch({
-      ...locationSearch,
+    let data = {
       location: surveyData.location,
       occassion: surveyData.occassion,
       priority: surveyData.priority,
       person: surveyData.person ? surveyData.person : "",
-    });
-    _def();
+      spending: "",
+      dates: "",
+    }
+    setLocationSearch(
+      data
+    );
   }, [surveyData]);
 
   useEffect(() => {
     setLocationSearch({ ...locationSearch, dates: date });
   }, [date]);
 
-  const _def = async () => {
-    if (surveyData.location !== "") {
+  const _def = async (paramsAddress:any) => {
+    if (paramsAddress !== "") {
       let res = await LocationsCall(
-        `best places for visit in ${locationSearch.location} for tourist`
-      );
+        `best places for visit in ${paramsAddress} for tourist`
+        );
+        console.log("6",paramsAddress)
       dispatch(setLocations(res));
     }
   };
-    useEffect(()=>{
-  if(locationSearch.location !== ""){
-  _def()
-  }
-    },[locationSearch])
+    // useEffect(()=>{
+    //   setLocationSearch(surveyData)
+    //   if(surveyData.location !== ""){
+    //     _def()
+    //   }
+    // },[surveyData])
 
   const handleRoute = () => {
     if (locationSearch.dates.startDate) {
       router.push("/trip-plan?address=" + locationSearch.location);
     } else {
-      _def();
+      _def(locationSearch.location)
+      dispatch(setSurveyValue(locationSearch))
     }
   };
 

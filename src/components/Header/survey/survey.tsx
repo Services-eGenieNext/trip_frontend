@@ -66,7 +66,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
     if (survey.location !== "") {
       const activities = async () => {
         let res = await LocationsCall(`best places for visit in ${survey.location} for tourist`);
-        console.log("survey locations", res);
+        console.log("survey locations 5", res);
         setLocations(res)
       };
       activities();
@@ -91,7 +91,7 @@ setSurvey({...survey, dates: date})
       onClose()
     }else{
       dispatch(setSurveyValue(survey))
-      router.push('/results')
+      router.push(`/results?address=${survey.location}`)
       onClose()
       setStep(1)
     }
