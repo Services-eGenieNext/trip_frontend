@@ -54,8 +54,10 @@ export default function SelectCheckBoxSimple({
   const selectRef = useRef<HTMLDivElement | null>(null);
   const [addCustomeOption, setAddCustomeOption] = useState(false);
   const [customeField, setCustomeField] = useState("");
+  const ref = useRef<HTMLInputElement>(null);
 
   // useEffect(() => {
+  //   console.log(SelectedData,"SelectedData")
   //   setOptsSelected(SelectedData);
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [SelectedData]);
@@ -70,6 +72,15 @@ export default function SelectCheckBoxSimple({
     setOpts(newArray);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
+
+  useEffect(() => {
+    const handleClickOutside = (event:any) => {
+    if (!ref?.current?.contains(event.target)) {
+      setShowDropDown(false);
+    }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+}, [ref]);
 
   useEffect(() => {
     let empty: any = [];
@@ -254,7 +265,7 @@ export default function SelectCheckBoxSimple({
             )}
           </Box>
           {optsSelected?.length > 0 && (
-            <Box display="flex" alignItems="center" mr="20px">
+            <Box display="flex" alignItems="center" mr="5px">
               <Box className="py-1 px-2 flex justify-center items-center rounded-sm bg-[#4B9AD4] text-white">
                 <Typography
                   fontSize="10px"
@@ -303,6 +314,7 @@ export default function SelectCheckBoxSimple({
       </Box>
       {showDropDown && (
         <Box
+        ref={ref}
           position="absolute"
           left="0"
           right="0"

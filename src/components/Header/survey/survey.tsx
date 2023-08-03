@@ -3,7 +3,7 @@ import BlueButton from "@/components/UIComponents/Buttons/BlueButton";
 import PopupWithOverlay from "@/components/UIComponents/Popup/PopupWithOverlay";
 import { ISurvey } from "@/interfaces";
 import React, { useState } from "react";
-import Occasions from "@/data/occasion.json";
+import Occasion from "@/data/occasion.json";
 import Priorities from "@/data/priority.json";
 import LocationJson from '@/data/location.json'
 import InputField from "@/components/UIComponents/InputField/InputField";
@@ -19,14 +19,15 @@ import DateRangeField from "../../UIComponents/InputField/DateRangeField";
 import CalenderIcon from "../../icons/Calender";
 import styles from '../Header.module.css'
 import Link from "next/link";
+import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
 
 const Survey = ({ show, onClose }: ISurvey) => {
   const dispatch = useAppDispatch()
   const router = useRouter()
   const [survey, setSurvey] = useState<any>({
     location: "",
-    occassion: "",
-    priority: "",
+    occassion: [],
+    priority: [],
     dates: "",
     message: "",
   });
@@ -62,16 +63,16 @@ const Survey = ({ show, onClose }: ISurvey) => {
     },
   ];
 
-  useEffect(() => {
-    if (survey.location !== "") {
-      const activities = async () => {
-        let res = await LocationsCall(`best places for visit in ${survey.location} for tourist`);
-        console.log("survey locations 5", res);
-        setLocations(res)
-      };
-      activities();
-    }
-  }, [survey]);
+  // useEffect(() => {
+  //   if (survey.location !== "") {
+  //     const activities = async () => {
+  //       let res = await LocationsCall(`best places for visit in ${survey.location} for tourist`);
+  //       console.log("survey locations 5", res);
+  //       setLocations(res)
+  //     };
+  //     activities();
+  //   }
+  // }, [survey]);
 
   useEffect(()=>{
 setSurvey({...survey, dates: date})
@@ -90,8 +91,8 @@ setSurvey({...survey, dates: date})
       router.push('/trip-plan?address='+survey.location)
       onClose()
     }else{
-      dispatch(setSurveyValue(survey))
       router.push(`/results?address=${survey.location}`)
+      dispatch(setSurveyValue(survey))
       onClose()
       setStep(1)
     }
@@ -223,38 +224,30 @@ setSurvey({...survey, dates: date})
               </>
             )}
             {questions[step - 1]?.options === "occasions" && (
-              <SelectField
-                label="Occassion"
-                placeholder="Select ..."
-                data={Occasions}
-                className={`mr-2 sm:my-2 my-5 sm:w-[200px]`}
-                styling={{
-                  dropdownHeight: "max-h-[140px]",
-                  shadow: "drop-shadow-xl ",
-                  left: "0px",
-                  top: "70px",
-                }}
-                value={survey.occassion}
-                onChange={(val) => setSurvey({ ...survey, occassion: val })}
-                onAdditionalChange={(_data) => {}}
-              />
+              <MultiSelectDropdown
+              searchBar
+              items={Occasion}
+              Label={"Occasion"}
+              heightItemsContainer="300px"
+              // SelectedData={locationSearch.occasion}
+              placeholder="Select..."
+              onChange={(val: any) =>
+                setSurvey({ ...survey, occassion: val })
+              }
+            />
             )}
             {questions[step - 1]?.options === "activities" && (
-              <SelectField
-                label="Priority"
-                placeholder="Select ..."
-                data={Priorities}
-                className={`mr-2 sm:my-2 my-5 sm:w-[200px]`}
-                styling={{
-                  dropdownHeight: "max-h-[140px]",
-                  shadow: "drop-shadow-xl ",
-                  left: "0px",
-                  top: "70px",
-                }}
-                value={survey.activities}
-                onChange={(val) => setSurvey({ ...survey, priority: val })}
-                onAdditionalChange={(_data) => {}}
-              />
+              <MultiSelectDropdown
+              searchBar
+              items={Priorities}
+              Label={"Priority"}
+              heightItemsContainer="300px"
+              // SelectedData={locationSearch.occasion}
+              placeholder="Select..."
+              onChange={(val: any) =>
+                setSurvey({ ...survey, priority: val })
+              }
+            />
             )}
             {questions[step - 1]?.options === "dates" && (
               <DateRangeField
