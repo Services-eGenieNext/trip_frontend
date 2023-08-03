@@ -69,7 +69,7 @@ export default function PricingCard({
                               <h1 className="gilroy font-semibold">
                                 {time.time} -{" "}
                               </h1>
-                              <p className="font-medium">{time?.location?.name}</p>
+                              <p className="font-medium max-w-[200px] w-full">{time?.location?.name}</p>
                             </span>
                           </div>
                         );

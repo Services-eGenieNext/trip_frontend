@@ -8,6 +8,7 @@ import DetailsCall, { DetailsCallByGoogle } from "@/api-calls/location-details-c
 import PricingCards from "./pricing-cards/PricingCards";
 import Card_skelton from '@/components/UIComponents/card_skelton';
 import { VariationType } from "@/interfaces/product";
+import { LocationsCall } from "@/api-calls";
 
 interface ITripPlanningCard {
     address: string
@@ -35,6 +36,11 @@ export default function TripPlanningCard({address, totalOpeningHours, automateLo
 
     const [recommendations, setRecommendations] = useState<any[]>([])
     const [locationDetails, setLocationDetails] = useState<any[]>([])
+
+    const setLocationDetailsByAddress = async () => {
+        let res = await LocationsCall("places near " + address)
+        setLocationDetails([...res])
+    }
 
     useEffect(() => {
         const _recomendFunc = async () => {
@@ -65,6 +71,10 @@ export default function TripPlanningCard({address, totalOpeningHours, automateLo
         {
             axios.post(`${PY_API_URL}/get-recommendation`, {input: address}).then(response => {
                 setRecommendations(response.data.recommendations)
+                if(response.data.recommendations.length == 0)
+                {
+                    setLocationDetailsByAddress()
+                }
             })
         }
     }, [address])
