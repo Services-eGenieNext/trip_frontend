@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CSS from "./tripPlanning.module.css";
 import { FiLock } from "react-icons/fi";
 import { IPlanningCard } from "@/interfaces/TripPlan";
@@ -9,9 +9,18 @@ export default function PricingCard({
   onOpen = () => {},
   variation = "cards",
   rows,
-  isDropdownButton,
-  filteredLocations
+  isDropdownButton
 }: IPlanningCard) {
+
+  const [days, setDays] = useState<any>({
+    day: "Monday",
+    times: [],
+    locations: []
+  })
+
+  useEffect(() => {
+    setDays(data)
+  }, [data])
 
   return variation === "cards" ? (
     <div className="relative bg-[#F6FDFF] rounded-lg border-2 border-dashed border-[#AEDCF0] px-5 py-8">
@@ -21,22 +30,22 @@ export default function PricingCard({
           <>
             <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
               <div className="p-5 flex flex-col justify-between">
-                {data &&
-                  data.times.slice(0,5).map((time: any, index: any) => {
-                    let time_location = data.locations?.filter((location: any) => 
-                      (location.place_id && location.place_id != "") ? 
-                        location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
-                        location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
-                    )
+                {days &&
+                  days.times.map((time: any, index: any) => {
+                    // let time_location = days.locations?.filter((location: any) => 
+                    //   (location.place_id && location.place_id != "") ? 
+                    //     location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
+                    //     location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
+                    // )
                     const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
                       console.log(e.dataTransfer.getData('product'))
                     }
                     
-                    if(time_location && time_location?.length > 0) {
-                      return time_location.map((locat: any, index2: number) => {
+                    // if(days.locations[index] && days.locations[index]?.length > 0) {
+                      // return days.locations[index].map((locat: any, index2: number) => {
                         return (
                           <div
-                            key={index2}
+                            key={index}
                             className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
                             onDrop={(e) => onDropFunc(e)}
                             onDragOver={(e) => {e.preventDefault()}}
@@ -54,22 +63,22 @@ export default function PricingCard({
                             <span
                               className="text-[13px] text-black hover:text-[#009DE2]"
                               onClick={() => {
-                                onOpen(locat);
+                                onOpen(time.location);
                               }}
                             >
                               <h1 className="gilroy font-semibold">
-                                {time} -{" "}
+                                {time.time} -{" "}
                               </h1>
-                              <p className="font-medium">{locat.name}</p>
+                              <p className="font-medium">{time?.location?.name}</p>
                             </span>
                           </div>
                         );
-                      })
-                    }
-                    else
-                    {
-                      return <></>;
-                    }
+                      // })
+                    // }
+                    // else
+                    // {
+                    //   return <></>;
+                    // }
                   })}
               </div>
             </div>
@@ -95,7 +104,7 @@ export default function PricingCard({
           <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
             <div className="p-5 flex flex-col justify-between">
               {data.times &&
-                data.times.slice(0,4).map((items: any, index: any) => {
+                data.times.map((items: any, index: any) => {
 
                   const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
                     e.preventDefault()
@@ -158,8 +167,8 @@ export default function PricingCard({
     </div>
   ) : (
     <div className="grid grid-cols-6 mb-10">
-      <div className="col-span-1 w-[90px]">
-        <span className="uppercase flex flex-col md:flex-row justify-between items-center text-sm md:text-base">
+      <div className="col-span-1 w-[90px] select-none">
+        <span className="uppercase flex flex-col md:flex-row justify-between items-center text-sm md:text-base  bg-[var(--lite-green)] rounded-xl w-max px-3">
           {data.day}
           {/* <span className="w-[38px] h-[29px] text-[var(--green)] bg-[var(--lite-green)] flex justify-center items-center rounded-lg">
             {data.day}
@@ -169,26 +178,26 @@ export default function PricingCard({
       <div className="col-span-5">
         <div className="pl-5 flex flex-col justify-between">
           {data.times &&
-            data.times.slice(0,5).map((time: any, index: any) => {
+            data.times.map((time: any, index: any) => {
 
-              let time_location = data.locations?.filter((location: any) => 
-                (location.place_id && location.place_id != "") ? 
-                  location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
-                  location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
-                )
-                if(time_location && time_location?.length > 0) {
-                  return time_location.map((locat: any, index2: number) => {
+              // let time_location = data.locations?.filter((location: any) => 
+              //   (location.place_id && location.place_id != "") ? 
+              //     location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
+              //     location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
+              //   )
+                // if(time_location && time_location?.length > 0) {
+                  // return time_location.map((locat: any, index2: number) => {
                     return (
                       <ScheduleCard
-                        key={index2}
+                        key={index}
                         isDropdownButton={isDropdownButton}
                         onOpen={(_item) => onOpen(_item)}
-                        time={time}
-                        items={locat}
+                        time={time.time}
+                        items={time.location}
                       />
                     );
-                })
-              }
+                // })
+              // }
             })}
         </div>
       </div>
