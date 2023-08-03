@@ -28,6 +28,7 @@ const TripPlan = () => {
         if(query)
         {
             let res = await LocationsCall("places in " + query)
+            console.log("1")
             dispatch(setLocations(res))
         }
     }
