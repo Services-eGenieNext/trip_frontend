@@ -40,7 +40,7 @@ export default function TripPlanningCard({address, totalOpeningHours, automateLo
         const _recomendFunc = async () => {
             if(recommendations.length > 0) {
                 let _locationDetails: any[] = locationDetails
-                let _recommendations = recommendations.slice(0, 4)
+                let _recommendations = recommendations
                 for (let index = 0; index < _recommendations.length; index++) {
                     if(_recommendations[index].location_id && _recommendations[index].location_id !== '')
                     {

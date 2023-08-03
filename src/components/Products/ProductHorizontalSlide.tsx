@@ -203,29 +203,33 @@ const ProductHorizontalSlide = ({
                             </p>
                           )}
                         </div>
-                        <div
-                          className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}
-                        >
-                          <Link
-                            href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}
-                            className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
-                          >
-                            Automate My Trip
-                          </Link>
-                          <button
-                            className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
-                            onClick={() => {
-                              console.log("location", location);
-                              setItem({
-                                locaiton_id: location.location_id,
-                                place_id: location.place_id,
-                              });
-                              setShowTripPopup(true);
-                            }}
-                          >
-                            More Info
-                          </button>
-                        </div>
+                        {
+                          isAddButton == false && (
+                            <div
+                              className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}
+                            >
+                              <Link
+                                href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}
+                                className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
+                              >
+                                Automate My Trip
+                              </Link>
+                              <button
+                                className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
+                                onClick={() => {
+                                  console.log("location", location);
+                                  setItem({
+                                    locaiton_id: location.location_id,
+                                    place_id: location.place_id,
+                                  });
+                                  setShowTripPopup(true);
+                                }}
+                              >
+                                More Info
+                              </button>
+                            </div>
+                          )
+                        }
                       </div>
                     </div>
                   </>

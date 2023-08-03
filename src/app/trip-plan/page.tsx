@@ -25,8 +25,11 @@ const TripPlan = () => {
     const dispatch = useDispatch()
 
     const _defLocationToVisit = async (query: string) => {
-        let res = await LocationsCall("locations arround " + query)
-        dispatch(setLocations(res))
+        if(query)
+        {
+            let res = await LocationsCall("places in " + query)
+            dispatch(setLocations(res))
+        }
     }
 
     // useEffect(() => {
@@ -47,10 +50,11 @@ const TripPlan = () => {
             {
                 let item_Detail: any = await DetailsCallByGoogle(params_list.place_id)
                 setAutomateLocation(item_Detail.data.result)
-                let _locationStringArr = item_Detail.data.result.formatted_address.split(', ')
-                locationString = `${_locationStringArr[_locationStringArr.length - 2]} ${_locationStringArr[_locationStringArr.length - 1]}`
+                let province_name = item_Detail.data.result.address_components.find((adr: any) => adr.types[0] === "administrative_area_level_1")?.long_name
+                let country_name = item_Detail.data.result.address_components.find((adr: any) => adr.types[0] === "country")?.long_name
+                locationString = `${province_name ? province_name + ' ' : ''}${country_name ? country_name : ''}`
 
-                setOpeningHours(item_Detail.data.result.opening_hours.weekday_text?.filter((_week: any) => _week.toLowerCase().search('closed') == -1 ).length)
+                setOpeningHours(item_Detail?.data?.result?.opening_hours?.weekday_text?.filter((_week: any) => _week.toLowerCase().search('closed') == -1 ).length)
             }
             _defLocationToVisit(locationString)
         }
