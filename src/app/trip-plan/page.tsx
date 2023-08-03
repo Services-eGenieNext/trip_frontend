@@ -10,6 +10,7 @@ import SmallStory from '@/components/Story/SmallStory'
 import TripPlanningCard from '@/components/tripPlanningCard/tripPlanning'
 import { useAppSelector } from '@/redux/hooks'
 import { setLocations } from '@/redux/reducers/locationSlice'
+import { setRestaurants } from '@/redux/reducers/restaurantsSlice'
 import { useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -17,7 +18,7 @@ import { useDispatch } from 'react-redux'
 const TripPlan = () => {
 
     const params = useSearchParams()
-    const [params_list, setParamsList] = useState<any>({address: '', location_id: '', place_id: '', v_type: ''})
+    const [params_list, setParamsList] = useState<any>({address: '', location_id: '', place_id: '', v_type: '', restaurants: null})
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const [automateLocation, setAutomateLocation] = useState<any | null>(null)
     const [openingHours, setOpeningHours] = useState<number | null>(null)
@@ -27,9 +28,16 @@ const TripPlan = () => {
     const _defLocationToVisit = async (query: string) => {
         if(query)
         {
-            let res = await LocationsCall("places in " + query)
-            console.log("1")
-            dispatch(setLocations(res))
+            let res = await LocationsCall((params_list.restaurants ? "restaurants in " : "places in ") + query)
+            
+            if(params_list.restaurants)
+            {
+                dispatch(setRestaurants(res))
+            }
+            else
+            {
+                dispatch(setLocations(res))
+            }
         }
     }
 
@@ -68,12 +76,14 @@ const TripPlan = () => {
         let _location_id: any = params.get('location_id')
         let _place_id: any = params.get('place_id')
         let _v_type: any = params.get('v_type')
+        let restaurants: any = params.get('restaurants')
 
         setParamsList({
             address: _address ?? 'best locations',
             location_id: _location_id ?? '',
             place_id: _place_id ?? '',
-            v_type: _v_type ? _v_type : ''
+            v_type: _v_type ? _v_type : '',
+            restaurants: restaurants ?? ''
         })
     }, [params])
 
