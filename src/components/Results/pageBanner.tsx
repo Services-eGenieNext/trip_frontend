@@ -22,8 +22,8 @@ const Hero = ({ survey }: ISurvey) => {
 
   const [locationSearch, setLocationSearch] = useState({
     location: "",
-    occassion: "",
-    priority: "",
+    occassion: [],
+    priority: [],
     person:"",
     cuisines: "",
     message: "",

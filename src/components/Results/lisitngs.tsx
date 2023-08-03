@@ -5,7 +5,7 @@ import { FilledStar } from "../icons/Stars";
 import BlankLocation from "public/images/blank-location.jpg";
 import DetailModal from '../tripPlanningCard/TripPlanPopup';
 
-export default function Lisitngs({ locations, loadData, setLoadData }: any) {
+export default function Lisitngs({ locations, loadData , setLoadData }: any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","9"];
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
@@ -17,15 +17,17 @@ export default function Lisitngs({ locations, loadData, setLoadData }: any) {
   }, [locations]);
 
   useEffect(() => {
+    console.log(results,"results")
     if (results.length > 0) {
-      setLoadData(false)
       setLoading(false);
+      setLoadData(false)
     }
   }, [results]);
 
   useEffect(()=>{
 setLoading(loadData)
   },[loadData])
+
   return (
     <div className="lg:px-12 md:px-12 sm:px-6 px-3">
       <p className="text-[18px] text-[#3F3F3F]">

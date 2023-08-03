@@ -32,8 +32,8 @@ export default function HeroFilterSection({ surveyData }: any) {
 
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
-    occassion: "",
-    priority: "",
+    occassion: [],
+    priority: [],
     person: "",
     dates: "",
     spending:"",
@@ -56,16 +56,6 @@ export default function HeroFilterSection({ surveyData }: any) {
   useEffect(() => {
     setLocationSearch({ ...locationSearch, dates: date });
   }, [date]);
-
-  const _def = async (paramsAddress:any) => {
-    if (paramsAddress !== "") {
-      let res = await LocationsCall(
-        `best places for visit in ${paramsAddress} for tourist`
-        );
-        console.log("6",paramsAddress)
-      dispatch(setLocations(res));
-    }
-  };
     // useEffect(()=>{
     //   setLocationSearch(surveyData)
     //   if(surveyData.location !== ""){
@@ -77,7 +67,7 @@ export default function HeroFilterSection({ surveyData }: any) {
     if (locationSearch.dates.startDate) {
       router.push("/trip-plan?address=" + locationSearch.location);
     } else {
-      _def(locationSearch.location)
+      router.push("/results?address=" + locationSearch.location);
       dispatch(setSurveyValue(locationSearch))
     }
   };
@@ -164,7 +154,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         items={Occasion}
         Label={"Occasion"}
         heightItemsContainer="300px"
-        SelectedData={typeFetch}
+        // SelectedData={locationSearch.occasion}
         placeholder="Select..."
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
@@ -187,7 +177,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         items={Priority}
         Label={"Priority"}
         heightItemsContainer="300px"
-        SelectedData={typeFetch}
+        // SelectedData={locationSearch.priority}
         placeholder="Select..."
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, priority: val })
