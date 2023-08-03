@@ -38,7 +38,6 @@ export default function Results() {
     dispatch(setSurveyValue({location: paramsAddress}))
       _def(paramsAddress)
     }else{
-      dispatch(setSurveyValue({location: "USA"}))
       _def("USA")
     }
   },[paramsAddress])
