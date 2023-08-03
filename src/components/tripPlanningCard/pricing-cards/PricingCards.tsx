@@ -22,13 +22,11 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
     const [LocationDetails, setLocationDetails] = useState<any>([])
     const [showTripPopup, setShowTripPopup] = useState(false);
     const [item, setItem] = useState({});
-    const [filteredLocations, setFilteredLocations] = useState<any[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
     
     const [filterDays, setFilterDays] = useState<any[]>([])
-    const [localSlots, setLocalSlots] = useState<any[]>([])
 
     const [days, setDays] = useState<any[]>([
         {
@@ -36,46 +34,40 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
             times: [{
                 time: "",
                 location: {}
-            }],
-            locations: []
+            }]
         },
         {
             day: "Tuesday",
-            times: [],
-            locations: []
+            times: []
         },
         {
             day: "Wednesday",
-            times: [],
-            locations: []
+            times: []
         },
         {
             day: "Thursday",
-            times: [],
-            locations: []
+            times: []
         },
         {
             day: "Friday",
-            times: [],
-            locations: []
+            times: []
         },
         {
             day: "Saturday",
-            times: [],
-            locations: []
+            times: []
         },
         {
             day: "Sunday",
-            times: [],
-            locations: []
+            times: []
         }
     ])
 
     const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
 
     useEffect(() => {
+
         setFilterDays(days.filter((_day: any) => _day.times.length > 0))
-        console.log('filter days',days.filter((_day: any) => _day.times.length > 0))
+    
     }, [days])
 
     useEffect(() => {
@@ -92,8 +84,8 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
 
             result = await LocationDetails?.slice(start, end).map((loc: any) => {
                 return (loc.place_id && loc.place_id != "") ? 
-                    loc.current_opening_hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1]) :
-                    loc.hours?.weekday_text.map((weekd: any) => weekd.split(': ')[1])
+                    loc.current_opening_hours?.weekday_text.filter((_weekd: any) => _weekd.split(': ')[1].toLowerCase().search('closed') == -1 ).map((weekd: any) => weekd.split(': ')[1]) :
+                    loc.hours?.weekday_text.filter((_weekd: any) => _weekd.split(': ')[1].toLowerCase().search('closed') == -1 ).map((weekd: any) => weekd.split(': ')[1])
             })
 
             let times = [].concat(...result)
@@ -171,12 +163,11 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
 
                 _days[i].times = time_loop
 
-                let sort_time_slot = await timeLocaitonLoopFunc(_days, i)
-                // _days[i].locations = await locaitonLoopFunc(i)
+                await timeLocaitonLoopFunc(_days, i)
             
             }
             setDays([..._days])
-            console.log('_days', _days)
+
             setLoading(false)
         }
         if(LocationDetails.length > 0) {
