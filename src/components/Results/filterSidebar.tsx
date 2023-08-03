@@ -13,7 +13,7 @@ export default function FilterSidebar({locations,setLocationsData,setLoading}:an
 
   useEffect(()=>{
     const filteredArray = locations.filter((list:any)=>{
-      return parseInt(Ranking) == Math.floor(list.rating)
+      return parseInt(Ranking) == Number((list.rating).toFixed())
     })
     console.log(filteredArray,"filteredArray")
     setLocationsData(filteredArray)
