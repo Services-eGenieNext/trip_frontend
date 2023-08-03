@@ -1,13 +1,13 @@
 import { IDays } from "@/interfaces";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type LocationState = {
-    days: IDays[];
+type ItineraryState = {
+    itineraryDays: IDays[];
 };
 
 const initialState = {
-    days: [],
-} as LocationState;
+    itineraryDays: [],
+} as ItineraryState;
 
 export const itinerarySlice = createSlice({
     name: "itinerary",
@@ -15,15 +15,15 @@ export const itinerarySlice = createSlice({
     reducers: {
         reset: () => initialState,
         
-        setDays: (state, action: PayloadAction<any[]>) => {
-            state.days = action.payload
+        setItineraryDays: (state, action: PayloadAction<IDays[]>) => {
+            state.itineraryDays = action.payload
         },
 
     },
 });
 
 export const {
-    setDays,
+    setItineraryDays,
     reset,
 } = itinerarySlice.actions;
 

@@ -9,7 +9,7 @@ import { VariationType } from '@/interfaces/product';
 import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import styles from "./pricing-cards.module.css"
-import { setDays } from '@/redux/reducers/itinerarySlice';
+import { setItineraryDays } from '@/redux/reducers/itinerarySlice';
 import { IDays } from '@/interfaces';
 
 interface IPricingCards {
@@ -27,11 +27,9 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
     const [loading, setLoading] = useState<boolean>(true);
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
-    // const { days } = useAppSelector((state) => state.itineraryReducer)
-    
-    const [filterDays, setFilterDays] = useState<IDays[]>([])
+    const { itineraryDays } = useAppSelector((state) => state.itineraryReducer)
 
-    // const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch()
     const [days, setDays] = useState<any[]>([
         {
             day: "Monday",
@@ -70,8 +68,8 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
 
     useEffect(() => {
 
-        setFilterDays(days.filter((_day: any) => _day.times.length > 0))
-        console.log('days', days)
+        dispatch(setItineraryDays(days.filter((_day: any) => _day.times.length > 0)))
+
     }, [days])
 
     useEffect(() => {
@@ -108,7 +106,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
             })
         }
 
-        const timeLocaitonLoopFunc = async (_days: IDays[], index: number) => {
+        const timeLocaitonLoopFunc = async (_days: any[], index: number) => {
             let time: any[] = []
             
             for (let i = 0; i < _days[index].times.length; i++) {
@@ -163,9 +161,9 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
 
             for (let i = 0; i < _days.length; i++) {
                 
-                let time_loop: any = await timeLoopFunc(i)
+                let time_loop: any[] = await timeLoopFunc(i)
 
-                _days[i].times = time_loop
+                _days[i] = {..._days[i], times: time_loop}
 
                 await timeLocaitonLoopFunc(_days, i)
             
@@ -207,15 +205,15 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
     useEffect(() => {
         setItem({...automateLocation})
     }, [automateLocation])
-    
+
     return (
         <>
         {
-            (v_type !== '2' && filterDays && filterDays.length > 4) ? (
+            (v_type !== '2' && itineraryDays && itineraryDays.length > 4) ? (
                 <>
                 {
-                    (!loading && filterDays) &&
-                    filterDays.map((_item, index) => {
+                    (!loading && itineraryDays) &&
+                    itineraryDays.map((_item, index) => {
                         return (
                             <PricingCard key={index} 
                             isDropdownButton={false} 
@@ -238,8 +236,8 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                 <div className={`grid grid-cols-1 lg:grid-cols-3 gap-3 ${styles.tripPlanning}`}>
                     <div className={`lg:col-span-1 flex flex-wrap justify-center max-h-[1550px] h-full overflow-auto`}>
                         {
-                        (!loading && filterDays) &&
-                        filterDays.map((_item, index) => {
+                        (!loading && itineraryDays) &&
+                        itineraryDays.map((_item, index) => {
                             return (
                             <PricingCard
                                 variation={'list'}
