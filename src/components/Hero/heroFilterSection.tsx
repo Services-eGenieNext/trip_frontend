@@ -27,8 +27,8 @@ export default function HeroFilterSection() {
 
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
-    occassion: "",
-    priority: "",
+    occassion: [],
+    priority: [],
     person: "",
     dates: "",
   });
@@ -124,6 +124,7 @@ export default function HeroFilterSection() {
         items={Occasion}
         Label={"Occasion"}
         heightItemsContainer="300px"
+        // SelectedData={locationSearch.occasion ? locationSearch.occasion : []}
         placeholder="Select..."
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
@@ -135,6 +136,7 @@ export default function HeroFilterSection() {
         items={Priority}
         Label={"Priority"}
         heightItemsContainer="300px"
+        // SelectedData={locationSearch.priority}
         placeholder="Select..."
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })

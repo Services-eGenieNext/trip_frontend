@@ -6,18 +6,17 @@ import PriceSlider from './priceSlider'
 import Occasion from '@/data/occasion.json'
 import Activities from '@/data/priority.json'
 
-export default function FilterSidebar({locations}:any) {
+export default function FilterSidebar({locations,setLocationsData,setLoading}:any) {
 
   const [showFilter, setShowFilter] = useState(false)
   const [Ranking, setRanking] = useState("")
-  const [filteredData, setFilteredData] = useState([])
 
   useEffect(()=>{
-    console.log(Ranking,"Ranking")
-    // const filteredArray = locations.filter((list:any)=>{
-    // })
-    console.log(locations,"locations")
-// console.log(filteredArray,"filteredArray")
+    const filteredArray = locations.filter((list:any)=>{
+      return parseInt(Ranking) == Number((list.rating).toFixed())
+    })
+    console.log(filteredArray,"filteredArray")
+    setLocationsData(filteredArray)
   },[Ranking])
 
   return (
