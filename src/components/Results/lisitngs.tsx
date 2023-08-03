@@ -5,6 +5,7 @@ import { FilledStar } from "../icons/Stars";
 import BlankLocation from "public/images/blank-location.jpg";
 import DetailModal from '../tripPlanningCard/TripPlanPopup';
 import Link from "next/link";
+import NotFound from 'public/images/data-not-found.jpg'
 
 export default function Lisitngs({ locations, loadData , setLoadData }: any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","9"];
@@ -13,21 +14,20 @@ export default function Lisitngs({ locations, loadData , setLoadData }: any) {
   const [showTripPopup, setShowTripPopup] = useState(false);
   const [item, setItem] = useState({});
   useEffect(() => {
-    setLoading(true)
-    setResults(locations);
+      // setLoading(true)
+      setResults(locations);
   }, [locations]);
 
-  useEffect(() => {
-    console.log(results,"results")
-    if (results.length > 0) {
-      setLoading(false);
-      setLoadData(false)
-    }
-  }, [results]);
+  // useEffect(() => {
+  //   if (results.length > 0) {
+  //     setLoading(false);
+  //     setLoadData(false)
+  //   }
+  // }, [results]);
 
-  useEffect(()=>{
-setLoading(loadData)
-  },[loadData])
+//   useEffect(()=>{
+// setLoading(loadData)
+//   },[loadData])
 
   return (
     <div className="lg:px-12 md:px-12 sm:px-6 px-3">
@@ -35,7 +35,7 @@ setLoading(loadData)
         Show listing of {results ? results.length : "0"} Places...
       </p>
       <div className="flex flex-wrap itemns-center lg:justify-start justify-center my-8 gap-y-14 gap-x-10">
-        {loading === true
+        {loadData === true
           ? skelton.map((show: any, index: number) => {
               return (
                 <div
@@ -70,7 +70,7 @@ setLoading(loadData)
               );
             })
           : (
-    results?.map((location: any, index:number) => {
+            results.length > 0 ? results?.map((location: any, index:number) => {
                 let image_path = location?.images === "" ? BlankLocation.src : location.images
                 let address = location.formatted_address ? location.formatted_address : location.address_obj?.address_string;
                 return (
@@ -119,7 +119,11 @@ setLoading(loadData)
                     </div>
                   </div>
                 );
-              })
+              }) : (
+                <div className="flex justify-center mt-10 w-full">
+                  <img className="w-[500px]" src={NotFound.src} alt="not found"/>
+                </div>
+              )
           )}
       </div>
       <DetailModal item={item} show={showTripPopup} onClose={() => {
