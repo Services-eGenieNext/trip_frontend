@@ -119,7 +119,6 @@ const ProductHorizontalSlide = ({
                   ? location.formatted_address
                   : location.address_obj?.address_string;
                 return (
-                  <>
                     <div key={index} className={`px-2 max-w-[300px] w-full`}>
                       <div className={`grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden relative cursor-pointer ${styles["slider_card"]}`}>
                         <div className={`${ type == "title-card" ? 'h-[350px]' : 'h-[178px]'} bg-gray-100 relative`}>
@@ -232,7 +231,6 @@ const ProductHorizontalSlide = ({
                         }
                       </div>
                     </div>
-                  </>
                 );
               })}
         </SliderComponent>
