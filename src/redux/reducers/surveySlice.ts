@@ -14,7 +14,7 @@ export const surveyValues = createSlice({
     reducers: {
         reset: () => initialState,
         
-        setSurveyValue: (state, action: PayloadAction<any[]>) => {
+        setSurveyValue: (state, action: PayloadAction<any>) => {
             state.surveySlice = action.payload
         }
     },
