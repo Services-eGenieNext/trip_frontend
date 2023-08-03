@@ -55,10 +55,10 @@ export default function SelectCheckBoxSimple({
   const [addCustomeOption, setAddCustomeOption] = useState(false);
   const [customeField, setCustomeField] = useState("");
 
-  useEffect(() => {
-    setOptsSelected(SelectedData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [SelectedData]);
+  // useEffect(() => {
+  //   setOptsSelected(SelectedData);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [SelectedData]);
 
   // useEffect(() => {
   //   listenForOutsideClick(listening, setListening, selectRef, setShowDropDown);
@@ -122,6 +122,7 @@ export default function SelectCheckBoxSimple({
     setOpts(newArray);
 
     if (optChecked) {
+      console.log(optsSelected,"opts")
       setOptsSelected([
         ...optsSelected,
         { opt: optName, checked: optChecked, id: optId },
@@ -181,7 +182,7 @@ export default function SelectCheckBoxSimple({
     setAddCustomeOption(false);
   };
   return (
-    <Box className="relative mt-2 px-1 sm:mt-0 mt-5" ref={selectRef}>
+    <Box className="relative px-1 sm:mt-2 mt-5">
       <label
         className="absolute top-[-0.7rem] left-[1rem] px-[5px]"
         style={{
@@ -351,7 +352,6 @@ export default function SelectCheckBoxSimple({
                 <Inputsearch
                   onChange={(e: any) => setCustomeField(e.target.value)}
                   style={{ outline: "none" }}
-                  ref={inputSearch}
                   placeholder="Add Occassion"
                 />
               </Box>
@@ -382,13 +382,12 @@ export default function SelectCheckBoxSimple({
                   setAddCustomeOption(true);
                 }}
               >
-                <a
-                  href=""
+                <span
                   className="flex justify-center items-center w-[20px] h-[20px] rounded-full bg-[#4B9AD4] text-white "
                 >
                   +
-                </a>
-                <p className="text-[#4B9AD4] text-[14px]">Add Occassion</p>
+                </span>
+                <p className="text-[#4B9AD4] text-[14px]">Add {Label}</p>
               </Box>
             )}
             {filtered?.map(({ opt, checked }, index) => {

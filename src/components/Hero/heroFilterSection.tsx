@@ -15,6 +15,7 @@ import { addDays } from "date-fns";
 import { useRouter } from 'next/navigation'
 import { useAppDispatch } from "@/redux/hooks";
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
+import { setLocations } from "@/redux/reducers/locationSlice";
 import MultiSelectDropdown from '@/components/UIComponents/MultiSelectDropdown'
 
 export default function HeroFilterSection() {
@@ -42,8 +43,8 @@ export default function HeroFilterSection() {
     if(locationSearch.dates.startDate){
       router.push('/trip-plan?address='+locationSearch.location)
     }else{
+      route.push(`/results?address=${locationSearch.location}`)
       dispatch(setSurveyValue(locationSearch))
-      route.push('/results')
     }
   }
 
