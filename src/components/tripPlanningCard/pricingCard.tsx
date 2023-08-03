@@ -9,8 +9,7 @@ export default function PricingCard({
   onOpen = () => {},
   variation = "cards",
   rows,
-  isDropdownButton,
-  filteredLocations
+  isDropdownButton
 }: IPlanningCard) {
 
   const [days, setDays] = useState<any>({
@@ -168,8 +167,8 @@ export default function PricingCard({
     </div>
   ) : (
     <div className="grid grid-cols-6 mb-10">
-      <div className="col-span-1 w-[90px]">
-        <span className="uppercase flex flex-col md:flex-row justify-between items-center text-sm md:text-base">
+      <div className="col-span-1 w-[90px] select-none">
+        <span className="uppercase flex flex-col md:flex-row justify-between items-center text-sm md:text-base  bg-[var(--lite-green)] rounded-xl w-max px-3">
           {data.day}
           {/* <span className="w-[38px] h-[29px] text-[var(--green)] bg-[var(--lite-green)] flex justify-center items-center rounded-lg">
             {data.day}
@@ -181,24 +180,24 @@ export default function PricingCard({
           {data.times &&
             data.times.map((time: any, index: any) => {
 
-              let time_location = data.locations?.filter((location: any) => 
-                (location.place_id && location.place_id != "") ? 
-                  location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
-                  location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
-                )
-                if(time_location && time_location?.length > 0) {
-                  return time_location.map((locat: any, index2: number) => {
+              // let time_location = data.locations?.filter((location: any) => 
+              //   (location.place_id && location.place_id != "") ? 
+              //     location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
+              //     location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
+              //   )
+                // if(time_location && time_location?.length > 0) {
+                  // return time_location.map((locat: any, index2: number) => {
                     return (
                       <ScheduleCard
-                        key={index2}
+                        key={index}
                         isDropdownButton={isDropdownButton}
                         onOpen={(_item) => onOpen(_item)}
-                        time={time}
-                        items={locat}
+                        time={time.time}
+                        items={time.location}
                       />
                     );
-                })
-              }
+                // })
+              // }
             })}
         </div>
       </div>

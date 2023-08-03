@@ -8,6 +8,7 @@ import SmallStory from '@/components/Story/SmallStory';
 import { VariationType } from '@/interfaces/product';
 import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide';
 import { useAppSelector } from '@/redux/hooks';
+import styles from "./pricing-cards.module.css"
 
 interface IPricingCards {
     locationDetails: any
@@ -70,6 +71,8 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
         }
     ])
 
+    const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
+
     useEffect(() => {
         setFilterDays(days.filter((_day: any) => _day.times.length > 0))
         console.log('filter days',days.filter((_day: any) => _day.times.length > 0))
@@ -109,7 +112,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
             })
         }
 
-        const timeLocaitonLoopFunc = async (uniqueTimes: any[], _days: any[], index: number, currentDay: any) => {
+        const timeLocaitonLoopFunc = async (_days: any[], index: number) => {
             let time: any[] = []
             
             for (let i = 0; i < _days[index].times.length; i++) {
@@ -117,18 +120,18 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                 // found same time locations
                 let sameTimeLocations = await filterLocationByTime(_days[index].times[i].time)
 
+                let availableLocation = false
                 // loop upto current loop days
+                
                 for(let m = 0; m < sameTimeLocations.length; m++)
                 {
                     let found = false;
-                    console.log('initial loop time locaiton --------------',sameTimeLocations[m])
 
                     // check if exist then make "found" variable true
                     for(let j = 0; j <= index; j++)
                     {
                         for(let k = 0; k < _days[j].times.length; k++)
                         {
-                            console.log('comparison betwween', _days[j].times[k].location?.name, sameTimeLocations[m].name)
                             if(_days[j].times[k]?.location?.name == sameTimeLocations[m].name)
                             {
                                 found = true
@@ -146,8 +149,14 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                     if(found === false)
                     {
                         _days[index].times[i].location = sameTimeLocations[m]
+                        availableLocation = true
                         break
                     }
+                }
+
+                if(availableLocation == false)
+                {
+                    _days[index].times[i].location = sameTimeLocations[random(0, sameTimeLocations.length-1)]
                 }
             }
             return time
@@ -162,7 +171,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
 
                 _days[i].times = time_loop
 
-                let sort_time_slot = await timeLocaitonLoopFunc(time_loop, _days, i, _days[i])
+                let sort_time_slot = await timeLocaitonLoopFunc(_days, i)
                 // _days[i].locations = await locaitonLoopFunc(i)
             
             }
@@ -206,7 +215,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
     return (
         <>
         {
-            (v_type !== '2' && totalOpeningHours && totalOpeningHours > 4) ? (
+            (v_type !== '2' && filterDays && filterDays.length > 4) ? (
                 <>
                 {
                     (!loading && filterDays) &&
@@ -215,8 +224,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                             <PricingCard key={index} 
                             isDropdownButton={false} 
                             variation="cards" 
-                            rows = "2" 
-                            filteredLocations={filteredLocations} 
+                            rows = "2"
                             data={_item} 
                             onOpen={(item) => {
                                 setShowTripPopup(true)
@@ -231,8 +239,8 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                 }} />
                 </>       
             ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-3">
-                    <div className="lg:col-span-1 flex flex-wrap justify-center max-h-[1550px] h-full overflow-auto">
+                <div className={`grid grid-cols-1 lg:grid-cols-3 gap-3 ${styles.tripPlanning}`}>
+                    <div className={`lg:col-span-1 flex flex-wrap justify-center max-h-[1550px] h-full overflow-auto`}>
                         {
                         (!loading && filterDays) &&
                         filterDays.map((_item, index) => {
