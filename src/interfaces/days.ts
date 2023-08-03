@@ -1,4 +1,4 @@
-interface ITime {
+export interface ITime {
     time: string
     location: any
 }
