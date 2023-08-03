@@ -25,21 +25,21 @@ const Header = () => {
 
     useEffect(() => {
         const _def = async () => {
-            let res = await LocationsCall("best locations")
+            let res = await LocationsCall("best places for visit in world for tourist")
             console.log("locations",res)
             dispatch(setLocations(res))
         }
         _def()
 
         const _defRestaurants = async () => {
-            let res = await LocationsCall("best resturants")
+            let res = await LocationsCall("best resturants for visit in world for tourist")
             console.log('resturants',res)
             dispatch(setRestaurants(res))
         }
         _defRestaurants()
 
         const activities = async () => {
-            let res = await LocationsCall("Popular Activities")
+            let res = await LocationsCall("best activities for tourist in world")
             console.log('object activities', res)
             dispatch(setActivities(res))
         }

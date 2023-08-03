@@ -11,57 +11,66 @@ import DateRangeField from "../UIComponents/InputField/DateRangeField";
 import styles from "./pageBanner.module.css";
 import { Range } from "react-date-range";
 import { addDays } from "date-fns";
-import { setLocations } from '@/redux/reducers/locationSlice'
-import { LocationsCall, ReviewsCall } from '@/api-calls'
-import { useAppDispatch } from '@/redux/hooks'
+import { setLocations } from "@/redux/reducers/locationSlice";
+import { LocationsCall, ReviewsCall } from "@/api-calls";
+import { useAppDispatch } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
+import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
+import LocationJson from '@/data/location.json'
 
-export default function HeroFilterSection({surveyData}:any) {
-  const dispatch = useAppDispatch()
-  const router = useRouter()
+export default function HeroFilterSection({ surveyData }: any) {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [date, setDate] = useState<any>({
     key: "selection",
   });
+  const [typeFetch, setTypeFetch] = useState<any>([]);
 
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: "",
     priority: "",
     person: "",
-    dates:"",
+    dates: "",
+    spending:"",
   });
 
-  useEffect(()=>{
-setLocationSearch({...locationSearch, location: surveyData.location, occassion: surveyData.occassion, priority: surveyData.priority, person: surveyData.person ? surveyData.person : ""})
-_def()
-  },[surveyData])
+  useEffect(() => {
+    setLocationSearch({
+      ...locationSearch,
+      location: surveyData.location,
+      occassion: surveyData.occassion,
+      priority: surveyData.priority,
+      person: surveyData.person ? surveyData.person : "",
+    });
+    _def();
+  }, [surveyData]);
 
-  useEffect(()=>{
-setLocationSearch({...locationSearch, dates: date})
-  },[date])
+  useEffect(() => {
+    setLocationSearch({ ...locationSearch, dates: date });
+  }, [date]);
 
   const _def = async () => {
-    if(surveyData.location !== ""){
-      let res = await LocationsCall(`best locations in ${locationSearch.location}`)
-      console.log("locations from results filters",res)
-      dispatch(setLocations(res))
+    if (surveyData.location !== "") {
+      let res = await LocationsCall(
+        `best places for visit in ${locationSearch.location} for tourist`
+      );
+      dispatch(setLocations(res));
     }
-}
-//   useEffect(()=>{
-// if(locationSearch.location !== ""){
-// _def()
-// }
-//   },[locationSearch])
+  };
+    useEffect(()=>{
+  if(locationSearch.location !== ""){
+  _def()
+  }
+    },[locationSearch])
 
   const handleRoute = () => {
-    if(locationSearch.dates.startDate){
-      console.log(locationSearch.dates,"dates test")
-      router.push('/trip-plan?address='+locationSearch.location)
-    }else{
-      console.log(locationSearch.dates,"dates test")
-      _def()
+    if (locationSearch.dates.startDate) {
+      router.push("/trip-plan?address=" + locationSearch.location);
+    } else {
+      _def();
     }
-  }
+  };
 
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
   return (
@@ -89,7 +98,7 @@ setLocationSearch({...locationSearch, dates: date})
         </svg>
       </span> */}
 
-      <InputField
+      {/* <InputField
         label="Location"
         type="text"
         className={`mr-2 my-2 sm:w-[200px] ${styles.inputWrapper}`}
@@ -98,6 +107,18 @@ setLocationSearch({...locationSearch, dates: date})
           setLocationSearch({ ...locationSearch, location: e.target.value })
         }
         icon={<SimpleLocation />}
+      /> */}
+
+      <SelectField
+        label="Location"
+        placeholder="Select ..."
+        data={LocationJson}
+        className={`mr-2 sm:my-2 my-5 sm:w-[200px] ${styles.inputWrapper}`}
+        value={locationSearch.location}
+        onChange={(val) =>
+          setLocationSearch({ ...locationSearch, location: val })
+        }
+        onAdditionalChange={(_data) => {}}
       />
 
       {/* <InputField 
@@ -117,7 +138,7 @@ setLocationSearch({...locationSearch, dates: date})
         icon={<CalenderIcon />}
       />
 
-      <SelectField
+      {/* <SelectField
         label="Occassion"
         placeholder="Select ..."
         data={Occasion}
@@ -127,9 +148,20 @@ setLocationSearch({...locationSearch, dates: date})
           setLocationSearch({ ...locationSearch, occassion: val })
         }
         onAdditionalChange={(_data) => {}}
+      /> */}
+      <MultiSelectDropdown
+        searchBar
+        items={Occasion}
+        Label={"Occasion"}
+        heightItemsContainer="300px"
+        SelectedData={typeFetch}
+        placeholder="Select..."
+        onChange={(val: any) =>
+          setLocationSearch({ ...locationSearch, occassion: val })
+        }
       />
 
-      <SelectField
+      {/* <SelectField
         label="Priority"
         placeholder="Select ..."
         data={Priority}
@@ -139,6 +171,17 @@ setLocationSearch({...locationSearch, dates: date})
           setLocationSearch({ ...locationSearch, priority: val })
         }
         onAdditionalChange={(_data) => {}}
+      /> */}
+      <MultiSelectDropdown
+        searchBar
+        items={Priority}
+        Label={"Priority"}
+        heightItemsContainer="300px"
+        SelectedData={typeFetch}
+        placeholder="Select..."
+        onChange={(val: any) =>
+          setLocationSearch({ ...locationSearch, priority: val })
+        }
       />
 
       <SelectField
@@ -158,14 +201,19 @@ setLocationSearch({...locationSearch, dates: date})
         placeholder="Select ..."
         data={Travelers}
         className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
-        value={locationSearch.travelers}
+        value={locationSearch.spending}
         onChange={(val) =>
-          setLocationSearch({ ...locationSearch, travelers: val })
+          setLocationSearch({ ...locationSearch, spending: val })
         }
         onAdditionalChange={(_data) => {}}
       />
 
-      <BlueButton title="Automate My trip" className="sm:w-[200px] w-full" onClick={handleRoute} />
+      <BlueButton
+        // title="Automate My trip"
+        title={locationSearch.dates.startDate ? "Automate My trip" : "Look For Inspiration"}
+        className="sm:w-[200px] w-full"
+        onClick={handleRoute}
+      />
     </div>
   );
 }
