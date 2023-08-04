@@ -185,10 +185,10 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
             for (let i = 0; i < days.length; i++) {
                 
                 let filter_locaiton: any[] = await locationDetails.filter((loc: any) => 
-                    (loc.place_id && loc.place_id != "") ? 
+                    (typeof loc?.place_id !== undefined && loc?.place_id && loc?.place_id != "") ? 
                     loc.current_opening_hours?.weekday_text.filter( (weekd: any) => {
                         return weekd.split(': ')[0] == days[i].day && weekd.toLowerCase().search('closed') == -1
-                    }) : loc.hours?.weekday_text.filter( (weekd: any) => {
+                    }) : loc?.hours?.weekday_text.filter( (weekd: any) => {
                         return weekd.split(': ')[0] == days[i].day && weekd.toLowerCase().search('closed') == -1
                     })
                 )
@@ -200,6 +200,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
             setLocationDetails([...locations])
         }
         _loadLocations()
+        console.log('locationDetails', locationDetails)
     }, [locationDetails])
 
     useEffect(() => {
