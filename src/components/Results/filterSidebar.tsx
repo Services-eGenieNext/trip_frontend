@@ -6,17 +6,20 @@ import PriceSlider from './priceSlider'
 import Occasion from '@/data/occasion.json'
 import Activities from '@/data/priority.json'
 
-export default function FilterSidebar({locations,setLocationsData,setClearData}:any) {
+export default function FilterSidebar({locations,setLocationsData,setClearFilter,clearFilter}:any) {
+
+  const [locationArray,setLocationArray] = useState([])
 
   const [showFilter, setShowFilter] = useState(false)
   const [Ranking, setRanking] = useState("")
-
+useEffect(()=>{
+  setLocationArray(locations)
+},[locations])
   useEffect(()=>{
-    const filteredArray = locations.filter((list:any)=>{
+    const filteredArray = locationArray.filter((list:any)=>{
       return parseInt(Ranking) == Number((list.rating).toFixed())
     })
-    console.log(filteredArray,"filteredArray")
-    setLocationsData(filteredArray)
+      setLocationsData(filteredArray)
   },[Ranking])
 
   return (
@@ -53,8 +56,8 @@ export default function FilterSidebar({locations,setLocationsData,setClearData}:
         Filter By
       </h1>
       <p className="text-[#009de2] mt-4 text-end cursor-pointer" onClick={()=>{
-        setClearData(true)
         setRanking("")
+        setClearFilter(true)
         }}>Clear All</p>
       </div>
       {Activities.length > 0 && (
@@ -80,16 +83,18 @@ export default function FilterSidebar({locations,setLocationsData,setClearData}:
         title="Cuisines"
       /> */}
       <ReviewFilterBox
-        filters={Filter_option.propertyClass}
+        filters={Filter_option.cityRanking}
         title="City Ranking"
         type = "review"
         setRanking={setRanking}
+        clearFilter={clearFilter}
       />
       <ReviewFilterBox
-        filters={Filter_option.propertyClass}
+        filters={Filter_option.activityRanking}
         title="Activity Ranking"
         type = "review"
         setRanking={setRanking}
+        clearFilter={clearFilter}
       />
     </div>
     </>
