@@ -71,7 +71,7 @@ export default function Lisitngs({ locations, loadData , setLoadData }: any) {
             })
           : (
             results.length > 0 ? results?.map((location: any, index:number) => {
-                let image_path = location?.images === "" ? BlankLocation.src : location.images
+                let image_path = location?.images ?  location.images : BlankLocation.src
                 let address = location.formatted_address ? location.formatted_address : location.address_obj?.address_string;
                 return (
                   <div

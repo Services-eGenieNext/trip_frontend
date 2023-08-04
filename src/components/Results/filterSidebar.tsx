@@ -6,7 +6,7 @@ import PriceSlider from './priceSlider'
 import Occasion from '@/data/occasion.json'
 import Activities from '@/data/priority.json'
 
-export default function FilterSidebar({locations,setLocationsData,setLoading}:any) {
+export default function FilterSidebar({locations,setLocationsData,setClearData}:any) {
 
   const [showFilter, setShowFilter] = useState(false)
   const [Ranking, setRanking] = useState("")
@@ -28,7 +28,7 @@ export default function FilterSidebar({locations,setLocationsData,setLoading}:an
                 <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
             </svg>
         </span>
-    <div className={`px-12 fixed inset-0 bg-white z-10  ${showFilter ? '-translate-x-[0%]' : '-translate-x-[100%]'} lg:relative lg:-translate-x-[0%] transition-all duration-300 overflow-y-auto`}>
+    <div className={`px-12 fixed inset-0 lg:z-10 z-30  ${showFilter ? '-translate-x-[0%]' : '-translate-x-[100%]'} lg:relative lg:-translate-x-[0%] transition-all duration-300 overflow-y-auto`}>
       <span
         className="absolute top-2 right-2 lg:hidden"
         onClick={() => setShowFilter(!showFilter)}
@@ -48,9 +48,15 @@ export default function FilterSidebar({locations,setLocationsData,setLoading}:an
           />
         </svg>
       </span>
-      <h1 className="text-[30px] font-semibold border-b border-[#E3E3E3] pb-7">
+      <div className="border-b border-[#E3E3E3] pb-3">
+      <h1 className="text-[30px] font-semibold ">
         Filter By
       </h1>
+      <p className="text-[#009de2] mt-4 text-end cursor-pointer" onClick={()=>{
+        setClearData(true)
+        setRanking("")
+        }}>Clear All</p>
+      </div>
       {Activities.length > 0 && (
         <FiltersOptions
         filters={Activities}

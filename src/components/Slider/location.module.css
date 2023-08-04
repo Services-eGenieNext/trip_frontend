@@ -24,8 +24,13 @@
     top: -30px;
   }
 }
+@media screen and (max-width: 620px) {
+  .activity_arrow_prev{
+    left: -30px !important;
+  }
+}
 .activity_arrow_prev{
-  left: -30px;
+  left: -60px;
   position: absolute;
   top: 50px;
   color: white;

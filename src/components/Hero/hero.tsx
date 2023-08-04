@@ -30,11 +30,11 @@ const Hero = () => {
         className="absolute left-0 bottom-0 -z-10 select-none sm:flex hidden"
       />
       <div className="h-full w-full px-4 relative">
-        <div className="relative m-auto width">
+        <div className="relative m-auto width sm:h-auto h-[300px]">
           <Image
             src={HeroBg}
             alt="Trip-Banner"
-            className="mx-auto select-none w-full"
+            className="mx-auto select-none w-full h-full"
           />
           <div className="absolute bottom-0 left-0 top-0 right-0 px-8 flex flex-col justify-center items-center xl:my-[8rem] sm-width">
             <h1 className="uppercase sm:leading-10 text-white font-thin text-xl lg:text-3xl lg:my-5 sm:my-3 my-0 gilroy">

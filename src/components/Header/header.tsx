@@ -83,7 +83,7 @@ const Header = () => {
     }, [])
 
     return (
-        <div id={'header'} className="w-full sticky top-0 z-10 transition-all duration-300">
+        <div id={'header'} className="w-full sticky top-0 sm:z-20 z-10 transition-all duration-300">
             <div className="sm-width h-[100px] flex items-center">
                 <div className="grid grid-cols-12 mx-auto max-w-[500px] md:max-w-full w-full items-center px-4">
                     <div className="col-span-4">
