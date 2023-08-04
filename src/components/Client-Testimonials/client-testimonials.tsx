@@ -13,6 +13,7 @@ const ClientTestimonials = () => {
   const [reviewsData, setReviewsData] = useState([]);
   const { reviewsState }: any = useAppSelector((state) => state.reviewsReducer);
   const [openModal, setOpenModal] = useState(false);
+  const [showReviews, setShowReviews] = useState(true)
 
   useEffect(() => {
     setReviewsData(reviewsState);
@@ -31,7 +32,8 @@ const ClientTestimonials = () => {
       <div className="flex flex-wrap justify-between items-center">
         <div>
           <ComponentTitle title="Clients testimonials" />
-          <span className="flex flex-wrap gap-2 items-center">
+          <span className="flex flex-wrap gap-2 items-center mt-3">
+            <FilledStar />
             <FilledStar />
             <FilledStar />
             <FilledStar />
@@ -47,7 +49,7 @@ const ClientTestimonials = () => {
           <BlueButton title={"Write Your review"} />
         </div>
       </div>
-
+{showReviews === true ? (
       <div className="my-10 md:my-20">
         {loading === true
           ? skelton.map((show: any, index: number) => {
@@ -117,6 +119,12 @@ const ClientTestimonials = () => {
                 </div>
               );
             })}
+      </div>
+):(
+  ""
+)}
+      <div className="mt-20 flex justify-center">
+        <button className="w-[150px] border-[var(--blue)] bg-[var(--blue)] text-white py-2 rounded-md" onClick={()=>{setShowReviews(!showReviews)}}>{showReviews == true ? "Hide" : "Read"}</button>
       </div>
       {openModal == true ? (
         <Modal

@@ -17,26 +17,25 @@ export default function Results() {
   const { surveySlice } = useAppSelector((state) => state.surveyReducer)
   const { locationsState }: any = useAppSelector((state) => state.locationReducer);
   const [locationsData, setLocationsData] = useState([])
-  const [loading,setLoading] = useState(false)
+  const [loading,setLoading] = useState(true)
   const params = useSearchParams()
   const paramsAddress = params.get("address")
+  const [clearData, setClearData] = useState(false)
 
   const _def = async (paramsAddress:any) => {
-    if (paramsAddress !== "") {
-      setLoading(true)
+    setLoading(true)
+    if (paramsAddress) {
       let res = await LocationsCall(
         `best places for visit in ${paramsAddress} for tourist`
         );
-        console.log("6",paramsAddress)
         dispatch(setLocations(res));
         setLocationsData(res)
-        setLoading(false)
+        setClearData(false)
     }
   };
   useEffect(()=>{
     if(paramsAddress){
-      setLoading(true)
-    dispatch(setSurveyValue({location: paramsAddress}))
+    dispatch(setSurveyValue({...surveySlice, location: paramsAddress}))
       _def(paramsAddress)
     }else{
       _def("USA")
@@ -44,9 +43,14 @@ export default function Results() {
   },[paramsAddress])
 
   useEffect(()=>{
-console.log(locationsData,"locationsData")
-  },[locationsData])
+if(clearData == true){
+  _def(paramsAddress ? paramsAddress : "USA")
+}
+  },[clearData])
 
+  useEffect(()=>{
+setLoading(false)
+  },[locationsData])
 
   return (
     <div>
@@ -55,7 +59,7 @@ console.log(locationsData,"locationsData")
         <div className="lg:my-20 mb-20">
           <div className="grid grid-cols-1 md:grid-cols-4">
             <div className="lg:col-span-1 w-[300px] ">
-              <FilterSidebar locations={locationsState} setLocationsData={setLocationsData} setLoading={setLoading} />
+              <FilterSidebar setClearData={setClearData} locations={locationsState} setLocationsData={setLocationsData} setLoading={setLoading} />
             </div>
             <div className="lg:col-span-3 col-span-4">
               <Lisitngs locations={locationsData} loadData={loading} setLoadData={setLoading} />
