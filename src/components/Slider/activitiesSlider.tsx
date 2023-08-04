@@ -245,24 +245,24 @@ function ActivitiesSlider() {
                       return (
                         <div key={index} className='sm:px-0 px-4'>
                           <div className={`flex flex-col items-center justify-center sm:w-[133px] w-full relative cursor-pointer ${CSS["slider_card"]}`}>
-                          <img
-                          className='w-full h-[124px]'
-                          src={image_path} alt={image_path}
-                          />
-                          <h1 className="text-[18px] mt-3 text-center">
-                            {activities.name}
-                          </h1>
-                          <div className={`absolute top-0 left-0 w-full h-[124px] flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
-                      <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[110px] hover:bg-[#009DE2]" onClick={()=> {
-                        setItem({
-                          location_id: activities.location_id,
-                          place_id: activities.place_id,
-                        })
-                        setShowTripPopup(true)
-                        }}>
-                        More Info
-                      </button>
-                      </div>
+                            <div className="h-[124px] w-full relative">
+                              <Image src={image_path} fill={true} alt={image_path} style={{objectFit: "cover"}}
+                              />
+                            </div>
+                            <h1 className="text-[18px] mt-3 text-center">
+                              {activities.name}
+                            </h1>
+                            <div className={`absolute top-0 left-0 w-full h-[124px] flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
+                              <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[110px] hover:bg-[#009DE2]" onClick={()=> {
+                                  setItem({
+                                    location_id: activities.location_id,
+                                    place_id: activities.place_id,
+                                  })
+                                  setShowTripPopup(true)
+                                  }}>
+                                  More Info
+                              </button>
+                            </div>
                           </div>
                         </div>
                       );

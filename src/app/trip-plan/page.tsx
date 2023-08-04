@@ -51,19 +51,25 @@ const TripPlan = () => {
             if(params_list.location_id)
             {
                 let item_Detail: any = await DetailCall(params_list.location_id)
-                setAutomateLocation(item_Detail.data)
-                let _locationStringArr = item_Detail.data.address_obj.address_string.split(' ')
-                locationString = _locationStringArr[_locationStringArr.length - 1]
+                if(item_Detail.data)
+                {
+                    setAutomateLocation(item_Detail.data)
+                    let _locationStringArr = item_Detail.data.address_obj.address_string.split(' ')
+                    locationString = _locationStringArr[_locationStringArr.length - 1]
+                }
             }
             else if(params_list.place_id)
             {
                 let item_Detail: any = await DetailsCallByGoogle(params_list.place_id)
-                setAutomateLocation(item_Detail.data.result)
-                let province_name = item_Detail.data.result.address_components.find((adr: any) => adr.types[0] === "administrative_area_level_1")?.long_name
-                let country_name = item_Detail.data.result.address_components.find((adr: any) => adr.types[0] === "country")?.long_name
-                locationString = `${province_name ? province_name + ' ' : ''}${country_name ? country_name : ''}`
+                if(item_Detail.data?.result)
+                {
+                    setAutomateLocation(item_Detail.data.result)
+                    let province_name = item_Detail.data.result.address_components.find((adr: any) => adr.types[0] === "administrative_area_level_1")?.long_name
+                    let country_name = item_Detail.data.result.address_components.find((adr: any) => adr.types[0] === "country")?.long_name
+                    locationString = `${province_name ? province_name + ' ' : ''}${country_name ? country_name : ''}`
 
-                setOpeningHours(item_Detail?.data?.result?.opening_hours?.weekday_text?.filter((_week: any) => _week.toLowerCase().search('closed') == -1 ).length)
+                    setOpeningHours(item_Detail?.data?.result?.opening_hours?.weekday_text?.filter((_week: any) => _week.toLowerCase().search('closed') == -1 ).length)
+                }
             }
             _defLocationToVisit(locationString)
         }

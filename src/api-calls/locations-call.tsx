@@ -7,6 +7,7 @@ const _getlocationImages = async (photo_reference: string | number, max_width="4
     .then(img_response => img_response.data.url)
     .catch((error)=>{
         console.log(error,"photos api failed")
+        return ""
     })
     return images_Data
 }

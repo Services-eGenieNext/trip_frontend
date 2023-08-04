@@ -4,9 +4,11 @@ interface IPopupOverlay {
     show: boolean
     onClose: () => void
     children: React.ReactNode
+    childrenParentClass?: string
+    wrapperClass?: string
 }
 
-const PopupWithOverlay = ({show, onClose=()=> {}, children}: IPopupOverlay) => {
+const PopupWithOverlay = ({show, onClose=()=> {}, children, childrenParentClass, wrapperClass}: IPopupOverlay) => {
 
     const [showPopup, setShowPopup] = useState(false)
     const overlayRef = useRef<null | HTMLDivElement>(null)
@@ -37,7 +39,7 @@ const PopupWithOverlay = ({show, onClose=()=> {}, children}: IPopupOverlay) => {
     return (
         <div id={`overlayPopup`} ref={overlayRef} className={`hidden opacity-0 fixed inset-0 z-20 bg-[rgba(0,0,0,0.5)] max-h-screen h-screen transition-all duration-300`}>
             <div className="flex justify-center items-center mt-[5vh] mx-[1rem]">
-                <div className="bg-white p-10 w-[900px] rounded-xl relative">
+                <div className={`bg-white p-10 max-w-[900px] w-full rounded-xl relative ${wrapperClass ?? ''}`}>
                     <span 
                     className="absolute top-[-1rem] right-[-0.5rem] w-[30px] h-[30px] bg-[#F9F9F9] flex justify-center items-center rounded-full p-2 cursor-pointer select-none"
                     onClick={() => onClose()}
@@ -46,7 +48,7 @@ const PopupWithOverlay = ({show, onClose=()=> {}, children}: IPopupOverlay) => {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </span>
-                    <div className="max-h-[80vh] h-full overflow-auto pt-4">
+                    <div className={`max-h-[80vh] h-full overflow-auto pt-4 ${childrenParentClass ?? ''}`}>
                         {children}
                     </div>
                 </div>
