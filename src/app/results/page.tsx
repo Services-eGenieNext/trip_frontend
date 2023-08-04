@@ -23,6 +23,7 @@ export default function Results() {
 
   const _def = async (paramsAddress:any) => {
     if (paramsAddress !== "") {
+      setLoading(true)
       let res = await LocationsCall(
         `best places for visit in ${paramsAddress} for tourist`
         );
@@ -41,6 +42,10 @@ export default function Results() {
       _def("USA")
     }
   },[paramsAddress])
+
+  useEffect(()=>{
+console.log(locationsData,"locationsData")
+  },[locationsData])
 
 
   return (
