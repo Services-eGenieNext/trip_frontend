@@ -5,6 +5,7 @@ import TimerOutlined from '../icons/TimerOutlined'
 import SelectField from '../UIComponents/InputField/SelectField'
 import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import { setItineraryDays } from '@/redux/reducers/itinerarySlice'
+import BlueButton from '../UIComponents/Buttons/BlueButton'
 
 interface ITripPlanPopup {
     restaurant: any | null
@@ -56,7 +57,8 @@ const AddProductModel = ({restaurant, show, onClose}: ITripPlanPopup) => {
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
     return (
-        <PopupWithOverlay show={show} onClose={() => onClose()} >   
+        <PopupWithOverlay show={show} onClose={() => onClose()} wrapperClass="w-max" childrenParentClass="overflow-visible" >  
+            <div className="max-h-[900vh] max-w-[500px] h-full"> 
             <InputField
                 type="time"
                 label="Start Time"
@@ -93,6 +95,9 @@ const AddProductModel = ({restaurant, show, onClose}: ITripPlanPopup) => {
                 }}
                 onAdditionalChange={(_data) => {}}
             />
+
+            <BlueButton title="Save" className="w-full" onClick={(e) => storeLocation()} />
+            </div>
         </PopupWithOverlay>
     )
 }
