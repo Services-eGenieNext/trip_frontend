@@ -124,7 +124,7 @@ export default function HeroFilterSection() {
         items={Occasion}
         Label={"Occasion"}
         heightItemsContainer="300px"
-        // SelectedData={locationSearch.occasion ? locationSearch.occasion : []}
+        // SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
         placeholder="Select..."
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
@@ -136,10 +136,10 @@ export default function HeroFilterSection() {
         items={Priority}
         Label={"Priority"}
         heightItemsContainer="300px"
-        // SelectedData={locationSearch.priority}
+        // SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
         placeholder="Select..."
         onChange={(val: any) =>
-          setLocationSearch({ ...locationSearch, occassion: val })
+          setLocationSearch({ ...locationSearch, priority: val })
         }
       />
 

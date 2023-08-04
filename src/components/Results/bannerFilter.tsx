@@ -28,7 +28,6 @@ export default function HeroFilterSection({ surveyData }: any) {
   const [date, setDate] = useState<any>({
     key: "selection",
   });
-  const [typeFetch, setTypeFetch] = useState<any>([]);
 
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
@@ -154,7 +153,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         items={Occasion}
         Label={"Occasion"}
         heightItemsContainer="300px"
-        // SelectedData={locationSearch.occasion}
+        // SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
         placeholder="Select..."
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
@@ -177,7 +176,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         items={Priority}
         Label={"Priority"}
         heightItemsContainer="300px"
-        // SelectedData={locationSearch.priority}
+        // SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
         placeholder="Select..."
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, priority: val })

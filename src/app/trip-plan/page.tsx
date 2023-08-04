@@ -120,8 +120,9 @@ const TripPlan = () => {
             
 
             <SmallStory positioning="inline" />
-
+<div className=' mt-20'>
             <ClientTestimonials />
+</div>
         </div>
     )
 }
