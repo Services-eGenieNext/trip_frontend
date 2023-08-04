@@ -13,12 +13,19 @@ const Filter_option = {
       { id: 4, label: "Villa" },
       { id: 5, label: "Sea view" },
     ],
-    propertyClass: [
-      { id: 1, label: "1" },
-      { id: 2, label: "2" },
-      { id: 3, label: "3" },
-      { id: 4, label: "4" },
-      { id: 5, label: "5" },
+    cityRanking: [
+      { type:"City Ranking", id: 1, label: "1", active:false },
+      { type:"City Ranking", id: 2, label: "2", active:false },
+      { type:"City Ranking", id: 3, label: "3", active:false  },
+      { type:"City Ranking", id: 4, label: "4", active:false  },
+      { type:"City Ranking", id: 5, label: "5", active:false  },
+    ],
+    activityRanking: [
+      { type:"Activity Ranking", id: 1, label: "1", active:false },
+      { type:"Activity Ranking", id: 2, label: "2", active:false },
+      { type:"Activity Ranking", id: 3, label: "3", active:false  },
+      { type:"Activity Ranking", id: 4, label: "4", active:false  },
+      { type:"Activity Ranking", id: 5, label: "5", active:false  },
     ],
     paymentType: [
       { id: 1, label: "Fully refundable" },
