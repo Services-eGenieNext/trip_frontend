@@ -51,14 +51,21 @@ export default function TripPlanningCard({address, totalOpeningHours, automateLo
                     if(_recommendations[index].location_id && _recommendations[index].location_id !== '')
                     {
                         let res: any = await DetailsCall(_recommendations[index].location_id)
-                        _locationDetails.push(res.data)
+                        if(res.data)
+                        {
+                            _locationDetails.push(res.data)
+                        }
                     }
                     if(_recommendations[index].place_id && _recommendations[index].place_id !== '')
                     {
                         let res: any = await DetailsCallByGoogle(_recommendations[index].place_id)
-                        _locationDetails.push(res.data.result)
+                        if(res.data?.result)
+                        {
+                            _locationDetails.push(res.data.result)
+                        }
                     }
                 }
+                console.log('_locationDetails', _locationDetails)
                 setLocationDetails([..._locationDetails])
                 setLoading(false)
             }

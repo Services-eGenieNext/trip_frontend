@@ -50,6 +50,7 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
         if(restaurantData.length > 0){
           setLoading(false)
         }
+        console.log('restaurantData', restaurantData)
       },[restaurantData])
 
     const placeForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -126,7 +127,7 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                         })
                     ):(
                         restaurantData?.map((restaurant:any, index:number) => {
-                            let image_path = restaurant.images === "" ? BlankLocation : restaurant.images
+                            let image_path = restaurant.images === "" ? BlankLocation.src : restaurant.images
                             let address = restaurant.formatted_address ? restaurant.formatted_address : restaurant.address_obj?.address_string;
                             let link = `/trip-plan?address=${address}&location_id=${restaurant.location_id ?? ''}&place_id=${restaurant.place_id ?? ''}&restaurants=true`
                             return <div key={index} className="md:mx-4 md:my-4 my-8 mx-0">
