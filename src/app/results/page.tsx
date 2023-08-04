@@ -43,6 +43,13 @@ export default function Results() {
       _def("USA");
     }
   }, [paramsAddress]);
+  useEffect(()=>{
+if(paramsAddress){
+  _def(paramsAddress);
+}else{
+  _def("USA");
+}
+  },[])
 
   useEffect(() => {
     if (clearFilter == true) {
