@@ -41,7 +41,7 @@ export default function Footer() {
             })}
         </div>
         <div className="h-[74px] sm:w-[90%] sm:px-0 px-2 border-t-2 border-[#3C3F52] flex justify-center items-center">
-            <p className={`sm:text-[18px] text-[14px] uppercase tracking-wider ${CSS["copyright"]}`}>Copyright © 2022 IPLAN. All rights reserved.</p>
+            <p className={`sm:text-[18px] text-[14px] uppercase tracking-wider ${CSS["copyright"]}`}>Copyright © 2022 WePLAN. All rights reserved.</p>
         </div>
       </div>
     </div>

@@ -14,6 +14,9 @@ import BlankLocation from "public/images/blank-location.jpg";
 import Image from "next/image";
 import Link from "next/link";
 import DetailModal from "../tripPlanningCard/TripPlanPopup";
+import SelectField from "../UIComponents/InputField/SelectField";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
 
 const ProductHorizontalSlide = ({
   Title,
@@ -27,20 +30,23 @@ const ProductHorizontalSlide = ({
   v_type = "",
   slidesToShow = 4
 }: IProductHorizontalSlide) => {
+
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState([]);
+  const [openLocation, setOpenLocation] = useState<any | null>(null);
   const [showTripPopup, setShowTripPopup] = useState(false);
   const [item, setItem] = useState({});
   const slideRef = useRef<null | HTMLDivElement>(null);
   const formRef = useRef<null | HTMLDivElement>(null);
+
+  const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
 
   useEffect(() => {
     setLocations(locationsState);
   }, [locationsState]);
 
   useEffect(() => {
-    console.log(locations,"locations")
     if (locations.length > 0) {
       setLoading(false);
     }
@@ -50,6 +56,15 @@ const ProductHorizontalSlide = ({
   const [xPosition, setXPosition] = useState(0);
   const [yPosition, setYPosition] = useState(0);
   const reviewArr = new Array(5).fill(1);
+
+  const formInitialField = {
+    startTime: "",
+    endTime: "",
+    day: ""
+  }
+
+  const [formFields, setForlFields] = useState(formInitialField)
+
 
   const placeForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     formRef.current?.classList.add("hidden");
@@ -72,6 +87,37 @@ const ProductHorizontalSlide = ({
       setVisible(true);
     }
   };
+
+  const dispatch = useAppDispatch()
+  const storeLocation = () => {
+
+    if(formFields.day && formFields.endTime && formFields.startTime && openLocation)
+    {
+      let _startTime = convertTime(formFields.startTime)
+      let _endTime = convertTime(formFields.endTime)
+      let days: any[] = [...itineraryDays]
+      
+      let index = days.findIndex((day) => day.day === formFields.day)
+
+      days[index] = {...days[index]}
+
+      days[index].times = [...days[index].times, {
+        time: `${_startTime} - ${_endTime}`,
+        location: openLocation
+      }]
+
+      dispatch(setItineraryDays([...days]))
+
+      setForlFields(formInitialField)
+      setVisible(false)
+    }
+  }
+
+  const convertTime = (t: string) =>{
+    let [h,...rest]=t.split(":");
+    return (h == "12" ? "12" : Number(h)%12) + ":" + rest.join(":") + ( Number(h) < 12 ? " AM": " PM");
+  }
+
 
   const dragStartFunc = (e: React.DragEvent<HTMLDivElement>, item: any) => {
     e.dataTransfer?.setData("product", JSON.stringify(item));
@@ -146,7 +192,10 @@ const ProductHorizontalSlide = ({
                             {isAddButton && (
                               <div
                                 className="flex justify-end items-center gap-2 cursor-pointer"
-                                onClick={(e) => placeForm(e)}
+                                onClick={(e) => {
+                                  setOpenLocation(location)
+                                  placeForm(e)
+                                }}
                               >
                                 <span className="text-[11px] text-[var(--green)]">
                                   Add
@@ -268,26 +317,40 @@ const ProductHorizontalSlide = ({
           </span>
         </div>
         <InputField
-          type="text"
+          type="time"
           label="Start Time"
           className="w-full mb-5"
           placeholder="Choose time"
+          value={formFields.startTime}
+          onChange={(e) => setForlFields({...formFields, startTime: e.target.value})}
           icon={<TimerOutlined />}
         />
 
         <InputField
-          type="text"
+          type="time"
           label="End time"
           className="w-full mb-5"
           placeholder="Choose time"
+          value={formFields.endTime}
+          onChange={(e) => setForlFields({...formFields, endTime: e.target.value})}
           icon={<TimerOutlined />}
         />
 
-        <InputField
-          type="text"
+        <SelectField
           label="Choose day"
-          className="w-full mb-5"
-          placeholder="Select"
+          placeholder="Select ..."
+          data={[{id: "Monday", name: "Monday"}, {id: "Tuesday", name: "Tuesday"}]}
+          className={`mr-2 sm:my-2 my-5 w-full`}
+          styling={{
+            shadow: "drop-shadow-xl ",
+            left: "0px",
+            top: "70px",
+          }}
+          value={formFields.day}
+          onChange={(val) => {
+            setForlFields({...formFields, day: val})
+          }}
+          onAdditionalChange={(_data) => {}}
         />
 
         <div className="flex justify-between">
@@ -297,7 +360,7 @@ const ProductHorizontalSlide = ({
             onClick={() => setVisible(false)}
           />
 
-          <BlueButton title="Save" className="w-[150px]" />
+          <BlueButton title="Save" className="w-[150px]" onClick={(e) => storeLocation()} />
         </div>
       </div>
       <DetailModal

@@ -13,6 +13,10 @@ import { setLocationAddress } from '@/redux/reducers/locationSlice'
 import BlankLocation from "public/images/blank-location.jpg"
 import styles from './ProductHorizontalSlide.module.css'
 import DetailModal from '../tripPlanningCard/TripPlanPopup';
+import PopupWithOverlay from '../UIComponents/Popup/PopupWithOverlay'
+import InputField from '../UIComponents/InputField/InputField'
+import TimerOutlined from '../icons/TimerOutlined'
+import AddProductModel from './AddProductModel'
 
 interface IProduct {
     title: string
@@ -33,7 +37,8 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
     const [yPosition, setYPosition] = useState(0)
     const [openModal, setOpenModal] = useState(false)
     const [showTripPopup, setShowTripPopup] = useState(false);
-  const [item, setItem] = useState({});
+    const [item, setItem] = useState({});
+    const [openRestaurant, setOpenRestaurant] = useState(null)
 
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
 
@@ -149,7 +154,10 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                                         {
                                             isAddButton && (
                                                 <div className="flex justify-end items-center gap-2 cursor-pointer"
-                                                onClick={() => {setOpenModal(true)}}
+                                                onClick={() => {
+                                                    setOpenRestaurant(restaurant)
+                                                    setOpenModal(true)
+                                                }}
                                                 >
                                                     <span className="text-[11px] text-[var(--green)]">Add</span>
                                                     <span className="w-[23px] h-[23px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
@@ -178,11 +186,14 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
             <DetailModal item={item} show={showTripPopup} onClose={() => {
                 setShowTripPopup(false)
             }} />
-            {openModal == true ? (
-                <Modal openModal={openModal} setOpenModal={setOpenModal} modalFor="view_otehr_places" />
+            
+            <AddProductModel show={openModal} restaurant={openRestaurant} onClose={() => setOpenModal(false)} />
+            {/* {openModal == true ? (
+                // <Modal openModal={openModal} setOpenModal={setOpenModal} modalFor="view_otehr_places" />
+                
             ):(
                 ""
-            )}
+            )} */}
         </div>
     )
 }
