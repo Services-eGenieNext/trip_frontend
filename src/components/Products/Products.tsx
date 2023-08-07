@@ -78,7 +78,7 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
     }
 
     return (
-        <div className="relative px-10">
+        <div className="relative sm:px-10 px-4">
 
             <Image src={Map} alt='Map 1' className="absolute left-10 top-[5rem] -z-10 select-none" />
 
@@ -131,7 +131,7 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                             let address = restaurant.formatted_address ? restaurant.formatted_address : restaurant.address_obj?.address_string;
                             let link = `/trip-plan?address=${address}&location_id=${restaurant.location_id ?? ''}&place_id=${restaurant.place_id ?? ''}&restaurants=true`
                             return <div key={index} className="md:mx-4 md:my-4 my-8 mx-0">
-                                <div className={`rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-2 bg-white h-full w-full relative ${styles['slider_card']}`}>
+                                <div className={`rounded-xl overflow-hidden shadow grid grid-cols-1 lg:grid-cols-2 bg-white h-full w-full relative ${styles['slider_card']}`}>
                                     <div className="relative w-full h-full">
                                         <img src={image_path} alt={image_path} className="object-cover lg:h-[200px] h-[250px] w-full cursor-pointer " />
                                         {
