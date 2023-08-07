@@ -2,24 +2,45 @@ import React,{useState, useRef,useEffect} from "react";
 import CSS from './tripPlanning.module.css'
 import { IPlanningCard } from "@/interfaces/TripPlan";
 import InputField from "../UIComponents/InputField/InputField";
+import { LocationsDurationCall } from "@/api-calls";
 
 interface IScheduleCard extends IPlanningCard {
+  distanceObject?: any
   time?: string
 }
 
-export default function ScheduleCard({items, isDropdownButton, onOpen, time}:IScheduleCard) {
+export default function ScheduleCard({distanceObject, items, isDropdownButton, onOpen, time}:IScheduleCard) {
     const [isShowTooltip, setIsShowTooltip] = useState(false);
     const [editTime, setEditTime] = useState(false)
     const [deleteTime, setDeleteTime] = useState(false)
     const [addEvent, setAddEvent] = useState(false)
     const [addNewEventValue, setaddNewEventValue] = useState("")
     const [suggestedLocation, setSuggestedLocation] = useState('')
-
+    const [duration, setDuration] = useState(null)
     const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
       console.log(e.dataTransfer.getData('product'))
     }
 
+    useEffect(() => {
+      const _def = async () => {
+        let duration = await LocationsDurationCall(distanceObject.origin, distanceObject.destination)
+        console.log('duration found', duration)
+        if(duration.status == 200)
+        {
+          setDuration(duration.data.rows[0].elements[0].duration.text)
+        }
+      }
+      if(distanceObject.origin && distanceObject.destination)
+      {
+        _def()
+      }
+    }, [distanceObject])
+
   return (
+    <>
+    {
+      duration && <span className="flex rounded-full px-2 h-max bg-[var(--blue)] text-white whitespace-nowrap w-max">{duration}</span>
+    }
     <div
       className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
 
@@ -110,5 +131,6 @@ export default function ScheduleCard({items, isDropdownButton, onOpen, time}:ISc
         </div>
       </span>
     </div>
+    </>
   );
 }
