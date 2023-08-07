@@ -50,8 +50,22 @@ const LocationsCall = async (query:any) => {
     })
 }
 
+
+const LocationsDurationCall = async (origin:string, destination: string) => {
+
+    return await axios.get(`${API_URL}/google/distancemeasure?origin=${origin}&destination=${destination}`)
+    .then(async (response) => {
+        return {status: 200, data: response.data}
+    })
+    .catch((error)=>{
+        console.log(error,"error")
+        return {status: 404, data: {}}
+    })
+}
+
 export {
-    _getlocationImages
+    _getlocationImages,
+    LocationsDurationCall
 }
 
 export default LocationsCall

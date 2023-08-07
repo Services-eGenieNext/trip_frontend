@@ -11,6 +11,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import styles from "./pricing-cards.module.css"
 import { setItineraryDays } from '@/redux/reducers/itinerarySlice';
 import { IDays } from '@/interfaces';
+import { _calculateStartAndEndTime } from './functions';
 
 interface IPricingCards {
     locationDetails: any
@@ -35,7 +36,8 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
             day: "Monday",
             times: [{
                 time: "",
-                location: {}
+                location: {},
+                suggestedTime: {}
             }]
         },
         {
@@ -70,6 +72,24 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
 
         dispatch(setItineraryDays(days.filter((_day: any) => _day.times.length > 0)))
 
+        // const _defDays = async () => {
+        //     let _days = []
+        //     for (let i = 0; i < days.length; i++) {
+        //         _days.push({...days[i]})
+        //         for (let j = 0; j < _days[i].times.length; j++) {
+        //             _days[i].times = [..._days[i].times]
+                    
+        //             let _times = [..._days[i].times]
+
+        //             let suggestedTime = await _calculateStartAndEndTime(_times, j)
+                    
+        //             _days[i].times[j] = {..._times[j], suggestedTime: suggestedTime}
+        //             console.log('times', suggestedTime, _days[i].times[j])
+
+        //         }
+        //     }
+        // }
+        // _defDays()
     }, [days])
 
     useEffect(() => {
@@ -143,6 +163,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                     if(found === false)
                     {
                         _days[index].times[i].location = sameTimeLocations[m]
+                        
                         availableLocation = true
                         break
                     }
@@ -152,6 +173,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                 {
                     _days[index].times[i].location = sameTimeLocations[random(0, sameTimeLocations.length-1)]
                 }
+
             }
             return time
         }
