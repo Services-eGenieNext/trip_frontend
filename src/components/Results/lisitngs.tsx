@@ -20,7 +20,7 @@ console.log(results,"results")
   },[results])
 
   return (
-    <div className="lg:px-12 md:px-12 sm:px-6 px-3">
+    <div className="lg:pl-12 md:pl-12 sm:pl-6 pl-3">
       <p className="text-[18px] text-[#3F3F3F]">
         Show listing of {results ? results.length : "0"} Places...
       </p>

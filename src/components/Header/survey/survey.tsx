@@ -6,19 +6,14 @@ import React, { useState } from "react";
 import Occasion from "@/data/occasion.json";
 import Priorities from "@/data/priority.json";
 import LocationJson from '@/data/location.json'
-import InputField from "@/components/UIComponents/InputField/InputField";
-import SimpleLocation from "../../icons/SimpleLocation";
 import SelectField from "@/components/UIComponents/InputField/SelectField";
-import { LocationsCall, DetailCall } from "@/api-calls";
 import { useAppDispatch } from '@/redux/hooks';
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { useRouter } from "next/navigation";
 import { Range } from "react-date-range";
-import { addDays } from "date-fns";
 import DateRangeField from "../../UIComponents/InputField/DateRangeField";
 import CalenderIcon from "../../icons/Calender";
 import styles from '../Header.module.css'
-import Link from "next/link";
 import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
 
 const Survey = ({ show, onClose }: ISurvey) => {
@@ -63,28 +58,9 @@ const Survey = ({ show, onClose }: ISurvey) => {
     },
   ];
 
-  // useEffect(() => {
-  //   if (survey.location !== "") {
-  //     const activities = async () => {
-  //       let res = await LocationsCall(`best places for visit in ${survey.location} for tourist`);
-  //       console.log("survey locations 5", res);
-  //       setLocations(res)
-  //     };
-  //     activities();
-  //   }
-  // }, [survey]);
-
   useEffect(()=>{
 setSurvey({...survey, dates: date})
   },[date])
-
-  // const fetchingCuisines = (location_id:string) => {
-  //   const details = async () => {
-  //       let res = await DetailCall(location_id)
-  //       console.log('object', res)
-  //   }
-  //   details()
-  // }
 
   const handleSurvey = () => {
     if(survey.dates.startDate){
