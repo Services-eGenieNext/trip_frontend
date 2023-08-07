@@ -53,14 +53,23 @@ export default function HeroFilterSection({ surveyData }: any) {
   }, [surveyData]);
 
   useEffect(() => {
+    console.log(date,"date")
     setLocationSearch({ ...locationSearch, dates: date });
   }, [date]);
-    // useEffect(()=>{
-    //   setLocationSearch(surveyData)
-    //   if(surveyData.location !== ""){
-    //     _def()
-    //   }
-    // },[surveyData])
+
+  useEffect(() => {
+    const calculateDaysRemaining = () => {
+        const currentDate = new Date();
+        const endDate = new Date(date.endDate)
+        const startDate = new Date(date.startDate)
+        console.log(endDate,"endDate",startDate,"startDate")
+        const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+        const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        console.log(daysRemaining,"daysRemaining")
+    };
+
+    calculateDaysRemaining();
+}, [date]);
 
   const handleRoute = () => {
     if (locationSearch.dates.startDate) {

@@ -1,4 +1,4 @@
-import Logo from "/public/logo_white.png";
+import Logo from "/public/logo_white.svg";
 import DottedMap from "/public/images/dotted_map.png";
 import Image from "next/image";
 import CSS from "./footer.module.css";

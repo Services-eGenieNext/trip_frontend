@@ -1,36 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import PlaceImg from "/public/images/placeImg_01.png";
 import { FilledStar } from "../icons/Stars";
 import BlankLocation from "public/images/blank-location.jpg";
 import DetailModal from '../tripPlanningCard/TripPlanPopup';
 import Link from "next/link";
 import NotFound from 'public/images/data-not-found.jpg'
 
-export default function Lisitngs({ locations, loadData , setLoadData }: any) {
+export default function Lisitngs({ locations, loadData, setClearFilter }: any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","9"];
-  const [loading, setLoading] = useState(true);
   const [results, setResults] = useState([]);
   const [showTripPopup, setShowTripPopup] = useState(false);
   const [item, setItem] = useState({});
   useEffect(() => {
-      // setLoading(true)
       setResults(locations);
   }, [locations]);
 
-  // useEffect(() => {
-  //   if (results.length > 0) {
-  //     setLoading(false);
-  //     setLoadData(false)
-  //   }
-  // }, [results]);
-
-//   useEffect(()=>{
-// setLoading(loadData)
-//   },[loadData])
+  useEffect(()=>{
+console.log(results,"results")
+  },[results])
 
   return (
-    <div className="lg:px-12 md:px-12 sm:px-6 px-3">
+    <div className="lg:pl-12 md:pl-12 sm:pl-6 pl-3">
       <p className="text-[18px] text-[#3F3F3F]">
         Show listing of {results ? results.length : "0"} Places...
       </p>
@@ -70,7 +60,7 @@ export default function Lisitngs({ locations, loadData , setLoadData }: any) {
               );
             })
           : (
-            results.length > 0 ? results?.map((location: any, index:number) => {
+            results && results.length > 0 ? results?.map((location: any, index:number) => {
                 let image_path = location?.images ?  location.images : BlankLocation.src
                 let address = location.formatted_address ? location.formatted_address : location.address_obj?.address_string;
                 return (
@@ -88,10 +78,10 @@ export default function Lisitngs({ locations, loadData , setLoadData }: any) {
                     <p className="text-[22px] font-semibold text-[#2D2D2D] mt-2 sm:text-start text-center">
                     {location.formatted_address}
                     </p>
-                    <p className="text-[13px] text-[#242424] mt-2">
+                    {/* <p className="text-[13px] text-[#242424] mt-2">
                       31 Dec 2022 - 9 Jan 2023
-                    </p>
-                    <div className="grid grid-cols-2 mt-2">
+                    </p> */}
+                    {/* <div className="grid grid-cols-2 mt-2">
                       <div className="flex items-center gap-x-2">
                         <div className="w-[7px] h-[7px] rounded-full bg-[#9AB044]"></div>
                         <p className="text-[12px] text-[#242424]">Sanur Beach</p>
@@ -102,8 +92,8 @@ export default function Lisitngs({ locations, loadData , setLoadData }: any) {
                           Pura Tirta Empul
                         </p>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-x-3 text-[12px] mt-2">
+                    </div> */}
+                    <div className="flex items-center gap-x-3 text-[12px] mt-4">
                       <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=2`} className="w-[133px] h-[32px] rounded-md bg-[#009DE2] text-white text-center block leading-7 hover:bg-transparent border hover:border-[#009DE2] hover:text-[#2D2D2D]">
                         Automate My Trip
                       </Link>
@@ -120,8 +110,13 @@ export default function Lisitngs({ locations, loadData , setLoadData }: any) {
                   </div>
                 );
               }) : (
-                <div className="flex justify-center mt-10 w-full">
+                <div className="flex flex-col items-center mt-10 w-full">
                   <img className="w-[500px]" src={NotFound.src} alt="not found"/>
+                  <span className="md:text-[40px] sm:text-[32px] text-[20px] font-bold">Data Not Found</span>
+                  <p className="mt-2 text-[gray]">Please try with another filter</p>
+                  <button className="mt-4 w-[200px] py-2 rounded-md bg-[#009de2] text-white font-bold text-[20px]" onClick={()=>{
+                    setClearFilter(true)
+                  }}>Clear All</button>
                 </div>
               )
           )}

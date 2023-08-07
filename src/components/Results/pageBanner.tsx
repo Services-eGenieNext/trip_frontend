@@ -3,22 +3,13 @@ import styles from "./pageBanner.module.css";
 import HeroBg from "/public/images/results_page_banner.png";
 import Ballon from "/public/images/baloon-transparent.png";
 import Image from "next/image";
-import { Range } from "react-date-range";
-import { addDays } from "date-fns";
 import BannerFilter from "./bannerFilter";
-import { useAppDispatch } from "@/redux/hooks";
 
 interface ISurvey {
   survey?: any;
 }
 
 const Hero = ({ survey }: ISurvey) => {
-  const dispatch = useAppDispatch()
-  const [date, setDate] = useState<Range>({
-    startDate: new Date(),
-    endDate: addDays(new Date(), 7),
-    key: "selection",
-  });
 
   const [locationSearch, setLocationSearch] = useState({
     location: "",
@@ -33,8 +24,6 @@ const Hero = ({ survey }: ISurvey) => {
   useEffect(() => {
 setLocationSearch(survey)
   }, [survey]);
-
-  const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
 
   return (
     <div className="relative lg:mb-28 mt-10">

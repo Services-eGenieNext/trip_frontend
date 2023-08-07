@@ -73,7 +73,7 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
         prevArrow: <SamplePrevArrow />,
         responsive: [
         {
-            breakpoint: 1550,
+            breakpoint: 1200,
             settings: {
             slidesToShow: 3,
             slidesToScroll: 3,
@@ -84,7 +84,7 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
             },
         },
         {
-            breakpoint: 1160,
+            breakpoint: 800,
             settings: {
             slidesToShow: 2,
             slidesToScroll: 2,
@@ -95,7 +95,7 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
             },
         },
         {
-            breakpoint: 600,
+            breakpoint: 550,
             settings: {
             slidesToShow: 1,
             slidesToScroll: 1,

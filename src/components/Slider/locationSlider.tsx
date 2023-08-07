@@ -102,7 +102,7 @@ export default function LocationSlider() {
     prevArrow: <SamplePrevArrow />,
     responsive: [
       {
-        breakpoint: 1550,
+        breakpoint: 1200,
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
