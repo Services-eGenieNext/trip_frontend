@@ -61,7 +61,8 @@ if(paramsAddress){
   return (
     <div>
       <PageBanner survey={surveySlice} />
-      <Section>
+      <div className="w-full flex justify-center">
+        <Section className="relative">
         <div className="lg:my-20 mb-20">
           <div className="grid grid-cols-1 md:grid-cols-4">
             <div className="lg:col-span-1 w-[300px] ">
@@ -84,6 +85,7 @@ if(paramsAddress){
           </div>
         </div>
       </Section>
+    </div>
     </div>
   );
 }

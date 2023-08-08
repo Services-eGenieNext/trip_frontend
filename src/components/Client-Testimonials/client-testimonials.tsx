@@ -6,6 +6,7 @@ import styles from "./client-testimonials.module.css";
 import Modal from "../Modal/index";
 import { ReviewsCall } from "@/api-calls";
 import { useAppSelector } from "@/redux/hooks";
+import Section from "../UIComponents/Section";
 
 const ClientTestimonials = () => {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
@@ -28,6 +29,8 @@ const ClientTestimonials = () => {
   const reviewArr = new Array(5).fill(1);
 
   return (
+    <div className="w-full flex justify-center">
+        <Section className="relative">
     <div className="sm-width px-4">
       <div className="flex flex-wrap justify-between items-center">
         <div>
@@ -46,7 +49,7 @@ const ClientTestimonials = () => {
             setOpenModal(true);
           }}
         >
-          <BlueButton title={"Write Your review"} />
+          <BlueButton title={"Write Your Review"} />
         </div>
       </div>
 {showReviews === true ? (
@@ -135,6 +138,8 @@ const ClientTestimonials = () => {
       ) : (
         ""
       )}
+    </div>
+    </Section>
     </div>
   );
 };

@@ -9,7 +9,8 @@ import SmallStory from "../Story/SmallStory";
 
 export default function TripPlanningV4() {
   return (
-    <Section>
+    <div className="w-full flex justify-center">
+        <Section className="relative">
       <div className="my-20">
         <TripPlanningHeader variation="space-arround" />
         <div className="grid grid-cols-1 lg:grid-cols-3">
@@ -37,5 +38,6 @@ export default function TripPlanningV4() {
         </div>
       </div>
     </Section>
+    </div>
   );
 }

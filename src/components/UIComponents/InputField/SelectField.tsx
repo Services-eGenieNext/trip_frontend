@@ -60,7 +60,7 @@ if(value !== ""){
                 onClick={() => setOpenDropDown(!openDropDown)}
                 >
                     {
-                        icon && <span className="mr-1">{icon}</span>
+                        icon && <span className="mr-2">{icon}</span>
                     }
                     <span className={`${value ? 'text-black' : `text-[var(--lite-gray)]`} overflow-ellipsis overflow-hidden whitespace-nowrap`}>
                         <input type="text" className='border-none outline-none h-full' value={inputVal} placeholder={placeholder} onChange={(e)=>{setInputVal(e.target.value)}} />
@@ -73,7 +73,7 @@ if(value !== ""){
                     </span>
                 </span>
             </div>
-            <label className="absolute top-[-0.7rem] left-[1rem] px-[5px]"
+            <label className="absolute top-[-0.3rem] left-[1rem] px-[5px] text-[9px] uppercase letter-spacing"
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{label}</label>
 

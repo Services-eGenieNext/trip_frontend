@@ -11,7 +11,8 @@ import { useAppSelector } from "@/redux/hooks";
 export default function TripPlanningV6() {
   const { locationsState } = useAppSelector((state) => state.locationReducer);
   return (
-    <Section>
+    <div className="w-full flex justify-center">
+        <Section className="relative">
       <div className="my-20">
         <TripPlanningHeader variation="space-arround" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-10">
@@ -49,5 +50,6 @@ export default function TripPlanningV6() {
         </div>
       </div>
     </Section>
+    </div>
   );
 }

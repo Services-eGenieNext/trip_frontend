@@ -93,6 +93,12 @@
     font-weight: 900;
 }
 
+@font-face {
+    font-family: "lato";
+    src: url(/fonts/Lato/Lato-Regular.ttf);
+    font-weight: 500;
+}
+
 html,
 body {
     scroll-behavior: smooth;
@@ -114,6 +120,10 @@ body {
     font-family: 'Gilroy';
 }
 
+.lato {
+    font-family: "lato";
+}
+
 .Poppins {
     font-family: 'Poppins', sans-serif;
 }
@@ -126,4 +136,12 @@ body {
 
 .large-shadow {
     box-shadow: 0px 5px 44px 0px #2028341A;
+}
+
+.plan{
+    letter-spacing: 8px;
+}
+
+.letter-spacing{
+    letter-spacing: 3px;
 }

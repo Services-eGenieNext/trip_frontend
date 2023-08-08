@@ -11,7 +11,8 @@ const TripPlanningV5 = () => {
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { restaurantsState } = useAppSelector((state) => state.restaurantsReducer)
     return (
-        <Section>
+        <div className="w-full flex justify-center">
+        <Section className="relative">
             <div className="my-20">
                 <TripPlanningHeader variation="space-arround" />
 
@@ -52,6 +53,7 @@ const TripPlanningV5 = () => {
                 </div>
             </div>
         </Section>
+        </div>
     )
 }
 

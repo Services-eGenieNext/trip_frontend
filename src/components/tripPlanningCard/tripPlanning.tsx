@@ -87,7 +87,8 @@ export default function TripPlanningCard({address, totalOpeningHours, automateLo
     }, [address])
 
     return (
-        <Section>
+        <div className="w-full flex justify-center">
+        <Section className="relative">
             <div className="w-full flex justify-center relative">
                 <div className="flex flex-col sm-width gilroy">
                     <TripPlanningHeader variation="space-between" />
@@ -109,5 +110,6 @@ export default function TripPlanningCard({address, totalOpeningHours, automateLo
                 </div>
             </div>
         </Section>
+        </div>
     );
 }
