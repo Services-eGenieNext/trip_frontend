@@ -11,7 +11,8 @@ import { useAppSelector } from "@/redux/hooks";
 export default function Page() {
   const { locationsState } = useAppSelector((state) => state.locationReducer)
   return (
-    <Section>
+    <div className="w-full flex justify-center">
+        <Section className="relative">
       <PageBanner title="Bali, Indonesia" />
       <TripPlanningV4 />
       <ProductHorizontalSlide
@@ -28,5 +29,6 @@ export default function Page() {
       </div>
         
     </Section>
+    </div>
   );
 }

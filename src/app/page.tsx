@@ -14,8 +14,6 @@ export default function Home() {
         <main>
             <Hero />
 
-            {/* <LocationSlider/> */}
-
             <ProductHorizontalSlide 
                 Title='Trending Locations' 
                 Description='We keep track of what cities are on the rise and which ones are

@@ -50,7 +50,7 @@ export default function FiltersOptions({
       {post.length > postPerPage && (
         <button className="border-none outline-none text-[#009DE2] underline mt-5" onClick={() => {
           console.log(post,"post")
-          setPostPerPage(postPerPage + 3) 
+          setPostPerPage(postPerPage + 10) 
         }}>
           Show more
         </button>

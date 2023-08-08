@@ -125,12 +125,20 @@ const ProductHorizontalSlide = ({
   };
 
   return (
+    <div className="w-full flex justify-center">
     <Section className="relative">
-      <ComponentTitle title={Title} />
-      {
-        !loading ? <p className="text-[var(--gray)]">{Description}</p> :
-        <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[900px] w-full h-[10px]"></div>
-      }
+      {!loading ? (
+          <>
+          <ComponentTitle title={Title} />
+        <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2">{Description}</p>
+          </>
+        ):(
+          <>
+          <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[400px] w-full h-[30px]"></div>
+        <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[600px] w-full h-[10px]"></div>
+        <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[300px] w-full h-[10px]"></div>
+        </>
+        )}
       <div ref={slideRef} id="location-to-visit-slide" className="mt-10">
         <SliderComponent slidesToShow={slidesToShow} >
           {loading === true
@@ -165,9 +173,9 @@ const ProductHorizontalSlide = ({
                   ? location.formatted_address
                   : location.address_obj?.address_string;
                 return (
-                    <div key={index} className={`px-2 max-w-[300px] w-full`}>
-                      <div className={`grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden relative cursor-pointer ${styles["slider_card"]}`}>
-                        <div className={`${ type == "title-card" ? 'h-[350px]' : 'h-[178px]'} bg-gray-100 relative`}>
+                    <div key={index} className={`px-2 max-w-[300px] h-[310px] w-full`}>
+                      <div className={`grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden h-full relative cursor-pointer ${styles["slider_card"]}`}>
+                        <div className={`${ type == "title-card" ? 'h-[310px]' : 'h-[178px]'} bg-gray-100 relative`}>
                           <Image
                             src={image_path}
                             alt={location.name}
@@ -182,10 +190,10 @@ const ProductHorizontalSlide = ({
                             }}
                           ></div>
                         </div>
-                        <div className={`p-4 ${type == "title-card" ? "absolute bottom-4 left-6 text-white font-bold text-[25px] pe-5" : ""}`}>
+                        <div className={`${type == "title-card" ? "absolute bottom-4 left-4 text-white font-bold text-[25px] pe-5" : "p-4"}`}>
                           <div className="grid grid-cols-2 items-center mb-2 relative">
                             <h4
-                              className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${isAddButton ? "col-span-1" : "col-span-2"} `}
+                              className={`overflow-hidden ${isAddButton ? "col-span-1" : "col-span-2"} `}
                             >
                               {location.name}
                             </h4>
@@ -371,6 +379,7 @@ const ProductHorizontalSlide = ({
         }}
       />
     </Section>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 .slick-prev {
-    right: 3.5rem !important;
+    right: 4.5rem !important;
     position: absolute;
-    top: -0.5rem;
+    top: -5rem;
     color: white;
     background: #009de2;
     width: 30px;
@@ -19,9 +19,9 @@
     box-shadow: 0px 8px 20px 0px #5FABCD78;
 }
 .slick-next {
-    right: 1rem !important;
+    right: 2rem !important;
     position: absolute;
-    top: -0.5rem;
+    top: -5rem;
     display: flex;
     background: #009DE2;
     width: 30px;
@@ -39,8 +39,14 @@
     -o-border-radius: 7px;
     box-shadow: 0px 8px 20px 0px #5FABCD78;
 }
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 800px) {
     .slick-prev,.slick-next{
-        top: -30px;
+        top: -0.1rem !important;
+    }
+}
+
+@media screen and (max-width: 670px) {
+    .slick-prev,.slick-next{
+        top: 0.8rem !important;
     }
 }

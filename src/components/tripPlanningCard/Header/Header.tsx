@@ -94,9 +94,11 @@ const TripPlanningHeader = ({ variation = "space-arround" }: ITripPlanningHeader
                                 key={index}
                                 className="flex items-center justify-between w-full py-3"
                             >
+                                <div className="flex items-center">
                                 <div className="w-[5px] h-[5px] rounded-full bg-[var(--blue)]"></div>
-                                <h1 className="text-black">{category.name}</h1>
-                                <div className="w-[76px] border-dashed border-t border-[#BFCCD1]"></div>
+                                <h1 className="text-black uppercase pl-2">{category.name}</h1>
+                                </div>
+                                <div className="w-[60px] border-dashed border-t border-[#BFCCD1]"></div>
                                 <h1 className="text-[#BFCCD1] font-semibold">${category.cost}</h1>
                             </div>
                             );
