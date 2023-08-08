@@ -8,11 +8,13 @@ import ClientTestimonials from "@/components/Client-Testimonials/client-testimon
 
 export default function page() {
   return (
-    <Section>
+    <div className="w-full flex justify-center">
+        <Section className="relative">
       <PageBanner title="Bali, Indonesia" />
       <TripPlanningV3 />
       <SmallStory positioning="inline" />
       <ClientTestimonials />
     </Section>
+    </div>
   );
 }

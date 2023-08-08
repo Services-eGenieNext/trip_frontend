@@ -83,39 +83,8 @@ export default function HeroFilterSection({ surveyData }: any) {
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
   return (
     <div
-      //   id={styles.filter}
       className={`bg-white p-8 sm:flex block flex-wrap justify-center rounded-xl sm-width`}
     >
-      {/* <span
-        className="absolute top-2 right-2"
-        onClick={() => setOpenAdvanceSearch(!openAdvanceSearch)}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M6 18L18 6M6 6l12 12"
-          />
-        </svg>
-      </span> */}
-
-      {/* <InputField
-        label="Location"
-        type="text"
-        className={`mr-2 my-2 sm:w-[200px] ${styles.inputWrapper}`}
-        value={locationSearch.location}
-        onChange={(e) =>
-          setLocationSearch({ ...locationSearch, location: e.target.value })
-        }
-        icon={<SimpleLocation />}
-      /> */}
 
       <SelectField
         label="Location"
@@ -126,37 +95,18 @@ export default function HeroFilterSection({ surveyData }: any) {
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, location: val })
         }
+        icon={<SimpleLocation />}
         onAdditionalChange={(_data) => {}}
       />
 
-      {/* <InputField 
-                                label="Date" 
-                                type="text" 
-                                className={`mr-2 my-2 w-[200px] ${styles.inputWrapper}`}  
-                                value={locationSearch.startDate} 
-                                onChange={(e) => setLocationSearch({...locationSearch, startDate: e.target.value})} 
-                                icon={<CalenderIcon />} 
-                            /> */}
-
       <DateRangeField
         label="Date"
-        className={`mr-2 sm:my-2 my-5 sm:w-[250px] ${styles.inputWrapper}`}
+        className={`mr-2 sm:my-2 my-5 sm:w-[200px] ${styles.inputWrapper}`}
         value={date}
         onChange={(value) => setDate(value)}
         icon={<CalenderIcon />}
       />
 
-      {/* <SelectField
-        label="Occassion"
-        placeholder="Select ..."
-        data={Occasion}
-        className={`mr-2 sm:my-2 my-5 sm:w-[200px] ${styles.inputWrapper}`}
-        value={locationSearch.occassion}
-        onChange={(val) =>
-          setLocationSearch({ ...locationSearch, occassion: val })
-        }
-        onAdditionalChange={(_data) => {}}
-      /> */}
       <MultiSelectDropdown
         searchBar
         items={Occasion}
@@ -169,17 +119,6 @@ export default function HeroFilterSection({ surveyData }: any) {
         }
       />
 
-      {/* <SelectField
-        label="Priority"
-        placeholder="Select ..."
-        data={Priority}
-        className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
-        value={locationSearch.priority}
-        onChange={(val) =>
-          setLocationSearch({ ...locationSearch, priority: val })
-        }
-        onAdditionalChange={(_data) => {}}
-      /> */}
       <MultiSelectDropdown
         searchBar
         items={Priority}
@@ -217,7 +156,6 @@ export default function HeroFilterSection({ surveyData }: any) {
       />
 
       <BlueButton
-        // title="Automate My trip"
         title={locationSearch.dates.startDate ? "Automate My trip" : "Look For Inspiration"}
         className="sm:w-[200px] w-full"
         onClick={handleRoute}

@@ -13,7 +13,8 @@ export default function TripPlanningV3() {
   const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { restaurantsState } = useAppSelector((state) => state.restaurantsReducer)
   return (
-    <Section>
+    <div className="w-full flex justify-center">
+        <Section className="relative">
       <div className="my-20">
         <TripPlanningHeader variation="space-arround" />
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-10">
@@ -51,5 +52,6 @@ export default function TripPlanningV3() {
         </div>
       </div>
     </Section>
+    </div>
   );
 }

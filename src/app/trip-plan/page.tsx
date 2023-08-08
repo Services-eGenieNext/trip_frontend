@@ -105,7 +105,7 @@ const TripPlan = () => {
             />
 
             {
-                params_list.v_type !== "2" && 
+                params_list.v_type !== "2" && automateLocation?.name !== "" &&
                 <>
                     <ProductHorizontalSlide 
                         locationsState={locationsState} 

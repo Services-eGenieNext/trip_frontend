@@ -200,10 +200,10 @@ function ActivitiesSlider() {
       <Image src={Ballon} alt='Baloon 1' className={`absolute right-[13%] md:flex hidden bottom-[-14%] select-none w-[70px]`} />
       <div className="sm-width flex flex-col items-center relative">
         <div className="flex flex-col items-center">
-          <p className="text-2xl md:text-4xl font-bold">
+          <p className="text-2xl md:text-[36px] font-bold gilroy font-bold">
             Popular Activities For You
           </p>
-          <p className="text-[var(--gray)] text-center">
+          <p className="text-[var(--gray)] text-center mt-4 lato">
             Explore some of the most exciting and trending activities across the
             globe!
           </p>
@@ -245,11 +245,11 @@ function ActivitiesSlider() {
                       return (
                         <div key={index} className='sm:px-0 px-4'>
                           <div className={`flex flex-col items-center justify-center sm:w-[133px] w-full relative cursor-pointer ${CSS["slider_card"]}`}>
-                            <div className="h-[124px] w-full relative">
+                            <div className="h-[124px] w-full relative rounded-xl overflow-hidden">
                               <Image src={image_path} fill={true} alt={image_path} style={{objectFit: "cover"}}
                               />
                             </div>
-                            <h1 className="text-[18px] mt-3 text-center">
+                            <h1 className="text-[18px] mt-3 text-center lato">
                               {activities.name}
                             </h1>
                             <div className={`absolute top-0 left-0 w-full h-[124px] flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>

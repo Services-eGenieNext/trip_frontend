@@ -195,7 +195,7 @@ export default function SelectCheckBoxSimple({
   return (
     <Box className="relative px-1 sm:mt-2 mt-5">
       <label
-        className="absolute top-[-0.7rem] left-[1rem] px-[5px]"
+        className="absolute top-[-0.3rem] left-[1rem] px-[5px] text-[9px] uppercase letter-spacing"
         style={{
           background:
             "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)",
@@ -265,8 +265,8 @@ export default function SelectCheckBoxSimple({
             )}
           </Box>
           {optsSelected?.length > 0 && (
-            <Box display="flex" alignItems="center" mr="5px">
-              <Box className="py-1 px-2 flex justify-center items-center rounded-sm bg-[#4B9AD4] text-white">
+            <Box className="flex items-center mx-2">
+              <Box className="py-1 px-2 flex justify-center items-center rounded-md bg-[#4B9AD4] text-white">
                 <Typography
                   fontSize="10px"
                   fontWeight="400px"
