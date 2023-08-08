@@ -62,8 +62,8 @@ if(paramsAddress){
     <div>
       <PageBanner survey={surveySlice} />
       <div className="w-full flex justify-center">
-        <Section className="relative">
-        <div className="lg:my-20 mb-20">
+        <div className="relative lg:w-[85%]">
+        <div className="mb-20">
           <div className="grid grid-cols-1 md:grid-cols-4">
             <div className="lg:col-span-1 w-[300px] ">
               <FilterSidebar
@@ -84,7 +84,7 @@ if(paramsAddress){
             </div>
           </div>
         </div>
-      </Section>
+      </div>
     </div>
     </div>
   );

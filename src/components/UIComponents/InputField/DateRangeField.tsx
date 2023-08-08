@@ -75,7 +75,7 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
                     </span>
                 </span>
             </div>
-            <label className="absolute top-[-0.3rem] left-[1rem] px-[5px] text-[9px] uppercase letter-spacing"
+            <label className="absolute top-[-0.5rem] left-[1rem] px-[5px] text-[11px] uppercase letter-spacing"
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{label}</label>
 

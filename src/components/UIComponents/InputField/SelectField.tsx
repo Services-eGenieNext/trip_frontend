@@ -59,13 +59,15 @@ if(value !== ""){
                 <span className="border border-[#C9D2DD] bg-white rounded-2xl py-4 px-5 flex items-center justify-between"
                 onClick={() => setOpenDropDown(!openDropDown)}
                 >
+                    <div className='flex items-center'>
                     {
                         icon && <span className="mr-2">{icon}</span>
                     }
                     <span className={`${value ? 'text-black' : `text-[var(--lite-gray)]`} overflow-ellipsis overflow-hidden whitespace-nowrap`}>
-                        <input type="text" className='border-none outline-none h-full' value={inputVal} placeholder={placeholder} onChange={(e)=>{setInputVal(e.target.value)}} />
+                        <input type="text" className='border-none outline-none h-full w-full' value={inputVal} placeholder={placeholder} onChange={(e)=>{setInputVal(e.target.value)}} />
                         
                     </span>
+                    </div>
                     <span className="">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -73,7 +75,7 @@ if(value !== ""){
                     </span>
                 </span>
             </div>
-            <label className="absolute top-[-0.3rem] left-[1rem] px-[5px] text-[9px] uppercase letter-spacing"
+            <label className="absolute top-[-0.5rem] left-[1rem] px-[5px] text-[11px] uppercase letter-spacing"
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{label}</label>
 
