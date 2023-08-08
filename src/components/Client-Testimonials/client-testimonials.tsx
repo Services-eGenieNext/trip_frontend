@@ -31,8 +31,8 @@ const ClientTestimonials = () => {
   return (
     <div className="w-full flex justify-center">
         <Section className="relative">
-    <div className="sm-width px-4">
-      <div className="flex flex-wrap justify-between items-center">
+    <div className="sm-width sm:px-4 px-0">
+      <div className="flex flex-wrap sm:justify-between justify-center items-center">
         <div>
           <ComponentTitle title="Clients testimonials" />
           <span className="flex flex-wrap gap-2 items-center mt-3">
