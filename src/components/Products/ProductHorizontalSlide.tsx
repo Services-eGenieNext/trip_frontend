@@ -133,11 +133,11 @@ const ProductHorizontalSlide = ({
         <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2">{Description}</p>
           </>
         ):(
-          <>
+          <div className="md:px-0 px-5">
           <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[400px] w-full h-[30px]"></div>
         <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[600px] w-full h-[10px]"></div>
         <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[300px] w-full h-[10px]"></div>
-        </>
+        </div>
         )}
       <div ref={slideRef} id="location-to-visit-slide" className="mt-10">
         <SliderComponent slidesToShow={slidesToShow} >
@@ -147,7 +147,7 @@ const ProductHorizontalSlide = ({
                   <div
                     key={index}
                     role="status"
-                    className="max-w-sm rounded animate-pulse h-[350px] relative px-3"
+                    className="max-w-sm rounded animate-pulse h-[350px] md:max-w-[300px] relative px-3 md:mt-0 mt-10"
                   >
                     <div className="flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 h-[350px]">
                       <svg
@@ -173,7 +173,7 @@ const ProductHorizontalSlide = ({
                   ? location.formatted_address
                   : location.address_obj?.address_string;
                 return (
-                    <div key={index} className={`px-2 max-w-[300px] h-[310px] w-full`}>
+                    <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10`}>
                       <div className={`grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden h-full relative cursor-pointer ${styles["slider_card"]}`}>
                         <div className={`${ type == "title-card" ? 'h-[310px]' : 'h-[178px]'} bg-gray-100 relative`}>
                           <Image

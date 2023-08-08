@@ -141,7 +141,7 @@ export default function SelectCheckBoxSimple({
     } else {
       const arr = optsSelected
         .map((opt) =>
-          optName === opt?.opt
+          optName == opt?.opt
             ? { ...opt, checked: optChecked, id: optId }
             : opt
         )
@@ -193,9 +193,9 @@ export default function SelectCheckBoxSimple({
     setAddCustomeOption(false);
   };
   return (
-    <Box className="relative px-1 sm:mt-2 mt-5">
+    <Box className="relative sm:px-1 sm:my-2 my-5">
       <label
-        className="absolute top-[-0.3rem] left-[1rem] px-[5px] text-[9px] uppercase letter-spacing"
+        className="absolute top-[-0.5rem] left-[1rem] px-[5px] text-[11px] uppercase letter-spacing"
         style={{
           background:
             "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)",
@@ -203,7 +203,7 @@ export default function SelectCheckBoxSimple({
       >
         {Label}
       </label>
-      <Box className="flex items-center border border-[#C9D2DD] h-[60px] sm:w-[200px] bg-white rounded-2xl py-4 px-5">
+      <Box className="flex items-center border border-[#C9D2DD] h-[57px] sm:w-[200px] bg-white rounded-2xl py-4 px-5">
       <Box
         className="flex items-center justify-between sm:w-[170px] w-full overflow-hidden cursor-pointer"
         onClick={()=>{

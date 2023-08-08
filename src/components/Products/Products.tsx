@@ -99,10 +99,10 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
         alt="Map 1"
         className="absolute right-10 top-[70%] -z-10 select-none"
       />
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center md:px-0 px-5">
         <Section className="relative">
           <ComponentTitle title={title} />
-          <p className="text-[var(--gray)] max-w-[550px] my-5 md:px-0 px-2">
+          <p className="text-[var(--gray)] sm:max-w-[550px] my-5">
             Great food is the make or break between a good and a great travel
             experience, so never settle with these top restaurants in the entire
             world!
@@ -166,7 +166,7 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                     restaurant.location_id ?? ""
                   }&place_id=${restaurant.place_id ?? ""}&restaurants=true`;
                   return (
-                    <div key={index} className="md:pr-6 md:my-4 my-8 pr-0 md:px-0 px-5">
+                    <div key={index} className="md:pr-6 md:my-4 my-8 pr-0">
                       <div
                         className={`rounded-xl overflow-hidden border border-[#C9D2DD] grid grid-cols-1 lg:grid-cols-2 bg-white h-full w-full relative ${styles["slider_card"]}`}
                       >
@@ -234,11 +234,11 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                               </div>
                             )}
                           </div>
-                          <div className="flex my-2 gap-x-3">
+                          <div className="flex my-2 justify-center">
                             <div className="w-[25px] h-[25px] bg-[#9AB044] rounded-full p-1">
                               <LocationIcon className="h-4 w-4" />
                             </div>
-                            <span>
+                            <span className="ml-2">
                               {restaurant?.formatted_address}
                             </span>
                           </div>
