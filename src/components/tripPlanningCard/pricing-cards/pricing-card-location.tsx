@@ -21,7 +21,6 @@ const PricingCardLocation = ({
     }: IPricingCardLocation) => {
 
     const [duration, setDuration] = useState(null)
-    const [openingTime, setOpeningTime] = useState(time.time)
 
     const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault()
@@ -34,119 +33,18 @@ const PricingCardLocation = ({
         }
     }
 
-    const setEndTime = (suggestedLastTime: Date) => {
-        return suggestedLastTime.setHours(suggestedLastTime.getHours() + 2)
-    }
-
-    const getTime = async (time: string) => {
-        let hours = Number(time.split(':')[0])
-        let minutes
-        if(time.split(':')[1].search('AM') ==-1 && time.split(':')[1].search('PM') ==-1)
-        {
-            minutes = Number(time.split(':')[1])
-        }
-        else
-        {
-            if(time.split(':')[1].search('PM') !== -1)
-            {
-                hours += 12
-            }
-            minutes = Number(time.split(':')[1].substr(0,2))
-        }
-
-        let suggestedLastTime = await new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate(), hours, minutes)
-        // console.log('suggestedLastTime', suggestedLastTime)
-        return suggestedLastTime
-    }
-
     function formatTime(timeString: string) {
+        if(timeString == "" || timeString.search('Open') !== -1)
+        {
+            return timeString
+        }
+
         const [hourString, minute] = timeString.split(":");
         const hour = +hourString % 24;
-        return (hour % 12 || 12) + ":" + (Number(minute.substr(0,2)) < 10 ? '0'+minute : minute) + (hour < 12 ? "AM" : "PM");
-    }
-
-    const check_and_sort_start_time = async (duration: string) => {
-
-        let _currentStartTime: any = days.times[index].time.replace(' – ', ' - ').split(' - ')[0]
-        _currentStartTime = await getTime(_currentStartTime)
-        let _currentEndTime: any = days.times[index].time.replace(' – ', ' - ').split(' - ')[1]
-        _currentEndTime = await getTime(_currentEndTime)
-
-        if(days.times[index-1].time.search('Open') !== -1)
-        {
-            return _currentStartTime
-        }
-
-        // set end time by using of start time
-        let _prevEndTime: any = days.times[index-1].time.replace(' – ', ' - ').split(' - ')[0]
-        _prevEndTime = _prevEndTime.split(',')[0]
-        _prevEndTime = await getTime(_prevEndTime)
-        // console.log('_prevEndTime', _prevEndTime, index)
-
-        setEndTime(_prevEndTime)
-
-        // console.log('_prevEndTime', _prevEndTime, _currentStartTime, _currentEndTime)
-        
-
-        // aded duration in previous end time
-        if(duration.search('days') !== -1)
-        {
-            _prevEndTime.setDate(_prevEndTime.getDate() + Number(duration.substring(0,2)))
-        }
-        else if(duration.search('hours') !== -1)
-        {
-            _prevEndTime.setHours(_prevEndTime.getHours() + Number(duration.substring(0,2)))
-        }
-        else if(duration.search('mins') !== -1)
-        {
-            _prevEndTime.setMinutes(_prevEndTime.getMinutes() + Number(duration.substring(0,2)))
-        }
-
-        if(_prevEndTime.getTime() >= _currentStartTime.getTime() && _prevEndTime.getTime() <= _currentEndTime.getTime())
-        {
-            return _prevEndTime
-        }
-
-        return _currentStartTime
+        return (hour % 12 || 12) + ":" + (Number(minute.substr(0,2)) < 10 ? '0'+minute : minute) + (hour < 12 ? " AM" : " PM");
     }
 
     useEffect(() => {
-        
-        const _defTime = async (duration="") => {
-            let _time = time.time.replace(' – ', ' - ')
-
-            if(_time.search(' - ') !== -1)
-            {
-                let timeArr
-                if(_time.search(' - ') !== -1)
-                {
-                    timeArr = _time.split(' - ')
-                }
-
-                let suggestedLastTime = await getTime(timeArr[0])
-
-                setEndTime(suggestedLastTime)
-                
-                let lastTime = await getTime(timeArr[1])
-                if(suggestedLastTime.getTime() <= lastTime.getTime())
-                {
-                    lastTime = suggestedLastTime
-                }
-
-                let firstTime = await getTime(timeArr[0])
-                if(index > 0)
-                {
-                    firstTime = await check_and_sort_start_time(duration)
-                }
-                
-                let _startTime = formatTime(`${firstTime.getHours()}:${firstTime.getMinutes()}`)
-                let _endTime = formatTime(`${lastTime.getHours()}:${lastTime.getMinutes()}`)
-                let _suggestTime = `${_startTime} - ${_endTime}`
-                
-                // console.log('duration', duration)
-                setOpeningTime(_suggestTime)
-            }
-        }
 
         const _def = async () => {
             let duration = await LocationsDurationCall(distanceObject.origin, distanceObject.destination)
@@ -155,21 +53,12 @@ const PricingCardLocation = ({
             {
                 let _durationTime = duration.data.rows[0].elements[0].duration.text
                 setDuration(_durationTime)
-                _defTime(_durationTime)
-            }
-            else
-            {
-                _defTime()
             }
         }
 
         if(distanceObject.origin && distanceObject.destination)
         {
             _def()
-        }
-        else
-        {
-            _defTime()
         }
     }, [distanceObject])
 
@@ -200,7 +89,13 @@ const PricingCardLocation = ({
             }}
             >
             <h1 className="gilroy font-semibold">
-                {time.time} -{" "}
+                {
+                    !time.suggestedTime?.startTime && !time.suggestedTime?.endTime ? (
+                        time.time
+                    ) : (
+                        (time.suggestedTime?.startTime ? (formatTime(time.suggestedTime.startTime)+ ' ') : " ") + (time.suggestedTime?.endTime ? '- '+(formatTime(time.suggestedTime.endTime)) : "")
+                    )
+                } -
             </h1>
             <p className="font-medium max-w-[200px] w-full">{time?.location?.name}</p>
             </span>
