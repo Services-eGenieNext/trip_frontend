@@ -70,26 +70,31 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
 
     useEffect(() => {
 
-        dispatch(setItineraryDays(days.filter((_day: any) => _day.times.length > 0)))
+        // dispatch(setItineraryDays(days.filter((_day: any) => _day.times.length > 0)))
 
-        // const _defDays = async () => {
-        //     let _days = []
-        //     for (let i = 0; i < days.length; i++) {
-        //         _days.push({...days[i]})
-        //         for (let j = 0; j < _days[i].times.length; j++) {
-        //             _days[i].times = [..._days[i].times]
-                    
-        //             let _times = [..._days[i].times]
+        const _defDays = async () => {
+            let _days = []
+            for (let i = 0; i < days.length; i++) {
+                _days.push({...days[i]})
+                if(_days[i].times.length > 0)
+                {
+                    for (let j = 0; j < _days[i].times.length; j++) {
+                        _days[i].times = [..._days[i].times]
+                        
+                        let _times = [..._days[i].times]
 
-        //             let suggestedTime = await _calculateStartAndEndTime(_times, j)
-                    
-        //             _days[i].times[j] = {..._times[j], suggestedTime: suggestedTime}
-        //             console.log('times', suggestedTime, _days[i].times[j])
+                        let suggestedTime = await _calculateStartAndEndTime(_times, j)
+                        
+                        _days[i].times[j] = {..._times[j], suggestedTime: suggestedTime}
 
-        //         }
-        //     }
-        // }
-        // _defDays()
+                        // console.log('times', _days[i].times[j], j)
+
+                    }
+                }
+            }
+            dispatch(setItineraryDays(_days.filter((_day: any) => _day.times.length > 0)))
+        }
+        _defDays()
     }, [days])
 
     useEffect(() => {
