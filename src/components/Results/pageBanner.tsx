@@ -26,7 +26,7 @@ setLocationSearch(survey)
   }, [survey]);
 
   return (
-    <div className="relative lg:mb-28 mt-10">
+    <div className="relative lg:mb-10 mt-10">
       <Image
         src={Ballon}
         alt="Baloon 1"
