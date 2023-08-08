@@ -129,8 +129,8 @@ const _calculateStartAndEndTime = async (times: any, i: number) => {
     let origin = null
     let destination = null
 
-    origin = times[i - 1].location?.place_id ? times[i - 1].location?.formatted_address.split(',')[0] : times[i - 1].location.address_obj.address_string
-    destination = times[i].location?.place_id ? times[i].location?.formatted_address.split(',')[0] : times[i].location.address_obj.address_string
+    origin = times[i - 1].location?.place_id ? times[i - 1].location?.formatted_address : times[i - 1].location.address_obj.address_string
+    destination = times[i].location?.place_id ? times[i].location?.formatted_address : times[i].location.address_obj.address_string
 
     let duration = await LocationsDurationCall(origin, destination)
 
@@ -141,7 +141,8 @@ const _calculateStartAndEndTime = async (times: any, i: number) => {
     }
     console.log('_durationTime', _durationTime)
 
-    return await calculateDuration(times, i, _durationTime)
+    let returnData = await calculateDuration(times, i, _durationTime)
+    return {...returnData, duration_time: _durationTime}
 
 }
 

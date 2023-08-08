@@ -34,11 +34,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
     const [days, setDays] = useState<any[]>([
         {
             day: "Monday",
-            times: [{
-                time: "",
-                location: {},
-                suggestedTime: {}
-            }]
+            times: []
         },
         {
             day: "Tuesday",
@@ -92,6 +88,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                     }
                 }
             }
+            console.log('_days', _days)
             dispatch(setItineraryDays(_days.filter((_day: any) => _day.times.length > 0)))
         }
         _defDays()

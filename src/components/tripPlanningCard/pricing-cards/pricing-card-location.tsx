@@ -48,15 +48,13 @@ const PricingCardLocation = ({
 
         const _def = async () => {
             let duration = await LocationsDurationCall(distanceObject.origin, distanceObject.destination)
-
             if(duration.status == 200 && duration.data.rows[0]?.elements[0]?.duration?.text)
             {
                 let _durationTime = duration.data.rows[0].elements[0].duration.text
                 setDuration(_durationTime)
             }
         }
-
-        if(distanceObject.origin && distanceObject.destination)
+        if(distanceObject.origin && distanceObject.destination && !time.suggestedTime?.duration_time)
         {
             _def()
         }
@@ -65,7 +63,7 @@ const PricingCardLocation = ({
     return (
         <>
         {
-            duration && <span className="flex rounded-full px-2 h-max bg-[var(--blue)] text-white text-[12px] whitespace-nowrap w-max -translate-y-full">{duration}</span>
+            (time.suggestedTime?.duration_time || duration) && <span className="flex rounded-full px-2 h-max bg-[var(--blue)] text-white text-[12px] whitespace-nowrap w-max -translate-y-full">{time.suggestedTime?.duration_time ? time.suggestedTime?.duration_time : duration}</span>
         }
         <div
             className={`flex gap-x-4 mb-10 cursor-pointer h-full ${styles["pricingCard"]}`}
