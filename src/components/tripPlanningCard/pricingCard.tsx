@@ -40,9 +40,9 @@ export default function PricingCard({
                   let destination = null
                   if(index > 0 && days.times[index - 1])
                   {
-                    origin = days.times[index - 1].location.place_id ? days.times[index - 1].location.formatted_address.split(',')[0] : days.times[index - 1].location.address_obj.address_string
+                    origin = days.times[index - 1].location.place_id ? days.times[index - 1].location.formatted_address : days.times[index - 1].location.address_obj.address_string
                     
-                    destination = days.times[index].location.place_id ? days.times[index].location.formatted_address.split(',')[0] : days.times[index].location.address_obj.address_string
+                    destination = days.times[index].location.place_id ? days.times[index].location.formatted_address : days.times[index].location.address_obj.address_string
                   }
 
                   const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
