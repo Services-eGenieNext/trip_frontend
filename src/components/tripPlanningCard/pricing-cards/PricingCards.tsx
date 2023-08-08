@@ -34,11 +34,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
     const [days, setDays] = useState<any[]>([
         {
             day: "Monday",
-            times: [{
-                time: "",
-                location: {},
-                suggestedTime: {}
-            }]
+            times: []
         },
         {
             day: "Tuesday",
