@@ -18,7 +18,7 @@ import { useDispatch } from 'react-redux'
 const TripPlan = () => {
 
     const params = useSearchParams()
-    const [params_list, setParamsList] = useState<any>({address: '', location_id: '', place_id: '', v_type: '', restaurants: null})
+    const [params_list, setParamsList] = useState<any>({address: '', location_id: '', place_id: '', v_type: '', restaurants: null, start_day_index: '', days_length: ''})
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const [automateLocation, setAutomateLocation] = useState<any | null>(null)
     const [openingHours, setOpeningHours] = useState<number | null>(null)
@@ -40,10 +40,6 @@ const TripPlan = () => {
             }
         }
     }
-
-    // useEffect(() => {
-        
-    // }, [automateLocation])
 
     useEffect(() => {
         const _defLocation = async () => {
@@ -83,13 +79,18 @@ const TripPlan = () => {
         let _place_id: any = params.get('place_id')
         let _v_type: any = params.get('v_type')
         let restaurants: any = params.get('restaurants')
+        let start_day_index: any = params.get('start_day_index')
+        let days_length: any = params.get('days_length')
+
 
         setParamsList({
             address: _address ?? 'best locations',
             location_id: _location_id ?? '',
             place_id: _place_id ?? '',
             v_type: _v_type ? _v_type : '',
-            restaurants: restaurants ?? ''
+            restaurants: restaurants ?? '',
+            start_day_index: start_day_index ?? '',
+            days_length: days_length ?? ''
         })
     }, [params])
 
@@ -98,6 +99,7 @@ const TripPlan = () => {
             <PageBanner title={automateLocation?.name ?? 'Trip Plan'} automateLocation={automateLocation} />
           
             <TripPlanningCard 
+                params_list={params_list}
                 address={`${params_list.address}`} 
                 totalOpeningHours={openingHours} 
                 automateLocation={automateLocation} 

@@ -56,85 +56,13 @@ export default function PricingCard({
                     }
                   }
 
-                  // let time_location = days.locations?.filter((location: any) => 
-                  //   (location.place_id && location.place_id != "") ? 
-                  //     location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
-                  //     location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
-                  // )
-                  
-                  // if(days.locations[index] && days.locations[index]?.length > 0) {
-                    // return days.locations[index].map((locat: any, index2: number) => {
-                      return rows == "2" ? (
-                        <PricingCardLocation key={index}
-                        distanceObject={{origin: origin, destination: destination}}
-                        index={index}
-                        days={days}
-                        rows={rows}
-                        time={time}
-                        onOpen={(_item) => onOpen(_item)}
-                        />
-                        // <div
-                        //   key={index}
-                        //   className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
-                        //   onDrop={(e) => onDropFunc(e)}
-                        //   onDragOver={(e) => {e.preventDefault()}}
-                        // >
-                        //   <div>
-                        //     <div>
-                        //       <div className="w-[20px] h-[20px] bg-[#AEDCF0] rounded-full flex justify-center items-center">
-                        //         <div className="w-[10px] h-[10px] bg-[#009DE2] rounded-full"></div>
-                        //       </div>
-                        //     </div>
-                        //     <div
-                        //       className={`h-full ml-2 ${CSS["divider"]}`}
-                        //     ></div>
-                        //   </div>
-                        //   <span
-                        //     className="text-[13px] text-black hover:text-[#009DE2]"
-                        //     onClick={() => {
-                        //       onOpen(time.location);
-                        //     }}
-                        //   >
-                        //     <h1 className="gilroy font-semibold">
-                        //       {time.time} -{" "}
-                        //     </h1>
-                        //     <p className="font-medium max-w-[200px] w-full">{time?.location?.name}</p>
-                        //   </span>
-                        // </div>
-                      ) : (
-                        <div
-                          key={index}
-                          className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
-                          onDrop={(e) => onDropFunc(e)}
-                          onDragOver={(e) => {e.preventDefault()}}
-                        >
-                          <div>
-                            <div>
-                              <div className="w-[20px] h-[20px] bg-[#AEDCF0] rounded-full flex justify-center items-center">
-                                <div className="w-[10px] h-[10px] bg-[#009DE2] rounded-full"></div>
-                              </div>
-                            </div>
-                            <div className={`h-full ml-2 ${CSS["divider"]}`}></div>
-                          </div>
-                          <span
-                            className="text-[13px] text-black hover:text-[#009DE2]"
-                            onClick={() => {
-                              onOpen({});
-                            }}
-                          >
-                            <h1 className="gilroy font-semibold">
-                              {time.time} -{" "}
-                            </h1>
-                            <p className="font-medium" id={`detail_${data.day + index}`}>{time?.location?.name}</p>
-                          </span>
-                        </div>
-                      )
-                    // })
-                  // }
-                  // else
-                  // {
-                  //   return <></>;
-                  // }
+                  return <PricingCardLocation key={index}
+                  distanceObject={{origin: origin, destination: destination}}
+                  index={index}
+                  days={days}
+                  rows={rows}
+                  time={time}
+                  onOpen={(_item) => onOpen(_item)} />
                 })
               }
 
@@ -192,29 +120,20 @@ export default function PricingCard({
               let destination = null
               if(index > 0 && data.times[index - 1])
               {
-                origin = data.times[index - 1].location.place_id ? data.times[index - 1].location.formatted_address.split(',')[0] : data.times[index - 1].location.address_obj.address_string
+                origin = data.times[index - 1].location.place_id ? data.times[index - 1].location.formatted_address : data.times[index - 1].location.address_obj.address_string
                 
-                destination = data.times[index].location.place_id ? data.times[index].location.formatted_address.split(',')[0] : data.times[index].location.address_obj.address_string
+                destination = data.times[index].location.place_id ? data.times[index].location.formatted_address : data.times[index].location.address_obj.address_string
               }
-              // let time_location = data.locations?.filter((location: any) => 
-              //   (location.place_id && location.place_id != "") ? 
-              //     location.current_opening_hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 ) : 
-              //     location.hours?.weekday_text.filter( (weekd: any) => weekd.search(time) !== -1 )
-              //   )
-                // if(time_location && time_location?.length > 0) {
-                  // return time_location.map((locat: any, index2: number) => {
-                    return (
-                      <ScheduleCard
-                        distanceObject={{origin: origin, destination: destination}}
-                        key={index}
-                        isDropdownButton={isDropdownButton}
-                        onOpen={(_item) => onOpen(_item)}
-                        time={time.time}
-                        items={time.location}
-                      />
-                    );
-                // })
-              // }
+                return (
+                  <ScheduleCard
+                    distanceObject={{origin: origin, destination: destination}}
+                    key={index}
+                    isDropdownButton={isDropdownButton}
+                    onOpen={(_item) => onOpen(_item)}
+                    time={time}
+                    items={time.location}
+                  />
+                );
             })}
         </div>
       </div>

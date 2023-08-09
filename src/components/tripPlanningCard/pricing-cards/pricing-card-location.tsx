@@ -4,7 +4,7 @@ import { LocationsDurationCall } from '@/api-calls'
 
 interface IPricingCardLocation {
     index: number
-    rows: string
+    rows?: string
     time: any
     days: any
     distanceObject: any
@@ -71,14 +71,12 @@ const PricingCardLocation = ({
             onDragOver={(e) => {e.preventDefault()}}
         >
             <div>
-            <div>
-                <div className="w-[20px] h-[20px] bg-[#AEDCF0] rounded-full flex justify-center items-center">
-                <div className="w-[10px] h-[10px] bg-[#009DE2] rounded-full"></div>
+                <div>
+                    <div className="w-[20px] h-[20px] bg-[#AEDCF0] rounded-full flex justify-center items-center">
+                        <div className="w-[10px] h-[10px] bg-[#009DE2] rounded-full"></div>
+                    </div>
                 </div>
-            </div>
-            <div
-                className={`h-full ml-2 ${styles["divider"]}`}
-            ></div>
+                <div className={`h-full ml-2 ${styles["divider"]}`}></div>
             </div>
             <span
             className="text-[13px] text-black hover:text-[#009DE2]"
@@ -95,7 +93,9 @@ const PricingCardLocation = ({
                     )
                 } -
             </h1>
-            <p className="font-medium max-w-[200px] w-full">{time?.location?.name}</p>
+            {
+                rows == "2" ? <p className="font-medium max-w-[200px] w-full">{time?.location?.name}</p> :<p className="font-medium" id={`detail_${days.day + index}`}>{time?.location?.name}</p>
+            }
             </span>
         </div>
         </>

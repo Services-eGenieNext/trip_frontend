@@ -6,7 +6,7 @@ import { LocationsDurationCall } from "@/api-calls";
 
 interface IScheduleCard extends IPlanningCard {
   distanceObject?: any
-  time?: string
+  time?: any
 }
 
 export default function ScheduleCard({distanceObject, items, isDropdownButton, onOpen, time}:IScheduleCard) {
@@ -21,16 +21,27 @@ export default function ScheduleCard({distanceObject, items, isDropdownButton, o
       console.log(e.dataTransfer.getData('product'))
     }
 
+    function formatTime(timeString: string) {
+      if(timeString == "" || timeString.search('Open') !== -1)
+      {
+          return timeString
+      }
+
+      const [hourString, minute] = timeString.split(":");
+      const hour = +hourString % 24;
+      return (hour % 12 || 12) + ":" + (Number(minute.substr(0,2)) < 10 ? '0'+minute : minute) + (hour < 12 ? " AM" : " PM");
+    }
+
     useEffect(() => {
       const _def = async () => {
         let duration = await LocationsDurationCall(distanceObject.origin, distanceObject.destination)
         console.log('duration found', duration)
-        if(duration.status == 200)
+        if(duration.status == 200 && duration.data.rows[0]?.elements[0]?.duration?.text)
         {
           setDuration(duration.data.rows[0].elements[0].duration.text)
         }
       }
-      if(distanceObject.origin && distanceObject.destination)
+      if(distanceObject.origin && distanceObject.destination && !time.suggestedTime?.duration_time)
       {
         _def()
       }
@@ -63,7 +74,13 @@ export default function ScheduleCard({distanceObject, items, isDropdownButton, o
           window.scrollTo(0, number)
         }}
       >
-        <p className="gilroy text-[11px] font-semibold">{time} - </p>
+        <p className="gilroy text-[11px] font-semibold">{
+              !time.suggestedTime?.startTime && !time.suggestedTime?.endTime ? (
+                  time.time
+              ) : (
+                  (time.suggestedTime?.startTime ? (formatTime(time.suggestedTime.startTime)+ ' ') : " ") + (time.suggestedTime?.endTime ? '- '+(formatTime(time.suggestedTime.endTime)) : "")
+              )
+          } - </p>
         <div className="flex justify-between items-center">
           <p className="font-medium w-[90px]">{suggestedLocation ? suggestedLocation : items.name}</p>
           {isDropdownButton == true ? (
