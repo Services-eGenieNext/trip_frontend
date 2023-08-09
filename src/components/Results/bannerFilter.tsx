@@ -90,7 +90,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         label="Location"
         placeholder="Select ..."
         data={LocationJson}
-        className={`mr-2 sm:my-2 my-5 sm:w-[200px] ${styles.inputWrapper}`}
+        className={`mr-2 sm:my-2 my-5 sm:w-[150px] font-semibold ${styles.inputWrapper}`}
         value={locationSearch.location}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, location: val })
@@ -101,7 +101,7 @@ export default function HeroFilterSection({ surveyData }: any) {
 
       <DateRangeField
         label="Date"
-        className={`mr-2 sm:my-2 my-5 sm:w-[200px] ${styles.inputWrapper}`}
+        className={`mr-2 sm:my-2 my-5 sm:w-[150px] font-semibold ${styles.inputWrapper}`}
         value={date}
         onChange={(value) => setDate(value)}
         icon={<CalenderIcon />}
@@ -112,6 +112,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         items={Occasion}
         Label={"Occasion"}
         heightItemsContainer="300px"
+        className={'sm:w-[150px]'}
         // SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
         placeholder="Select..."
         onChange={(val: any) =>
@@ -124,6 +125,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         items={Priority}
         Label={"Priority"}
         heightItemsContainer="300px"
+        className={'sm:w-[150px]'}
         // SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
         placeholder="Select..."
         onChange={(val: any) =>
@@ -135,7 +137,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         label="Person"
         placeholder="Select ..."
         data={Travelers}
-        className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
+        className={`mr-2 sm:my-2 my-5 sm:w-[150px] font-semibold ${styles.inputWrapper}`}
         value={locationSearch.person}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, person: val })
@@ -147,7 +149,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         label="Spending"
         placeholder="Select ..."
         data={Travelers}
-        className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
+        className={`mr-2 sm:my-2 my-5 sm:w-[150px] font-semibold ${styles.inputWrapper}`}
         value={locationSearch.spending}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, spending: val })

@@ -16,6 +16,7 @@ interface TypeProps {
   heightItemsContainer?: string;
   SelectedData?: string[] | any;
   Label?: string;
+  className?:string
 }
 
 interface TypeOpt {
@@ -45,6 +46,7 @@ export default function SelectCheckBoxSimple({
   heightItemsContainer,
   Label,
   SelectedData,
+  className
 }: TypeProps) {
   const [showDropDown, setShowDropDown] = useState(false);
   const [search, setSearch] = useState("");
@@ -193,7 +195,7 @@ export default function SelectCheckBoxSimple({
     setAddCustomeOption(false);
   };
   return (
-    <Box className="relative sm:px-1 sm:my-2 my-5">
+    <Box className={`relative sm:px-1 sm:my-2 my-5 font-semibold ${className}`}>
       <label
         className="absolute top-[-0.5rem] left-[1rem] px-[5px] text-[11px] uppercase letter-spacing"
         style={{
@@ -203,7 +205,7 @@ export default function SelectCheckBoxSimple({
       >
         {Label}
       </label>
-      <Box className="flex items-center border border-[#C9D2DD] h-[57px] sm:w-[200px] bg-white rounded-2xl py-4 px-5">
+      <Box className="flex items-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-5">
       <Box
         className="flex items-center justify-between sm:w-[170px] w-full overflow-hidden cursor-pointer"
         onClick={()=>{

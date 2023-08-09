@@ -99,7 +99,7 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
         alt="Map 1"
         className="absolute right-10 top-[70%] -z-10 select-none"
       />
-      <div className="w-full flex justify-center md:px-0 px-5">
+      <div className="w-full flex justify-center px-0">
         <Section className="relative">
           <ComponentTitle title={title} />
           <p className="text-[var(--gray)] sm:max-w-[550px] my-5">
