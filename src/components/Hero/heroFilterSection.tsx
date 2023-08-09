@@ -55,7 +55,7 @@ export default function HeroFilterSection() {
         label="Location"
         placeholder="Select ..."
         data={LocationJson}
-        className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] h-[46px] font-semibold`}
+        className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] h-[46px]`}
         styling={{
           shadow: "drop-shadow-xl ",
           left: "0px",
@@ -72,7 +72,7 @@ export default function HeroFilterSection() {
       <DateRangeField
         label="Travel Date"
         placeholder="Select ..."
-        className={`sm:mr-2 sm:my-2 my-7 sm:w-[170px] h-[46px] font-semibold ${styles.inputWrapper}`}
+        className={`sm:mr-2 sm:my-2 my-7 sm:w-[250px] h-[46px] ${styles.inputWrapper}`}
         value={date}
         onChange={(value) => setDate(value)}
         icon={<CalenderIcon />}
@@ -108,7 +108,7 @@ export default function HeroFilterSection() {
         label="Travelers"
         placeholder="Select ..."
         data={Travelers}
-        className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] font-semibold ${styles.inputWrapper}`}
+        className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] ${styles.inputWrapper}`}
         value={locationSearch.travelers}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, person: val })
