@@ -25,6 +25,9 @@ export default function HeroFilterSection() {
     key: "selection",
   });
 
+  const [startedDayIndex, setStartedDayIndex] = useState<number | null>(null)
+  const [daysLength, setDaysLength] = useState<number | null>(null)
+
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: [],
@@ -37,11 +40,26 @@ export default function HeroFilterSection() {
 
   useEffect(() => {
     setLocationSearch({ ...locationSearch, dates: date });
+
+    const calculateDaysRemaining = () => {
+      if(date?.endDate && date?.startDate)
+      {
+        const endDate = new Date(date?.endDate)
+        const startDate = new Date(date?.startDate)
+        setStartedDayIndex(startDate.getDay())
+        console.log(endDate,"endDate",startDate,"startDate")
+        const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+        const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        setDaysLength(daysRemaining+1)
+      }
+    };
+
+    calculateDaysRemaining();
   }, [date]);
 
   const handleRoute = () => {
-    if (locationSearch.dates.startDate) {
-      router.push("/trip-plan?address=" + locationSearch.location);
+    if (locationSearch.dates.startDate && startedDayIndex) {
+      router.push("/trip-plan?address=" + locationSearch.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
       route.push(`/results?address=${locationSearch.location}`);
       dispatch(setSurveyValue(locationSearch));
@@ -74,7 +92,9 @@ export default function HeroFilterSection() {
         placeholder="Select ..."
         className={`sm:mr-2 sm:my-2 my-7 sm:w-[250px] h-[46px] ${styles.inputWrapper}`}
         value={date}
-        onChange={(value) => setDate(value)}
+        onChange={(value) => {
+          setDate({...date, startDate: value.startDate, endDate: value.endDate})
+        }}
         icon={<CalenderIcon />}
       />
 

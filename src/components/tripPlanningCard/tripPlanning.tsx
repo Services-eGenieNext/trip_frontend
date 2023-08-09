@@ -11,13 +11,14 @@ import { VariationType } from "@/interfaces/product";
 import { LocationsCall } from "@/api-calls";
 
 interface ITripPlanningCard {
+    params_list?: any,
     address: string
     totalOpeningHours: number | null
     automateLocation?: any
     v_type?: VariationType
 }
 
-export default function TripPlanningCard({address, totalOpeningHours, automateLocation, v_type=""}: ITripPlanningCard) {
+export default function TripPlanningCard({params_list, address, totalOpeningHours, automateLocation, v_type=""}: ITripPlanningCard) {
     const skelton = ["1","2","3","4","5","6","7","8"]
     const ref = useRef<HTMLInputElement>(null);
     const [read, setRead] = useState(false);
@@ -99,10 +100,11 @@ export default function TripPlanningCard({address, totalOpeningHours, automateLo
                             })
                         ):(
                             <PricingCards 
+                                params_list={params_list}
                                 locationDetails={locationDetails} 
                                 totalOpeningHours={totalOpeningHours} 
                                 automateLocation={automateLocation}
-                                v_type={v_type}
+                                v_type={params_list.v_type}
                             />
                         )
                         }
