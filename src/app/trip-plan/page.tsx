@@ -94,7 +94,7 @@ const TripPlan = () => {
     }, [params])
 
     return (
-        <div>
+        <div className='overflow-x-hidden w-full'>
             <PageBanner title={automateLocation?.name ?? 'Trip Plan'} automateLocation={automateLocation} />
           
             <TripPlanningCard 

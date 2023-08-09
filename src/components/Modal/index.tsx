@@ -101,7 +101,7 @@ if(value.first_name !== "" && value.second_name !== "" && value.review !== ""){
         </Transition.Child>
 
         <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <div className="flex min-h-full justify-center p-4 text-center items-center sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -111,13 +111,13 @@ if(value.first_name !== "" && value.second_name !== "" && value.review !== ""){
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <div ref={cancelButtonRef}>
+              <div ref={cancelButtonRef} className="flex justify-center items-center w-full">
               {modalFor == "review" && (
-                <Dialog.Panel className="relative transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 w-auto realtive">
-                  <div className="bg-white md:px-10 px-5 pt-14 pb-10 rounded-xl">
+                <Dialog.Panel className="relative transform rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-auto w-[95%] realtive">
+                  <div className="bg-white lg:px-10 px-5 sm:pt-14 pt-5 pb-10 rounded-xl">
                     <div className="w-full">
-                      <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <p className="text-[#2D2D2D] text-[33px] font-medium">
+                      <div className="mt-3 text-center lg:ml-4 sm:mt-0 sm:text-left">
+                        <p className="text-[#2D2D2D] sm:text-[33px] text-[22px] font-medium lg:text-start text-center">
                           Write Your Review
                         </p>
                         <div className="mt-5 flex justify-center items-center w-full">
@@ -125,7 +125,7 @@ if(value.first_name !== "" && value.second_name !== "" && value.review !== ""){
                               <p className="uppercase text-[12px] font-medium">
                                 please rate us
                               </p>
-                              <div className="flex items-center md:gap-x-1 gap-x-0">
+                              <div className="flex items-center lg:gap-x-1 gap-x-0">
                                 <RatingStars setRating={setRating} />
                               </div>
                             <InputField
@@ -137,7 +137,7 @@ if(value.first_name !== "" && value.second_name !== "" && value.review !== ""){
                               }}
                               placeholder="First Name..."
                               name="first_name"
-                              className="md:mt-0 mt-7"
+                              className="md:mt-0 sm:mt-7 mt-4 lg:w-auto w-full"
                             />
                             <InputField
                               type="text"
@@ -148,7 +148,7 @@ if(value.first_name !== "" && value.second_name !== "" && value.review !== ""){
                               }}
                               placeholder="Last Name..."
                               name="second_name"
-                              className="md:mt-0 mt-7"
+                              className="md:mt-0 sm:mt-7 mt-4 lg:w-auto w-full"
                             />
                           </div>
                         </div>
@@ -165,10 +165,10 @@ if(value.first_name !== "" && value.second_name !== "" && value.review !== ""){
                       </div>
                     </div>
                   </div>
-                  <div className="px-4 pb-14 sm:flex sm:flex-row-reverse sm:px-6 gap-x-5">
+                  <div className="px-4 sm:pb-14 pb-7 sm:flex sm:flex-row-reverse sm:px-6 gap-x-5">
                     <button
                       type="button"
-                      className={`w-[186px] h-[46px] text-white w-full justify-center rounded-md text-sm font-semibold  ${submitDisabled === false ? "bg-[#009DE2]" : "bg-gray-300"}`}
+                      className={`sm:w-[186px] w-full h-[46px] text-white justify-center rounded-md text-sm font-semibold  ${submitDisabled === false ? "bg-[#009DE2]" : "bg-gray-300"}`}
                       onClick={handlePostReview}
                       disabled={submitDisabled}
                     >
@@ -176,7 +176,7 @@ if(value.first_name !== "" && value.second_name !== "" && value.review !== ""){
                     </button>
                     <button
                       type="button"
-                      className="mt-3 w-[186px] h-[46px] justify-center rounded-md bg-white border border-[#009DE2] text-[#009DE2] text-sm font-semibold hover:bg-[#009DE2] hover:text-white sm:mt-0"
+                      className="mt-3 sm:w-[186px] w-full h-[46px] justify-center rounded-md bg-white border border-[#009DE2] text-[#009DE2] text-sm font-semibold hover:bg-[#009DE2] hover:text-white sm:mt-0"
                       onClick={() => setOpen(false)}
                       ref={cancelButtonRef}
                     >

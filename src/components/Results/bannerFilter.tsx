@@ -90,7 +90,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         label="Location"
         placeholder="Select ..."
         data={LocationJson}
-        className={`mr-2 sm:my-2 my-5 sm:w-[150px] font-semibold ${styles.inputWrapper}`}
+        className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
         value={locationSearch.location}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, location: val })
@@ -101,7 +101,7 @@ export default function HeroFilterSection({ surveyData }: any) {
 
       <DateRangeField
         label="Date"
-        className={`mr-2 sm:my-2 my-5 sm:w-[150px] font-semibold ${styles.inputWrapper}`}
+        className={`mr-2 sm:my-2 my-5 sm:w-[250px] ${styles.inputWrapper}`}
         value={date}
         onChange={(value) => setDate(value)}
         icon={<CalenderIcon />}
@@ -137,7 +137,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         label="Person"
         placeholder="Select ..."
         data={Travelers}
-        className={`mr-2 sm:my-2 my-5 sm:w-[150px] font-semibold ${styles.inputWrapper}`}
+        className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
         value={locationSearch.person}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, person: val })
@@ -149,7 +149,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         label="Spending"
         placeholder="Select ..."
         data={Travelers}
-        className={`mr-2 sm:my-2 my-5 sm:w-[150px] font-semibold ${styles.inputWrapper}`}
+        className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
         value={locationSearch.spending}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, spending: val })
