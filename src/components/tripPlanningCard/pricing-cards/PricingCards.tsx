@@ -14,13 +14,14 @@ import { IDays } from '@/interfaces';
 import { _calculateStartAndEndTime } from './functions';
 
 interface IPricingCards {
+    params_list?: any
     locationDetails: any
     totalOpeningHours?: number | null
     automateLocation?: any
     v_type?: VariationType
 }
 
-const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_type}: IPricingCards) => {
+const PricingCards = ({params_list, locationDetails, totalOpeningHours, automateLocation, v_type}: IPricingCards) => {
 
     const [LocationDetails, setLocationDetails] = useState<any>([])
     const [showTripPopup, setShowTripPopup] = useState(false);
@@ -30,6 +31,8 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
     const { itineraryDays } = useAppSelector((state) => state.itineraryReducer)
 
+    const daysLength = Number(params_list.days_length) ?? 7
+    const daysLengtArr = new Array(daysLength).fill(null)
     const dispatch = useAppDispatch()
     const [days, setDays] = useState<any[]>([
         {
@@ -61,8 +64,15 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
             times: []
         }
     ])
+    console.log('daysLength', daysLength, params_list.days_length)
 
     const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
+
+    // useEffect(() => {
+        
+    //     console.log('localdays', _localDays, daysLength)
+    //     setDays(_localDays)
+    // }, [params_list])
 
     useEffect(() => {
 
@@ -180,8 +190,24 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
             return time
         }
 
+        let _localDays: any[] = []
+        let startIndex = params_list.start_day_index
+        for (let index = 0; index < daysLengtArr.length; index++) {
+            if(daysLength < 7)
+            {
+                let dayIndex = ((startIndex-1)+index) % 7
+                
+                _localDays.push({...days[dayIndex]})
+            }
+            else
+            {
+                _localDays.push({...days[index]})
+            }
+        }
+
         const _loadDays = async () => {
-            let _days = days
+
+            let _days = _localDays
 
             for (let i = 0; i < _days.length; i++) {
                 
@@ -192,6 +218,7 @@ const PricingCards = ({locationDetails, totalOpeningHours, automateLocation, v_t
                 await timeLocaitonLoopFunc(_days, i)
             
             }
+
             setDays([..._days])
 
             setLoading(false)

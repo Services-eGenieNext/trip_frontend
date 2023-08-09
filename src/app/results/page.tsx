@@ -61,11 +61,11 @@ if(paramsAddress){
   return (
     <div>
       <PageBanner survey={surveySlice} />
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center mt-24">
         <div className="relative lg:w-[85%]">
         <div className="mb-20">
-          <div className="grid grid-cols-1 md:grid-cols-4">
-            <div className="lg:col-span-1 w-[300px] ">
+          <div className="grid grid-cols-1 lg:grid-cols-4">
+            <div className="lg:col-span-1 max-w-[300px] w-full ">
               <FilterSidebar
                 setClearFilter={setClearFilter}
                 locations={locationsState}
@@ -76,7 +76,7 @@ if(paramsAddress){
             </div>
             <div className="lg:col-span-3 col-span-4">
               <Lisitngs
-              setClearFilter={setClearFilter}
+                setClearFilter={setClearFilter}
                 locations={locationsData}
                 loadData={loading}
                 setLoadData={setLoading}
