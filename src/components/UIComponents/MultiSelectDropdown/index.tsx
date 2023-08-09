@@ -1,16 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import Image from "next/image";
-import { alpha, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import CheckboxLabel from "./label";
 import { AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 
 interface TypeProps {
   items: string[] | any;
   placeholder: string;
-  startIcon?: string;
-  startIconDisabled?: string;
-  disabled?: boolean;
   onChange: Function;
   searchBar?: boolean;
   heightItemsContainer?: string;
@@ -38,9 +34,6 @@ const Inputsearch = styled("input")(() => {
 export default function SelectCheckBoxSimple({
   items,
   placeholder,
-  startIcon,
-  disabled,
-  startIconDisabled,
   onChange,
   searchBar,
   heightItemsContainer,
@@ -52,22 +45,10 @@ export default function SelectCheckBoxSimple({
   const [search, setSearch] = useState("");
   const [opts, setOpts] = useState<any[]>([]);
   const [optsSelected, setOptsSelected] = useState<TypeOpt[]>([]);
-  const [listening, setListening] = useState(false);
   const selectRef = useRef<HTMLDivElement | null>(null);
   const [addCustomeOption, setAddCustomeOption] = useState(false);
   const [customeField, setCustomeField] = useState("");
   const ref = useRef<HTMLInputElement>(null);
-
-  // useEffect(() => {
-  //   console.log(SelectedData,"SelectedData")
-  //   setOptsSelected(SelectedData);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [SelectedData]);
-
-  // useEffect(() => {
-  //   listenForOutsideClick(listening, setListening, selectRef, setShowDropDown);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   useEffect(() => {
     const newArray: any = items?.map((opt: any) => ({ opt, checked: false }));
@@ -75,14 +56,39 @@ export default function SelectCheckBoxSimple({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
-  useEffect(() => {
-    const handleClickOutside = (event:any) => {
-    if (!ref?.current?.contains(event.target)) {
-      setShowDropDown(false);
-    }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-}, [ref]);
+useEffect(() => {
+  if(selectRef)
+  {
+      window.addEventListener('click', (e) => {
+          if(selectRef.current)
+          {
+              if(!selectRef.current.contains((e.target as Element)))
+              {
+                  setShowDropDown(false)
+              }
+          }
+      })
+  }
+}, [])
+
+useEffect(() => {
+  if(showDropDown)
+  {
+      ref.current?.classList.remove('hidden')
+      setTimeout(() => {
+          ref.current?.classList.remove('opacity-0')
+          ref.current?.classList.remove('-translate-y-5')
+      }, 100);
+  }
+  else
+  {
+      ref.current?.classList.add('opacity-0')
+      ref.current?.classList.add('-translate-y-5')
+      setTimeout(() => {
+          ref.current?.classList.add('hidden')
+      }, 200);
+  }
+}, [showDropDown])
 
   useEffect(() => {
     let empty: any = [];
@@ -119,11 +125,6 @@ export default function SelectCheckBoxSimple({
 
   const focusInputSearch = () => inputSearch?.current?.focus();
 
-  const handleShowDropDown = () => {
-    setShowDropDown(!showDropDown)
-    setSearch("");
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const optName = e.target.name;
     const optChecked = e.target.checked;
@@ -135,7 +136,6 @@ export default function SelectCheckBoxSimple({
     setOpts(newArray);
 
     if (optChecked) {
-      console.log(optsSelected,"opts")
       setOptsSelected([
         ...optsSelected,
         { opt: optName, checked: optChecked, id: optId },
@@ -195,7 +195,7 @@ export default function SelectCheckBoxSimple({
     setAddCustomeOption(false);
   };
   return (
-    <Box className={`relative sm:px-1 sm:my-2 my-5 font-semibold ${className}`}>
+    <Box ref={selectRef} className={`relative sm:px-1 sm:my-2 my-5 ${className}`}>
       <label
         className="absolute top-[-0.5rem] left-[1rem] px-[5px] text-[11px] uppercase letter-spacing"
         style={{
@@ -208,9 +208,6 @@ export default function SelectCheckBoxSimple({
       <Box className="flex items-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-5">
       <Box
         className="flex items-center justify-between sm:w-[170px] w-full overflow-hidden cursor-pointer"
-        onClick={()=>{
-          setShowDropDown(true)
-        }}
       >
         <Box
         className="overflow-auto"
@@ -218,6 +215,9 @@ export default function SelectCheckBoxSimple({
           alignItems="center"
           justifyContent="space-between"
           width="100%"
+          onClick={()=>{
+          setShowDropDown(true)
+        }}
         >
           <Box
             display="flex"
@@ -231,14 +231,6 @@ export default function SelectCheckBoxSimple({
               scrollbarWidth: "none",
             }}
           >
-            {/* {startIcon && startIconDisabled && (
-              <Box mr="15px">
-                <img
-                  src={disabled ? startIconDisabled : startIcon}
-                  alt=""
-                />
-              </Box>
-            )} */}
             {optsSelected?.length > 0 &&
               optsSelected?.map(({ opt }, index) => {
                 return (
@@ -277,27 +269,18 @@ export default function SelectCheckBoxSimple({
                   {optsSelected.length}
                 </Typography>
               </Box>
-              {/* <Box
-              className="w-[10px] h-[10px] flex justify-ce3nter items-center rounded-md cursor-pointer ml-2"
-                onClick={clearAll}
-              >
-                <img
-                  src="/images/icons/close-grey-icon.svg"
-                  alt=""
-                />
-              </Box> */}
             </Box>
           )}
         </Box>
       </Box>
       <Box
         className="flex justify-center items-center cursor-pointer"
-        onClick={handleShowDropDown}
+        onClick={()=>{
+          setShowDropDown(!showDropDown)
+          setSearch("")
+        }
+      }
       >
-        {/* <img
-          src={"/images/icons/triangle-bottom-icon.svg"}
-          alt=""
-        /> */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -317,6 +300,7 @@ export default function SelectCheckBoxSimple({
       {showDropDown && (
         <Box
         ref={ref}
+        className="min-w-max"
           position="absolute"
           left="0"
           right="0"
