@@ -13,9 +13,10 @@ import { LocationsCall, ReviewsCall } from '@/api-calls'
 import { setRestaurants } from '@/redux/reducers/restaurantsSlice'
 import {setActivities} from '@/redux/reducers/popularActivities'
 import { setReviews } from '@/redux/reducers/reviews'
+import { useRouter } from "next/navigation";
 
 const Header = () => {
-    
+    const router = useRouter()
     const [openMobileMenu, setOpenMobileMenu] = useState(false)
     const [openMobileSearch, setOpenMobileSearch] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
@@ -157,15 +158,18 @@ const Header = () => {
                 </div>
 
                 <div className="flex flex-col my-5">
-                    <Link href={'/'} className="p-4 lg:p-5">Results</Link>
-                    <Link href={'/'} className="p-4 lg:p-5">Itinerary</Link>
-                    <Link href={'/'} className="p-4 lg:p-5">Survey</Link>
-                </div>
-
-                <div className="flex flex-col justify-between px-16">
-                    <button className="bg-transparent border hover:bg-black hover:text-white py-3 px-4 lg:px-8 rounded-md text-black mb-5 transition-all duration-300">Login</button>
-
-                    <button className="bg-black py-3 px-4 lg:px-8 rounded-md text-white">Sign Up</button>
+                    <div className="p-4 lg:p-5" onClick={()=>{
+                        setOpenMobileMenu(false)
+                        router.push('/results?address=USA')
+                    }}>Results</div>
+                    <div className="p-4 lg:p-5" onClick={()=>{
+                        setOpenMobileMenu(false)
+                        router.push('/trip-plan-v1?address=USA')
+                    }}>Itinerary</div>
+                    <div className="p-4 lg:p-5" onClick={()=>{
+                        setOpenMobileMenu(false)
+                        setShowSurvey(true)
+                    }}>Survey</div>
                 </div>
             </div>
 
