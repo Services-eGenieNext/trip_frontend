@@ -156,32 +156,6 @@ setSurvey({...survey, dates: date})
           <div className="my-4 pt-3 flex flex-wrap gap-2 justify-center">
             {questions[step - 1]?.options === "location" && (
               <>
-              {/* <div className="relative">
-              <InputField
-                label="Location"
-                type="text"
-                className={`my-2 sm:w-[200px]`}
-                value={survey.location}
-                onChange={(e) =>
-                  setSurvey({
-                    ...survey,
-                    location: e.target.value,
-                  })
-                }
-                icon={<SimpleLocation />}
-              />
-              <div className="absolute top-[60px] border left-0 min-w-[250px] sm:w-[200px] bg-white rounded-xl large-shadow overflow-hidden large-shadow z-[9] transition-all duration-300 py-2 px-2">
-              <ul className={`list-none overflow-auto max-h-[120px] flex flex-col items-start`}>
-                    {
-                        locations.map((location:any, i: number) => {
-                            return <li key={i} className={`px-3 py-2 cursor-pointer hover:bg-gray-50 text-start`}
-                            onClick={(e)=>{fetchingCuisines(location.location_id)}}
-                            >{location.name}</li>
-                        })
-                    }
-                </ul>
-              </div>
-              </div> */}
                 <SelectField
                 label="Trending Location"
                 placeholder="Select ..."
@@ -206,6 +180,7 @@ setSurvey({...survey, dates: date})
               Label={"Occasion"}
               heightItemsContainer="300px"
               // SelectedData={locationSearch.occasion}
+              className={`sm:mr-2 sm:my-2 my-5 sm:w-[200px] w-full`}
               placeholder="Select..."
               onChange={(val: any) =>
                 setSurvey({ ...survey, occassion: val })
@@ -218,6 +193,7 @@ setSurvey({...survey, dates: date})
               items={Priorities}
               Label={"Priority"}
               heightItemsContainer="300px"
+              className={`sm:mr-2 sm:my-2 my-5 sm:w-[200px] w-full`}
               // SelectedData={locationSearch.occasion}
               placeholder="Select..."
               onChange={(val: any) =>
@@ -228,7 +204,7 @@ setSurvey({...survey, dates: date})
             {questions[step - 1]?.options === "dates" && (
               <DateRangeField
               label="Date"
-              className={`mr-2 sm:my-2 my-5 sm:w-[250px] ${styles.inputWrapper}`}
+              className={`sm:mr-2 sm:my-2 my-5 sm:w-[250px] w-full ${styles.inputWrapper}`}
               value={date}
               onChange={(value) => setDate(value)}
               icon={<CalenderIcon />}
@@ -248,7 +224,7 @@ setSurvey({...survey, dates: date})
           </div>
           <BlueButton
             type="button"
-            className="text-[20px] py-[10px]"
+            className="text-[20px] py-[10px] sm:w-[200px] w-full"
             title={step < 5 ? "Next" : "Finish"}
             onClick={() => {
               if (step < 5) {

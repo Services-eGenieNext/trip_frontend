@@ -110,7 +110,7 @@ useEffect(() => {
           original?.checked == false
         ) {
           original.checked = true;
-          Arr.push({ opt: original?.opt?.name, checked: true });
+          // Arr.push({ opt: original?.opt?.name, checked: true });
         }
       });
     });
@@ -300,7 +300,7 @@ useEffect(() => {
       {showDropDown && (
         <Box
         ref={ref}
-        className="min-w-max"
+        className="sm:w-[300px] w-[250px] overflow-x-hidden"
           position="absolute"
           left="0"
           right="0"

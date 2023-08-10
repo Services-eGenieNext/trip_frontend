@@ -1,16 +1,22 @@
-import * as React from 'react';
+import React,{useEffect} from 'react';
 import Slider from '@mui/material/Slider';
 
 function valuetext(value: number) {
   return `${value}°C`;
 }
 
-export default function RangeSlider({title}:any) {
+export default function RangeSlider({title,clearData}:any) {
   const [value, setValue] = React.useState<number[]>([500, 10000]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setValue(newValue as number[]);
   };
+
+  useEffect(()=>{
+if(clearData == true){
+  setValue([500,10000])
+}
+  },[clearData])
 
   return (
     <div className="py-7 border-b border-[#E3E3E3]">

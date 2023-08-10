@@ -22,7 +22,7 @@ const StyledCheckbox = styled(Checkbox)
             color: '#999999',
             padding: '0',
             '&.Mui-checked': {
-                color: theme.palette.secondary.main
+                color: "#009de2"
             },
             '&.Mui-disabled': {
                 color: '#dcdcdc'
