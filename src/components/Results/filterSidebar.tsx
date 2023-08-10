@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import FiltersOptions from "./filtersOptions";
 import ReviewFilterBox from './reviewFilterBox'
 import Filter_option from '@/api/filters'
 import PriceSlider from './priceSlider'
 import Occasion from '@/data/occasion.json'
 import Activities from '@/data/priority.json'
+import CardOptionsSearchListing from './filtersOptionsSearch'
 
 export default function FilterSidebar({locations,setLocationsData,setClearFilter,clearFilter}:any) {
 
@@ -61,27 +61,27 @@ useEffect(()=>{
         }}>Clear All</p>
       </div>
       {Activities.length > 0 && (
-        <FiltersOptions
-        filters={Activities}
-        inputType="checkbox"
+        <CardOptionsSearchListing
         title="Activities"
+        categories={Activities}
+        // onChange={handleRetailer}
+        clearData={clearFilter}
+        // selectedData={selectedRetailer}
       />
       )}
       <PriceSlider
       title="Price Per Night"
+      clearData={clearFilter}
       />
       {Occasion.length > 0 && (
-        <FiltersOptions
-        filters={Occasion}
-        inputType="checkbox"
+        <CardOptionsSearchListing
         title="Occasion"
+        categories={Occasion}
+        // onChange={handleRetailer}
+        clearData={clearFilter}
+        // selectedData={selectedRetailer}
       />
       )}
-      {/* <FiltersOptions
-        filters={Filter_option.guestRating}
-        inputType="checkbox"
-        title="Cuisines"
-      /> */}
       <ReviewFilterBox
         filters={Filter_option.cityRanking}
         title="City Ranking"
