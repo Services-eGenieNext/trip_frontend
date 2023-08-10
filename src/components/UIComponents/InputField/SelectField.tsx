@@ -14,7 +14,7 @@ const SelectField = ({className,styling, label, data=[], value, placeholder="", 
             window.addEventListener('click', (e) => {
                 if(selectRef.current)
                 {
-                    console.log('window event',selectRef.current.contains((e.target as Element)))
+                    // console.log('window event',selectRef.current.contains((e.target as Element)))
                     if(!selectRef.current.contains((e.target as Element)))
                     {
                         setOpenDropDown(false)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import CSS from "./Slider.module.css"
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
@@ -11,6 +11,9 @@ interface ISliderComponent {
 }
 
 const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
+
+      const [prevBtnDisabled, setPrevBtnDisabled] = useState(true)
+  const [nextBtnDisabled, setNextBtnDisabled] = useState(false)
 
     function SampleNextArrow(props: any) {
         const { style, onClick } = props;
@@ -47,7 +50,7 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
         const { style, onClick } = props;
         return (
         <div
-            className={`cursor-pointer select-none ${CSS["slick-prev"]}`}
+            className={prevBtnDisabled == true ? `cursor-pointer select-none ${CSS["slick-prev-disabled"]}`  : `cursor-pointer select-none ${CSS["slick-prev"]}`}
             style={{
             ...style,
             display: "flex",
@@ -62,6 +65,14 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
         </div>
         );
     }
+
+    const afterChange = (prev: number) => {
+        if(prev == 0){
+          setPrevBtnDisabled(true)
+        }else{
+          setPrevBtnDisabled(false)
+        }
+      };
 
     const settings = {
         dots: false,
@@ -106,6 +117,7 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
             },
         },
         ],
+        afterChange,
     };
 
     return (

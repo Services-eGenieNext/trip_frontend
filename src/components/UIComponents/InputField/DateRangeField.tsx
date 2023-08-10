@@ -23,7 +23,7 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
             window.addEventListener('click', (e) => {
                 if(selectRef.current)
                 {
-                    console.log('window event',selectRef.current.contains((e.target as Element)))
+                    // console.log('window event',selectRef.current.contains((e.target as Element)))
                     if(!selectRef.current.contains((e.target as Element)))
                     {
                         setOpenDropDown(false)
