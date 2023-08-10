@@ -40,11 +40,13 @@ const locationSlider = [
 
 function ActivitiesSlider() {
   const { activitiesState }:any = useAppSelector((state) => state.popularActivities)
-  const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","1", "2", "3", "4", "5", "6", "7", "8"];
   const [loading, setLoading] = useState(true);
   const [activity, setActivity] = useState([])
   const [showTripPopup, setShowTripPopup] = useState(false);
   const [item, setItem] = useState({});
+  const [prevBtnDisabled, setPrevBtnDisabled] = useState(true)
+  const [nextBtnDisabled, setNextBtnDisabled] = useState(false)
 
   useEffect(() => {
     setActivity(activitiesState)
@@ -55,11 +57,12 @@ function ActivitiesSlider() {
       setLoading(false)
     }
   },[activity])
+
   function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
     return (
       <div
-        className={CSS["activity_arrow_next"]}
+        className={nextBtnDisabled == true ? `cursor-pointer select-none ${CSS["activity_arrow_next_disabled"]} `: `cursor-pointer select-none  ${CSS["activity_arrow_next"]}`}
         style={{
           ...style,
           display: "flex",
@@ -90,7 +93,7 @@ function ActivitiesSlider() {
     const { className, style, onClick } = props;
     return (
       <div
-        className={CSS["activity_arrow_prev"]}
+        className={prevBtnDisabled == true ? `cursor-pointer select-none ${CSS["activity_arrow_prev_disabled"]}` : `cursor-pointer select-none ${CSS["activity_arrow_prev"]}`}
         style={{
           ...style,
           display: "flex",
@@ -116,6 +119,15 @@ function ActivitiesSlider() {
       </div>
     );
   }
+
+  const afterChange = (prev: number) => {
+    if(prev == 0){
+      setPrevBtnDisabled(true)
+    }else{
+      setPrevBtnDisabled(false)
+    }
+  };
+
   const settings = {
     dots: false,
     infinite: false,
@@ -192,7 +204,12 @@ function ActivitiesSlider() {
         },
       },
     ],
+    afterChange,
   };
+
+  useEffect(()=>{
+console.log(prevBtnDisabled,"prevBtnDisabled")
+  },[prevBtnDisabled])
   return (
     <div className="w-full flex justify-center relative mt-20 bg-[#F9FDFF] py-12 px-10">
       <Image src={Ballon} alt='Baloon 1' className={`absolute left-12 top-[-10%] select-none ${CSS["image_opacity"]}`} />
@@ -200,7 +217,7 @@ function ActivitiesSlider() {
       <Image src={Ballon} alt='Baloon 1' className={`absolute right-[13%] md:flex hidden bottom-[-14%] select-none w-[70px]`} />
       <div className="sm-width flex flex-col items-center relative">
         <div className="flex flex-col items-center">
-          <p className="text-2xl md:text-[36px] font-bold gilroy font-bold">
+          <p className="text-2xl md:text-[36px] gilroy font-bold">
             Popular Activities For You
           </p>
           <p className="text-[var(--gray)] text-center mt-4 lato">

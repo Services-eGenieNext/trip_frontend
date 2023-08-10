@@ -28,6 +28,12 @@
   .activity_arrow_prev{
     left: -30px !important;
   }
+  .activity_arrow_prev_disabled{
+    left: -30px !important;
+  }
+  .activity_arrow_next{
+    right: -30px !important;
+  }
 }
 .activity_arrow_prev{
   left: -60px;
@@ -40,7 +46,7 @@
   border-radius: 10%;
 }
 .activity_arrow_next{
-  right: -30px;
+  right: -10px;
   position: absolute;
   top: 50px;
   color: white;
@@ -59,4 +65,26 @@
 }
 .slider_card:hover .hover_overlay{
   visibility: visible;
+}
+
+.activity_arrow_prev_disabled{
+  left: -60px;
+  position: absolute;
+  top: 50px;
+  color: white;
+  background: lightgray;
+  width: 30px;
+  height: 30px;
+  border-radius: 10%;
+}
+
+.activity_arrow_next_disabled{
+  right: -30px;
+  position: absolute;
+  top: 50px;
+  color: white;
+  background: lightgray;
+  width: 30px;
+  height: 30px;
+  border-radius: 10%;
 }
