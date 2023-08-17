@@ -56,20 +56,25 @@ export default function SelectCheckBoxSimple({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
-useEffect(() => {
-  if(selectRef)
-  {
-      window.addEventListener('click', (e) => {
-          if(selectRef.current)
-          {
-              if(!selectRef.current.contains((e.target as Element)))
-              {
-                  setShowDropDown(false)
-              }
-          }
-      })
-  }
-}, [])
+// useEffect(() => {
+//   if(selectRef)
+//   {
+//       window.addEventListener('click', (e) => {
+//           if(selectRef.current)
+//           {
+//             console.log('not found element', selectRef.current, e.target, selectRef.current.contains((e.target as Element)))
+//               if(!selectRef.current.contains((e.target as Element)))
+//               {
+//                   setShowDropDown(false)
+//               }
+//               else
+//               {
+//                 console.log('found element')
+//               }
+//           }
+//       })
+//   }
+// }, [])
 
 useEffect(() => {
   if(showDropDown)
@@ -222,11 +227,13 @@ useEffect(() => {
           <Box
             display="flex"
             alignItems="center"
+            gap={1}
             sx={{
               overflowY: "hidden",
               overflowX: "scroll",
               "::-webkit-scrollbar": {
-                display: "none",
+                // display: "none",
+                height: "4px"
               },
               scrollbarWidth: "none",
             }}
@@ -236,7 +243,7 @@ useEffect(() => {
                 return (
                   <div
                     key={index}
-                    className="bg-gray-500 mx-1 px-3 h-[30px] flex items-center justify-center"
+                    className="bg-gray-500 px-3 h-[30px] flex items-center justify-center"
                   >
                     <Typography
                       color="common.white"
@@ -297,126 +304,127 @@ useEffect(() => {
         </svg>
       </Box>
       </Box>
-      {showDropDown && (
-        <Box
-        ref={ref}
-        className="sm:w-[300px] w-[250px] overflow-x-hidden"
-          position="absolute"
-          left="0"
-          right="0"
-          bgcolor="common.white"
-          zIndex="3"
-          borderRadius="5px"
-          sx={{
-            border: "1px solid #E5E5E5",
-          }}
-        >
-          {searchBar && addCustomeOption === false && (
-            <Box
-              height="39px"
-              borderBottom="1px dashed #E5E5E5"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              pl="20px"
-              pr="10px"
-              onClick={focusInputSearch}
-            >
-              <Box width="100%" mr="10px">
-                <Inputsearch
-                  onChange={(e: any) => setSearch(e.target.value)}
-                  style={{ outline: "none" }}
-                  ref={inputSearch}
-                  placeholder="Search"
-                />
-              </Box>
-              <Box>
-                <img src="/images/icons/search-input-icon.svg" alt="" />
-              </Box>
-            </Box>
-          )}
-          {addCustomeOption === true && (
-            <Box
-              height="39px"
-              borderBottom="1px dashed #E5E5E5"
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              pl="20px"
-              pr="10px"
-              onClick={focusInputSearch}
-            >
-              <Box width="100%" mr="10px">
-                <Inputsearch
-                  onChange={(e: any) => setCustomeField(e.target.value)}
-                  style={{ outline: "none" }}
-                  placeholder="Add Occassion"
-                />
-              </Box>
-              <Box className="flex items-center text-[20px]">
-                <AiFillCheckCircle
-                  className="text-[green] cursor-pointer"
-                  onClick={AddField}
-                />
-                <AiFillCloseCircle
-                  className="text-[red] cursor-pointer"
-                  onClick={() => {
-                    setAddCustomeOption(false);
-                    setCustomeField("");
-                  }}
-                />
-              </Box>
-            </Box>
-          )}
+
+      {/* Dropdown list */}
+      <Box
+      ref={ref}
+      className="sm:w-[300px] w-[250px] overflow-x-hidden"
+        position="absolute"
+        left="0"
+        right="0"
+        bgcolor="common.white"
+        zIndex="3"
+        borderRadius="5px"
+        sx={{
+          border: "1px solid #E5E5E5",
+        }}
+      >
+        {searchBar && addCustomeOption === false && (
           <Box
-            height={heightItemsContainer}
-            py="10px"
-            sx={{ overflowY: "auto" }}
+            height="39px"
+            borderBottom="1px dashed #E5E5E5"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            pl="20px"
+            pr="10px"
+            onClick={focusInputSearch}
           >
-            {addCustomeOption === false && (
-              <Box
-                className="flex items-center gap-x-3 pb-3 px-6"
+            <Box width="100%" mr="10px">
+              <Inputsearch
+                onChange={(e: any) => setSearch(e.target.value)}
+                style={{ outline: "none" }}
+                ref={inputSearch}
+                placeholder="Search"
+              />
+            </Box>
+            <Box>
+              <img src="/images/icons/search-input-icon.svg" alt="" />
+            </Box>
+          </Box>
+        )}
+        {addCustomeOption === true && (
+          <Box
+            height="39px"
+            borderBottom="1px dashed #E5E5E5"
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            pl="20px"
+            pr="10px"
+            onClick={focusInputSearch}
+          >
+            <Box width="100%" mr="10px">
+              <Inputsearch
+                onChange={(e: any) => setCustomeField(e.target.value)}
+                style={{ outline: "none" }}
+                placeholder="Add Occassion"
+              />
+            </Box>
+            <Box className="flex items-center text-[20px]">
+              <AiFillCheckCircle
+                className="text-[green] cursor-pointer"
+                onClick={AddField}
+              />
+              <AiFillCloseCircle
+                className="text-[red] cursor-pointer"
                 onClick={() => {
-                  setAddCustomeOption(true);
+                  setAddCustomeOption(false);
+                  setCustomeField("");
+                }}
+              />
+            </Box>
+          </Box>
+        )}
+        <Box
+          height={heightItemsContainer}
+          py="10px"
+          sx={{ overflowY: "auto" }}
+        >
+          {addCustomeOption === false && (
+            <Box
+              className="flex items-center gap-x-3 pb-3 px-6 cursor-pointer select-none"
+              onClick={(e) => {
+                e.preventDefault();
+                setAddCustomeOption(true);
+              }}
+            >
+              <span
+                className="flex justify-center items-center w-[20px] h-[20px] rounded-full bg-[#4B9AD4] text-white "
+              >
+                +
+              </span>
+              <p className="text-[#4B9AD4] text-[14px]">Add {Label}</p>
+            </Box>
+          )}
+          {filtered?.map(({ opt, checked }, index) => {
+            return (
+              <Box
+                key={index}
+                display="flex"
+                alignItems="center"
+                py="5px"
+                pl="20px"
+                sx={{
+                  cursor: "pointer",
+                  "&:hover": {
+                    bgcolor: "grey.200",
+                  },
                 }}
               >
-                <span
-                  className="flex justify-center items-center w-[20px] h-[20px] rounded-full bg-[#4B9AD4] text-white "
-                >
-                  +
-                </span>
-                <p className="text-[#4B9AD4] text-[14px]">Add {Label}</p>
+                <CheckboxLabel
+                  label={opt?.name}
+                  onChange={handleChange}
+                  name={opt?.name}
+                  id={opt?.id}
+                  checked={checked}
+                  marginLabel="7px"
+                />
               </Box>
-            )}
-            {filtered?.map(({ opt, checked }, index) => {
-              return (
-                <Box
-                  key={index}
-                  display="flex"
-                  alignItems="center"
-                  py="5px"
-                  pl="20px"
-                  sx={{
-                    cursor: "pointer",
-                    "&:hover": {
-                      bgcolor: "grey.200",
-                    },
-                  }}
-                >
-                  <CheckboxLabel
-                    label={opt?.name}
-                    onChange={handleChange}
-                    name={opt?.name}
-                    id={opt?.id}
-                    checked={checked}
-                    marginLabel="7px"
-                  />
-                </Box>
-              );
-            })}
-          </Box>
+            );
+          })}
         </Box>
-      )}
+      </Box>
     </Box>
   );
 }
