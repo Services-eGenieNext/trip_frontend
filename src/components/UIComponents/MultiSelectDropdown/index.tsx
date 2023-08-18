@@ -56,25 +56,20 @@ export default function SelectCheckBoxSimple({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
-// useEffect(() => {
-//   if(selectRef)
-//   {
-//       window.addEventListener('click', (e) => {
-//           if(selectRef.current)
-//           {
-//             console.log('not found element', selectRef.current, e.target, selectRef.current.contains((e.target as Element)))
-//               if(!selectRef.current.contains((e.target as Element)))
-//               {
-//                   setShowDropDown(false)
-//               }
-//               else
-//               {
-//                 console.log('found element')
-//               }
-//           }
-//       })
-//   }
-// }, [])
+  useEffect(() => {
+    if(selectRef)
+    {
+        window.addEventListener('click', (e) => {
+            if(selectRef.current)
+            {
+                if(!selectRef.current.contains((e.target as Element)))
+                {
+                    setShowDropDown(false)
+                }
+            }
+        })
+    }
+  }, [])
 
 useEffect(() => {
   if(showDropDown)
@@ -83,7 +78,7 @@ useEffect(() => {
       setTimeout(() => {
           ref.current?.classList.remove('opacity-0')
           ref.current?.classList.remove('-translate-y-5')
-      }, 100);
+      }, 200);
   }
   else
   {
@@ -129,6 +124,10 @@ useEffect(() => {
   const inputSearch = React.useRef<HTMLInputElement>(null);
 
   const focusInputSearch = () => inputSearch?.current?.focus();
+
+  const handleAddLabel = (e: React.MouseEvent<HTMLInputElement>) => {
+    setAddCustomeOption(true);
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const optName = e.target.name;
@@ -232,7 +231,6 @@ useEffect(() => {
               overflowY: "hidden",
               overflowX: "scroll",
               "::-webkit-scrollbar": {
-                // display: "none",
                 height: "4px"
               },
               scrollbarWidth: "none",
@@ -308,26 +306,19 @@ useEffect(() => {
       {/* Dropdown list */}
       <Box
       ref={ref}
-      className="sm:w-[300px] w-[250px] overflow-x-hidden"
+      className="sm:w-[300px] w-[250px] overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300"
         position="absolute"
         left="0"
         right="0"
         bgcolor="common.white"
         zIndex="3"
-        borderRadius="5px"
-        sx={{
-          border: "1px solid #E5E5E5",
-        }}
       >
         {searchBar && addCustomeOption === false && (
           <Box
-            height="39px"
             borderBottom="1px dashed #E5E5E5"
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
             pl="20px"
             pr="10px"
+            className="flex bg-[rgb(239,242,247)] justify-between items-center h-[39px]"
             onClick={focusInputSearch}
           >
             <Box width="100%" mr="10px">
@@ -343,60 +334,55 @@ useEffect(() => {
             </Box>
           </Box>
         )}
-        {addCustomeOption === true && (
-          <Box
-            height="39px"
-            borderBottom="1px dashed #E5E5E5"
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            pl="20px"
-            pr="10px"
-            onClick={focusInputSearch}
-          >
-            <Box width="100%" mr="10px">
-              <Inputsearch
-                onChange={(e: any) => setCustomeField(e.target.value)}
-                style={{ outline: "none" }}
-                placeholder="Add Occassion"
-              />
-            </Box>
-            <Box className="flex items-center text-[20px]">
-              <AiFillCheckCircle
-                className="text-[green] cursor-pointer"
-                onClick={AddField}
-              />
-              <AiFillCloseCircle
-                className="text-[red] cursor-pointer"
-                onClick={() => {
-                  setAddCustomeOption(false);
-                  setCustomeField("");
-                }}
-              />
-            </Box>
+
+        <Box
+          borderBottom="1px dashed #E5E5E5"
+          display={!addCustomeOption? "none" : "flex"}
+          pl="20px"
+          pr="10px"
+          className="bg-[rgb(239,242,247)] justify-between items-center h-[39px]"
+          onClick={focusInputSearch}
+        >
+          <Box width="100%" mr="10px">
+            <Inputsearch
+              onChange={(e: any) => setCustomeField(e.target.value)}
+              style={{ outline: "none" }}
+              placeholder="Add Occassion"
+            />
           </Box>
-        )}
+          <Box className="flex items-center text-[20px]">
+            <AiFillCheckCircle
+              className="text-green-700 cursor-pointer mr-1"
+              onClick={AddField}
+            />
+            <AiFillCloseCircle
+              className="text-red-500 cursor-pointer"
+              onClick={() => {
+                setAddCustomeOption(false);
+                setCustomeField("");
+              }}
+            />
+          </Box>
+        </Box>
+
         <Box
           height={heightItemsContainer}
           py="10px"
           sx={{ overflowY: "auto" }}
         >
-          {addCustomeOption === false && (
-            <Box
-              className="flex items-center gap-x-3 pb-3 px-6 cursor-pointer select-none"
-              onClick={(e) => {
-                e.preventDefault();
-                setAddCustomeOption(true);
-              }}
+          <span
+            className={`flex items-center gap-x-3 pb-3 px-6 cursor-pointer select-none ${addCustomeOption ? "hidden" : ""}`}
+            onClick = {handleAddLabel}
+          >
+            <span
+              className="flex justify-center items-center w-[20px] h-[20px] rounded-full bg-[#4B9AD4] text-white "
             >
-              <span
-                className="flex justify-center items-center w-[20px] h-[20px] rounded-full bg-[#4B9AD4] text-white "
-              >
-                +
-              </span>
-              <p className="text-[#4B9AD4] text-[14px]">Add {Label}</p>
-            </Box>
-          )}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
+              </svg>
+            </span>
+            <p className="text-[#4B9AD4] text-[14px]">Add {Label}</p>
+          </span>
           {filtered?.map(({ opt, checked }, index) => {
             return (
               <Box
