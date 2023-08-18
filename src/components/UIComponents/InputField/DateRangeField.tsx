@@ -74,10 +74,12 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
                         </svg>
                     </span>
                 </span>
-            </div>
-            <label className="absolute top-[-0.5rem] left-[1rem] px-[5px] text-[11px] uppercase letter-spacing"
+                <div className="absolute top-[-0.5rem] left-0 w-full flex justify-center items-center">
+            <label className="px-[5px] text-[11px] uppercase letter-spacing"
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{label}</label>
+            </div>
+            </div>
 
             <div ref={dropDownRef} className={`hidden opacity-0 absolute top-[50px] min-w-[250px] w-auto bg-white border-gray-100 rounded-xl large-shadow overflow-hidden large-shadow z-[9] transition-all duration-300`}>
                 <DateRange 

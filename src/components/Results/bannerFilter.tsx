@@ -19,6 +19,7 @@ import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
 import LocationJson from '@/data/location.json'
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { useSearchParams } from 'next/navigation'
+import Spending from '@/data/spending.json'
 
 export default function HeroFilterSection({ surveyData }: any) {
   const dispatch = useAppDispatch();
@@ -72,7 +73,7 @@ export default function HeroFilterSection({ surveyData }: any) {
 }, [date]);
 
   const handleRoute = () => {
-    if (locationSearch.dates.startDate) {
+    if (locationSearch.location !== "") {
       router.push("/trip-plan?address=" + locationSearch.location);
     } else {
       router.push("/results?address=" + locationSearch.location);
@@ -100,7 +101,7 @@ export default function HeroFilterSection({ surveyData }: any) {
       />
 
       <DateRangeField
-        label="Date"
+        label="Travel Date"
         className={`mr-2 sm:my-2 my-5 sm:w-[250px] ${styles.inputWrapper}`}
         value={date}
         onChange={(value) => setDate(value)}
@@ -134,7 +135,7 @@ export default function HeroFilterSection({ surveyData }: any) {
       />
 
       <SelectField
-        label="Person"
+        label="Travelers"
         placeholder="Select ..."
         data={Travelers}
         className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
@@ -148,7 +149,7 @@ export default function HeroFilterSection({ surveyData }: any) {
       <SelectField
         label="Spending"
         placeholder="Select ..."
-        data={Travelers}
+        data={Spending}
         className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}
         value={locationSearch.spending}
         onChange={(val) =>
@@ -158,7 +159,7 @@ export default function HeroFilterSection({ surveyData }: any) {
       />
 
       <BlueButton
-        title={locationSearch.dates.startDate ? "Automate My trip" : "Look For Inspiration"}
+        title={locationSearch.location !== "" ? "Automate My trip" : "Look For Inspiration"}
         className="sm:w-[200px] w-full"
         onClick={handleRoute}
       />
