@@ -93,8 +93,6 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                         
                         _days[i].times[j] = {..._times[j], suggestedTime: suggestedTime}
 
-                        // console.log('times', _days[i].times[j], j)
-
                     }
                 }
             }
@@ -107,8 +105,8 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
     useEffect(() => {
 
         const timeLoopFunc = async (i:number) => {
-            let start = i * 5
-            let end = start + 5
+            let start = i * 3
+            let end = start + 3
             let result: any[] = []
             
             if(LocationDetails.length <= start)
@@ -192,8 +190,10 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
 
         let _localDays: any[] = []
         let startIndex = params_list.start_day_index
-        for (let index = 0; index < daysLengtArr.length; index++) {
-            if(daysLength < 7)
+        let _daysLength = daysLengtArr.length > 0 ? daysLengtArr.length : days.length
+
+        for (let index = 0; index < _daysLength; index++) {
+            if(daysLength !== 0 && daysLength < 7)
             {
                 let dayIndex = ((startIndex-1)+index) % 7
                 
@@ -205,8 +205,9 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
             }
         }
 
-        const _loadDays = async () => {
+        console.log('------------ _localDays', _localDays)
 
+        const _loadDays = async () => {
             let _days = _localDays
 
             for (let i = 0; i < _days.length; i++) {
@@ -218,12 +219,11 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                 await timeLocaitonLoopFunc(_days, i)
             
             }
-
             setDays([..._days])
 
             setLoading(false)
         }
-
+        
         if(LocationDetails.length > 0) {
             _loadDays()
         }
@@ -251,7 +251,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
             setLocationDetails([...locations])
         }
         _loadLocations()
-        console.log('locationDetails', locationDetails)
+        
     }, [locationDetails])
 
     useEffect(() => {

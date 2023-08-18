@@ -79,6 +79,7 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
         {
             axios.post(`${PY_API_URL}/get-recommendation`, {input: address}).then(response => {
                 setRecommendations(response.data.recommendations)
+                console.log('recommendations', response.data.recommendations)
                 if(response.data.recommendations.length == 0)
                 {
                     setLocationDetailsByAddress()

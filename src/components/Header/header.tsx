@@ -25,33 +25,33 @@ const Header = () => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        const _def = async () => {
-            let res = await LocationsCall("best places for visit in world for tourist")
-            console.log("locations 2",res)
-            dispatch(setLocations(res))
-        }
-        _def()
+        // const _def = async () => {
+        //     let res = await LocationsCall("best places for visit in world for tourist")
+        //     console.log("locations 2",res)
+        //     dispatch(setLocations(res))
+        // }
+        // _def()
 
-        const _defRestaurants = async () => {
-            let res = await LocationsCall("best resturants for visit in world for tourist")
-            console.log('resturants 3',res)
-            dispatch(setRestaurants(res))
-        }
-        _defRestaurants()
+        // const _defRestaurants = async () => {
+        //     let res = await LocationsCall("best resturants for visit in world for tourist")
+        //     console.log('resturants 3',res)
+        //     dispatch(setRestaurants(res))
+        // }
+        // _defRestaurants()
 
-        const activities = async () => {
-            let res = await LocationsCall("best activities for tourist in world")
-            console.log('object activities 4', res)
-            dispatch(setActivities(res))
-        }
-        activities()
+        // const activities = async () => {
+        //     let res = await LocationsCall("best activities for tourist in world")
+        //     console.log('object activities 4', res)
+        //     dispatch(setActivities(res))
+        // }
+        // activities()
 
-        const reviews = async () => {
-            let reviewsRes = await ReviewsCall()
-            console.log("reviewsRes",reviewsRes)
-            dispatch(setReviews(reviewsRes))
-        }
-        reviews()
+        // const reviews = async () => {
+        //     let reviewsRes = await ReviewsCall()
+        //     console.log("reviewsRes",reviewsRes)
+        //     dispatch(setReviews(reviewsRes))
+        // }
+        // reviews()
     }, [])
 
     useEffect(() => {
