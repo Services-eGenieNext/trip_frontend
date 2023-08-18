@@ -196,21 +196,17 @@ useEffect(() => {
   };
   return (
     <Box ref={selectRef} className={`relative sm:px-1 sm:my-2 my-5 ${className}`}>
-      <label
-        className="absolute top-[-0.5rem] left-[1rem] px-[5px] text-[11px] uppercase letter-spacing"
-        style={{
-          background:
-            "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)",
-        }}
-      >
-        {Label}
-      </label>
+      <div className="absolute top-[-0.5rem] left-0 w-full flex justify-center items-center">
+            <label className="px-[5px] text-[11px] uppercase letter-spacing"
+            style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
+            >{Label}</label>
+            </div>
       <Box className="flex items-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-5">
       <Box
-        className="flex items-center justify-between sm:w-[170px] w-full overflow-hidden cursor-pointer"
+        className="flex items-center justify-between w-full overflow-hidden cursor-pointer"
       >
         <Box
-        className="overflow-auto"
+        className="overflow-hidden pt-4 h-[57px]"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
@@ -220,14 +216,15 @@ useEffect(() => {
         }}
         >
           <Box
-            display="flex"
-            alignItems="center"
+            // display="flex"
+            // alignItems="center"
+            className="flex flex-col gap-y-1 pr-2 mr-2 h-full"
             sx={{
-              overflowY: "hidden",
-              overflowX: "scroll",
-              "::-webkit-scrollbar": {
-                display: "none",
-              },
+              overflowY: "scroll",
+              overflowX: "hidden",
+              // "::-webkit-scrollbar": {
+              //   // display: "none",
+              // },
               scrollbarWidth: "none",
             }}
           >
@@ -236,7 +233,7 @@ useEffect(() => {
                 return (
                   <div
                     key={index}
-                    className="bg-gray-500 mx-1 px-3 h-[30px] flex items-center justify-center"
+                    className="bg-gray-500 px-3 py-1 flex items-center justify-center w-full "
                   >
                     <Typography
                       color="common.white"
@@ -258,7 +255,7 @@ useEffect(() => {
               <Typography color="#999999">{placeholder}</Typography>
             )}
           </Box>
-          {optsSelected?.length > 0 && (
+          {/* {optsSelected?.length > 0 && (
             <Box className="flex items-center mx-2">
               <Box className="py-1 px-2 flex justify-center items-center rounded-md bg-[#4B9AD4] text-white">
                 <Typography
@@ -270,7 +267,7 @@ useEffect(() => {
                 </Typography>
               </Box>
             </Box>
-          )}
+          )} */}
         </Box>
       </Box>
       <Box
