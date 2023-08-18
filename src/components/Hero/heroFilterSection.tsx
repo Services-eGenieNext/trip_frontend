@@ -98,7 +98,7 @@ export default function HeroFilterSection() {
         icon={<CalenderIcon />}
       />
 
-      <MultiSelectDropdown
+      <MultiSelectDropdown key={1}
         searchBar
         items={Occasion}
         Label={"Occasion"}
@@ -111,7 +111,7 @@ export default function HeroFilterSection() {
         }
       />
 
-      <MultiSelectDropdown
+      <MultiSelectDropdown key={2}
         searchBar
         items={Priority}
         Label={"Priority"}
