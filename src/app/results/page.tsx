@@ -40,6 +40,7 @@ export default function Results() {
       dispatch(setSurveyValue({ ...surveySlice, location: paramsAddress }));
       _def(paramsAddress);
     } else {
+      dispatch(setSurveyValue({ ...surveySlice, location: "" }));
       _def("USA");
     }
   }, [paramsAddress]);
