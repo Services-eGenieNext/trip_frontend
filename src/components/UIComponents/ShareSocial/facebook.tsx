@@ -3,7 +3,7 @@ import { FaFacebookF } from "react-icons/fa";
 import styles from "./social.module.css";
 import {useSearchParams} from 'next/navigation'
 
-export default function facebook() {
+export default function Facebook() {
   const params = useSearchParams();
   const paramsAddress = params.get("address");
   const URL = `http://tripfrontend.dfysaas.com/trip-plan?address${paramsAddress}`
