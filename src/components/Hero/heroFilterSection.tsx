@@ -58,11 +58,11 @@ export default function HeroFilterSection() {
   }, [date]);
 
   const handleRoute = () => {
-    if (locationSearch.dates.startDate && startedDayIndex) {
-      router.push("/trip-plan?address=" + locationSearch.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
+    if (locationSearch.location !== "") {
+      router.push("/trip-plan?address=" + locationSearch.location) + "&start_day_index="+startedDayIndex+"&days_length="+daysLength;
     } else {
-      route.push(`/results?address=${locationSearch.location}`);
-      dispatch(setSurveyValue(locationSearch));
+      router.push("/results?address=" + locationSearch.location);
+      dispatch(setSurveyValue(locationSearch))
     }
   };
   return (
@@ -137,7 +137,7 @@ export default function HeroFilterSection() {
       />
 
       <BlueButton
-        title="Automate My trip"
+        title={locationSearch.location !== "" ? "Automate My trip" : "Look For Inspiration"}
         className="sm:w-[200px] w-full"
         onClick={handleRoute}
       />

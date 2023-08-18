@@ -1,21 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {
-    FaFacebookF,
-    FaLinkedinIn,
-    FaTwitter,
-    FaInstagram,
-} from "react-icons/fa";
 import styles from "./Header.module.css"
 import { ImNotification } from 'react-icons/im';
 import { ITripPlanningHeader } from '@/interfaces/TripPlan';
 import ComponentTitle from '@/components/UIComponents/ComponentTitle';
+import Facebook from '@/components/UIComponents/ShareSocial/facebook';
+import Linkdin from '@/components/UIComponents/ShareSocial/linkdin'
+import Twitter from '@/components/UIComponents/ShareSocial/twitter'
   
-const SocialIcons = [
-    { icon: FaFacebookF, name: "Facebook" },
-    { icon: FaLinkedinIn, name: "Linkedin" },
-    { icon: FaTwitter, name: "Twitter" },
-    { icon: FaInstagram, name: "Instagram" },
-  ];
   
 const Cost = [
     { name: "Flight Cost", cost: 1000 },
@@ -32,17 +23,9 @@ const TripPlanningHeader = ({ variation = "space-arround" }: ITripPlanningHeader
         return <div className="flex items-center sm:mt-0 mt-3">
             <h1 className="font-medium text-[21px] leading-[27px]">Share with:</h1>
             <div className="flex items-center gap-x-3 ml-3">
-                {SocialIcons &&
-                SocialIcons.map((social, index) => {
-                    return (
-                    <div
-                        key={index}
-                        className={`${styles["social_icon"]} rounded-full flex justify-center items-center text-white text-[12px]`}
-                    >
-                        {<social.icon />}
-                    </div>
-                    );
-                })}
+                <Facebook/>
+                <Linkdin/>
+                <Twitter/>
             </div>
         </div>
     }

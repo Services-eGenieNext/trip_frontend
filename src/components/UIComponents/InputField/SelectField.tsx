@@ -56,7 +56,7 @@ if(value !== ""){
     return (
         <div ref={selectRef} className={`relative cursor-pointer select-none ${className}`}>
             <div className="relative">
-                <span className="border border-[#C9D2DD] bg-white rounded-2xl py-4 px-5 flex items-center justify-between"
+                <span className="border border-[#C9D2DD] bg-white rounded-2xl py-4 px-5 flex items-center justify-between relative"
                 onClick={() => setOpenDropDown(!openDropDown)}
                 >
                     <div className='flex items-center'>
@@ -74,10 +74,12 @@ if(value !== ""){
                         </svg>
                     </span>
                 </span>
-            </div>
-            <label className="absolute top-[-0.5rem] left-[1rem] px-[5px] text-[11px] uppercase letter-spacing"
+            <div className="absolute top-[-0.5rem] left-0 w-full flex justify-center items-center">
+            <label className="px-[5px] text-[11px] uppercase letter-spacing"
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{label}</label>
+            </div>
+            </div>
 
             <div ref={dropDownRef} className={`hidden opacity-0 absolute min-w-[250px] w-full bg-white border-gray-100 rounded-xl large-shadow overflow-hidden large-shadow z-20 transition-all duration-300 ${styling?.shadow ? styling.shadow : ""} ${styling?.top ? styling.top : "top-[50px]"}`}>
                 <ul className={`list-none overflow-auto ${styling?.dropdownHeight ? styling.dropdownHeight : "max-h-[300px]"}`}>
