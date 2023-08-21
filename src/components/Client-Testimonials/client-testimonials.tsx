@@ -9,6 +9,7 @@ import { useAppSelector } from "@/redux/hooks";
 import Section from "../UIComponents/Section";
 import Image from "next/image";
 import ReviewFilterBox from "../Results/reviewFilterBox";
+import SelectField from "../UIComponents/InputField/SelectField";
 
 interface IClientTestimonials {
   automateLocation?: any
@@ -18,19 +19,65 @@ const ClientTestimonials = ({ automateLocation }:IClientTestimonials) => {
   const [loading, setLoading] = useState(true);
   const [reviewsData, setReviewsData] = useState<any[] | null>(null);
   const { reviewsState }: any = useAppSelector((state) => state.reviewsReducer);
+  const { itineraryDays }: any = useAppSelector((state) => state.itineraryReducer);
   const [openModal, setOpenModal] = useState(false);
   const [showReviews, setShowReviews] = useState(true)
   const [showFilter, setShowFilter] = useState(false)
   const [reviewRank, setReviewRank] = useState('')
-  const [clearFilter, setClearFilter] = useState(false)
+  // const [clearFilter, setClearFilter] = useState(false)
+  const [locaitonList, setLocationList] = useState<any[]>([])
+  const [locaitonOptions, setLocationOptions] = useState<any[]>([])
+  const [filterData, setFilterData] = useState({
+    locationIndex: "",
+    reviews: "All"
+  })
 
   useEffect(() => {
     if(automateLocation?.reviews)
     {
-      setReviewsData(reviewRank !== "" ? automateLocation.reviews.filter((review: any) => review.rating === Number(reviewRank)) : automateLocation.reviews);
-      console.log('automateLocation', automateLocation)
+      if(filterData.locationIndex !== "")
+      {
+        let index = locaitonList.findIndex(opt => opt.name === filterData.locationIndex)
+        // console.log('reviews', filterData.locationIndex, locaitonList[Number(index)])
+        setReviewsData(locaitonList[Number(index)].reviews === undefined ? [] : (filterData.reviews !== "All" ? locaitonList[Number(index)].reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : locaitonList[Number(index)].reviews));
+      }
+      else
+      {
+        setReviewsData(filterData.reviews !== "All" ? automateLocation.reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : automateLocation.reviews);
+      }
     }
-  }, [reviewsState, reviewRank, automateLocation]);
+  }, [reviewsState, filterData, automateLocation]);
+
+  useEffect(() => {
+    const _def = async () => {
+      let locations = await itineraryDays.map((itin: any) => 
+      itin.times.map((time: any) => 
+        time.location 
+      )
+      )
+      locations = await [].concat(...locations)
+
+      setLocationList([...locations])
+
+    }
+    _def()
+  }, [itineraryDays])
+
+  useEffect(() => {
+    const _locationOptionFunc = async () => {
+      if(locaitonList.length > 0)
+      {
+        let _list = await locaitonList.map((loc: any, index) => {
+          return {
+            id: index+1,
+            name: loc.name
+          }
+        })
+        setLocationOptions([..._list])
+      }
+    }
+    _locationOptionFunc()
+  }, [locaitonList])
 
   useEffect(() => {
     if (reviewsData!=null) {
@@ -40,13 +87,27 @@ const ClientTestimonials = ({ automateLocation }:IClientTestimonials) => {
 
   const reviewArr = new Array(5).fill(1);
 
-  let ratingList = [
-    { type: "Reviews", id: 1, label: "1", active: false },
-    { type: "Reviews", id: 2, label: "2", active: false },
-    { type: "Reviews", id: 3, label: "3", active: false },
-    { type: "Reviews", id: 4, label: "4", active: false },
-    { type: "Reviews", id: 5, label: "5", active: false },
+  const reviewOptions = [
+    {
+      id: 1, name: "All"
+    },
+    {
+      id: 1, name: 1
+    },
+    {
+      id: 2, name: 2
+    },
+    {
+      id: 3, name: 3
+    },
+    {
+      id: 4, name: 4
+    },
+    {
+      id: 5, name: 5
+    }
   ]
+
   return (
     <div className="w-full flex justify-center">
         <Section className="relative">
@@ -73,34 +134,57 @@ const ClientTestimonials = ({ automateLocation }:IClientTestimonials) => {
         >
           <BlueButton onClick={() => setShowFilter(!showFilter)} title={"Filter Reviews"} />
 
-          <div id="rating-filter" className={`transition-all duration-300 overflow-hidden absolute left-0 bg-white large-shadow px-4 rounded-xl right-0 ${openModal ? "" : "hidden"}`}>
-            {
-              reviewRank && <span className="text-red-500 text-sm cursor-pointer text-right w-full block my-2" onClick={() => setReviewRank('')}>Clear</span>
-            }
-            {reviewArr &&
-            reviewArr.map((review, index) => {
-                return <span key={index} className={`flex items-center border rounded-lg p-2 my-2 ${Number(reviewRank) == index+1 ? "text-[#009de2] border-[#009de2]" : "text-[#b1adaa] border-[#b1adaa]" }`}
-                onClick={() => setReviewRank(`${index+1}`)}
-                >
-                  <span className="mr-1">{index+1}</span>
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 17 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M16.4505 5.63406L11.3543 4.90408L9.07611 0.352135C9.01388 0.227506 8.91152 0.126615 8.78506 0.0652895C8.46793 -0.0890138 8.08254 0.0395723 7.92397 0.352135L5.64581 4.90408L0.549539 5.63406C0.409035 5.65384 0.280575 5.71912 0.182222 5.81803C0.0633192 5.93848 -0.00220171 6.10053 5.64944e-05 6.26856C0.0023147 6.4366 0.0721672 6.59688 0.194265 6.71418L3.88148 10.2572L3.01036 15.2602C2.98993 15.3766 3.003 15.4963 3.04808 15.6057C3.09316 15.7151 3.16845 15.8099 3.26541 15.8793C3.36237 15.9488 3.47713 15.99 3.59666 15.9984C3.7162 16.0068 3.83573 15.982 3.9417 15.9269L8.50004 13.5648L13.0584 15.9269C13.1828 15.9922 13.3273 16.0139 13.4658 15.9902C13.8151 15.9308 14.0499 15.6044 13.9897 15.2602L13.1186 10.2572L16.8058 6.71418C16.9062 6.61724 16.9724 6.49064 16.9925 6.35216C17.0467 6.00597 16.8018 5.68549 16.4505 5.63406Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </span>
-              })
-              }
-          </div>
         </div>
       </div>
+      <div id="rating-filter" className={`transition-all duration-300 ${!openModal ? 'overflow-hidden' : 'pt-8'}`} style={{height: openModal ? window.innerWidth < 768 ? "200px" : "74px" : "0px"}}>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <SelectField
+            label="Locations"
+            placeholder="Select ..."
+            data={locaitonOptions}
+            className={`sm:mr-2 sm:my-2 my-5 w-full`}
+            value={filterData.locationIndex}
+            onChange={async (val) =>{
+              setFilterData({...filterData, locationIndex: val})}
+            }
+            />
+
+            <SelectField
+            label="Reviews"
+            placeholder="Select ..."
+            data={reviewOptions}
+            className={`sm:mr-2 sm:my-2 my-5 w-full`}
+            value={filterData.reviews}
+            onChange={(val) =>
+              setFilterData({...filterData, reviews: val})
+            }
+            />
+          </div>
+          {/* {
+            reviewRank && <span className="text-red-500 text-sm cursor-pointer text-right w-full block my-2" onClick={() => setReviewRank('')}>Clear</span>
+          }
+          {reviewArr &&
+          reviewArr.map((review, index) => {
+              return <span key={index} className={`flex items-center border rounded-lg p-2 my-2 ${Number(reviewRank) == index+1 ? "text-[#009de2] border-[#009de2]" : "text-[#b1adaa] border-[#b1adaa]" }`}
+              onClick={() => setReviewRank(`${index+1}`)}
+              >
+                <span className="mr-1">{index+1}</span>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 17 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.4505 5.63406L11.3543 4.90408L9.07611 0.352135C9.01388 0.227506 8.91152 0.126615 8.78506 0.0652895C8.46793 -0.0890138 8.08254 0.0395723 7.92397 0.352135L5.64581 4.90408L0.549539 5.63406C0.409035 5.65384 0.280575 5.71912 0.182222 5.81803C0.0633192 5.93848 -0.00220171 6.10053 5.64944e-05 6.26856C0.0023147 6.4366 0.0721672 6.59688 0.194265 6.71418L3.88148 10.2572L3.01036 15.2602C2.98993 15.3766 3.003 15.4963 3.04808 15.6057C3.09316 15.7151 3.16845 15.8099 3.26541 15.8793C3.36237 15.9488 3.47713 15.99 3.59666 15.9984C3.7162 16.0068 3.83573 15.982 3.9417 15.9269L8.50004 13.5648L13.0584 15.9269C13.1828 15.9922 13.3273 16.0139 13.4658 15.9902C13.8151 15.9308 14.0499 15.6044 13.9897 15.2602L13.1186 10.2572L16.8058 6.71418C16.9062 6.61724 16.9724 6.49064 16.9925 6.35216C17.0467 6.00597 16.8018 5.68549 16.4505 5.63406Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+            })
+            } */}
+        </div>
       {
       showReviews === true ? (
       <div className="my-10 md:my-20">

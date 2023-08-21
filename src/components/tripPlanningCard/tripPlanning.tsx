@@ -9,6 +9,7 @@ import PricingCards from "./pricing-cards/PricingCards";
 import Card_skelton from '@/components/UIComponents/card_skelton';
 import { VariationType } from "@/interfaces/product";
 import { LocationsCall } from "@/api-calls";
+import { useAppSelector } from "@/redux/hooks";
 
 interface ITripPlanningCard {
     params_list?: any,
@@ -25,6 +26,7 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
     const [showTripPopup, setShowTripPopup] = useState(false);
     const [item, setItem] = useState({});
     const [loading, setLoading] = useState(true)
+    const { itineraryLoading } = useAppSelector((state) => state.itineraryReducer)
 
     useEffect(() => {
         const handleClickOutside = (event:any) => {
@@ -66,7 +68,7 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
                         }
                     }
                 }
-                console.log('_locationDetails', _locationDetails)
+                
                 setLocationDetails([..._locationDetails])
                 setLoading(false)
             }
@@ -79,7 +81,7 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
         {
             axios.post(`${PY_API_URL}/get-recommendation`, {input: address}).then(response => {
                 setRecommendations(response.data.recommendations)
-                console.log('recommendations', response.data.recommendations)
+                
                 if(response.data.recommendations.length == 0)
                 {
                     setLocationDetailsByAddress()
