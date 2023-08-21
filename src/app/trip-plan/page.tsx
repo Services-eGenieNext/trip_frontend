@@ -93,7 +93,7 @@ const TripPlan = () => {
             days_length: days_length ?? ''
         })
     }, [params])
-
+    
     return (
         <div className='overflow-x-hidden w-full'>
             <PageBanner title={automateLocation?.name ?? 'Trip Plan'} automateLocation={automateLocation} />
@@ -122,9 +122,9 @@ const TripPlan = () => {
             
 
             <SmallStory positioning="inline" />
-<div className=' mt-20'>
-            <ClientTestimonials />
-</div>
+            <div className=' mt-20'>
+                <ClientTestimonials automateLocation={automateLocation} />
+            </div>
         </div>
     )
 }

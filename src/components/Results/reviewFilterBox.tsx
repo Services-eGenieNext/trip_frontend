@@ -18,7 +18,7 @@ export default function ReviewFilterBox({
   setRanking,
   clearFilter,
 }: IFilters) {
-  const [filtersData, setFiltersData] = useState([]);
+  const [filtersData, setFiltersData] = useState<any[]>([]);
 
   useEffect(() => {
     setFiltersData(filters);
@@ -34,10 +34,10 @@ export default function ReviewFilterBox({
     }
   }, [clearFilter]);
 
-  const handleRating = (filters: any, index: number) => {
+  const handleRating = async (filters: any, index: number) => {
     let filtersArray = filtersData;
     setRanking(filters.label);
-    filtersArray.map((options: any) => {
+    await filtersArray.map((options: any) => {
       if (filters.label == options.label && filters.type == title) {
         options.active = true;
       } else {
