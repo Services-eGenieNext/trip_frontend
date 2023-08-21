@@ -12,6 +12,7 @@ import styles from "./pricing-cards.module.css"
 import { setItineraryDays } from '@/redux/reducers/itinerarySlice';
 import { IDays } from '@/interfaces';
 import { _calculateStartAndEndTime } from './functions';
+import Card_skelton from '@/components/UIComponents/card_skelton';
 
 interface IPricingCards {
     params_list?: any
@@ -29,7 +30,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
     const [loading, setLoading] = useState<boolean>(true);
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
-    const { itineraryDays } = useAppSelector((state) => state.itineraryReducer)
+    const { itineraryDays, itineraryLoading } = useAppSelector((state) => state.itineraryReducer)
 
     const daysLength = Number(params_list.days_length) ?? 7
     const daysLengtArr = new Array(daysLength).fill(null)
@@ -97,7 +98,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                 }
             }
             console.log('_days', _days)
-            dispatch(setItineraryDays(_days.filter((_day: any) => _day.times.length > 0)))
+            dispatch(setItineraryDays( [..._days.filter((_day: any) => _day.times.length > 0)] ))
         }
         _defDays()
     }, [days])
@@ -258,33 +259,39 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
         setItem({...automateLocation})
     }, [automateLocation])
 
+    const skelton = ["1","2","3","4","5","6","7","8"]
+    
     return (
         <>
         {
-            (v_type !== '2' && itineraryDays && itineraryDays.length > 4) ? (
-                <>
-                {
-                    (!loading && itineraryDays) &&
-                    itineraryDays.map((_item, index) => {
-                        return (
-                            <PricingCard key={index} 
-                            isDropdownButton={false} 
-                            variation="cards" 
-                            rows = "2"
-                            data={_item} 
-                            onOpen={(item) => {
-                                setShowTripPopup(true)
-                                setItem(item)
-                            }} />
-                        );
-                    })
-                }
+            itineraryLoading ? 
+            skelton.map((list:string,index:number)=>{
+                return <Card_skelton key={index}/>
+            }) : (
+                v_type !== '2' && itineraryDays && itineraryDays.length > 4) ? (
+                    <>
+                    {
+                        (!loading && itineraryDays) &&
+                        itineraryDays.map((_item, index) => {
+                            return (
+                                <PricingCard key={index} 
+                                isDropdownButton={false} 
+                                variation="cards" 
+                                rows = "2"
+                                data={_item} 
+                                onOpen={(item) => {
+                                    setShowTripPopup(true)
+                                    setItem(item)
+                                }} />
+                            );
+                        })
+                    }
 
-                <TripPlanPopup item={item} show={showTripPopup} onClose={() => {
-                    setShowTripPopup(false)
-                }} />
-                </>       
-            ) : (
+                    <TripPlanPopup item={item} show={showTripPopup} onClose={() => {
+                        setShowTripPopup(false)
+                    }} />
+                    </>       
+                ) : (
                 <div className={`grid grid-cols-1 lg:grid-cols-3 gap-3 ${styles.tripPlanning}`}>
                     <div className={`lg:col-span-1 flex flex-wrap justify-center max-h-[1550px] h-full overflow-auto`}>
                         {
