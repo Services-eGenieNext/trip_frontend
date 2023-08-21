@@ -67,8 +67,8 @@ const TripPlan = () => {
                     setOpeningHours(item_Detail?.data?.result?.opening_hours?.weekday_text?.filter((_week: any) => _week.toLowerCase().search('closed') == -1 ).length)
                 }
             }
-            _defLocationToVisit(locationString)
-            _defRestaurantsToVisit(locationString)
+            _defLocationToVisit(params_list.location_id || params_list.place_id ? locationString : params_list.address)
+            _defRestaurantsToVisit(params_list.location_id || params_list.place_id ? locationString : params_list.address)
         }
         _defLocation()
 
@@ -113,19 +113,23 @@ const TripPlan = () => {
                     <ProductHorizontalSlide 
                         locationsState={locationsState} 
                         url="variation_2" 
-                        Title={`${automateLocation?.name} Location To Visit`} 
+                        Title={`${automateLocation?.name ? automateLocation?.name : params_list.address} Location To Visit`} 
                         Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} isAddButton={true} 
                         isDesc={true}
                         v_type={"2"} />
-                    <Products title="Most popular Restaurants" isAddButton={true} rows="2" />
+                    <Products title={`Restaurants in ${automateLocation?.name ? automateLocation?.name : params_list.address}`} isAddButton={true} rows="2" />
                 </>
             }
             
 
             <SmallStory positioning="inline" />
-            <div className=' mt-20'>
-                <ClientTestimonials automateLocation={automateLocation} />
-            </div>
+            {
+                automateLocation && (
+                    <div className=' mt-20'>
+                        <ClientTestimonials automateLocation={automateLocation} />
+                    </div>
+                )
+            }
         </div>
     )
 }
