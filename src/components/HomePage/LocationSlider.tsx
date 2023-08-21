@@ -47,7 +47,7 @@ const LocationSlider = ({
   }, [locationsState]);
 
   useEffect(() => {
-    if (locations.length > 0) {
+    if (locations?.length > 0) {
       setLoading(false);
     }
   }, [locations]);
@@ -174,8 +174,8 @@ const LocationSlider = ({
                   : location.details.address_components[0].long_name + location.details.address_components[1].long_name;
                 return (
                     <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10`}>
-                      <div className={`grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden h-full relative cursor-pointer ${styles["slider_card"]}`}>
-                        <div className={`${ type == "title-card" ? 'h-[310px]' : 'h-[178px]'} bg-gray-100 relative`}>
+                      <div className={`rounded-xl border shadow-sm overflow-hidden h-full relative cursor-pointer ${styles["slider_card"]}`}>
+                        <div className="h-[310px] bg-gray-100 relative">
                           <Image
                             src={image_path}
                             alt={location.name}
@@ -190,74 +190,26 @@ const LocationSlider = ({
                             }}
                           ></div>
                         </div>
-                        <div className={`${type == "title-card" ? "absolute bottom-4 left-4 text-white font-bold text-[25px] pe-5" : "p-4"}`}>
-                          <div className="grid grid-cols-2 items-center mb-2 relative">
-                            <h4
-                              className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${isAddButton ? "col-span-1" : "col-span-2"} `}
-                            >
-                              {location.name}
-                            </h4>
-                            {isAddButton && (
-                              <div
-                                className="flex justify-end items-center gap-2 cursor-pointer"
-                                onClick={(e) => {
-                                  setOpenLocation(location)
-                                  placeForm(e)
-                                }}
-                              >
-                                <span className="text-[11px] text-[var(--green)]">
-                                  Add
-                                </span>
-                                <span className="w-[23px] h-[23px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
-                                  <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={2}
-                                    stroke="currentColor"
-                                    className="w-[15px] h-[15px]"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      d="M12 4.5v15m7.5-7.5h-15"
-                                    />
-                                  </svg>
-                                </span>
+                        <div className={"absolute bottom-4 left-0 text-white font-bold w-full text-[16px] text-start"}>
+                          <div className="pl-6 pr-2">
+                              {location?.details?.address_components?.length > 0 && (
+                                location?.details?.address_components.map((address:any,index:number)=>{
+                                    let city = address?.types[0] == "administrative_area_level_1" ? address.long_name : ""
+                                    let country = address?.types[0] == "country" ? address.long_name : ""
+                                    console.log(city,",",country)
+                                  return(
+                                    <>
+                                    {city !=="" && (
+                                    <span>{city}</span>
+                                    )}
+                                    {country !== "" && (
+                                    <span className="ml-2">{country !== "" ? "," : ""} {country}</span>
+                                    )}
+                                    </>
+                                  )
+                                })
+                              )}
                               </div>
-                            )}
-                          </div>
-                          {
-                            url == "variation_2" && (
-                              <div className="flex flex-wrap gap-2 items-center my-2">
-                                <span>{location?.rating}</span>
-                                {
-                                  reviewArr &&
-                                  reviewArr.map((review, index) => {
-                                    if (index < location.rating) {
-                                      return <FilledStar key={index} />;
-                                    } else {
-                                      return <BlankStar key={index} />;
-                                    }
-                                  })
-                                }
-                                <span className="text-[var(--lite-gray)]">
-                                  {`(${location.user_ratings_total})`}
-                                </span>
-                              </div>
-                            )
-                          }
-                          {url == "variation_3" && (
-                            <div className="flex gap-2 items-center absolute top-[7px] right-[7px] bg-white px-3 border rounded-lg">
-                              <span>{location?.rating}</span>
-                              <FilledStar />
-                            </div>
-                          )}
-                          {isDesc && (
-                            <p className="text-[15px] text-[var(--gray)]">
-                              
-                            </p>
-                          )}
                         </div>
                         {
                           isAddButton == false && (
