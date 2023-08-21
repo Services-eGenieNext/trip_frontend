@@ -56,6 +56,12 @@ export default function SelectCheckBoxSimple({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
+  useEffect(()=>{
+if(addCustomeOption == false){
+  setCustomeField("")
+}
+  },[addCustomeOption])
+
   useEffect(() => {
     if(selectRef)
     {
@@ -72,6 +78,8 @@ export default function SelectCheckBoxSimple({
   }, [])
 
 useEffect(() => {
+  setAddCustomeOption(false)
+  setCustomeField("")
   if(showDropDown)
   {
       ref.current?.classList.remove('hidden')
@@ -205,12 +213,12 @@ useEffect(() => {
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{Label}</label>
             </div>
-      <Box className="flex items-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-5">
+      <Box className="flex items-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-2">
       <Box
         className="flex items-center justify-between w-full overflow-hidden cursor-pointer"
       >
         <Box
-        className="overflow-hidden pt-4 h-[57px]"
+        className="overflow-hidden pt-4 pb-2 h-[57px]"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
@@ -222,7 +230,7 @@ useEffect(() => {
           <Box
             // display="flex"
             // alignItems="center"
-            className="flex flex-col gap-y-1 pr-2 mr-2 h-full"
+            className="flex flex-col gap-y-1 h-full"
             sx={{
               overflowY: "scroll",
               overflowX: "hidden",
@@ -233,24 +241,33 @@ useEffect(() => {
             }}
           >
             {optsSelected?.length > 0 &&
-              optsSelected?.map(({ opt }, index) => {
+              optsSelected?.map(( opt , index) => {
                 return (
                   <div
                     key={index}
-                    className="bg-gray-500 px-3 py-1 flex items-center justify-center w-full "
+                    className="bg-gray-500 px-2 py-1 flex items-center justify-between w-full "
                   >
                     <Typography
+                    className="mr-2"
                       color="common.white"
                       fontSize="10px"
                       fontWeight="400"
                     >
-                      {opt}
+                      {opt.id}.
+                    </Typography>
+                    <Typography
+                    className="text-center"
+                      color="common.white"
+                      fontSize="10px"
+                      fontWeight="400"
+                    >
+                      {opt?.opt}
                     </Typography>
                     <img
                       className="cursor-pointer w-[10px] h-[10px] ml-3"
                       src="/images/icons/close-white-icon.svg"
                       alt=""
-                      onClick={() => clearOne(opt)}
+                      onClick={() => clearOne(opt?.opt)}
                     />
                   </div>
                 );
@@ -394,6 +411,7 @@ useEffect(() => {
                   },
                 }}
               >
+                <span className="text-[#9e9e9e] mr-2">{opt?.id}.</span>
                 <CheckboxLabel
                   label={opt?.name}
                   onChange={handleChange}
