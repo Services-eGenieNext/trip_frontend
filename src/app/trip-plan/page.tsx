@@ -28,16 +28,16 @@ const TripPlan = () => {
     const _defLocationToVisit = async (query: string) => {
         if(query)
         {
-            let res = await LocationsCall((params_list.restaurants ? "restaurants in " : "places in ") + query)
-            
-            if(params_list.restaurants)
-            {
-                dispatch(setRestaurants(res))
-            }
-            else
-            {
-                dispatch(setLocations(res))
-            }
+            let res = await LocationsCall("places in " + query)
+            dispatch(setLocations(res))
+        }
+    }
+
+    const _defRestaurantsToVisit = async (query: string) => {
+        if(query)
+        {
+            let res = await LocationsCall("restaurants in " + query)
+            dispatch(setRestaurants(res))
         }
     }
 
@@ -68,6 +68,7 @@ const TripPlan = () => {
                 }
             }
             _defLocationToVisit(locationString)
+            _defRestaurantsToVisit(locationString)
         }
         _defLocation()
 
@@ -93,7 +94,7 @@ const TripPlan = () => {
             days_length: days_length ?? ''
         })
     }, [params])
-    
+
     return (
         <div className='overflow-x-hidden w-full'>
             <PageBanner title={automateLocation?.name ?? 'Trip Plan'} automateLocation={automateLocation} />
