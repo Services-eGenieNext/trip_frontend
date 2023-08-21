@@ -230,7 +230,7 @@ const ProductHorizontalSlide = ({
                           {
                             url == "variation_2" && (
                               <div className="flex flex-wrap gap-2 items-center my-2">
-                                <span>{location?.rating}</span>
+                                <span>{location?.rating ? location?.rating : ""}</span>
                                 {
                                   reviewArr &&
                                   reviewArr.map((review, index) => {
@@ -242,7 +242,7 @@ const ProductHorizontalSlide = ({
                                   })
                                 }
                                 <span className="text-[var(--lite-gray)]">
-                                  {`(${location.user_ratings_total})`}
+                                  {location.user_ratings_total ? `(${location.user_ratings_total})` : ""}
                                 </span>
                               </div>
                             )
