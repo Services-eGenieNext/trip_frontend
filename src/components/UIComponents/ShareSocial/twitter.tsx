@@ -6,7 +6,7 @@ import {useSearchParams} from 'next/navigation'
 export default function Twitter() {
     const params = useSearchParams();
     const paramsAddress = params.get("address");
-    const URL = `http://tripfrontend.dfysaas.com/trip-plan?address${paramsAddress}`
+    const URL = `https://weplan.ai/trip-plan?address${paramsAddress}`
   return (
     <>
       <TwitterShareButton
