@@ -9,7 +9,7 @@ import BlueButton, {
   BlueButtonOutLined,
 } from "../UIComponents/Buttons/BlueButton";
 import { IProductHorizontalSlide } from "@/interfaces";
-import styles from "./ProductHorizontalSlide.module.css";
+import styles from "./style.module.css";
 import BlankLocation from "public/images/blank-location.jpg";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,7 +18,7 @@ import SelectField from "../UIComponents/InputField/SelectField";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
 
-const ProductHorizontalSlide = ({
+const LocationSlider = ({
   Title,
   Description = "",
   data,
@@ -168,10 +168,10 @@ const ProductHorizontalSlide = ({
               })
             : locations?.map((location: any, index) => {
                 let image_path =
-                  location.images === "" ? BlankLocation.src : location.images;
-                let address = location.formatted_address
-                  ? location.formatted_address
-                  : location.address_obj?.address_string;
+                  location.image.image.length > 0 ? location.image.image[0].url : BlankLocation.src;
+                let address = location.details.formatted_address
+                  ? location.details.formatted_address
+                  : location.details.address_components[0].long_name + location.details.address_components[1].long_name;
                 return (
                     <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10`}>
                       <div className={`grid grid-cols-1 rounded-xl border shadow-sm overflow-hidden h-full relative cursor-pointer ${styles["slider_card"]}`}>
@@ -230,7 +230,7 @@ const ProductHorizontalSlide = ({
                           {
                             url == "variation_2" && (
                               <div className="flex flex-wrap gap-2 items-center my-2">
-                                <span>{location?.rating ? location?.rating : ""}</span>
+                                <span>{location?.rating}</span>
                                 {
                                   reviewArr &&
                                   reviewArr.map((review, index) => {
@@ -242,7 +242,7 @@ const ProductHorizontalSlide = ({
                                   })
                                 }
                                 <span className="text-[var(--lite-gray)]">
-                                  {location.user_ratings_total ? `(${location.user_ratings_total})` : ""}
+                                  {`(${location.user_ratings_total})`}
                                 </span>
                               </div>
                             )
@@ -383,4 +383,4 @@ const ProductHorizontalSlide = ({
   );
 };
 
-export default ProductHorizontalSlide;
+export default LocationSlider;

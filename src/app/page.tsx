@@ -1,33 +1,59 @@
 'use client'
+import {useState, useEffect} from 'react'
 import Hero from '@/components/Hero/hero'
-import Products from '@/components/Products/Products'
-import LocationSlider from '@/components/Slider/locationSlider'
-import ActivitiesSlider from '@/components/Slider/activitiesSlider'
-import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide'
-import { useAppSelector } from '@/redux/hooks'
+import ActivitiesSlider from '@/components/HomePage/ActivitiesSlider'
+import Products from '@/components/HomePage/Resturants'
+import LocationSlider from '@/components/HomePage/LocationSlider'
+import LocationsCallFromDB  from '@/api-calls/fromDB/location'
+import RestaurantsCallFromDB  from '@/api-calls/fromDB/restaurants'
+import ActivitiesCallFromDB from '@/api-calls/fromDB/activity'
 
 export default function Home() {
+    const [location, setLocation] = useState([])
+    const [restaurants, setRestaurants] = useState([])
+    const [activities, setActivities] = useState([])
 
-    const { locationsState }: any = useAppSelector((state) => state.locationReducer);
+    useEffect(() => {
+        const _def = async () => {
+            let res = await LocationsCallFromDB()
+            setLocation(res)
+            console.log("locations from DB",res)
+        }
+        _def()
+
+        const _restaurants = async () => {
+            let res = await RestaurantsCallFromDB()
+            setRestaurants(res)
+            console.log("_restaurants from DB",res)
+        }
+        _restaurants()
+
+        const _activities = async () => {
+            let res = await ActivitiesCallFromDB()
+            setActivities(res)
+            console.log("_activities from DB",res)
+        }
+        _activities()
+    }, [])
 
     return (
         <main>
             <Hero />
 
-            <ProductHorizontalSlide 
+            <LocationSlider 
                 Title='Trending Locations' 
                 Description='We keep track of what cities are on the rise and which ones are
                 falling so you can stress less and focus more on living your best
                 vacation life!' 
                 isAddButton={false} 
                 isDesc={false} 
-                locationsState={locationsState} 
+                locationsState={location} 
                 type="title-card"
             />
             
-            <ActivitiesSlider/>
+            <ActivitiesSlider activitiesState={activities} />
             
-            <Products title="Top Restaurants In The World" isAddButton={false} rows="2" />
+            <Products title="Top Restaurants In The World" isAddButton={false} rows="2" restaurantsState={restaurants} />
         </main>
     )
 }
