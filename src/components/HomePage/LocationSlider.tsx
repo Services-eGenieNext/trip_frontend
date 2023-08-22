@@ -40,7 +40,7 @@ const LocationSlider = ({
   const slideRef = useRef<null | HTMLDivElement>(null);
   const formRef = useRef<null | HTMLDivElement>(null);
 
-  const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
+  const { itineraryDays } = useAppSelector((state) => state.itineraryReducer);
 
   useEffect(() => {
     setLocations(locationsState);
@@ -60,11 +60,10 @@ const LocationSlider = ({
   const formInitialField = {
     startTime: "",
     endTime: "",
-    day: ""
-  }
+    day: "",
+  };
 
-  const [formFields, setForlFields] = useState(formInitialField)
-
+  const [formFields, setForlFields] = useState(formInitialField);
 
   const placeForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     formRef.current?.classList.add("hidden");
@@ -88,36 +87,46 @@ const LocationSlider = ({
     }
   };
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const storeLocation = () => {
+    if (
+      formFields.day &&
+      formFields.endTime &&
+      formFields.startTime &&
+      openLocation
+    ) {
+      let _startTime = convertTime(formFields.startTime);
+      let _endTime = convertTime(formFields.endTime);
+      let days: any[] = [...itineraryDays];
 
-    if(formFields.day && formFields.endTime && formFields.startTime && openLocation)
-    {
-      let _startTime = convertTime(formFields.startTime)
-      let _endTime = convertTime(formFields.endTime)
-      let days: any[] = [...itineraryDays]
-      
-      let index = days.findIndex((day) => day.day === formFields.day)
+      let index = days.findIndex((day) => day.day === formFields.day);
 
-      days[index] = {...days[index]}
+      days[index] = { ...days[index] };
 
-      days[index].times = [...days[index].times, {
-        time: `${_startTime} - ${_endTime}`,
-        location: openLocation
-      }]
+      days[index].times = [
+        ...days[index].times,
+        {
+          time: `${_startTime} - ${_endTime}`,
+          location: openLocation,
+        },
+      ];
 
-      dispatch(setItineraryDays([...days]))
+      dispatch(setItineraryDays([...days]));
 
-      setForlFields(formInitialField)
-      setVisible(false)
+      setForlFields(formInitialField);
+      setVisible(false);
     }
-  }
+  };
 
-  const convertTime = (t: string) =>{
-    let [h,...rest]=t.split(":");
-    return (h == "12" ? "12" : Number(h)%12) + ":" + rest.join(":") + ( Number(h) < 12 ? " AM": " PM");
-  }
-
+  const convertTime = (t: string) => {
+    let [h, ...rest] = t.split(":");
+    return (
+      (h == "12" ? "12" : Number(h) % 12) +
+      ":" +
+      rest.join(":") +
+      (Number(h) < 12 ? " AM" : " PM")
+    );
+  };
 
   const dragStartFunc = (e: React.DragEvent<HTMLDivElement>, item: any) => {
     e.dataTransfer?.setData("product", JSON.stringify(item));
@@ -126,55 +135,65 @@ const LocationSlider = ({
 
   return (
     <div className="w-full flex justify-center">
-    <Section className="relative">
-      {!loading ? (
+      <Section className="relative">
+        {!loading ? (
           <>
-          <ComponentTitle title={Title} />
-        <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2">{Description}</p>
+            <ComponentTitle title={Title} />
+            <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2">
+              {Description}
+            </p>
           </>
-        ):(
+        ) : (
           <div className="md:px-0 px-5">
-          <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[400px] w-full h-[30px]"></div>
-        <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[600px] w-full h-[10px]"></div>
-        <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[300px] w-full h-[10px]"></div>
-        </div>
+            <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[400px] w-full h-[30px]"></div>
+            <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[600px] w-full h-[10px]"></div>
+            <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[300px] w-full h-[10px]"></div>
+          </div>
         )}
-      <div ref={slideRef} id="location-to-visit-slide" className="mt-10">
-        <SliderComponent slidesToShow={slidesToShow} >
-          {loading === true
-            ? skelton.map((limit: string, index: number) => {
-                return (
-                  <div
-                    key={index}
-                    role="status"
-                    className="max-w-sm rounded animate-pulse h-[350px] md:max-w-[300px] relative px-3 md:mt-0 mt-10"
-                  >
-                    <div className="flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 h-[350px]">
-                      <svg
-                        className="w-10 h-10 text-gray-200 dark:text-gray-600"
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 16 20"
-                      >
-                        <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
-                        <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
-                      </svg>
+        <div ref={slideRef} id="location-to-visit-slide" className="mt-10">
+          <SliderComponent slidesToShow={slidesToShow}>
+            {loading === true
+              ? skelton.map((limit: string, index: number) => {
+                  return (
+                    <div
+                      key={index}
+                      role="status"
+                      className="max-w-sm rounded animate-pulse h-[350px] md:max-w-[300px] relative px-3 md:mt-0 mt-10"
+                    >
+                      <div className="flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 h-[350px]">
+                        <svg
+                          className="w-10 h-10 text-gray-200 dark:text-gray-600"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox="0 0 16 20"
+                        >
+                          <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+                          <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+                        </svg>
+                      </div>
+                      <div className="h-[40px] bg-gray-200 rounded-md dark:bg-gray-700 w-[50%] mb-4 absolute bottom-4 left-6 z-10"></div>
+                      <span className="sr-only">Loading...</span>
                     </div>
-                    <div className="h-[40px] bg-gray-200 rounded-md dark:bg-gray-700 w-[50%] mb-4 absolute bottom-4 left-6 z-10"></div>
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                );
-              })
-            : locations?.map((location: any, index) => {
-                let image_path =
-                  location.image.image.length > 0 ? location.image.image[0].url : BlankLocation.src;
-                let address = location.details.formatted_address
-                  ? location.details.formatted_address
-                  : location.details.address_components[0].long_name + location.details.address_components[1].long_name;
-                return (
-                    <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10`}>
-                      <div className={`rounded-xl border shadow-sm overflow-hidden h-full relative cursor-pointer ${styles["slider_card"]}`}>
+                  );
+                })
+              : locations?.map((location: any, index) => {
+                  let image_path =
+                    location.image.image.length > 0
+                      ? location.image.image[0].url
+                      : BlankLocation.src;
+                  let address = location.details.formatted_address
+                    ? location.details.formatted_address
+                    : location.details.address_components[0].long_name +
+                      location.details.address_components[1].long_name;
+                  return (
+                    <div
+                      key={index}
+                      className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10`}
+                    >
+                      <div
+                        className={`rounded-xl border shadow-sm overflow-hidden h-full relative cursor-pointer ${styles["slider_card"]}`}
+                      >
                         <div className="h-[310px] bg-gray-100 relative">
                           <Image
                             src={image_path}
@@ -190,147 +209,172 @@ const LocationSlider = ({
                             }}
                           ></div>
                         </div>
-                        <div className={"absolute bottom-4 left-0 text-white font-bold w-full text-[16px] text-start"}>
-                          <div className="pl-6 pr-2">
-                              {location?.details?.address_components?.length > 0 && (
-                                location?.details?.address_components.map((address:any,index:number)=>{
-                                    let city = address?.types[0] == "administrative_area_level_1" ? address.long_name : ""
-                                    let country = address?.types[0] == "country" ? address.long_name : ""
-                                    console.log(city,",",country)
+                        {location?.details?.address_components?.length > 0 && (
+                          <div
+                            className={
+                              "absolute bottom-4 left-0 text-white font-bold w-full text-[16px] text-start"
+                            }
+                          >
+                            <div className="pl-6 pr-2">
+                              {location?.details?.address_components?.map((address: any, index: number) => {
                                   return(
-                                    <>
-                                    {city !=="" && (
-                                    <span>{city}</span>
-                                    )}
-                                    {country !== "" && (
-                                    <span className="ml-2">{country !== "" ? "," : ""} {country}</span>
-                                    )}
-                                    </>
+                                    <span key={index}>
+                                      {address?.types[0] == "administrative_area_level_1" && (
+                                        `${address.long_name}`
+                                      )}
+                                    </span>
                                   )
-                                })
+                                }
                               )}
-                              </div>
-                        </div>
-                        {
-                          isAddButton == false && (
-                            <div
-                              className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}
-                            >
-                              <Link
-                                href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}
-                                className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
-                              >
-                                Automate My Trip
-                              </Link>
-                              <button
-                                className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
-                                onClick={() => {
-                                  console.log("location", location);
-                                  setItem({
-                                    locaiton_id: location.location_id,
-                                    place_id: location.place_id,
-                                  });
-                                  setShowTripPopup(true);
-                                }}
-                              >
-                                More Info
-                              </button>
+                              {location?.details?.address_components?.map((address: any, index: number) => {
+                                  return(
+                                    <span key={index}>
+                                      {address?.types[0] == "country" && (
+                                        <>
+                                        <span className="mr-2">,</span>
+                                        <span>{address.long_name}</span>
+                                        </>
+                                      )}
+                                    </span>
+                                  )
+                                }
+                              )}
                             </div>
-                          )
-                        }
+                          </div>
+                        )}
+                        {isAddButton == false && (
+                          <div
+                            className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}
+                          >
+                            <Link
+                              href={`/trip-plan?address=${address}&location_id=${
+                                location.location_id ?? ""
+                              }&place_id=${
+                                location.place_id ?? ""
+                              }&v_type=${v_type}`}
+                              className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
+                            >
+                              Automate My Trip
+                            </Link>
+                            <button
+                              className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
+                              onClick={() => {
+                                console.log("location", location);
+                                setItem({
+                                  locaiton_id: location.location_id,
+                                  place_id: location.place_id,
+                                });
+                                setShowTripPopup(true);
+                              }}
+                            >
+                              More Info
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
-                );
-              })}
-        </SliderComponent>
-      </div>
-
-      <div
-        ref={formRef}
-        id="location-to-visit-form"
-        className={`${
-          !visible ? "hidden" : "block"
-        } absolute w-[471px] p-8 bg-white rounded-xl border border-[#EBEBEB] left-1/2} z-10 transition-all duration-300 ${
-          styles.visitCard
-        }`}
-        style={{ top: yPosition, left: xPosition }}
-      >
-        <div className="relative">
-          <span
-            className="absolute top-[-2.5em] right-[-2.4rem] w-[30px] h-[30px] bg-[#F9F9F9] flex justify-center items-center rounded-full p-2 cursor-pointer select-none"
-            onClick={() => setVisible(false)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-6 h-6"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </span>
+                  );
+                })}
+          </SliderComponent>
         </div>
-        <InputField
-          type="time"
-          label="Start Time"
-          className="w-full mb-5"
-          placeholder="Choose time"
-          value={formFields.startTime}
-          onChange={(e) => setForlFields({...formFields, startTime: e.target.value})}
-          icon={<TimerOutlined />}
-        />
 
-        <InputField
-          type="time"
-          label="End time"
-          className="w-full mb-5"
-          placeholder="Choose time"
-          value={formFields.endTime}
-          onChange={(e) => setForlFields({...formFields, endTime: e.target.value})}
-          icon={<TimerOutlined />}
-        />
-
-        <SelectField
-          label="Choose day"
-          placeholder="Select ..."
-          data={[{id: "Monday", name: "Monday"}, {id: "Tuesday", name: "Tuesday"}]}
-          className={`mr-2 sm:my-2 my-5 w-full`}
-          styling={{
-            shadow: "drop-shadow-xl ",
-            left: "0px",
-            top: "70px",
-          }}
-          value={formFields.day}
-          onChange={(val) => {
-            setForlFields({...formFields, day: val})
-          }}
-          onAdditionalChange={(_data) => {}}
-        />
-
-        <div className="flex justify-between">
-          <BlueButtonOutLined
-            title="Cancel"
-            className="w-[150px]"
-            onClick={() => setVisible(false)}
+        <div
+          ref={formRef}
+          id="location-to-visit-form"
+          className={`${
+            !visible ? "hidden" : "block"
+          } absolute w-[471px] p-8 bg-white rounded-xl border border-[#EBEBEB] left-1/2} z-10 transition-all duration-300 ${
+            styles.visitCard
+          }`}
+          style={{ top: yPosition, left: xPosition }}
+        >
+          <div className="relative">
+            <span
+              className="absolute top-[-2.5em] right-[-2.4rem] w-[30px] h-[30px] bg-[#F9F9F9] flex justify-center items-center rounded-full p-2 cursor-pointer select-none"
+              onClick={() => setVisible(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </span>
+          </div>
+          <InputField
+            type="time"
+            label="Start Time"
+            className="w-full mb-5"
+            placeholder="Choose time"
+            value={formFields.startTime}
+            onChange={(e) =>
+              setForlFields({ ...formFields, startTime: e.target.value })
+            }
+            icon={<TimerOutlined />}
           />
 
-          <BlueButton title="Save" className="w-[150px]" onClick={(e) => storeLocation()} />
+          <InputField
+            type="time"
+            label="End time"
+            className="w-full mb-5"
+            placeholder="Choose time"
+            value={formFields.endTime}
+            onChange={(e) =>
+              setForlFields({ ...formFields, endTime: e.target.value })
+            }
+            icon={<TimerOutlined />}
+          />
+
+          <SelectField
+            label="Choose day"
+            placeholder="Select ..."
+            data={[
+              { id: "Monday", name: "Monday" },
+              { id: "Tuesday", name: "Tuesday" },
+            ]}
+            className={`mr-2 sm:my-2 my-5 w-full`}
+            styling={{
+              shadow: "drop-shadow-xl ",
+              left: "0px",
+              top: "70px",
+            }}
+            value={formFields.day}
+            onChange={(val) => {
+              setForlFields({ ...formFields, day: val });
+            }}
+            onAdditionalChange={(_data) => {}}
+          />
+
+          <div className="flex justify-between">
+            <BlueButtonOutLined
+              title="Cancel"
+              className="w-[150px]"
+              onClick={() => setVisible(false)}
+            />
+
+            <BlueButton
+              title="Save"
+              className="w-[150px]"
+              onClick={(e) => storeLocation()}
+            />
+          </div>
         </div>
-      </div>
-      <DetailModal
-        item={item}
-        show={showTripPopup}
-        onClose={() => {
-          setShowTripPopup(false);
-        }}
-      />
-    </Section>
+        <DetailModal
+          item={item}
+          show={showTripPopup}
+          onClose={() => {
+            setShowTripPopup(false);
+          }}
+        />
+      </Section>
     </div>
   );
 };
