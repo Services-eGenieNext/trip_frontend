@@ -154,6 +154,8 @@ const _calculateStartAndEndTime = async (times: any, i: number) => {
         _durationTime = duration.data.rows[0].elements[0].duration.text
     }
 
+    console.log('_durationTime', origin, '---', destination, '---', _durationTime)
+
     let returnData = await calculateDuration(times, i, _durationTime)
     return {...returnData, duration_time: _durationTime}
 

@@ -41,7 +41,7 @@ export default function ScheduleCard({distanceObject, items, isDropdownButton, o
           setDuration(duration.data.rows[0].elements[0].duration.text)
         }
       }
-      if(distanceObject.origin && distanceObject.destination && !time.suggestedTime?.duration_time)
+      if(distanceObject.origin && distanceObject.destination && (!time.suggestedTime?.duration_time || time.suggestedTime?.duration_time == ""))
       {
         _def()
       }
@@ -49,8 +49,11 @@ export default function ScheduleCard({distanceObject, items, isDropdownButton, o
 
   return (
     <>
-    {
+    {/* {
       duration && <span className="flex rounded-full px-2 h-max bg-[var(--blue)] text-white whitespace-nowrap w-max">{duration}</span>
+    } */}
+    {
+      (time.suggestedTime?.duration_time || duration) && <span className="flex rounded-full px-2 h-max bg-[var(--blue)] text-white text-[12px] whitespace-nowrap w-max -translate-y-full">{time.suggestedTime?.duration_time ? time.suggestedTime?.duration_time : duration}</span>
     }
     <div
       className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
