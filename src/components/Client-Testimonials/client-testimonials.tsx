@@ -33,19 +33,25 @@ const ClientTestimonials = ({ automateLocation }:IClientTestimonials) => {
   })
 
   useEffect(() => {
-    if(automateLocation?.reviews)
+    
+    if(filterData.locationIndex !== "")
     {
-      if(filterData.locationIndex !== "")
-      {
-        let index = locaitonList.findIndex(opt => opt.name === filterData.locationIndex)
-        // console.log('reviews', filterData.locationIndex, locaitonList[Number(index)])
-        setReviewsData(locaitonList[Number(index)].reviews === undefined ? [] : (filterData.reviews !== "All" ? locaitonList[Number(index)].reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : locaitonList[Number(index)].reviews));
-      }
-      else
+      let index = locaitonList.findIndex(opt => opt.name === filterData.locationIndex)
+      // console.log('reviews', filterData.locationIndex, locaitonList[Number(index)])
+      setReviewsData(locaitonList[Number(index)].reviews === undefined ? [] : (filterData.reviews !== "All" ? locaitonList[Number(index)].reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : locaitonList[Number(index)].reviews));
+    }
+    else
+    {
+      if(automateLocation?.reviews)
       {
         setReviewsData(filterData.reviews !== "All" ? automateLocation.reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : automateLocation.reviews);
       }
+      else if(locaitonList.length > 0)
+      {
+        setReviewsData(locaitonList[0].reviews === undefined ? [] : (filterData.reviews !== "All" ? locaitonList[0].reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : locaitonList[0].reviews));
+      }
     }
+    
   }, [reviewsState, filterData, automateLocation]);
 
   useEffect(() => {

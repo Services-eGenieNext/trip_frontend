@@ -28,7 +28,7 @@ const TripPlan = () => {
     const _defLocationToVisit = async (query: string) => {
         if(query)
         {
-            let res = await LocationsCall("places in " + query)
+            let res = await LocationsCall(`best places for visit in ${query} for tourist `)
             dispatch(setLocations(res))
         }
     }
@@ -97,7 +97,7 @@ const TripPlan = () => {
 
     return (
         <div className='overflow-x-hidden w-full'>
-            <PageBanner title={automateLocation?.name ?? 'Trip Plan'} automateLocation={automateLocation} />
+            <PageBanner title={automateLocation?.name ?? params_list.address + ' Trip Plan'} automateLocation={automateLocation} />
           
             <TripPlanningCard 
                 params_list={params_list}
@@ -123,13 +123,10 @@ const TripPlan = () => {
             
 
             <SmallStory positioning="inline" />
-            {
-                automateLocation && (
-                    <div className=' mt-20'>
-                        <ClientTestimonials automateLocation={automateLocation} />
-                    </div>
-                )
-            }
+
+            <div className=' mt-20'>
+                <ClientTestimonials automateLocation={automateLocation} />
+            </div>
         </div>
     )
 }
