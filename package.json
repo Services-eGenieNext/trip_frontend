@@ -29,6 +29,7 @@
     "react-date-range": "^1.4.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
+    "react-linkedin-share-link": "^1.0.2",
     "react-redux": "^8.1.1",
     "react-share": "^4.4.1",
     "react-simple-star-rating": "^5.1.7",
