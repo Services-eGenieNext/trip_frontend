@@ -218,7 +218,7 @@ const LocationSlider = ({
                             <div className="pl-6 pr-2">
                               {location?.details?.address_components?.map((address: any, index: number) => {
                                   return(
-                                    <span>
+                                    <span key={index}>
                                       {address?.types[0] == "administrative_area_level_1" && (
                                         `${address.long_name}`
                                       )}
@@ -228,7 +228,7 @@ const LocationSlider = ({
                               )}
                               {location?.details?.address_components?.map((address: any, index: number) => {
                                   return(
-                                    <span>
+                                    <span key={index}>
                                       {address?.types[0] == "country" && (
                                         <>
                                         <span className="mr-2">,</span>
