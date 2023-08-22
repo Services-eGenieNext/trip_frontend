@@ -118,7 +118,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
   }, [date]);
 
   const handleSurvey = () => {
-    if (survey.dates.startDate) {
+    if (survey.dates.startDate || survey.location != "") {
       router.push("/trip-plan?address=" + survey.location);
       onClose();
     } else {
@@ -218,7 +218,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
           </span>
         </div>
 
-        <div className="my-10 mx-auto text-center">
+        <div className="my-10 w-full text-center">
           <p className="">{questions[step - 1]?.title}</p>
           <div className="my-4 pt-3 flex flex-col gap-4 items-center">
             {questions[step - 1]?.type === "location" && (
@@ -233,7 +233,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                   label={locationInputLabel}
                   placeholder="Select ..."
                   data={dropdownLocationValue}
-                  className={`mr-2 sm:my-2 my-5 sm:w-[200px]`}
+                  className={`mr-2 mt-5 mb-2 sm:w-[200px]`}
                   styling={{
                     dropdownHeight: "max-h-[140px]",
                     shadow: "drop-shadow-xl ",
