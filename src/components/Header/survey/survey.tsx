@@ -41,21 +41,27 @@ const Survey = ({ show, onClose }: ISurvey) => {
     selectedLocation: "",
   });
   const [dropdownLocationValue,setDropdownLocationValue] = useState<any>([])
+  const [locationInputLabel, setLocationInputLabel] = useState("")
 
   useEffect(() => {
     if(surveyLocation.selectedOption == "continent"){
+      setLocationInputLabel("Trending Continent")
       setDropdownLocationValue(ContinentLocation)
     }
     if(surveyLocation.selectedOption == "country"){
+      setLocationInputLabel("Trending Country")
       setDropdownLocationValue(CountryLocation)
     }
     if(surveyLocation.selectedOption == "city"){
+      setLocationInputLabel("Trending City")
       setDropdownLocationValue(CityLocation)
     }
     if(surveyLocation.selectedOption == "no"){
+      setLocationInputLabel("Trending Locations")
       setDropdownLocationValue(AllLocation)
     }
     if(surveyLocation.selectedOption == "all"){
+      setLocationInputLabel("Suggested Locations")
       setDropdownLocationValue(LocationJson)
     }
   }, [surveyLocation]);
@@ -75,9 +81,18 @@ const Survey = ({ show, onClose }: ISurvey) => {
           label: "Yes, I think I have it sorted by country ",
           value: "country",
         },
-        { label: "Yes, I think I have it sorted by city ", value: "city" },
-        { label: "No, but I know where I don’t want to go", value: "no" },
-        { label: "I’m open to all suggestions ", value: "all" },
+        { 
+          label: "Yes, I think I have it sorted by city ", 
+          value: "city",
+        },
+        { 
+          label: "No, but I know where I don’t want to go", 
+          value: "no", 
+        },
+        { 
+          label: "I’m open to all suggestions ", 
+          value: "all", 
+        },
       ],
     },
     {
@@ -134,7 +149,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
       <div className="bg-[#FAFDFF] bg-opacity-50 border border-dashed border-[var(--blue)] rounded-xl p-4">
         <div className="flex flex-wrap gap-2 items-center justify-center">
           <span
-            className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold ${
+            className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold cursor-pointer ${
               step > 0
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
@@ -148,7 +163,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
           <span className="flex w-[84px] h-[1px] border-[1.5px] border-[var(--blue)] border-dashed"></span>
 
           <span
-            className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold ${
+            className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold cursor-pointer ${
               step > 1
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
@@ -162,7 +177,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
           <span className="flex w-[84px] h-[1px] border-[1.5px] border-[var(--blue)] border-dashed"></span>
 
           <span
-            className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold ${
+            className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold cursor-pointer ${
               step > 2
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
@@ -176,7 +191,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
           <span className="flex w-[84px] h-[1px] border-[1.5px] border-[var(--blue)] border-dashed"></span>
 
           <span
-            className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold ${
+            className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold cursor-pointer ${
               step > 3
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
@@ -190,7 +205,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
           <span className="flex w-[84px] h-[1px] border-[1.5px] border-[var(--blue)] border-dashed"></span>
 
           <span
-            className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold ${
+            className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold cursor-pointer ${
               step > 4
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
@@ -215,7 +230,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 />
                 {surveyLocation.selectedOption !== "" && (
                   <SelectField
-                  label="Trending Location"
+                  label={locationInputLabel}
                   placeholder="Select ..."
                   data={dropdownLocationValue}
                   className={`mr-2 sm:my-2 my-5 sm:w-[200px]`}
@@ -249,6 +264,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
             {questions[step - 1]?.type === "activities" && (
               <MultiSelectDropdown
                 searchBar
+                disabled
                 items={Priorities}
                 Label={"Priority"}
                 heightItemsContainer="300px"

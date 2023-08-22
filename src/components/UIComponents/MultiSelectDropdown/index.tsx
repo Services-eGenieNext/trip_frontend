@@ -13,6 +13,7 @@ interface TypeProps {
   SelectedData?: string[] | any;
   Label?: string;
   className?:string
+  disabled?:any;
 }
 
 interface TypeOpt {
@@ -39,6 +40,7 @@ export default function SelectCheckBoxSimple({
   heightItemsContainer,
   Label,
   SelectedData,
+  disabled,
   className
 }: TypeProps) {
   const [showDropDown, setShowDropDown] = useState(false);
@@ -326,6 +328,10 @@ useEffect(() => {
         bgcolor="common.white"
         zIndex="3"
       >
+        <Box className="relative">
+        {disabled && optsSelected.length >= 10 && (
+          <Box className="absolute top-0 left-0 w-full h-full bg-gray-500 opacity-25 z-10"></Box>
+        )}
         {searchBar && addCustomeOption === false && (
           <Box
             borderBottom="1px dashed #E5E5E5"
@@ -424,6 +430,7 @@ useEffect(() => {
             );
           })}
         </Box>
+      </Box>
       </Box>
     </Box>
   );
