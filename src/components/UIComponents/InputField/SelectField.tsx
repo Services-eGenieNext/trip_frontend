@@ -82,10 +82,10 @@ if(value !== ""){
             </div>
 
             <div ref={dropDownRef} className={`hidden opacity-0 absolute min-w-[250px] w-full bg-white border-gray-100 rounded-xl large-shadow overflow-hidden large-shadow z-20 transition-all duration-300 ${styling?.shadow ? styling.shadow : ""} ${styling?.top ? styling.top : "top-[50px]"}`}>
-                <ul className={`list-none overflow-auto flex flex-col items-start ${styling?.dropdownHeight ? styling.dropdownHeight : "max-h-[300px]"}`}>
+                <ul className={`list-none overflow-auto w-full ${styling?.dropdownHeight ? styling.dropdownHeight : "max-h-[300px]"}`}>
                     {
                         data.map((d: ISelectOptions, i: number) => {
-                            return <li key={i} className={`px-3 py-2 cursor-pointer hover:bg-gray-50 ${value === d.id ? 'bg-[var(--dim-gray)]' : ''}`}
+                            return <li key={i} className={`px-3 py-2 w-full text-start cursor-pointer hover:bg-gray-50 ${value === d.id ? 'bg-[var(--dim-gray)]' : ''}`}
                             onClick={() => {
                                 setOpenDropDown(false)
                                 setInputVal(d.name)
