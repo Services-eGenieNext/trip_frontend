@@ -1,4 +1,6 @@
 [
+    {"id":"France","name":"Paris"},
+    {"id":"United Kingdom; England","name":"London"},
     {"id":"Abkhazia","name":"Sukhumi"},
     {"id":"Afghanistan","name":"Kabul"},
     {"id":"Akrotiri and Dhekelia","name":"Episkopi Cantonment"},
@@ -76,7 +78,6 @@
     {"id":"Federated States of Micronesia","name":"Palikir"},
     {"id":"Fiji","name":"Suva"},
     {"id":"Finland","name":"Helsinki"},
-    {"id":"France","name":"Paris"},
     {"id":"French Guiana","name":"Cayenne"},
     {"id":"French Polynesia","name":"Papeete"},
     {"id":"Gabon","name":"Libreville"},
@@ -232,7 +233,6 @@
     {"id":"Uganda","name":"Kampala"},
     {"id":"Ukraine","name":"Kiev"},
     {"id":"United Arab Emirates","name":"Abu Dhabi"},
-    {"id":"United Kingdom; England","name":"London"},
     {"id":"United States","name":"Washington, D.C."},
     {"id":"United States Virgin Islands","name":"Charlotte Amalie"},
     {"id":"Uruguay","name":"Montevideo"},

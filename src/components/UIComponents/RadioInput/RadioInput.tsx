@@ -14,6 +14,7 @@ export default function RadioButtonsGroup({options,setValue,value}:any) {
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         name="radio-buttons-group"
+        className="flex flex-row justify-center gap-4"
       >
         {options.length > 0 && (
             options.map((option:any,index:number)=>{

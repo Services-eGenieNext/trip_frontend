@@ -6,6 +6,7 @@ import BlueButton from "../UIComponents/Buttons/BlueButton";
 import SelectField from "../UIComponents/InputField/SelectField";
 import Occasion from "@/data/occasion.json";
 import LocationJson from "@/data/location.json";
+import SpendingValue from '@/data/spending.json'
 import Travelers from "@/data/travelers.json";
 import Priority from "@/data/priority.json";
 import DateRangeField from "../UIComponents/InputField/DateRangeField";
@@ -34,6 +35,7 @@ export default function HeroFilterSection() {
     priority: [],
     person: "",
     dates: "",
+    spending:"",
   });
 
   const route = useRouter();
@@ -132,6 +134,18 @@ export default function HeroFilterSection() {
         value={locationSearch.travelers}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, person: val })
+        }
+        onAdditionalChange={(_data) => {}}
+      />
+
+<SelectField
+        label="Spending"
+        placeholder="Select ..."
+        data={SpendingValue}
+        className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] ${styles.inputWrapper}`}
+        value={locationSearch.travelers}
+        onChange={(val) =>
+          setLocationSearch({ ...locationSearch, spending: val })
         }
         onAdditionalChange={(_data) => {}}
       />
