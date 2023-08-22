@@ -40,10 +40,9 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
   }, [restaurantsState]);
 
   useEffect(() => {
-    if (restaurantData.length > 0) {
+    if (restaurantData?.length > 0) {
       setLoading(false);
     }
-    console.log("restaurantData", restaurantData);
   }, [restaurantData]);
 
   const placeForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

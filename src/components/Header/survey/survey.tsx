@@ -5,20 +5,25 @@ import { ISurvey } from "@/interfaces";
 import React, { useState } from "react";
 import Occasion from "@/data/occasion.json";
 import Priorities from "@/data/priority.json";
-import LocationJson from '@/data/location.json'
+import LocationJson from "@/data/location.json";
+import ContinentLocation from '@/data/continent.json'
+import CountryLocation from '@/data/country.json'
+import CityLocation from '@/data/city.json'
+import AllLocation from '@/data/mixLocation.json'
 import SelectField from "@/components/UIComponents/InputField/SelectField";
-import { useAppDispatch } from '@/redux/hooks';
-import { setSurveyValue } from "@/redux/reducers/surveySlice";
+import { useAppDispatch } from "@/redux/hooks";
+import surveySlice, { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { useRouter } from "next/navigation";
 import { Range } from "react-date-range";
 import DateRangeField from "../../UIComponents/InputField/DateRangeField";
 import CalenderIcon from "../../icons/Calender";
-import styles from '../Header.module.css'
+import styles from "../Header.module.css";
 import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
+import RadioInputs from "@/components/UIComponents/RadioInput/RadioInput";
 
 const Survey = ({ show, onClose }: ISurvey) => {
-  const dispatch = useAppDispatch()
-  const router = useRouter()
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   const [survey, setSurvey] = useState<any>({
     location: "",
     occassion: [],
@@ -31,26 +36,61 @@ const Survey = ({ show, onClose }: ISurvey) => {
     key: "selection",
   });
 
-  const [locations,setLocations] = useState([])
+  const [surveyLocation, setSurveyLocation] = useState({
+    selectedOption: "",
+    selectedLocation: "",
+  });
+  const [dropdownLocationValue,setDropdownLocationValue] = useState<any>([])
+
+  useEffect(() => {
+    if(surveyLocation.selectedOption == "continent"){
+      setDropdownLocationValue(ContinentLocation)
+    }
+    if(surveyLocation.selectedOption == "country"){
+      setDropdownLocationValue(CountryLocation)
+    }
+    if(surveyLocation.selectedOption == "city"){
+      setDropdownLocationValue(CityLocation)
+    }
+    if(surveyLocation.selectedOption == "no"){
+      setDropdownLocationValue(AllLocation)
+    }
+    if(surveyLocation.selectedOption == "all"){
+      setDropdownLocationValue(LocationJson)
+    }
+  }, [surveyLocation]);
 
   const [step, setStep] = useState(1);
 
   const questions = [
     {
+      type: "location",
       title: "Do you have any ideas where you want to go?",
-      options: "location",
+      options: [
+        {
+          label: "Yes, I think I have it sorted by continent",
+          value: "continent",
+        },
+        {
+          label: "Yes, I think I have it sorted by country ",
+          value: "country",
+        },
+        { label: "Yes, I think I have it sorted by city ", value: "city" },
+        { label: "No, but I know where I don’t want to go", value: "no" },
+        { label: "I’m open to all suggestions ", value: "all" },
+      ],
     },
     {
       title: "Are you celebrating anything special?",
-      options: "occasions",
+      type: "occasions",
     },
     {
       title: "What sorts of activities would you like prioritized?",
-      options: "activities",
+      type: "activities",
     },
     {
       title: "Select Your Trip Dates",
-      options: "dates",
+      type: "dates",
     },
     {
       title: "Anything else you’d like us to know?",
@@ -58,21 +98,23 @@ const Survey = ({ show, onClose }: ISurvey) => {
     },
   ];
 
-  useEffect(()=>{
-setSurvey({...survey, dates: date})
-  },[date])
+  useEffect(() => {
+    setSurvey({ ...survey, dates: date });
+  }, [date]);
 
   const handleSurvey = () => {
-    if(survey.dates.startDate){
-      router.push('/trip-plan?address='+survey.location)
-      onClose()
-    }else{
-      router.push(`/results?address=${survey.location}`)
-      dispatch(setSurveyValue(survey))
-      onClose()
-      setStep(1)
+    if (survey.dates.startDate) {
+      router.push("/trip-plan?address=" + survey.location);
+      onClose();
+    } else {
+      router.push(`/results?address=${survey.location}`);
+      dispatch(setSurveyValue(survey));
+      onClose();
+      setStep(1);
     }
-  }
+  };
+
+  const handleChange = () => {};
 
   return (
     <PopupWithOverlay
@@ -97,7 +139,9 @@ setSurvey({...survey, dates: date})
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
-            onClick={()=>{setStep(1)}}
+            onClick={() => {
+              setStep(1);
+            }}
           >
             01
           </span>
@@ -109,7 +153,9 @@ setSurvey({...survey, dates: date})
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
-            onClick={()=>{setStep(2)}}
+            onClick={() => {
+              setStep(2);
+            }}
           >
             02
           </span>
@@ -121,7 +167,9 @@ setSurvey({...survey, dates: date})
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
-            onClick={()=>{setStep(3)}}
+            onClick={() => {
+              setStep(3);
+            }}
           >
             03
           </span>
@@ -133,7 +181,9 @@ setSurvey({...survey, dates: date})
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
-            onClick={()=>{setStep(4)}}
+            onClick={() => {
+              setStep(4);
+            }}
           >
             04
           </span>
@@ -145,7 +195,9 @@ setSurvey({...survey, dates: date})
                 ? "bg-[var(--blue)] text-white"
                 : "bg-[##B3C7D0] text-[#668796]"
             }`}
-            onClick={()=>{setStep(5)}}
+            onClick={() => {
+              setStep(5);
+            }}
           >
             05
           </span>
@@ -153,62 +205,67 @@ setSurvey({...survey, dates: date})
 
         <div className="my-10 mx-auto text-center">
           <p className="">{questions[step - 1]?.title}</p>
-          <div className="my-4 pt-3 flex flex-wrap gap-2 justify-center">
-            {questions[step - 1]?.options === "location" && (
+          <div className="my-4 pt-3 flex flex-col gap-4 items-center">
+            {questions[step - 1]?.type === "location" && (
               <>
-                <SelectField
-                label="Trending Location"
-                placeholder="Select ..."
-                data={LocationJson}
-                className={`mr-2 sm:my-2 my-5 sm:w-[200px]`}
-                styling={{
-                  dropdownHeight: "max-h-[140px]",
-                  shadow: "drop-shadow-xl ",
-                  left: "0px",
-                  top: "70px",
-                }}
-                value={survey.location}
-                onChange={(val) => setSurvey({ ...survey, location: val })}
-                onAdditionalChange={(_data) => {}}
-              />
+                <RadioInputs
+                  options={questions[step - 1].options}
+                  setValue={setSurveyLocation}
+                  value={surveyLocation}
+                />
+                {surveyLocation.selectedOption !== "" && (
+                  <SelectField
+                  label="Trending Location"
+                  placeholder="Select ..."
+                  data={dropdownLocationValue}
+                  className={`mr-2 sm:my-2 my-5 sm:w-[200px]`}
+                  styling={{
+                    dropdownHeight: "max-h-[140px]",
+                    shadow: "drop-shadow-xl ",
+                    left: "0px",
+                    top: "70px",
+                  }}
+                  value={survey.location}
+                  onChange={(val) => setSurveyLocation({ ...surveyLocation, selectedLocation: val })}
+                  onAdditionalChange={(_data) => {}}
+                />
+                )}
               </>
             )}
-            {questions[step - 1]?.options === "occasions" && (
+            {questions[step - 1]?.type === "occasions" && (
               <MultiSelectDropdown
-              searchBar
-              items={Occasion}
-              Label={"Occasion"}
-              heightItemsContainer="300px"
-              // SelectedData={locationSearch.occasion}
-              className={`sm:mr-2 sm:my-2 my-5 sm:w-[200px] w-full`}
-              placeholder="Select..."
-              onChange={(val: any) =>
-                setSurvey({ ...survey, occassion: val })
-              }
-            />
+                searchBar
+                items={Occasion}
+                Label={"Occasion"}
+                heightItemsContainer="300px"
+                // SelectedData={locationSearch.occasion}
+                className={`sm:mr-2 sm:my-2 my-5 sm:w-[200px] w-full`}
+                placeholder="Select..."
+                onChange={(val: any) =>
+                  setSurvey({ ...survey, occassion: val })
+                }
+              />
             )}
-            {questions[step - 1]?.options === "activities" && (
+            {questions[step - 1]?.type === "activities" && (
               <MultiSelectDropdown
-              searchBar
-              items={Priorities}
-              Label={"Priority"}
-              heightItemsContainer="300px"
-              className={`sm:mr-2 sm:my-2 my-5 sm:w-[200px] w-full`}
-              // SelectedData={locationSearch.occasion}
-              placeholder="Select..."
-              onChange={(val: any) =>
-                setSurvey({ ...survey, priority: val })
-              }
-            />
+                searchBar
+                items={Priorities}
+                Label={"Priority"}
+                heightItemsContainer="300px"
+                className={`sm:mr-2 sm:my-2 my-5 sm:w-[200px] w-full`}
+                // SelectedData={locationSearch.occasion}
+                placeholder="Select..."
+                onChange={(val: any) => setSurvey({ ...survey, priority: val })}
+              />
             )}
-            {questions[step - 1]?.options === "dates" && (
+            {questions[step - 1]?.type === "dates" && (
               <DateRangeField
-              label="Date"
-              className={`sm:mr-2 sm:my-2 my-5 sm:w-[250px] w-full ${styles.inputWrapper}`}
-              value={date}
-              onChange={(value) => setDate(value)}
-              icon={<CalenderIcon />}
-            />
+                label="Date"
+                className={`sm:mr-2 sm:my-2 my-5 sm:w-[250px] w-full ${styles.inputWrapper}`}
+                value={date}
+                onChange={(value) => setDate(value)}
+                icon={<CalenderIcon />}
+              />
             )}
             {questions[step - 1]?.text_box && (
               <textarea
@@ -230,7 +287,7 @@ setSurvey({...survey, dates: date})
               if (step < 5) {
                 setStep(step + 1);
               } else {
-                handleSurvey()
+                handleSurvey();
               }
             }}
           />
