@@ -264,7 +264,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
         {
             setItem(automateLocation ? {...automateLocation} : {...itineraryDays[0].times[0].location})
         }
-    }, [automateLocation])
+    }, [automateLocation, itineraryDays])
 
     const skelton = ["1","2","3","4","5","6","7","8"]
 
@@ -318,36 +318,38 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                             );
                         })}
                     </div>
-                    <div className="lg:col-span-2">
-                        <div className="large-shadow sm:p-8 py-8 rounded-xl">
+                    <div className="lg:col-span-2 w-full">
+                        <div className="large-shadow sm:p-8 py-8 rounded-xl w-full">
                         <TripDetail item={item} />
                         {
-                        params_list.v_type !== '2' ? (
-                            <SmallStory positioning="block" item={item} />
-                        ) : (
-                            <>
-                            <ProductHorizontalSlide 
-                                url = 'variation_2'
-                                Title={`${automateLocation?.name} Location To Visit`} 
-                                Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} 
-                                isAddButton={false} 
-                                isDesc={false} 
-                                locationsState = {locationsState}
-                                slidesToShow={3}
-                            />
+                            params_list.v_type === '2' && (
+                                <>
+                                <ProductHorizontalSlide 
+                                    url = 'variation_2'
+                                    Title={`${automateLocation?.name} Location To Visit`} 
+                                    Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} 
+                                    isAddButton={false} 
+                                    isDesc={false} 
+                                    locationsState = {locationsState}
+                                    slidesToShow={3}
+                                />
 
-                            <ProductHorizontalSlide 
-                                url = 'variation_2'
-                                Title={`Most popular restaurants`} 
-                                isAddButton={false} 
-                                isDesc={false} 
-                                locationsState = {restaurantsState}
-                                slidesToShow={3}
-                            />
-                            </>
-                        )
+                                <ProductHorizontalSlide 
+                                    url = 'variation_2'
+                                    Title={`Most popular restaurants`} 
+                                    isAddButton={false} 
+                                    isDesc={false} 
+                                    locationsState = {restaurantsState}
+                                    slidesToShow={3}
+                                />
+                                </>
+                            )
                         }
                         </div>
+
+                        {
+                            params_list.v_type !== '2' && <SmallStory positioning="block" item={item} />
+                        }
                     </div>
                 </div>
             )
