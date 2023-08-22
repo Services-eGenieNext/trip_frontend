@@ -160,7 +160,7 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                           <img
                             src={image_path}
                             alt={image_path}
-                            className="object-cover h-full w-full cursor-pointer "
+                            className="object-cover lg:h-[200px] h-[250px] w-full cursor-pointer "
                           />
                           {!isAddButton && (
                             <div
