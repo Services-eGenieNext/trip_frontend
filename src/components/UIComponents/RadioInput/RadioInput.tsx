@@ -18,7 +18,7 @@ export default function RadioButtonsGroup({options,setValue,value}:any) {
         {options.length > 0 && (
             options.map((option:any,index:number)=>{
                 return (
-                    <FormControlLabel value={option.value} control={<Radio />} label={option.label} onClick={()=>{handleCheck(option.value)}} />
+                    <FormControlLabel key={index} value={option.value} control={<Radio />} label={option.label} onClick={()=>{handleCheck(option.value)}} />
                 )
             })
         )}
