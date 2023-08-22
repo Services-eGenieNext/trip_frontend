@@ -42,7 +42,7 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
 
     const setLocationDetailsByAddress = async () => {
         let res = await LocationsCall("places near " + address)
-        setLocationDetails([...res])
+        setRecommendations([...res])
     }
 
     useEffect(() => {
