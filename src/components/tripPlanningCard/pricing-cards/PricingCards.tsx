@@ -237,12 +237,13 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
             for (let i = 0; i < days.length; i++) {
                 
                 let filter_locaiton: any[] = await locationDetails.filter((loc: any) => 
+                    loc.current_opening_hours?.weekday_text || loc?.hours?.weekday_text ?
                     (typeof loc?.place_id !== undefined && loc?.place_id && loc?.place_id != "") ? 
                     loc.current_opening_hours?.weekday_text.filter( (weekd: any) => {
                         return weekd.split(': ')[0] == days[i].day && weekd.toLowerCase().search('closed') == -1
                     }) : loc?.hours?.weekday_text.filter( (weekd: any) => {
                         return weekd.split(': ')[0] == days[i].day && weekd.toLowerCase().search('closed') == -1
-                    })
+                    }) : false
                 )
 
                 locations.push(filter_locaiton)
@@ -251,12 +252,12 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
             locations = [...new Set(locations)];
             setLocationDetails([...locations])
         }
+        console.log('locationDetails', locationDetails)
         _loadLocations()
-        
     }, [locationDetails])
 
     useEffect(() => {
-        setItem({...automateLocation})
+        setItem(automateLocation ? {...automateLocation} : {...itineraryDays[0].times[0].location})
     }, [automateLocation])
 
     const skelton = ["1","2","3","4","5","6","7","8"]
