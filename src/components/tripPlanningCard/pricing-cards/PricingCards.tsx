@@ -65,15 +65,17 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
             times: []
         }
     ])
+
+    
+
     console.log('daysLength', daysLength, params_list.days_length)
 
     const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
 
-    // useEffect(() => {
+    useEffect(() => {
         
-    //     console.log('localdays', _localDays, daysLength)
-    //     setDays(_localDays)
-    // }, [params_list])
+        console.log('params_list', params_list)
+    }, [])
 
     useEffect(() => {
 
@@ -257,11 +259,15 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
     }, [locationDetails])
 
     useEffect(() => {
-        setItem(automateLocation ? {...automateLocation} : {...itineraryDays[0].times[0].location})
+        console.log('automateLocation', automateLocation)
+        if(automateLocation || (itineraryDays.length > 0 && itineraryDays[0].times && itineraryDays[0].times.length > 0))
+        {
+            setItem(automateLocation ? {...automateLocation} : {...itineraryDays[0].times[0].location})
+        }
     }, [automateLocation])
 
     const skelton = ["1","2","3","4","5","6","7","8"]
-    
+
     return (
         <>
         {
@@ -269,7 +275,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
             skelton.map((list:string,index:number)=>{
                 return <Card_skelton key={index}/>
             }) : (
-                v_type !== '2' && itineraryDays && itineraryDays.length > 4) ? (
+                params_list.v_type !== '2' && itineraryDays && itineraryDays.length > 4) ? (
                     <>
                     {
                         (!loading && itineraryDays) &&
@@ -301,7 +307,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                             return (
                             <PricingCard
                                 variation={'list'}
-                                isDropdownButton={v_type == "2" ? true : false}
+                                isDropdownButton={params_list.v_type == "2" ? true : false}
                                 rows="1"
                                 key={index}
                                 data={_item}
@@ -316,7 +322,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                         <div className="large-shadow sm:p-8 py-8 rounded-xl">
                         <TripDetail item={item} />
                         {
-                        v_type !== '2' ? (
+                        params_list.v_type !== '2' ? (
                             <SmallStory positioning="block" item={item} />
                         ) : (
                             <>
