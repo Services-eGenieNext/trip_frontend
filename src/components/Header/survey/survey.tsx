@@ -26,6 +26,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
   const router = useRouter();
   const [survey, setSurvey] = useState<any>({
     location: "",
+    selectedOption: "",
     occassion: [],
     priority: [],
     dates: "",
@@ -35,36 +36,31 @@ const Survey = ({ show, onClose }: ISurvey) => {
   const [date, setDate] = useState<Range>({
     key: "selection",
   });
-
-  const [surveyLocation, setSurveyLocation] = useState({
-    selectedOption: "",
-    selectedLocation: "",
-  });
   const [dropdownLocationValue,setDropdownLocationValue] = useState<any>([])
   const [locationInputLabel, setLocationInputLabel] = useState("")
 
   useEffect(() => {
-    if(surveyLocation.selectedOption == "continent"){
+    if(survey.selectedOption == "continent"){
       setLocationInputLabel("Trending Continent")
       setDropdownLocationValue(ContinentLocation)
     }
-    if(surveyLocation.selectedOption == "country"){
+    if(survey.selectedOption == "country"){
       setLocationInputLabel("Trending Country")
       setDropdownLocationValue(CountryLocation)
     }
-    if(surveyLocation.selectedOption == "city"){
+    if(survey.selectedOption == "city"){
       setLocationInputLabel("Trending City")
       setDropdownLocationValue(CityLocation)
     }
-    if(surveyLocation.selectedOption == "no"){
+    if(survey.selectedOption == "no"){
       setLocationInputLabel("Trending Locations")
       setDropdownLocationValue(AllLocation)
     }
-    if(surveyLocation.selectedOption == "all"){
+    if(survey.selectedOption == "all"){
       setLocationInputLabel("Suggested Locations")
       setDropdownLocationValue(LocationJson)
     }
-  }, [surveyLocation]);
+  }, [survey]);
 
   const [step, setStep] = useState(1);
 
@@ -225,10 +221,10 @@ const Survey = ({ show, onClose }: ISurvey) => {
               <>
                 <RadioInputs
                   options={questions[step - 1].options}
-                  setValue={setSurveyLocation}
-                  value={surveyLocation}
+                  setValue={setSurvey}
+                  value={survey}
                 />
-                {surveyLocation.selectedOption !== "" && (
+                {survey.selectedOption !== "" && (
                   <SelectField
                   label={locationInputLabel}
                   placeholder="Select ..."
@@ -241,7 +237,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                     top: "70px",
                   }}
                   value={survey.location}
-                  onChange={(val) => setSurveyLocation({ ...surveyLocation, selectedLocation: val })}
+                  onChange={(val) => setSurvey({ ...survey, location: val })}
                   onAdditionalChange={(_data) => {}}
                 />
                 )}
