@@ -192,11 +192,12 @@ const ProductHorizontalSlide = ({
                         </div>
                         <div className={`${type == "title-card" ? "absolute bottom-4 left-4 text-white font-bold text-[25px] pe-5" : "p-4"}`}>
                           <div className="grid grid-cols-2 items-center mb-2 relative">
-                            <h4
-                              className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${isAddButton ? "col-span-1" : "col-span-2"} `}
-                            >
-                              {location.name}
-                            </h4>
+                            <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}>
+                              <h4 className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${isAddButton ? "col-span-1" : "col-span-2"} `} >
+                                {location.name}
+                              </h4>
+                            </Link>
+                            
                             {isAddButton && (
                               <div
                                 className="flex justify-end items-center gap-2 cursor-pointer"
