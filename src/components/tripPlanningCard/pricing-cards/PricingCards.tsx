@@ -68,14 +68,9 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
 
     
 
-    console.log('daysLength', daysLength, params_list.days_length)
+    console.log('params', params_list)
 
     const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
-
-    useEffect(() => {
-        
-        console.log('params_list', params_list)
-    }, [])
 
     useEffect(() => {
 
@@ -255,19 +250,22 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
             locations = [...new Set(locations)];
             setLocationDetails([...locations])
         }
-        console.log('locationDetails', locationDetails)
+        
         _loadLocations()
     }, [locationDetails])
 
     useEffect(() => {
-        console.log('automateLocation', automateLocation)
+        
         if(automateLocation || (itineraryDays.length > 0 && itineraryDays[0].times && itineraryDays[0].times.length > 0))
         {
             setItem(automateLocation ? {...automateLocation} : {...itineraryDays[0].times[0].location})
         }
+    
     }, [automateLocation, itineraryDays])
 
     const skelton = ["1","2","3","4","5","6","7","8"]
+
+    console.log('params_list', params_list)
 
     return (
         <>
@@ -276,7 +274,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
             skelton.map((list:string,index:number)=>{
                 return <Card_skelton key={index}/>
             }) : (
-                params_list.v_type !== '2' && itineraryDays && itineraryDays.length > 4) ? (
+                (params_list.v_type === '1' || params_list.v_type === '') && itineraryDays && itineraryDays.length > 4) ? (
                     <>
                     {
                         (!loading && itineraryDays) &&
@@ -323,13 +321,14 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                         <div className="large-shadow sm:p-8 py-8 rounded-xl w-full">
                         <TripDetail item={item} />
                         {
-                            params_list.v_type === '2' && (
+                            (params_list.v_type === '2' || params_list.v_type === '3') && (
                                 <>
                                 <ProductHorizontalSlide 
-                                    url = 'variation_2'
+                                    url = {params_list.v_type === "2" ? 'variation_2' : "variation_3" }
                                     Title={`${automateLocation?.name} Location To Visit`} 
                                     Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} 
                                     isAddButton={false} 
+                                    isHover={params_list.v_type === "2" ? true : false}
                                     isDesc={false} 
                                     locationsState = {locationsState}
                                     slidesToShow={3}
@@ -340,6 +339,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                                     url = 'variation_2'
                                     Title={`Most popular restaurants`} 
                                     isAddButton={false} 
+                                    isHover={params_list.v_type === "2" ? true : false}
                                     isDesc={false} 
                                     locationsState = {restaurantsState}
                                     slidesToShow={3}
