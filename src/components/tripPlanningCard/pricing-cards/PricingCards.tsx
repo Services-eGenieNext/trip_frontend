@@ -324,7 +324,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                             (params_list.v_type === '2' || params_list.v_type === '3') && (
                                 <>
                                 <ProductHorizontalSlide 
-                                    url = {params_list.v_type === "2" ? 'variation_2' : "variation_3" }
+                                    url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
                                     Title={`${automateLocation?.name} Location To Visit`} 
                                     Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} 
                                     isAddButton={false} 
@@ -336,7 +336,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                                 />
 
                                 <ProductHorizontalSlide 
-                                    url = 'variation_2'
+                                    url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
                                     Title={`Most popular restaurants`} 
                                     isAddButton={false} 
                                     isHover={params_list.v_type === "2" ? true : false}
