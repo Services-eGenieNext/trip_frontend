@@ -38,6 +38,59 @@ const Survey = ({ show, onClose }: ISurvey) => {
   });
   const [dropdownLocationValue,setDropdownLocationValue] = useState<any>([])
   const [locationInputLabel, setLocationInputLabel] = useState("")
+  const [questions, setQuestions] = useState<any> ([
+    {
+      type: "location",
+      title: "Do you have any ideas where you want to go?",
+      options: [
+        {
+          label: "Yes, I think I have it sorted by continent",
+          value: "continent",
+          field: false,
+        },
+        {
+          label: "Yes, I think I have it sorted by country ",
+          value: "country",
+          field: false,
+        },
+        { 
+          label: "Yes, I think I have it sorted by city ", 
+          value: "city",
+          field: false,
+        },
+        { 
+          label: "No, but I know where I don’t want to go", 
+          value: "no", 
+          field: false,
+        },
+        { 
+          label: "I’m open to all suggestions ", 
+          value: "all", 
+          field: false,
+        },
+      ],
+    },
+    {
+      title: "Are you celebrating anything special?",
+      type: "occasions",
+      options: [],
+    },
+    {
+      title: "What sorts of activities would you like prioritized?",
+      type: "activities",
+      options: [],
+    },
+    {
+      title: "Select Your Trip Dates",
+      type: "dates",
+      options: [],
+    },
+    {
+      title: "Anything else you’d like us to know?",
+      text_box: true,
+      options: [],
+    },
+  ])
 
   useEffect(() => {
     if(survey.selectedOption == "continent"){
@@ -64,54 +117,27 @@ const Survey = ({ show, onClose }: ISurvey) => {
 
   const [step, setStep] = useState(1);
 
-  const questions = [
-    {
-      type: "location",
-      title: "Do you have any ideas where you want to go?",
-      options: [
-        {
-          label: "Yes, I think I have it sorted by continent",
-          value: "continent",
-        },
-        {
-          label: "Yes, I think I have it sorted by country ",
-          value: "country",
-        },
-        { 
-          label: "Yes, I think I have it sorted by city ", 
-          value: "city",
-        },
-        { 
-          label: "No, but I know where I don’t want to go", 
-          value: "no", 
-        },
-        { 
-          label: "I’m open to all suggestions ", 
-          value: "all", 
-        },
-      ],
-    },
-    {
-      title: "Are you celebrating anything special?",
-      type: "occasions",
-    },
-    {
-      title: "What sorts of activities would you like prioritized?",
-      type: "activities",
-    },
-    {
-      title: "Select Your Trip Dates",
-      type: "dates",
-    },
-    {
-      title: "Anything else you’d like us to know?",
-      text_box: true,
-    },
-  ];
-
   useEffect(() => {
     setSurvey({ ...survey, dates: date });
   }, [date]);
+
+  useEffect(()=>{
+    let OptionFiltered = questions
+    if(survey.selectedOption !== ""){
+      OptionFiltered[step -1].options.map((option:any,index:number)=>{
+          if(option.value == survey.selectedOption){
+            option.field = true
+          }else{
+            option.field = false
+          }
+      })
+    }
+    setQuestions([...OptionFiltered])
+  },[survey])
+
+  useEffect(()=>{
+console.log(questions,"questions")
+  },[questions])
 
   const handleSurvey = () => {
     if (survey.dates.startDate || survey.location != "") {
@@ -214,22 +240,25 @@ const Survey = ({ show, onClose }: ISurvey) => {
           </span>
         </div>
 
-        <div className="my-10 w-full text-center">
+        <div className="my-10 w-full text-center flex flex-col items-center">
           <p className="">{questions[step - 1]?.title}</p>
-          <div className="my-4 pt-3 flex flex-col gap-4 items-center">
-            {questions[step - 1]?.type === "location" && (
-              <>
-                <RadioInputs
-                  options={questions[step - 1].options}
+          <div className="my-4 pt-3 flex flex-col gap-4 items-start">
+            {questions[step - 1]?.type === "location" ? (
+              questions[step - 1].options.length > 0 && questions[step - 1].options.map((options:any,index:number)=>{
+                return (
+                <div className="flex flex-col items-start">
+                  <RadioInputs
+                  label={{label:options.label, value: options.value}}
                   setValue={setSurvey}
                   value={survey}
+                  checked={options.field}
                 />
-                {survey.selectedOption !== "" && (
+                {options.field == true && (
                   <SelectField
                   label={locationInputLabel}
                   placeholder="Select ..."
                   data={dropdownLocationValue}
-                  className={`mr-2 mt-5 mb-2 sm:w-[200px]`}
+                  className={`mr-2 mt-5 mb-2 sm:w-[400px]`}
                   styling={{
                     dropdownHeight: "max-h-[140px]",
                     shadow: "drop-shadow-xl ",
@@ -241,7 +270,11 @@ const Survey = ({ show, onClose }: ISurvey) => {
                   onAdditionalChange={(_data) => {}}
                 />
                 )}
-              </>
+                </div>
+                )
+              })
+            ):(
+              ""
             )}
             {questions[step - 1]?.type === "occasions" && (
               <MultiSelectDropdown
@@ -250,7 +283,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 Label={"Occasion"}
                 heightItemsContainer="300px"
                 // SelectedData={locationSearch.occasion}
-                className={`sm:mr-2 sm:my-2 my-5 sm:max-w-[400px] w-full h-[70px]`}
+                className={`sm:mr-2 sm:my-2 my-5 sm:w-[400px] w-full h-[70px]`}
                 placeholder="Select..."
                 onChange={(val: any) =>
                   setSurvey({ ...survey, occassion: val })
