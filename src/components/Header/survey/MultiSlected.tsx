@@ -52,6 +52,12 @@ export default function SelectCheckBoxSimple({
   const [customeField, setCustomeField] = useState("");
   const ref = useRef<HTMLInputElement>(null);
 
+  useEffect(()=>{
+if(SelectedData.length > 0){
+  setOptsSelected(SelectedData)
+}
+  },[SelectedData])
+
   useEffect(() => {
     const newArray: any = items?.map((opt: any) => ({ opt, checked: false }));
     setOpts(newArray);
