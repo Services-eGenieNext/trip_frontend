@@ -41,7 +41,7 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
     const [locationDetails, setLocationDetails] = useState<any[]>([])
 
     const setLocationDetailsByAddress = async () => {
-        let res = await LocationsCall("places near " + address)
+        let res = await LocationsCall(`best places for visit in ${params_list.address} for tourist`)
         
         setRecommendations([...res])
     }
@@ -78,18 +78,23 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
     }, [recommendations])
 
     useEffect(() => {
-        if(address && address!='')
+        
+        if(params_list.address && params_list.address!='')
         {
-            axios.post(`${PY_API_URL}/get-recommendation`, {input: address}).then(response => {
-                setRecommendations(response.data.recommendations)
+            axios.post(`${PY_API_URL}/get-recommendation`, {input: params_list.address}).then(response => {
                 
                 if(response.data.recommendations.length == 0)
                 {
                     setLocationDetailsByAddress()
                 }
+                else
+                {
+                    setRecommendations(response.data.recommendations)
+                }
             })
         }
-    }, [address])
+
+    }, [params_list])
 
     return (
         <div className="w-full flex justify-center">

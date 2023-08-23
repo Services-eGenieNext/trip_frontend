@@ -126,6 +126,7 @@ export default function PricingCard({
               }
                 return (
                   <ScheduleCard
+                    day={data.day}
                     distanceObject={{origin: origin, destination: destination}}
                     key={index}
                     isDropdownButton={isDropdownButton}
