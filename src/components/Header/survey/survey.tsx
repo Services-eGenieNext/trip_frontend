@@ -246,7 +246,7 @@ console.log(questions,"questions")
             {questions[step - 1]?.type === "location" ? (
               questions[step - 1].options.length > 0 && questions[step - 1].options.map((options:any,index:number)=>{
                 return (
-                <div className="flex flex-col items-start">
+                <div key={index} className="flex flex-col items-start">
                   <RadioInputs
                   label={{label:options.label, value: options.value}}
                   setValue={setSurvey}
