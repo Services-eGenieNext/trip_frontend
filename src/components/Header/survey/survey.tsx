@@ -283,7 +283,7 @@ console.log(questions,"questions")
                 Label={"Occasion"}
                 heightItemsContainer="300px"
                 // SelectedData={locationSearch.occasion}
-                className={`sm:mr-2 sm:my-2 my-5 sm:w-[400px] w-full h-[70px]`}
+                className={`sm:mr-2 sm:my-2 my-5 sm:w-[400px] w-full`}
                 placeholder="Select..."
                 onChange={(val: any) =>
                   setSurvey({ ...survey, occassion: val })
