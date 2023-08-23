@@ -100,6 +100,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                 }
             }
             console.log('_days', _days)
+            
             dispatch(setItineraryDays( [..._days.filter((_day: any) => _day.times.length > 0)] ))
         }
         _defDays()
@@ -332,6 +333,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                                     isDesc={false} 
                                     locationsState = {locationsState}
                                     slidesToShow={3}
+                                    v_type={"3"}
                                 />
 
                                 <ProductHorizontalSlide 
@@ -341,6 +343,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                                     isDesc={false} 
                                     locationsState = {restaurantsState}
                                     slidesToShow={3}
+                                    v_type={"3"}
                                 />
                                 </>
                             )

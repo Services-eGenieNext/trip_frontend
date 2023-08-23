@@ -3,20 +3,29 @@ import CSS from './tripPlanning.module.css'
 import { IPlanningCard } from "@/interfaces/TripPlan";
 import InputField from "../UIComponents/InputField/InputField";
 import { LocationsDurationCall } from "@/api-calls";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
 
 interface IScheduleCard extends IPlanningCard {
   distanceObject?: any
   time?: any
+  day: string
 }
 
-export default function ScheduleCard({distanceObject, items, isDropdownButton, onOpen, time}:IScheduleCard) {
+export default function ScheduleCard({day, distanceObject, items, isDropdownButton, onOpen, time}:IScheduleCard) {
     const [isShowTooltip, setIsShowTooltip] = useState(false);
     const [editTime, setEditTime] = useState(false)
     const [deleteTime, setDeleteTime] = useState(false)
     const [addEvent, setAddEvent] = useState(false)
     const [addNewEventValue, setaddNewEventValue] = useState("")
+
+    const initialEditTimeFormValues = {startTime: "", endTime: ""}
+    const [editTimeForm, setEditTimeForm] = useState(initialEditTimeFormValues)
     const [suggestedLocation, setSuggestedLocation] = useState('')
     const [duration, setDuration] = useState(null)
+
+    const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
+
     const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
       console.log(e.dataTransfer.getData('product'))
     }
@@ -28,8 +37,27 @@ export default function ScheduleCard({distanceObject, items, isDropdownButton, o
       }
 
       const [hourString, minute] = timeString.split(":");
-      const hour = +hourString % 24;
-      return (hour % 12 || 12) + ":" + (Number(minute.substr(0,2)) < 10 ? '0'+minute : minute) + (hour < 12 ? " AM" : " PM");
+
+      return (Number(hourString) % 12 || 12) + ":" + (Number(minute.substring(0,2)) < 10 ? '0'+Number(minute.substring(0,2)) : minute) + (Number(hourString) < 12 ? " AM" : " PM");
+    }
+
+    const dispatch = useAppDispatch()
+
+    const ChangeTimeFunc = () => {
+
+      let _itineraryDays = [...itineraryDays]
+      let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
+      let timeIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location.name === items.name)
+      _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
+      _itineraryDays[dayIndex].times = [..._itineraryDays[dayIndex].times]
+      _itineraryDays[dayIndex].times[timeIndex] = {..._itineraryDays[dayIndex].times[timeIndex]}
+      _itineraryDays[dayIndex].times[timeIndex].suggestedTime = {..._itineraryDays[dayIndex].times[timeIndex].suggestedTime, startTime: editTimeForm.startTime, endTime: editTimeForm.endTime}
+
+      dispatch(setItineraryDays([..._itineraryDays]))
+      setEditTime(false)
+      setIsShowTooltip(false)
+      setEditTimeForm(initialEditTimeFormValues)
+    
     }
 
     useEffect(() => {
@@ -41,7 +69,7 @@ export default function ScheduleCard({distanceObject, items, isDropdownButton, o
           setDuration(duration.data.rows[0].elements[0].duration.text)
         }
       }
-      if(distanceObject.origin && distanceObject.destination && !time.suggestedTime?.duration_time)
+      if(distanceObject.origin && distanceObject.destination && (!time.suggestedTime?.duration_time || time.suggestedTime?.duration_time == ""))
       {
         _def()
       }
@@ -50,7 +78,7 @@ export default function ScheduleCard({distanceObject, items, isDropdownButton, o
   return (
     <>
     {
-      duration && <span className="flex rounded-full px-2 h-max bg-[var(--blue)] text-white whitespace-nowrap w-max">{duration}</span>
+      (time.suggestedTime?.duration_time || duration) && <span className="flex rounded-full px-2 h-max bg-[var(--blue)] text-white text-[12px] whitespace-nowrap w-max -translate-y-full">{time.suggestedTime?.duration_time ? time.suggestedTime?.duration_time : duration}</span>
     }
     <div
       className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
@@ -126,16 +154,16 @@ export default function ScheduleCard({distanceObject, items, isDropdownButton, o
               }
               {
                 editTime === true && (
-                  <div className="absolute top-2 -right-40 sm:w-[462px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-center py-10 px-8 text-black">
+                  <div className="absolute top-2 right-0 sm:w-[462px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-center py-10 px-8 text-black max-w-[200px]">
                     
-                    <InputField type="text" label="Add Destination" placeholder='Which place are you suggesting?' value={addNewEventValue} onChange={(e) => setaddNewEventValue(e.target.value)} />
+                    <InputField type="time" label="Opening Time" className="my-2" placeholder='Which place are you suggesting?' value={editTimeForm.startTime} onChange={(e) => setEditTimeForm({...editTimeForm, startTime: e.target.value})} />
+
+                    <InputField type="time" label="Closing Time" className="my-2" placeholder='Which place are you suggesting?' value={editTimeForm.endTime} onChange={(e) => setEditTimeForm({...editTimeForm, endTime: e.target.value})} />
 
                     <div className="mt-4 w-full">
-                      <button className="w-full font-bold text-[18px] bg-[#009DE2] text-white py-3 rounded-lg" onClick={()=>{
-                        setEditTime(false)
-                        setSuggestedLocation(addNewEventValue)
-                        setaddNewEventValue("")
-                        }}>Add Now</button>
+                      <button className="w-full font-bold text-[14px] bg-[#009DE2] text-white py-2 rounded-lg" onClick={()=> {
+                        ChangeTimeFunc()
+                        }}>Change Time</button>
                     </div>
                     
                   </div>

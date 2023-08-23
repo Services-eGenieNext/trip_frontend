@@ -23,6 +23,7 @@ const ProductHorizontalSlide = ({
   Description = "",
   data,
   isAddButton,
+  isHover = true,
   isDesc,
   url,
   locationsState,
@@ -261,7 +262,7 @@ const ProductHorizontalSlide = ({
                           )}
                         </div>
                         {
-                          isAddButton == false && (
+                          (isAddButton == false && isHover == true) && (
                             <div
                               className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}
                             >
@@ -348,7 +349,13 @@ const ProductHorizontalSlide = ({
         <SelectField
           label="Choose day"
           placeholder="Select ..."
-          data={[{id: "Monday", name: "Monday"}, {id: "Tuesday", name: "Tuesday"}]}
+          data={itineraryDays.filter(itin => itin.times.length > 0).map(itinerary => {
+              return {
+                id: itinerary.day,
+                name: itinerary.day
+              }
+            })
+          }
           className={`mr-2 sm:my-2 my-5 w-full`}
           styling={{
             shadow: "drop-shadow-xl ",
