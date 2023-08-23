@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from "./Header.module.css"
 import { ImNotification } from 'react-icons/im';
 import { ITripPlanningHeader } from '@/interfaces/TripPlan';
+import { FiAlertCircle } from "react-icons/fi";
 import ComponentTitle from '@/components/UIComponents/ComponentTitle';
 import Facebook from '@/components/UIComponents/ShareSocial/facebook';
 import Linkdin from '@/components/UIComponents/ShareSocial/linkdin'
@@ -89,6 +90,10 @@ const TripPlanningHeader = ({ variation = "space-arround" }: ITripPlanningHeader
                         <div className="w-full h-[44px] border-t border-[#E3E6EC] rounded-xl mt-3 py-3 text-right">
                         <h1 className="text-[#009DE2]">$3000</h1>
                         </div>
+                        <div className="flex items-center gap-x-2 text-[#F48911] mt-3">
+                  <FiAlertCircle />
+                  <p className="text-[12px] mt-1">Prices are determined by assumptions.</p>
+                </div>
                     </div>
                     ) : (
                     ""
