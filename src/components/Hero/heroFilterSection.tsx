@@ -61,7 +61,7 @@ export default function HeroFilterSection() {
 
   const handleRoute = () => {
     if (locationSearch.location !== "") {
-      router.push("/trip-plan?address=" + locationSearch.location) + "&start_day_index="+startedDayIndex+"&days_length="+daysLength;
+      router.push("/trip-plan?address=" + locationSearch.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
       router.push("/results?address=" + locationSearch.location);
       dispatch(setSurveyValue(locationSearch))
