@@ -95,6 +95,8 @@ const TripPlan = () => {
         })
     }, [params])
 
+    console.log('automateLocation', automateLocation)
+
     return (
         <div className='overflow-x-hidden w-full'>
             <PageBanner title={automateLocation?.name ?? params_list.address + ' Trip Plan'} automateLocation={automateLocation} />
@@ -108,7 +110,7 @@ const TripPlan = () => {
             />
 
             {
-                params_list.v_type !== "2" && automateLocation?.name !== "" &&
+                (params_list.v_type === "1" || params_list.v_type === "") && automateLocation?.name !== "" &&
                 <>
                     <ProductHorizontalSlide 
                         locationsState={locationsState} 
@@ -121,8 +123,9 @@ const TripPlan = () => {
                 </>
             }
             
-
-            <SmallStory positioning="inline" />
+            {
+                automateLocation && <SmallStory positioning="inline" item={automateLocation} />
+            }
 
             <div className=' mt-20'>
                 <ClientTestimonials automateLocation={automateLocation} />

@@ -1,8 +1,9 @@
-export type VariationType = '1' | '2' | '' | null
+export type VariationType = '1' | '2' | '3' | '' | null
 export interface IProductHorizontalSlide {
     Title: string
     Description?: string
     data?: any
+    isHover?:boolean
     isAddButton?: boolean
     isDesc?: boolean
     url? : string

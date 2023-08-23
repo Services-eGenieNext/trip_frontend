@@ -1,6 +1,13 @@
+interface ISuggestedTime {
+    startTime?: string
+    endTime?: string
+    duration_time?: string
+}
+
 export interface ITime {
     time: string
-    location: any
+    location: any,
+    suggestedTime?: ISuggestedTime
 }
 
 interface IDays {

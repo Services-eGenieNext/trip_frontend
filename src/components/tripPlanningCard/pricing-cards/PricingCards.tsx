@@ -333,6 +333,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                                     isDesc={false} 
                                     locationsState = {locationsState}
                                     slidesToShow={3}
+                                    v_type={"3"}
                                 />
 
                                 <ProductHorizontalSlide 
@@ -342,6 +343,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                                     isDesc={false} 
                                     locationsState = {restaurantsState}
                                     slidesToShow={3}
+                                    v_type={"3"}
                                 />
                                 </>
                             )
