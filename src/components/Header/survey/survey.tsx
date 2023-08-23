@@ -283,7 +283,7 @@ console.log(questions,"questions")
                 Label={"Occasion"}
                 heightItemsContainer="300px"
                 // SelectedData={locationSearch.occasion}
-                className={`sm:mr-2 sm:my-2 my-5 sm:w-[400px] w-full h-[70px]`}
+                className={`sm:mr-2 sm:my-2 my-5 sm:w-[400px] w-full`}
                 placeholder="Select..."
                 onChange={(val: any) =>
                   setSurvey({ ...survey, occassion: val })
@@ -314,7 +314,7 @@ console.log(questions,"questions")
             )}
             {questions[step - 1]?.text_box && (
               <textarea
-                className="border border-solid border-[var(--blue)] rounded-xl w-full p-4 outline-none"
+                className="border border-solid border-[var(--blue)] rounded-xl sm:w-[400px] w-full p-4 outline-none"
                 rows={5}
                 placeholder="Type here ..."
                 value={survey.message}
