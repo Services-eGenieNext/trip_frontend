@@ -49,7 +49,7 @@ export default function HeroFilterSection() {
         const endDate = new Date(date?.endDate)
         const startDate = new Date(date?.startDate)
         setStartedDayIndex(startDate.getDay())
-        console.log(endDate,"endDate",startDate,"startDate")
+        
         const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
         const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
         setDaysLength(daysRemaining+1)
