@@ -49,7 +49,7 @@ export default function HeroFilterSection() {
         const endDate = new Date(date?.endDate)
         const startDate = new Date(date?.startDate)
         setStartedDayIndex(startDate.getDay())
-        console.log(endDate,"endDate",startDate,"startDate")
+        
         const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
         const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
         setDaysLength(daysRemaining+1)
@@ -61,7 +61,7 @@ export default function HeroFilterSection() {
 
   const handleRoute = () => {
     if (locationSearch.location !== "") {
-      router.push("/trip-plan?address=" + locationSearch.location) + "&start_day_index="+startedDayIndex+"&days_length="+daysLength;
+      router.push("/trip-plan?address=" + locationSearch.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
       router.push("/results?address=" + locationSearch.location);
       dispatch(setSurveyValue(locationSearch))
