@@ -314,7 +314,7 @@ console.log(questions,"questions")
             )}
             {questions[step - 1]?.text_box && (
               <textarea
-                className="border border-solid border-[var(--blue)] rounded-xl w-full p-4 outline-none"
+                className="border border-solid border-[var(--blue)] rounded-xl sm:w-[400px] w-full p-4 outline-none"
                 rows={5}
                 placeholder="Type here ..."
                 value={survey.message}
