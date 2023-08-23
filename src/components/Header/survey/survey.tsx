@@ -38,6 +38,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
   });
   const [dropdownLocationValue,setDropdownLocationValue] = useState<any>([])
   const [locationInputLabel, setLocationInputLabel] = useState("")
+  const [saveData, setSaveData] = useState(false)
   const [questions, setQuestions] = useState<any> ([
     {
       type: "location",
@@ -188,6 +189,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
             }`}
             onClick={() => {
               setStep(2);
+              setSaveData(true)
             }}
           >
             02
@@ -202,6 +204,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
             }`}
             onClick={() => {
               setStep(3);
+              setSaveData(true)
             }}
           >
             03
@@ -276,6 +279,8 @@ const Survey = ({ show, onClose }: ISurvey) => {
               <MultiSelectDropdown
                 searchBar
                 items={Occasion}
+                saveData={saveData}
+                setSaveData={setSaveData}
                 Label={"Occasion"}
                 heightItemsContainer="300px"
                 SelectedData={survey.occassion}
@@ -290,6 +295,8 @@ const Survey = ({ show, onClose }: ISurvey) => {
               <MultiSelectDropdown
                 searchBar
                 disabled
+                saveData={saveData}
+                setSaveData={setSaveData}
                 items={Priorities}
                 Label={"Priority"}
                 heightItemsContainer="300px"
