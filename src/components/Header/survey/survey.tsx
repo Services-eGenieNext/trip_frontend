@@ -135,10 +135,6 @@ const Survey = ({ show, onClose }: ISurvey) => {
     setQuestions([...OptionFiltered])
   },[survey])
 
-  useEffect(()=>{
-console.log(questions,"questions")
-  },[questions])
-
   const handleSurvey = () => {
     if (survey.dates.startDate || survey.location != "") {
       router.push("/trip-plan?address=" + survey.location);
@@ -282,7 +278,7 @@ console.log(questions,"questions")
                 items={Occasion}
                 Label={"Occasion"}
                 heightItemsContainer="300px"
-                // SelectedData={locationSearch.occasion}
+                SelectedData={survey.occassion}
                 className={`sm:mr-2 sm:my-2 my-5 sm:w-[400px] w-full`}
                 placeholder="Select..."
                 onChange={(val: any) =>
@@ -298,7 +294,7 @@ console.log(questions,"questions")
                 Label={"Priority"}
                 heightItemsContainer="300px"
                 className={`sm:mr-2 sm:my-2 my-5 sm:w-[400px] w-full`}
-                // SelectedData={locationSearch.occasion}
+                SelectedData={survey.priority}
                 placeholder="Select..."
                 onChange={(val: any) => setSurvey({ ...survey, priority: val })}
               />
