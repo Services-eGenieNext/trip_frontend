@@ -18,7 +18,7 @@ import { Range } from "react-date-range";
 import DateRangeField from "../../UIComponents/InputField/DateRangeField";
 import CalenderIcon from "../../icons/Calender";
 import styles from "../Header.module.css";
-import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
+import MultiSelectDropdown from "@/components/Header/survey/MultiSlected";
 import RadioInputs from "@/components/UIComponents/RadioInput/RadioInput";
 
 const Survey = ({ show, onClose }: ISurvey) => {
@@ -250,7 +250,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 Label={"Occasion"}
                 heightItemsContainer="300px"
                 // SelectedData={locationSearch.occasion}
-                className={`sm:mr-2 sm:my-2 my-5 sm:w-[200px] w-full`}
+                className={`sm:mr-2 sm:my-2 my-5 sm:max-w-[400px] w-full h-[70px]`}
                 placeholder="Select..."
                 onChange={(val: any) =>
                   setSurvey({ ...survey, occassion: val })
@@ -264,7 +264,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                 items={Priorities}
                 Label={"Priority"}
                 heightItemsContainer="300px"
-                className={`sm:mr-2 sm:my-2 my-5 sm:w-[200px] w-full`}
+                className={`sm:mr-2 sm:my-2 my-5 sm:w-[400px] w-full`}
                 // SelectedData={locationSearch.occasion}
                 placeholder="Select..."
                 onChange={(val: any) => setSurvey({ ...survey, priority: val })}
@@ -273,7 +273,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
             {questions[step - 1]?.type === "dates" && (
               <DateRangeField
                 label="Date"
-                className={`sm:mr-2 sm:my-2 my-5 sm:w-[250px] w-full ${styles.inputWrapper}`}
+                className={`sm:mr-2 sm:my-2 my-5 sm:w-[400px] w-full ${styles.inputWrapper}`}
                 value={date}
                 onChange={(value) => setDate(value)}
                 icon={<CalenderIcon />}
@@ -293,7 +293,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
           </div>
           <BlueButton
             type="button"
-            className="text-[20px] py-[10px] sm:w-[200px] w-full"
+            className="text-[20px] py-[10px] sm:w-[400px] w-full mt-5"
             title={step < 5 ? "Next" : "Finish"}
             onClick={() => {
               if (step < 5) {

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import CheckboxLabel from "./label";
+import CheckboxLabel from "../../UIComponents/MultiSelectDropdown/label";
 import { AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
 
 interface TypeProps {
@@ -209,18 +209,18 @@ useEffect(() => {
     setAddCustomeOption(false);
   };
   return (
-    <Box ref={selectRef} className={`relative sm:px-1 sm:my-2 my-5 ${className}`}>
+    <Box ref={selectRef} className={`relative sm:my-2 my-5 ${className}`}>
       <div className="absolute top-[-0.5rem] left-0 w-full flex justify-center items-center">
             <label className="px-[5px] text-[11px] uppercase letter-spacing"
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{Label}</label>
             </div>
-      <Box className="flex items-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-2">
+      <Box className="flex items-center border border-[#C9D2DD] h-[100px] w-full bg-white rounded-2xl py-4 px-2">
       <Box
         className="flex items-center justify-between w-full overflow-hidden cursor-pointer"
       >
         <Box
-        className="overflow-hidden pt-4 pb-2 h-[57px]"
+        className="overflow-hidden pt-4 pb-2 h-[100px]"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
@@ -232,7 +232,7 @@ useEffect(() => {
           <Box
             // display="flex"
             // alignItems="center"
-            className="flex flex-wrap gap-1 h-full w-full"
+            className="flex flex-wrap gap-1 h-full w-full mr-2"
             sx={{
               overflowY: "scroll",
               overflowX: "hidden",
@@ -247,7 +247,7 @@ useEffect(() => {
                 return (
                   <div
                     key={index}
-                    className="bg-gray-500 px-2 py-1 flex items-center justify-between "
+                    className="bg-gray-500 px-2 flex items-center justify-between h-[20px]"
                   >
                     {Label !== "Occasion" &&(
                       <Typography
@@ -323,7 +323,7 @@ useEffect(() => {
       {/* Dropdown list */}
       <Box
       ref={ref}
-      className="sm:w-[300px] w-[250px] overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300"
+      className="sm:w-[400px] w-[250px] overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300"
         position="absolute"
         left="0"
         right="0"
