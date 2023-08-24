@@ -33,7 +33,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
     const { itineraryDays, itineraryLoading } = useAppSelector((state) => state.itineraryReducer)
 
     const daysLength = Number(params_list.days_length) ?? 7
-    const daysLengtArr = new Array(daysLength).fill(null)
+    // const daysLengtArr = new Array(daysLength).fill(null)
     const dispatch = useAppDispatch()
     const [days, setDays] = useState<any[]>([
         {
@@ -66,10 +66,6 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
         }
     ])
 
-    
-
-    console.log('params', params_list)
-
     const random = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min;
 
     useEffect(() => {
@@ -94,7 +90,6 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                     }
                 }
             }
-            console.log('_days', _days)
             
             dispatch(setItineraryDays( [..._days.filter((_day: any) => _day.times.length > 0)] ))
         }
@@ -189,7 +184,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
 
         let _localDays: any[] = []
         let startIndex = params_list.start_day_index
-        let _daysLength = daysLengtArr.length > 0 ? daysLengtArr.length : days.length
+        let _daysLength = (daysLength > 0 && daysLength < 8) ? daysLength : days.length
 
         for (let index = 0; index < _daysLength; index++) {
             if(daysLength !== 0 && daysLength < 7)
@@ -203,8 +198,6 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                 _localDays.push({...days[index]})
             }
         }
-
-        console.log('------------ _localDays', _localDays)
 
         const _loadDays = async () => {
             let _days = _localDays
@@ -264,8 +257,6 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
     }, [automateLocation, itineraryDays])
 
     const skelton = ["1","2","3","4","5","6","7","8"]
-
-    console.log('params_list', params_list)
 
     return (
         <>

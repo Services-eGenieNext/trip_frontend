@@ -23,7 +23,7 @@ export default function HeroFilterSection() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [date, setDate] = useState<Range>({
-    key: "selection",
+    key: "selection"
   });
 
   const [startedDayIndex, setStartedDayIndex] = useState<number | null>(null)
