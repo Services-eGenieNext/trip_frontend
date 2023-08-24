@@ -9,6 +9,7 @@ import MobileSearchDrawer from './MobileSearchDrawer'
 import Survey from './survey/survey'
 import { useAppDispatch } from '@/redux/hooks'
 import { useRouter } from "next/navigation";
+import Tooltip from '@mui/material/Tooltip';
 
 const Header = () => {
     const router = useRouter()
@@ -66,9 +67,15 @@ const Header = () => {
 
                         {/* Menu Bar for Desktop */}
                         <div className="hidden md:block">
-                            <Link href={'/results'} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Results</Link>
-                            <Link href={'/trip-plan?address=USA'} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Itinerary</Link>
-                            <Link href={'/'} onClick={(e) => {
+                        <Tooltip title="Click on Inspiration and see all the results.">
+                        <Link href={'/results'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300">Inspiration</Link>
+                        </Tooltip>
+                        <Tooltip title="Click on Build a Trip and create your own trip.">
+                            <Link href={'/trip-plan?address=USA'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300">Build a Trip</Link>
+                            </Tooltip>
+                            <Link href={'/'} 
+                            onMouseEnter={() => setShowSurvey(true)}
+                            onClick={(e) => {
                                 e.preventDefault()
                                 setShowSurvey(true)
                             }} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Survey</Link>

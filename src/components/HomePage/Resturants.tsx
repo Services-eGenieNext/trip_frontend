@@ -91,12 +91,14 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
       />
       <div className="w-full flex justify-center px-0">
         <Section className="relative">
+          <div className="flex flex-col items-center">
           <ComponentTitle title={title} />
           <p className="text-[var(--gray)] sm:max-w-[550px] my-5">
             Great food is the make or break between a good and a great travel
             experience, so never settle with these top restaurants in the entire
             world!
           </p>
+          </div>
 
           <div className={`grid grid-cols-1 md:grid-cols-${rows}`}>
             {loading === true
@@ -184,7 +186,7 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                           )}
                         </div>
                         <div className="p-7">
-                          <div className="flex justify-between items-start">
+                          <div className="flex justify-center items-start">
                             <Link href={link}>
                               <h4 className="text-2xl font-semibold gilroy">
                                 {restaurant.name}
@@ -224,7 +226,7 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                             <div className="w-[25px] h-[25px] bg-[#9AB044] rounded-full p-1">
                               <LocationIcon className="h-4 w-4" />
                             </div>
-                            <span className="ml-2">
+                            <span className="ml-2 text-center">
                               {address}
                             </span>
                           </div>

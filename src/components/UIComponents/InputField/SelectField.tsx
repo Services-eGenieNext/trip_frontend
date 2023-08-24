@@ -1,7 +1,7 @@
 import { ISelectField, ISelectOptions } from '@/interfaces/input'
 import React, { useEffect, useRef, useState } from 'react'
 
-const SelectField = ({className,styling, label, data=[], value, placeholder="", icon, onChange= (val)=>{}, onAdditionalChange = (val) => {}}: ISelectField) => {
+const SelectField = ({className,styling, label, data=[], value, placeholder, icon, onChange= (val)=>{}, onAdditionalChange = (val) => {}}: ISelectField) => {
 
     const [openDropDown, setOpenDropDown] = useState(false)
     const selectRef = useRef<HTMLDivElement | null>(null)
@@ -43,14 +43,12 @@ const SelectField = ({className,styling, label, data=[], value, placeholder="", 
         }
     }, [openDropDown])
 
-    useEffect(()=>{
-        onChange(inputVal)
-    },[inputVal])
+    // useEffect(()=>{
+    //     onChange(inputVal)
+    // },[inputVal])
 
     useEffect(()=>{
-if(value !== ""){
     setInputVal(value)
-}
     },[value])
 
     return (
@@ -63,9 +61,9 @@ if(value !== ""){
                     {
                         icon && <span className="mr-2">{icon}</span>
                     }
-                    <span className={`${value ? 'text-black' : `text-[var(--lite-gray)]`} overflow-ellipsis overflow-hidden whitespace-nowrap`}>
-                        <input type="text" className='border-none outline-none h-full w-full' value={inputVal} placeholder={placeholder} onChange={(e)=>{setInputVal(e.target.value)}} />
-                        
+                    <span className={`${inputVal ? 'text-black' : `text-[var(--lite-gray)]`} overflow-ellipsis overflow-hidden whitespace-nowrap`}>
+                        {/* <input type="text" className='border-none outline-none h-full w-full' value={inputVal} placeholder={placeholder} onChange={(e)=>{setInputVal(e.target.value)}} /> */}
+                        <div>{inputVal != "" ? inputVal : placeholder}</div>
                     </span>
                     </div>
                     <span className="">
@@ -85,7 +83,7 @@ if(value !== ""){
                 <ul className={`list-none overflow-auto w-full ${styling?.dropdownHeight ? styling.dropdownHeight : "max-h-[300px]"}`}>
                     {
                         data.map((d: ISelectOptions, i: number) => {
-                            return <li key={i} className={`px-3 py-2 w-full text-start cursor-pointer hover:bg-gray-50 ${value === d.id ? 'bg-[var(--dim-gray)]' : ''}`}
+                            return <li key={i} className={`px-3 py-2 flex justify-center w-full cursor-pointer hover:bg-gray-50 ${value === d.id ? 'bg-[var(--dim-gray)]' : ''}`}
                             onClick={() => {
                                 setOpenDropDown(false)
                                 setInputVal(d.name)

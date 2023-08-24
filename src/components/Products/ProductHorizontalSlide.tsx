@@ -129,10 +129,10 @@ const ProductHorizontalSlide = ({
     <div className="w-full flex justify-center">
     <Section className="relative">
       {!loading ? (
-          <>
+          <div className="flex flex-col items-center">
           <ComponentTitle title={Title} />
         <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2">{Description}</p>
-          </>
+          </div>
         ):(
           <div className="md:px-0 px-5">
           <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[400px] w-full h-[30px]"></div>
@@ -192,7 +192,7 @@ const ProductHorizontalSlide = ({
                           ></div>
                         </div>
                         <div className={`${type == "title-card" ? "absolute bottom-4 left-4 text-white font-bold text-[25px] pe-5" : "p-4"}`}>
-                          <div className="grid grid-cols-2 items-center mb-2 relative">
+                          <div className="grid grid-cols-2 justify-center items-center mb-2 relative px-5">
                             <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}>
                               <h4 className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${isAddButton ? "col-span-1" : "col-span-2"} `} >
                                 {location.name}
@@ -231,7 +231,7 @@ const ProductHorizontalSlide = ({
                           </div>
                           {
                             url == "variation_2" && (
-                              <div className="flex flex-wrap gap-2 items-center my-2">
+                              <div className="flex flex-wrap justify-center gap-2 items-center my-2">
                                 <span>{location?.rating ? location?.rating : ""}</span>
                                 {
                                   reviewArr &&
