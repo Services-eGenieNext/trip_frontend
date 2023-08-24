@@ -52,6 +52,7 @@ export default function Home() {
             />
             
             <ActivitiesSlider activitiesState={activities} />
+            
             <Products title="Top Restaurants In The World" isAddButton={false} rows="2" restaurantsState={restaurants} />
         </main>
     )
