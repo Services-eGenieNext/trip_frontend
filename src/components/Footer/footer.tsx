@@ -36,13 +36,13 @@ export default function Footer() {
             href={"/results?address=USA"}
             className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium sm:border-r-2 border-[#444658] cursor-pointer"
           >
-            Results
+            Inspiration
           </Link>
           <Link
             href={"/trip-plan-v1?address=USA"}
             className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium sm:border-r-2 border-[#444658] cursor-pointer"
           >
-            Itinerary
+            Build a Trip
           </Link>
           <Link
             href={"/"}

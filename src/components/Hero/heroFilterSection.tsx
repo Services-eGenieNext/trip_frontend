@@ -40,6 +40,10 @@ export default function HeroFilterSection() {
 
   const route = useRouter();
 
+  useEffect(()=>{
+console.log(locationSearch,"locationSearch")
+  },[locationSearch])
+
   useEffect(() => {
     setLocationSearch({ ...locationSearch, dates: date });
 
@@ -71,7 +75,7 @@ export default function HeroFilterSection() {
     <div
       className={`bg-white p-8 sm:flex block flex-wrap justify-center rounded-xl sm-width gap-y-5`}
     >
-      <SelectField
+      {/* <SelectField
         label="Location"
         placeholder="Select ..."
         data={LocationJson}
@@ -87,6 +91,18 @@ export default function HeroFilterSection() {
           setLocationSearch({ ...locationSearch, location: val })
         }
         onAdditionalChange={(_data) => {}}
+      /> */}
+      <InputField
+      className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] h-[46px]`}
+      name="location"
+      type="text"
+      label="Location"
+      placeholder="Enter Location"
+      value={locationSearch.location}
+      icon={<SimpleLocation />}
+      onChange={(e)=>{
+        setLocationSearch({...locationSearch, location: e.target.value})
+      }}
       />
 
       <DateRangeField
@@ -101,7 +117,7 @@ export default function HeroFilterSection() {
       />
 
       <MultiSelectDropdown key={1}
-        searchBar
+        // searchBar
         items={Occasion}
         Label={"Occasion"}
         heightItemsContainer="300px"
@@ -114,7 +130,7 @@ export default function HeroFilterSection() {
       />
 
       <MultiSelectDropdown key={2}
-        searchBar
+        // searchBar
         items={Priority}
         Label={"Priority"}
         heightItemsContainer="300px"
@@ -130,8 +146,8 @@ export default function HeroFilterSection() {
         label="Travelers"
         placeholder="Select ..."
         data={Travelers}
-        className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] ${styles.inputWrapper}`}
-        value={locationSearch.travelers}
+        className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] h-[46px]`}
+        value={locationSearch.person}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, person: val })
         }
@@ -139,11 +155,11 @@ export default function HeroFilterSection() {
       />
 
 <SelectField
-        label="Spending"
-        placeholder="Select ..."
+        label="Budget"
+        placeholder="Select"
         data={SpendingValue}
-        className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] ${styles.inputWrapper}`}
-        value={locationSearch.travelers}
+        className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] h-[46px]`}
+        value={locationSearch.spending}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, spending: val })
         }

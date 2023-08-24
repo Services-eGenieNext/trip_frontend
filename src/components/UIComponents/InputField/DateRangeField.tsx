@@ -84,7 +84,7 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
             </div>
             </div>
 
-            <div ref={dropDownRef} className={`hidden opacity-0 absolute top-[50px] min-w-[250px] w-auto bg-white border-gray-100 rounded-xl large-shadow overflow-hidden large-shadow z-[9] transition-all duration-300`}>
+            <div ref={dropDownRef} className={`hidden opacity-0 absolute top-[50px] sm:min-w-[250px] min-w-full bg-white border-gray-100 rounded-xl large-shadow overflow-hidden large-shadow z-[9] transition-all duration-300`}>
                 <DateRange 
                     minDate={addDays(new Date(), -0)}
                     editableDateInputs={true}

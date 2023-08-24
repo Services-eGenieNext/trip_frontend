@@ -11,6 +11,7 @@ import CountryLocation from '@/data/country.json'
 import CityLocation from '@/data/city.json'
 import AllLocation from '@/data/mixLocation.json'
 import SelectField from "@/components/UIComponents/InputField/SelectField";
+import InputField from "@/components/UIComponents/InputField/InputField";
 import { useAppDispatch } from "@/redux/hooks";
 import surveySlice, { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { useRouter } from "next/navigation";
@@ -20,6 +21,7 @@ import CalenderIcon from "../../icons/Calender";
 import styles from "../Header.module.css";
 import MultiSelectDropdown from "@/components/Header/survey/MultiSlected";
 import RadioInputs from "@/components/UIComponents/RadioInput/RadioInput";
+import SimpleLocation from "../../icons/SimpleLocation";
 
 const Survey = ({ show, onClose }: ISurvey) => {
   const dispatch = useAppDispatch();
@@ -95,15 +97,15 @@ const Survey = ({ show, onClose }: ISurvey) => {
 
   useEffect(() => {
     if(survey.selectedOption == "continent"){
-      setLocationInputLabel("Trending Continent")
+      setLocationInputLabel("Continent")
       setDropdownLocationValue(ContinentLocation)
     }
     if(survey.selectedOption == "country"){
-      setLocationInputLabel("Trending Country")
+      setLocationInputLabel("Country")
       setDropdownLocationValue(CountryLocation)
     }
     if(survey.selectedOption == "city"){
-      setLocationInputLabel("Trending City")
+      setLocationInputLabel("City")
       setDropdownLocationValue(CityLocation)
     }
     if(survey.selectedOption == "no"){
@@ -115,6 +117,10 @@ const Survey = ({ show, onClose }: ISurvey) => {
       setDropdownLocationValue(LocationJson)
     }
   }, [survey]);
+
+  useEffect(()=>{
+setSurvey({...survey, location:"" })
+  },[survey.selectedOption])
 
   const [step, setStep] = useState(1);
 
@@ -241,7 +247,22 @@ const Survey = ({ show, onClose }: ISurvey) => {
 
         <div className="my-10 w-full text-center flex flex-col items-center">
           <p className="">{questions[step - 1]?.title}</p>
-          <div className="my-4 pt-3 flex flex-col gap-4 items-start">
+          <div className="my-4 pt-3 flex flex-col gap-4 items-start sm:w-auto w-full sm:px-0 px-5">
+           {/* <SelectField
+                  label={locationInputLabel}
+                  placeholder="Select ..."
+                  data={dropdownLocationValue}
+                  className={`mr-2 mt-5 mb-2 sm:w-[400px] w-full`}
+                  styling={{
+                      dropdownHeight: "max-h-[140px]",
+                      shadow: "drop-shadow-xl ",
+                      left: "0px",
+                      top: "70px",
+                    }}
+                    value={survey.location}
+                    onChange={(val) => setSurvey({ ...survey, location: val })}
+                    onAdditionalChange={(_data) => {}}
+                  /> */}
             {questions[step - 1]?.type === "location" ? (
               questions[step - 1].options.length > 0 && questions[step - 1].options.map((options:any,index:number)=>{
                 return (
@@ -253,22 +274,19 @@ const Survey = ({ show, onClose }: ISurvey) => {
                   checked={options.field}
                 />
                 {options.field == true && (
-                  <SelectField
-                  label={locationInputLabel}
-                  placeholder="Select ..."
-                  data={dropdownLocationValue}
-                  className={`mr-2 mt-5 mb-2 sm:w-[400px]`}
-                  styling={{
-                    dropdownHeight: "max-h-[140px]",
-                    shadow: "drop-shadow-xl ",
-                    left: "0px",
-                    top: "70px",
-                  }}
-                  value={survey.location}
-                  onChange={(val) => setSurvey({ ...survey, location: val })}
-                  onAdditionalChange={(_data) => {}}
-                />
-                )}
+                  <InputField
+      className={`sm:mr-2 sm:my-2 my-5 w-full h-[46px]`}
+      name="location"
+      type="text"
+      label={locationInputLabel}
+      placeholder={`Enter ${locationInputLabel}`}
+      value={survey.location}
+      icon={<SimpleLocation />}
+      onChange={(e)=>{
+        setSurvey({...survey, location: e.target.value})
+      }}
+      />
+                  )}
                 </div>
                 )
               })
@@ -277,7 +295,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
             )}
             {questions[step - 1]?.type === "occasions" && (
               <MultiSelectDropdown
-                searchBar
+                // searchBar
                 items={Occasion}
                 saveData={saveData}
                 setSaveData={setSaveData}
@@ -293,7 +311,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
             )}
             {questions[step - 1]?.type === "activities" && (
               <MultiSelectDropdown
-                searchBar
+                // searchBar
                 disabled
                 saveData={saveData}
                 setSaveData={setSaveData}

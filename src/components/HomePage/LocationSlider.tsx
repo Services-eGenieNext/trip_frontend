@@ -137,12 +137,12 @@ const LocationSlider = ({
     <div className="w-full flex justify-center">
       <Section className="relative">
         {!loading ? (
-          <>
+          <div className="flex flex-col items-center">
             <ComponentTitle title={Title} />
-            <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2">
+            <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2 text-center">
               {Description}
             </p>
-          </>
+          </div>
         ) : (
           <div className="md:px-0 px-5">
             <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[400px] w-full h-[30px]"></div>
@@ -212,10 +212,10 @@ const LocationSlider = ({
                         {location?.details?.address_components?.length > 0 && (
                           <div
                             className={
-                              "absolute bottom-4 left-0 text-white font-bold w-full text-[16px] text-start"
+                              "absolute bottom-4 left-0 text-white font-bold w-full text-[16px] text-center"
                             }
                           >
-                            <div className="pl-6 pr-2">
+                            <div className="pr-2">
                               {location?.details?.address_components?.map((address: any, index: number) => {
                                   return(
                                     <span key={index}>

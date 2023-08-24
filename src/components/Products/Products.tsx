@@ -101,12 +101,14 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
       />
       <div className="w-full flex justify-center px-0">
         <Section className="relative">
+          <div className="flex flex-col items-center">
           <ComponentTitle title={title} />
           <p className="text-[var(--gray)] sm:max-w-[550px] my-5">
             Great food is the make or break between a good and a great travel
             experience, so never settle with these top restaurants in the entire
             world!
           </p>
+          </div>
 
           <div className={`grid grid-cols-1 md:grid-cols-${rows}`}>
             {loading === true

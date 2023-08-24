@@ -224,12 +224,12 @@ useEffect(() => {
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{Label}</label>
             </div>
-      <Box className="flex items-center border border-[#C9D2DD] h-[100px] w-full bg-white rounded-2xl py-4 px-2">
+      <Box className="flex items-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-2">
       <Box
-        className="flex items-center justify-between w-full overflow-hidden cursor-pointer"
+        className="flex items-center justify-between overflow-hidden cursor-pointer w-full "
       >
         <Box
-        className="overflow-hidden pt-4 pb-2 h-[100px]"
+        className="overflow-hidden pt-4 pb-2 h-full"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
@@ -241,7 +241,7 @@ useEffect(() => {
           <Box
             // display="flex"
             // alignItems="center"
-            className="flex flex-wrap gap-1 h-full w-full mr-2"
+            className="flex flex-wrap gap-1 h-full w-full mr-2 cursor-pointer"
             sx={{
               overflowY: "scroll",
               overflowX: "hidden",
@@ -332,7 +332,7 @@ useEffect(() => {
       {/* Dropdown list */}
       <Box
       ref={ref}
-      className="sm:w-[400px] w-[250px] overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300"
+      className="sm:w-[400px] w-full overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300"
         position="absolute"
         left="0"
         right="0"
@@ -377,7 +377,8 @@ useEffect(() => {
             <Inputsearch
               onChange={(e: any) => setCustomeField(e.target.value)}
               style={{ outline: "none" }}
-              placeholder="Add Occassion"
+              placeholder={`Add ${Label}`}
+              value={customeField}
             />
           </Box>
           <Box className="flex items-center text-[20px]">
@@ -388,18 +389,20 @@ useEffect(() => {
             <AiFillCloseCircle
               className="text-red-500 cursor-pointer"
               onClick={() => {
-                setAddCustomeOption(false);
                 setCustomeField("");
+                setAddCustomeOption(false);
               }}
             />
           </Box>
         </Box>
 
         <Box
+        className="flex flex-col items-center"
           height={heightItemsContainer}
           py="10px"
           sx={{ overflowY: "auto" }}
         >
+<div className="sm:w-[60%] w-[90%]">
           <span
             className={`flex items-center gap-x-3 pb-3 px-6 cursor-pointer select-none ${addCustomeOption ? "hidden" : ""}`}
             onClick = {handleAddLabel}
@@ -442,6 +445,7 @@ useEffect(() => {
               </Box>
             );
           })}
+          </div>
         </Box>
       </Box>
       </Box>

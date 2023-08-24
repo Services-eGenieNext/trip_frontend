@@ -232,7 +232,7 @@ useEffect(() => {
           <Box
             // display="flex"
             // alignItems="center"
-            className="flex flex-wrap gap-1 h-full w-full"
+            className="flex flex-wrap gap-1 h-full w-full cursor-pointer"
             sx={{
               overflowY: "scroll",
               overflowX: "hidden",
@@ -323,7 +323,7 @@ useEffect(() => {
       {/* Dropdown list */}
       <Box
       ref={ref}
-      className="sm:w-[300px] w-[250px] overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300"
+      className="sm:w-[300px] w-full overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300"
         position="absolute"
         left="0"
         right="0"
@@ -361,14 +361,15 @@ useEffect(() => {
           display={!addCustomeOption? "none" : "flex"}
           pl="20px"
           pr="10px"
-          className="bg-[rgb(239,242,247)] justify-between items-center h-[39px]"
+          className="bg-[rgb(239,242,247)] justify-between items-center h-[39px] w-full"
           onClick={focusInputSearch}
         >
           <Box width="100%" mr="10px">
             <Inputsearch
               onChange={(e: any) => setCustomeField(e.target.value)}
               style={{ outline: "none" }}
-              placeholder="Add Occassion"
+              placeholder={`Add ${Label}`}
+              value={customeField}
             />
           </Box>
           <Box className="flex items-center text-[20px]">
@@ -387,10 +388,12 @@ useEffect(() => {
         </Box>
 
         <Box
+        className="flex flex-col items-center"
           height={heightItemsContainer}
           py="10px"
           sx={{ overflowY: "auto" }}
         >
+<div className="w-[80%]">
           <span
             className={`flex items-center gap-x-3 pb-3 px-6 cursor-pointer select-none ${addCustomeOption ? "hidden" : ""}`}
             onClick = {handleAddLabel}
@@ -433,6 +436,7 @@ useEffect(() => {
               </Box>
             );
           })}
+          </div>
         </Box>
       </Box>
       </Box>
