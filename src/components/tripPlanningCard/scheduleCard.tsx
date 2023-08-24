@@ -26,10 +26,6 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
 
     const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
 
-    const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
-      console.log(e.dataTransfer.getData('product'))
-    }
-
     function formatTime(timeString: string) {
       if(timeString == "" || timeString.search('Open') !== -1)
       {
@@ -42,6 +38,24 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
     }
 
     const dispatch = useAppDispatch()
+
+    const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
+      let _loc = e.dataTransfer.getData('product')
+      _loc = JSON.parse(_loc)
+
+      let _itineraryDays = [...itineraryDays]
+      let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
+      let timeIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location.name === items.name)
+      _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
+      _itineraryDays[dayIndex].times = [..._itineraryDays[dayIndex].times]
+      _itineraryDays[dayIndex].times[timeIndex] = {..._itineraryDays[dayIndex].times[timeIndex]}
+      _itineraryDays[dayIndex].times[timeIndex].location = _loc
+
+      dispatch(setItineraryDays([..._itineraryDays]))
+
+      
+      console.log(_loc)
+    }
 
     const ChangeTimeFunc = () => {
 

@@ -7,6 +7,10 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 
 const DateRangeField = ({className, label, value, placeholder="", icon, onChange= (val: Range)=>{}}: IDateRangeField) => {
 
+    let startDate = new Date()
+    let endDate = new Date()
+    endDate.setDate(endDate.getDate() + 6)
+
     const [date, setDate] = useState<Range>(value)
 
     const [openDropDown, setOpenDropDown] = useState(false)
@@ -44,7 +48,6 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
         }
         else
         {
-            console.log('openDropDown', openDropDown)
             dropDownRef.current?.classList.add('opacity-0')
             dropDownRef.current?.classList.add('-translate-y-5')
             setTimeout(() => {
@@ -86,7 +89,11 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
                     minDate={addDays(new Date(), -0)}
                     editableDateInputs={true}
                     moveRangeOnFirstSelection={false}
-                    ranges={[date]}
+                    ranges={[{
+                        ...date,
+                        startDate: date.startDate ? date.startDate : startDate,
+                        endDate: date.endDate ? date.endDate : endDate
+                    }]}
                     onChange={(item) => {
                         setDate(item.selection)
                     }}
