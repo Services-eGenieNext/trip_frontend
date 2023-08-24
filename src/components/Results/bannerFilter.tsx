@@ -87,7 +87,7 @@ export default function HeroFilterSection({ surveyData }: any) {
       className={`bg-white p-8 sm:flex block flex-wrap justify-center rounded-xl sm-width`}
     >
 
-      <SelectField
+      {/* <SelectField
         label="Location"
         placeholder="Select ..."
         data={LocationJson}
@@ -98,6 +98,19 @@ export default function HeroFilterSection({ surveyData }: any) {
         }
         icon={<SimpleLocation />}
         onAdditionalChange={(_data) => {}}
+      /> */}
+
+<InputField
+      className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] h-[46px]`}
+      name="location"
+      type="text"
+      label="Location"
+      placeholder="Enter Location"
+      value={locationSearch.location}
+      icon={<SimpleLocation />}
+      onChange={(e)=>{
+        setLocationSearch({...locationSearch, location: e.target.value})
+      }}
       />
 
       <DateRangeField
@@ -109,7 +122,7 @@ export default function HeroFilterSection({ surveyData }: any) {
       />
 
       <MultiSelectDropdown
-        searchBar
+        // searchBar
         items={Occasion}
         Label={"Occasion"}
         heightItemsContainer="300px"
@@ -122,7 +135,7 @@ export default function HeroFilterSection({ surveyData }: any) {
       />
 
       <MultiSelectDropdown
-        searchBar
+        // searchBar
         items={Priority}
         Label={"Priority"}
         heightItemsContainer="300px"
@@ -147,7 +160,7 @@ export default function HeroFilterSection({ surveyData }: any) {
       />
 
       <SelectField
-        label="Spending"
+        label="Budget"
         placeholder="Select ..."
         data={Spending}
         className={`mr-2 sm:my-2 my-5 sm:w-[150px] ${styles.inputWrapper}`}

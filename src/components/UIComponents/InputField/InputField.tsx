@@ -20,9 +20,11 @@ const InputField = ({className,name, label, type, value="", placeholder="", onCh
                     />
                 </div>
             </div>
-            <label className="absolute top-[-0.7rem] left-[1rem] px-[5px]"
+            <div className="absolute top-[-0.5rem] left-0 w-full flex justify-center items-center">
+            <label className="px-[5px] text-[11px] uppercase letter-spacing"
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{label}</label>
+            </div>
         </div>
     )
 

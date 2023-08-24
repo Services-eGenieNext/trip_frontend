@@ -90,9 +90,11 @@ const TripPlanningHeader = ({ variation = "space-arround" }: ITripPlanningHeader
                         <div className="w-full h-[44px] border-t border-[#E3E6EC] rounded-xl mt-3 py-3 text-right">
                         <h1 className="text-[#009DE2]">$3000</h1>
                         </div>
-                        <div className="flex items-center gap-x-2 text-[#F48911] mt-3">
+                        <div className="flex items-start gap-x-2 text-[#F48911] mt-3">
+                            <div className="w-[10px] h-[10px] mr-2">
                   <FiAlertCircle />
-                  <p className="text-[12px] mt-1">Prices are determined by assumptions.</p>
+                  </div>
+                  <p className="text-[12px]">Prices are factored based on assumed cost, but your actual cost will be determined by your spending choices. This tool was designed to give you a preview of the price range for your trip.</p>
                 </div>
                     </div>
                     ) : (

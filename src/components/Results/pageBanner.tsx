@@ -58,9 +58,9 @@ setLocationSearch(survey)
             <h2 className="text-white font-bold text-2xl lg:text-6xl lg:my-5 text-center w-full gilroy">
               Results
             </h2>
-            <p className="lg:mt-4 lg:mb-8 text-white text-lg max-w-[700px] text-center">
+            {/* <p className="lg:mt-4 lg:mb-8 text-white text-lg max-w-[700px] text-center">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
-            </p>
+            </p> */}
             <div
               className={`lg:block hidden mt-4 rounded-xl ${styles["result_banner"]}`}
             >
