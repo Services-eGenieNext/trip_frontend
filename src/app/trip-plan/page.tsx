@@ -85,7 +85,7 @@ const TripPlan = () => {
 
 
         setParamsList({
-            address: _address ?? 'best locations',
+            address: _address ?? 'USA',
             location_id: _location_id ?? '',
             place_id: _place_id ?? '',
             v_type: _v_type ? _v_type : '',
@@ -99,15 +99,17 @@ const TripPlan = () => {
 
     return (
         <div className='overflow-x-hidden w-full'>
-            <PageBanner title={automateLocation?.name ?? params_list.address + ' Trip Plan'} automateLocation={automateLocation} />
-          
-            <TripPlanningCard 
-                params_list={params_list}
-                address={`${params_list.address}`} 
-                totalOpeningHours={openingHours} 
-                automateLocation={automateLocation} 
-                v_type={params_list.v_type}
-            />
+            <PageBanner title={automateLocation?.address_components.find((adr: any) => adr.types[0] === "administrative_area_level_1")?.long_name ?? 'Trip Plan'} automateLocation={automateLocation} />
+            {
+                params_list.address && 
+                <TripPlanningCard 
+                    params_list={params_list}
+                    address={`${params_list.address}`} 
+                    totalOpeningHours={openingHours} 
+                    automateLocation={automateLocation} 
+                    v_type={params_list.v_type}
+                />
+            }
 
             {
                 (params_list.v_type === "1" || params_list.v_type === "") && automateLocation?.name !== "" &&

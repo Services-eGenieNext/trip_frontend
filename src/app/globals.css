@@ -132,8 +132,10 @@ body {
 
 .fit-screen {
     overflow: hidden;
-    max-height: 100vh;
-    height: 100vh;
+}
+
+body.fit-screen::-webkit-scrollbar {
+    display: none;
 }
 
 .large-shadow {
