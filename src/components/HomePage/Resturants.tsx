@@ -177,6 +177,10 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                               <button
                                 className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
                                 onClick={() => {
+                                  setItem({
+                                    locaiton_id: restaurant.location_id,
+                                    place_id: restaurant.place_id,
+                                  });
                                   setShowTripPopup(true);
                                 }}
                               >
