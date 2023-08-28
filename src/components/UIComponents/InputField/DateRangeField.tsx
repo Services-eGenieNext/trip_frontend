@@ -94,7 +94,16 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
                         startDate: date.startDate ? date.startDate : startDate,
                         endDate: date.endDate ? date.endDate : endDate
                     }]}
+                    showDateDisplay={false}
                     onChange={(item) => {
+                        let _item = item
+                        
+                        if(_item.selection.startDate === _item.selection.endDate)
+                        {
+                            const endDate: any = _item.selection.startDate
+                            _item.selection.endDate = addDays(endDate, 6)
+                        }
+
                         setDate(item.selection)
                     }}
                 />

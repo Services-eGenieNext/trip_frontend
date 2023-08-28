@@ -191,6 +191,10 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                               <button
                                 className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
                                 onClick={() => {
+                                  setItem({
+                                    locaiton_id: restaurant.location_id,
+                                    place_id: restaurant.place_id,
+                                  });
                                   setShowTripPopup(true);
                                 }}
                               >
@@ -265,12 +269,7 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
         restaurant={openRestaurant}
         onClose={() => setOpenModal(false)}
       />
-      {/* {openModal == true ? (
-                // <Modal openModal={openModal} setOpenModal={setOpenModal} modalFor="view_otehr_places" />
-                
-            ):(
-                ""
-            )} */}
+      
     </div>
   );
 };
