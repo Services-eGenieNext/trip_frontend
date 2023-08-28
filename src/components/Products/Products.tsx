@@ -6,7 +6,7 @@ import LocationIcon from "../icons/Location";
 import Map from "/public/images/full-map-transparent.png";
 import Link from "next/link";
 import ComponentTitle from "../UIComponents/ComponentTitle";
-import Modal from "../Modal";
+// import Modal from "../Modal";
 import { useAppSelector } from "@/redux/hooks";
 import { useRouter } from "next/navigation";
 import { setLocationAddress } from "@/redux/reducers/locationSlice";

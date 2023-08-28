@@ -43,9 +43,9 @@ const SelectField = ({className,styling, label, data=[], value, placeholder, ico
         }
     }, [openDropDown])
 
-    // useEffect(()=>{
-    //     onChange(inputVal)
-    // },[inputVal])
+    useEffect(()=>{
+        onChange(inputVal)
+    },[inputVal])
 
     useEffect(()=>{
     setInputVal(value)
@@ -63,7 +63,7 @@ const SelectField = ({className,styling, label, data=[], value, placeholder, ico
                     }
                     <span className={`${inputVal ? 'text-black' : `text-[var(--lite-gray)]`} overflow-ellipsis overflow-hidden whitespace-nowrap`}>
                         {/* <input type="text" className='border-none outline-none h-full w-full' value={inputVal} placeholder={placeholder} onChange={(e)=>{setInputVal(e.target.value)}} /> */}
-                        <div>{inputVal != "" ? inputVal : placeholder}</div>
+                        {inputVal != "" ? inputVal : placeholder}
                     </span>
                     </div>
                     <span className="">
