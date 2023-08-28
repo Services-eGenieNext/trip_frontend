@@ -120,92 +120,59 @@ function ActivitiesSlider() {
     );
   }
 
-  const afterChange = (prev: number) => {
-    if(prev == 0){
-      setPrevBtnDisabled(true)
-    }else{
-      setPrevBtnDisabled(false)
-    }
-  };
+  // const afterChange = (prev: number) => {
+  //   if(prev == 0){
+  //     setPrevBtnDisabled(true)
+  //   }else{
+  //     setPrevBtnDisabled(false)
+  //   }
+  // };
 
   const settings = {
     dots: false,
-    infinite: false,
+    infinite: true,
     speed: 500,
-    slidesToShow: 7,
-    slidesToScroll: 7,
+    slidesToShow: 4,
+    slidesToScroll: 4,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     responsive: [
-      {
-        breakpoint: 1550,
+    {
+        breakpoint: 1200,
         settings: {
-          slidesToShow: 6,
-          slidesToScroll: 6,
-          infinite: false,
-          dots: false,
-          nextArrow: <SampleNextArrow />,
-          prevArrow: <SamplePrevArrow />,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: false,
+        dots: false,
+        nextArrow: <SampleNextArrow />,
+        prevArrow: <SamplePrevArrow />,
         },
-      },
-      {
-        breakpoint: 1330,
-        settings: {
-          slidesToShow: 5,
-          slidesToScroll: 5,
-          infinite: false,
-          dots: false,
-          nextArrow: <SampleNextArrow />,
-          prevArrow: <SamplePrevArrow />,
-        },
-      },
-      {
-        breakpoint: 1000,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-          infinite: false,
-          dots: false,
-          nextArrow: <SampleNextArrow />,
-          prevArrow: <SamplePrevArrow />,
-        },
-      },
-      {
+    },
+    {
         breakpoint: 800,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: false,
-          dots: false,
-          nextArrow: <SampleNextArrow />,
-          prevArrow: <SamplePrevArrow />,
+        slidesToShow: 2,
+        slidesToScroll: 2,
+        infinite: false,
+        dots: false,
+        nextArrow: <SampleNextArrow />,
+        prevArrow: <SamplePrevArrow />,
         },
-      },
-      {
-        breakpoint: 600,
+    },
+    {
+        breakpoint: 550,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          infinite: false,
-          dots: false,
-          nextArrow: <SampleNextArrow />,
-          prevArrow: <SamplePrevArrow />,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        infinite: false,
+        dots: false,
+        nextArrow: <SampleNextArrow />,
+        prevArrow: <SamplePrevArrow />,
         },
-      },
-      {
-        breakpoint: 380,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: false,
-          dots: false,
-          nextArrow: <SampleNextArrow />,
-          prevArrow: <SamplePrevArrow />,
-        },
-      },
+    },
     ],
-    afterChange,
-  };
+    // afterChange,
+};
 
   useEffect(()=>{
 console.log(prevBtnDisabled,"prevBtnDisabled")
