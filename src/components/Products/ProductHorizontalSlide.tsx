@@ -131,7 +131,7 @@ const ProductHorizontalSlide = ({
       {!loading ? (
           <div className="flex flex-col items-center">
           <ComponentTitle title={Title} />
-        <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2">{Description}</p>
+        <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2">We keep track of what cities are on the rise and which ones are falling so you can always stay ahead of the curve!</p>
           </div>
         ):(
           <div className="md:px-0 px-5">

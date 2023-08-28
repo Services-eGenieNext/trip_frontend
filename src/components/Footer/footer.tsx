@@ -12,18 +12,20 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import Survey from "../Header/survey/survey";
+import Modal from './modalForLocation'
 
 const SocialIcons = [
-  { icon: FaFacebookF, name: "Facebook" },
-  { icon: FaLinkedinIn, name: "Linkedin" },
-  { icon: FaTwitter, name: "Twitter" },
-  { icon: FaInstagram, name: "Instagram" },
+  { icon: FaFacebookF, name: "Facebook", Link:"" },
+  { icon: FaLinkedinIn, name: "Linkedin", Link:"" },
+  { icon: FaTwitter, name: "Twitter", Link:"https://twitter.com/weplanai?s=21&t=aoqnaoxxDOcdP5KJdtoLWQ" },
+  { icon: FaInstagram, name: "Instagram", Link:"https://www.instagram.com/weplan.ai/?igshid=OGQ5ZDc2ODk2ZA%3D%3D" },
 ];
 
 export default function Footer() {
   const [showSurvey, setShowSurvey] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   return (
-    <div className={`${CSS.footer} sm:h-[430px]`}>
+    <div className={`${CSS.footer} sm:h-[430px] pb-14`}>
       <Image src={DottedMap} className="absolute top-0 right-0 -z-10" alt="" />
       <div className="mt-16 pt-12 text-white flex flex-col items-center justify-between h-full w-full">
         <Link href={"/"} className="col-span-4 cursor-pointer">
@@ -38,12 +40,14 @@ export default function Footer() {
           >
             Inspiration
           </Link>
-          <Link
-            href={"/trip-plan-v1?address=USA"}
+          <div
             className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium sm:border-r-2 border-[#444658] cursor-pointer"
+            onClick={()=>{
+              setShowModal(true)
+            }}
           >
             Build a Trip
-          </Link>
+          </div>
           <Link
             href={"/"}
             className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium sm:border-r-2 border-[#444658] cursor-pointer"
@@ -65,24 +69,27 @@ export default function Footer() {
           {SocialIcons &&
             SocialIcons.map((social, index) => {
               return (
-                <div
+                <Link
+                  href={social?.Link}
+                  target="_blank"
                   key={index}
                   className={`${CSS["social_icon"]} rounded-full flex justify-center items-center text-black text-[20px] cursor-pointer`}
                 >
                   {<social.icon />}
-                </div>
+                </Link>
               );
             })}
         </div>
-        <div className="h-[74px] sm:w-[90%] sm:px-0 px-2 border-t-2 border-[#3C3F52] flex justify-center items-center">
+        {/* <div className="h-[74px] sm:w-[90%] sm:px-0 px-2 border-t-2 border-[#3C3F52] flex justify-center items-center">
           <p
             className={`sm:text-[18px] text-[14px] uppercase tracking-wider ${CSS["copyright"]}`}
           >
             Copyright © 2022 WePLAN. All rights reserved.
           </p>
-        </div>
+        </div> */}
       </div>
       <Survey show={showSurvey} onClose={() => setShowSurvey(false)} />
+      <Modal show={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 }

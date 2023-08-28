@@ -5,7 +5,7 @@ import PageBanner from "@/components/Results/pageBanner";
 import Section from "@/components/UIComponents/Section";
 import FilterSidebar from "@/components/Results/filterSidebar";
 import Lisitngs from "@/components/Results/lisitngs";
-import { LocationsCall } from "@/api-calls";
+import LocationsCallFromDB  from '@/api-calls/fromDB/location'
 import { useAppSelector } from "@/redux/hooks";
 import { useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
@@ -15,47 +15,37 @@ import { setSurveyValue } from "@/redux/reducers/surveySlice";
 export default function Results() {
   const dispatch = useAppDispatch();
   const { surveySlice } = useAppSelector((state) => state.surveyReducer);
-  const { locationsState }: any = useAppSelector(
-    (state) => state.locationReducer
-  );
+  // const { locationsState }: any = useAppSelector(
+  //   (state) => state.locationReducer
+  // );
+  const [locationsState, setLocationState] = useState([])
   const [locationsData, setLocationsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const params = useSearchParams();
-  const paramsAddress = params.get("address");
   const [clearFilter, setClearFilter] = useState(false);
 
-  const _def = async (paramsAddress: any) => {
+  const _def = async () => {
     setLoading(true);
-    if (paramsAddress) {
-      let res = await LocationsCall(
-        `best places for visit in ${paramsAddress} for tourist`
-      );
-      dispatch(setLocations(res));
+      let res = await LocationsCallFromDB()
+      setLocationState(res)
       setLocationsData(res);
-      setLoading(false);
-    }
+      if(res.length > 0){
+        setLoading(false);
+      }
   };
-  useEffect(() => {
-    if (paramsAddress) {
-      dispatch(setSurveyValue({ ...surveySlice, location: paramsAddress }));
-      _def(paramsAddress);
-    } else {
-      dispatch(setSurveyValue({ ...surveySlice, location: "" }));
-      _def("USA");
-    }
-  }, [paramsAddress]);
   useEffect(()=>{
-if(paramsAddress){
-  _def(paramsAddress);
-}else{
-  _def("USA");
-}
+    _def()
   },[])
+
+  useEffect(()=>{
+if(clearFilter == true){
+  _def()
+}
+  },[clearFilter])
 
   useEffect(() => {
     if (clearFilter == true) {
       setClearFilter(false);
-      setLocationsData(locationsState);
+      _def();
     }
   }, [clearFilter]);
 

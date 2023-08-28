@@ -42,9 +42,7 @@ export default function Home() {
 
             <LocationSlider 
                 Title='Trending Locations' 
-                Description='We keep track of what cities are on the rise and which ones are
-                falling so you can stress less and focus more on living your best
-                vacation life!' 
+                Description='We keep track of what cities are on the rise and which ones are falling so you can always stay ahead of the curve!' 
                 isAddButton={false} 
                 isDesc={false} 
                 locationsState={location} 

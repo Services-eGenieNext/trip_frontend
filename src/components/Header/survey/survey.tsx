@@ -22,6 +22,7 @@ import styles from "../Header.module.css";
 import MultiSelectDropdown from "@/components/Header/survey/MultiSlected";
 import RadioInputs from "@/components/UIComponents/RadioInput/RadioInput";
 import SimpleLocation from "../../icons/SimpleLocation";
+import Tooltip from '@mui/material/Tooltip';
 
 const Survey = ({ show, onClose }: ISurvey) => {
   const dispatch = useAppDispatch();
@@ -143,12 +144,12 @@ setSurvey({...survey, location:"" })
   },[survey])
 
   const handleSurvey = () => {
-    if (survey.dates.startDate || survey.location != "") {
+    dispatch(setSurveyValue(survey));
+    if (survey.dates.startDate) {
       router.push("/trip-plan?address=" + survey.location);
       onClose();
     } else {
       router.push(`/results?address=${survey.location}`);
-      dispatch(setSurveyValue(survey));
       onClose();
       setStep(1);
     }
@@ -173,6 +174,7 @@ setSurvey({...survey, location:"" })
 
       <div className="bg-[#FAFDFF] bg-opacity-50 border border-dashed border-[var(--blue)] rounded-xl p-4">
         <div className="flex flex-wrap gap-2 items-center justify-center">
+          <Tooltip title="Go to step 1">
           <span
             className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold cursor-pointer ${
               step > 0
@@ -185,8 +187,9 @@ setSurvey({...survey, location:"" })
           >
             01
           </span>
+          </Tooltip>
           <span className="flex w-[84px] h-[1px] border-[1.5px] border-[var(--blue)] border-dashed"></span>
-
+            <Tooltip title="Go to step 2">
           <span
             className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold cursor-pointer ${
               step > 1
@@ -200,8 +203,9 @@ setSurvey({...survey, location:"" })
           >
             02
           </span>
+            </Tooltip>
           <span className="flex w-[84px] h-[1px] border-[1.5px] border-[var(--blue)] border-dashed"></span>
-
+          <Tooltip title="Go to step 3">
           <span
             className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold cursor-pointer ${
               step > 2
@@ -215,8 +219,9 @@ setSurvey({...survey, location:"" })
           >
             03
           </span>
+          </Tooltip>
           <span className="flex w-[84px] h-[1px] border-[1.5px] border-[var(--blue)] border-dashed"></span>
-
+          <Tooltip title="Go to step 4">
           <span
             className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold cursor-pointer ${
               step > 3
@@ -229,8 +234,9 @@ setSurvey({...survey, location:"" })
           >
             04
           </span>
+          </Tooltip>
           <span className="flex w-[84px] h-[1px] border-[1.5px] border-[var(--blue)] border-dashed"></span>
-
+          <Tooltip title="Go to step 5">
           <span
             className={`flex justify-center items-center rounded-full border-4 border-[#C6E2EE] w-[50px] h-[50px] font-bold cursor-pointer ${
               step > 4
@@ -243,6 +249,7 @@ setSurvey({...survey, location:"" })
           >
             05
           </span>
+          </Tooltip>
         </div>
 
         <div className="my-10 w-full text-center flex flex-col items-center">

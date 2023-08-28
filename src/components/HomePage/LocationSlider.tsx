@@ -259,7 +259,6 @@ const LocationSlider = ({
                             <button
                               className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
                               onClick={() => {
-                                console.log("location", location);
                                 setItem({
                                   locaiton_id: location.location_id,
                                   place_id: location.place_id,

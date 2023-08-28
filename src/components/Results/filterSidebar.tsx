@@ -17,9 +17,9 @@ useEffect(()=>{
 },[locations])
   useEffect(()=>{
     const filteredArray = locationArray.filter((list:any)=>{
-      return parseInt(Ranking) == Number((list.rating).toFixed())
+      return parseInt(Ranking) == Math.floor(list?.details?.rating)
     })
-      setLocationsData(filteredArray)
+    setLocationsData(filteredArray)
   },[Ranking])
 
   return (
