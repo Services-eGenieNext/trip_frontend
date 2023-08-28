@@ -60,12 +60,14 @@ const PageBanner = ({title, automateLocation}: IPageBanner) => {
                 <div className="absolute inset-0" style={{background: 'linear-gradient(360deg, #00000069, #00000069, transparent)'}}></div>
                 <span className="font-extrabold text-5xl md:text-7xl Poppins text-white text-center z-[1]">{title}</span>
             </div>
-
-            <Link href={automateLocation.url} target="_blank" className="absolute bottom-2 right-5 cursor-pointer select-none w-fit h-max rounded-xl overflow-hidden shadow">
-                <div className="relative">
-                    <Image src={MapIcon} alt='Map icon' style={{objectFit: "contain"}} />
-                </div>
-            </Link>
+            {
+                automateLocation?.url && 
+                <Link href={automateLocation.url} target="_blank" className="absolute bottom-2 right-5 cursor-pointer select-none w-fit h-max rounded-xl overflow-hidden shadow">
+                    <div className="relative">
+                        <Image src={MapIcon} alt='Map icon' style={{objectFit: "contain"}} />
+                    </div>
+                </Link>
+            }
         </div>
     )
 }
