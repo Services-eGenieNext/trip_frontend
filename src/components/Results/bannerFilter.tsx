@@ -47,8 +47,8 @@ console.log(locationSearch,"locationSearch123")
   useEffect(() => {
     let data = {
       location: surveyData.location,
-      occassion: surveyData.occassion,
-      priority: surveyData.priority,
+      occassion: surveyData.occassion && surveyData.occassion.length > 0 ? surveyData.occassion : [],
+      priority: surveyData.priority && surveyData.priority.length > 0 ? surveyData.priority : [],
       person: surveyData.person ? surveyData.person : "",
       spending: surveyData.spending ? surveyData.spending : "",
       dates: "",
@@ -130,7 +130,7 @@ console.log(locationSearch,"locationSearch123")
         Label={"Occasion"}
         heightItemsContainer="300px"
         className={'sm:w-[150px]'}
-        SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
+        SelectedData={locationSearch?.occassion?.length > 0 ? locationSearch.occassion : []}
         placeholder="Select..."
         saveData={saveData}
         setSaveData={setSaveData}
@@ -145,7 +145,7 @@ console.log(locationSearch,"locationSearch123")
         Label={"Priority"}
         heightItemsContainer="300px"
         className={'sm:w-[150px]'}
-        SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
+        SelectedData={locationSearch?.priority?.length > 0 ? locationSearch.priority : []}
         saveData={saveData}
         setSaveData={setSaveData}
         placeholder="Select..."
