@@ -38,10 +38,10 @@ const Hero = () => {
           />
           <div className="absolute bottom-0 left-0 top-0 right-0 px-8 flex flex-col justify-center items-center xl:my-[8rem] sm-width">
             <h1 className="uppercase sm:leading-10 text-white font-normal text-[16px] sm:text-[22px] lg:text-[30px] lg:my-5 sm:my-3 my-0 gilroy plan">
-              Plan Your Dream
+            PLAN YOUR DREAM TRIP IN SECOND WITH
             </h1>
             <h2 className="leading-10 text-white font-bold text-[22px] sm:text-[48px] lg:text-[68px] lg:my-5 sm:my-3 my-0 text-center w-full gilroy">
-              Trip In Seconds With WePlan
+              <a href={'/results'}>WePlan</a>
             </h2>
             <p className="lg:mb-10 lg:mt-2 text-white sm:text-[22px] text-[16px] max-w-[720px] text-center lato">
               We take away all the hassle associated with trip planning. Be

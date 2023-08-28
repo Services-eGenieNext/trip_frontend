@@ -14,7 +14,7 @@ import styles from "./hero.module.css";
 import { Range } from "react-date-range";
 import { addDays } from "date-fns";
 import { useRouter } from "next/navigation";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch,useAppSelector } from "@/redux/hooks";
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { setLocations } from "@/redux/reducers/locationSlice";
 import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
@@ -28,7 +28,8 @@ export default function HeroFilterSection() {
 
   const [startedDayIndex, setStartedDayIndex] = useState<number | null>(null)
   const [daysLength, setDaysLength] = useState<number | null>(null)
-
+  const { surveySlice } = useAppSelector((state) => state.surveyReducer);
+  const [saveData, setSaveData] = useState(false)
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: [],
@@ -38,11 +39,10 @@ export default function HeroFilterSection() {
     spending:"",
   });
 
-  const route = useRouter();
-
   useEffect(()=>{
-console.log(locationSearch,"locationSearch")
-  },[locationSearch])
+    setSaveData(true)
+setLocationSearch({...locationSearch,surveySlice})
+  },[surveySlice])
 
   useEffect(() => {
     setLocationSearch({ ...locationSearch, dates: date });
@@ -64,7 +64,8 @@ console.log(locationSearch,"locationSearch")
   }, [date]);
 
   const handleRoute = () => {
-    if (locationSearch.location !== "") {
+    dispatch(setSurveyValue({...surveySlice,locationSearch}))
+    if (locationSearch.dates.startDate) {
       router.push("/trip-plan?address=" + locationSearch.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
       router.push("/results?address=" + locationSearch.location);
@@ -122,7 +123,9 @@ console.log(locationSearch,"locationSearch")
         Label={"Occasion"}
         heightItemsContainer="300px"
         className={"sm:w-[170px]"}
-        // SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
+        SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
+        saveData={saveData}
+        setSaveData={setSaveData}
         placeholder="Select..."
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
@@ -135,7 +138,9 @@ console.log(locationSearch,"locationSearch")
         Label={"Priority"}
         heightItemsContainer="300px"
         className={"sm:w-[170px]"}
-        // SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
+        SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
+        saveData={saveData}
+        setSaveData={setSaveData}
         placeholder="Select..."
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, priority: val })
@@ -167,7 +172,7 @@ console.log(locationSearch,"locationSearch")
       />
 
       <BlueButton
-        title={locationSearch.location !== "" ? "Automate My trip" : "Look For Inspiration"}
+        title={locationSearch.dates.startDate ? "Automate My trip" : "Look For Inspiration"}
         className="sm:w-[200px] w-full"
         onClick={handleRoute}
       />

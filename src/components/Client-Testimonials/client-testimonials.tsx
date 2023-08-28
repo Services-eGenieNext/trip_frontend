@@ -3,7 +3,7 @@ import ComponentTitle from "../UIComponents/ComponentTitle";
 import { BlankStar, FilledStar } from "../icons/Stars";
 import BlueButton from "../UIComponents/Buttons/BlueButton";
 import styles from "./client-testimonials.module.css";
-import Modal from "../Modal/index";
+// import Modal from "../Modal/index";
 import { ReviewsCall } from "@/api-calls";
 import { useAppSelector } from "@/redux/hooks";
 import Section from "../UIComponents/Section";

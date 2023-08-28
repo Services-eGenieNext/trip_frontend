@@ -29,6 +29,7 @@ export default function HeroFilterSection({ surveyData }: any) {
   const [date, setDate] = useState<any>({
     key: "selection",
   });
+  const [saveData, setSaveData] = useState(false)
 
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
@@ -39,22 +40,26 @@ export default function HeroFilterSection({ surveyData }: any) {
     spending:"",
   });
 
+  useEffect(()=>{
+console.log(locationSearch,"locationSearch123")
+  },[locationSearch])
+
   useEffect(() => {
     let data = {
       location: surveyData.location,
       occassion: surveyData.occassion,
       priority: surveyData.priority,
       person: surveyData.person ? surveyData.person : "",
-      spending: "",
+      spending: surveyData.spending ? surveyData.spending : "",
       dates: "",
     }
+    setSaveData(true)
     setLocationSearch(
       data
     );
   }, [surveyData]);
 
   useEffect(() => {
-    console.log(date,"date")
     setLocationSearch({ ...locationSearch, dates: date });
   }, [date]);
 
@@ -63,17 +68,15 @@ export default function HeroFilterSection({ surveyData }: any) {
         const currentDate = new Date();
         const endDate = new Date(date.endDate)
         const startDate = new Date(date.startDate)
-        console.log(endDate,"endDate",startDate,"startDate")
         const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
         const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-        console.log(daysRemaining,"daysRemaining")
     };
 
     calculateDaysRemaining();
 }, [date]);
 
   const handleRoute = () => {
-    if (locationSearch.location !== "") {
+    if (locationSearch.dates.startDate !== "") {
       router.push("/trip-plan?address=" + locationSearch.location);
     } else {
       router.push("/results?address=" + locationSearch.location);
@@ -127,8 +130,10 @@ export default function HeroFilterSection({ surveyData }: any) {
         Label={"Occasion"}
         heightItemsContainer="300px"
         className={'sm:w-[150px]'}
-        // SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
+        SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
         placeholder="Select..."
+        saveData={saveData}
+        setSaveData={setSaveData}
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
         }
@@ -140,7 +145,9 @@ export default function HeroFilterSection({ surveyData }: any) {
         Label={"Priority"}
         heightItemsContainer="300px"
         className={'sm:w-[150px]'}
-        // SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
+        SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
+        saveData={saveData}
+        setSaveData={setSaveData}
         placeholder="Select..."
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, priority: val })
@@ -172,7 +179,7 @@ export default function HeroFilterSection({ surveyData }: any) {
       />
 
       <BlueButton
-        title={locationSearch.location !== "" ? "Automate My trip" : "Look For Inspiration"}
+        title={locationSearch.dates.startDate ? "Automate My trip" : "Look For Inspiration"}
         className="sm:w-[200px] w-full"
         onClick={handleRoute}
       />

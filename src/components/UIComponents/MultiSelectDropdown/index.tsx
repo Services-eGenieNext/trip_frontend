@@ -14,6 +14,8 @@ interface TypeProps {
   Label?: string;
   className?:string
   disabled?:any;
+  saveData?:any;
+  setSaveData?:any;
 }
 
 interface TypeOpt {
@@ -41,7 +43,9 @@ export default function SelectCheckBoxSimple({
   Label,
   SelectedData,
   disabled,
-  className
+  className,
+  saveData,
+  setSaveData
 }: TypeProps) {
   const [showDropDown, setShowDropDown] = useState(false);
   const [search, setSearch] = useState("");
@@ -51,6 +55,14 @@ export default function SelectCheckBoxSimple({
   const [addCustomeOption, setAddCustomeOption] = useState(false);
   const [customeField, setCustomeField] = useState("");
   const ref = useRef<HTMLInputElement>(null);
+
+  useEffect(()=>{
+    console.log(SelectedData,"SelectedData")
+    if(SelectedData?.length > 0 && saveData == true){
+      setOptsSelected(SelectedData)
+      setSaveData(false)
+    }
+      },[SelectedData])
 
   useEffect(() => {
     const newArray: any = items?.map((opt: any) => ({ opt, checked: false }));
