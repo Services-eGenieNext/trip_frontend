@@ -84,6 +84,7 @@ const ClientTestimonials = ({ automateLocation }:IClientTestimonials) => {
         setLocationOptions([..._list])
       }
     }
+
     _locationOptionFunc()
   }, [locaitonList])
 
@@ -91,17 +92,18 @@ const ClientTestimonials = ({ automateLocation }:IClientTestimonials) => {
     if (reviewsData!=null) {
       setLoading(false);
     }
+    console.log('reviewsData', reviewsData, filterData.reviews)
   }, [reviewsData]);
 
   useEffect(() => {
-    setSelectedLocation(automateLocation ? automateLocation : (locaitonList.length > 0 ? locaitonList[0] : null))
+    setSelectedLocation(automateLocation ? {...automateLocation} : (locaitonList.length > 0 ? {...locaitonList[0]} : null))
   }, [automateLocation, locaitonList]);
 
   const reviewArr = new Array(5).fill(1);
 
   const reviewOptions = [
     {
-      id: 1, name: "All"
+      id: 'All', name: "All"
     },
     {
       id: 1, name: 1
