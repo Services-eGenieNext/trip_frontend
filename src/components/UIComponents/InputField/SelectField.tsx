@@ -6,7 +6,6 @@ const SelectField = ({className,styling, label, data=[], value, placeholder, ico
     const [openDropDown, setOpenDropDown] = useState(false)
     const selectRef = useRef<HTMLDivElement | null>(null)
     const dropDownRef = useRef<HTMLDivElement | null>(null)
-    const [inputVal, setInputVal] = useState<any>("")
 
     useEffect(() => {
         if(selectRef)
@@ -43,14 +42,6 @@ const SelectField = ({className,styling, label, data=[], value, placeholder, ico
         }
     }, [openDropDown])
 
-    useEffect(()=>{
-        onChange(inputVal)
-    },[inputVal])
-
-    useEffect(()=>{
-    setInputVal(value)
-    },[value])
-
     return (
         <div ref={selectRef} className={`relative cursor-pointer select-none ${className}`}>
             <div className="relative">
@@ -61,9 +52,9 @@ const SelectField = ({className,styling, label, data=[], value, placeholder, ico
                     {
                         icon && <span className="mr-2">{icon}</span>
                     }
-                    <span className={`${inputVal ? 'text-black' : `text-[var(--lite-gray)]`} overflow-ellipsis overflow-hidden whitespace-nowrap`}>
-                        {/* <input type="text" className='border-none outline-none h-full w-full' value={inputVal} placeholder={placeholder} onChange={(e)=>{setInputVal(e.target.value)}} /> */}
-                        {inputVal != "" ? inputVal : placeholder}
+                    <span className={`${value ? 'text-black' : `text-[var(--lite-gray)]`} overflow-ellipsis overflow-hidden whitespace-nowrap`}>
+                        {/* <input type="text" className='border-none outline-none h-full w-full' value={inputVal} placeholder={placeholder} /> */}
+                        {value != "" ? value : placeholder}
                     </span>
                     </div>
                     <span className="">
@@ -84,9 +75,10 @@ const SelectField = ({className,styling, label, data=[], value, placeholder, ico
                     {
                         data.map((d: ISelectOptions, i: number) => {
                             return <li key={i} className={`px-3 py-2 flex justify-center w-full cursor-pointer hover:bg-gray-50 ${value === d.id ? 'bg-[var(--dim-gray)]' : ''}`}
-                            onClick={() => {
+                            onClick={(e) => {
+                                e.preventDefault()
                                 setOpenDropDown(false)
-                                setInputVal(d.name)
+                                onChange(d.name)
                             }}
                             >{d.name}</li>
                         })
