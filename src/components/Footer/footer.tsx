@@ -58,12 +58,12 @@ export default function Footer() {
           >
             Survey
           </Link>
-          <Link
-            href={""}
+          <a
+            href={"/#reviews"}
             className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium cursor-pointer"
           >
             Reviews
-          </Link>
+          </a>
         </div>
         <div className="flex items-center gap-x-6 sm:my-0 my-5">
           {SocialIcons &&
