@@ -34,6 +34,7 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
 
     const [openModal, setOpenModal] = useState(false)
     const [showFilter, setShowFilter] = useState(false)
+    const [showReviews, setShowReviews] = useState(true)
     const [filterData, setFilterData] = useState({
         locationIndex: "",
         reviews: "All"
@@ -122,8 +123,15 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
                         </div>
                     </div>
 
-                    <Reviews show={true} loading={false} data={data} />
-
+                    <Reviews show={showReviews} loading={false} data={data} />
+                    
+                    {
+                        data!=null && data.length > 0 && (
+                        <div className="mt-20 flex justify-center">
+                            <button className="w-[150px] border-[var(--blue)] bg-[var(--blue)] text-white py-2 rounded-md" onClick={()=>{setShowReviews(!showReviews)}}>{showReviews == true ? "Hide Reviews" : "Read Reviews"}</button>
+                        </div>
+                        )
+                    }
                 </div>
             </Section>
         </div>
