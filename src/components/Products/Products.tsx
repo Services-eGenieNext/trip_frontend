@@ -18,6 +18,7 @@ import InputField from "../UIComponents/InputField/InputField";
 import TimerOutlined from "../icons/TimerOutlined";
 import AddProductModel from "./AddProductModel";
 import Section from "../UIComponents/Section";
+import BlueButton from '../UIComponents/Buttons/BlueButton';
 
 interface IProduct {
   title: string;
@@ -39,6 +40,12 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
   const [showTripPopup, setShowTripPopup] = useState(false);
   const [item, setItem] = useState({});
   const [openRestaurant, setOpenRestaurant] = useState(null);
+    const [postPerPage, setPostPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const indexOfLastPost = currentPage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const currentPost = restaurantData.slice(indexOfFirstPost, indexOfLastPost);
 
   const { restaurantsState }: any = useAppSelector(
     (state) => state.restaurantsReducer
@@ -156,7 +163,7 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                     </div>
                   );
                 })
-              : restaurantData?.map((restaurant: any, index: number) => {
+              : currentPost?.map((restaurant: any, index: number) => {
                   let image_path =
                     restaurant.images === ""
                       ? BlankLocation.src
@@ -254,6 +261,13 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                   );
                 })}
           </div>
+          {restaurantData.length > postPerPage && (
+            <div className="flex justify-center mt-10">
+            <BlueButton onClick={() => {
+              setPostPerPage(postPerPage + 8) 
+            }} title={"Load more"} />
+            </div>
+      )}
         </Section>
       </div>
       <DetailModal

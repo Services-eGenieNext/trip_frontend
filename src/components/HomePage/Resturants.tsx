@@ -12,6 +12,7 @@ import styles from "./style.module.css";
 import DetailModal from "../tripPlanningCard/TripPlanPopup";
 import AddProductModel from "../Products/AddProductModel";
 import Section from "../UIComponents/Section";
+import BlueButton from '../UIComponents/Buttons/BlueButton';
 
 interface IProduct {
   title: string;
@@ -34,7 +35,12 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
   const [showTripPopup, setShowTripPopup] = useState(false);
   const [item, setItem] = useState({});
   const [openRestaurant, setOpenRestaurant] = useState(null);
+      const [postPerPage, setPostPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const indexOfLastPost = currentPage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const currentPost = restaurantData.slice(indexOfFirstPost, indexOfLastPost);
   useEffect(() => {
     setRestaurant(restaurantsState);
   }, [restaurantsState]);
@@ -146,7 +152,7 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                     </div>
                   );
                 })
-              : restaurantData?.map((restaurant: any, index: number) => {
+              : currentPost?.map((restaurant: any, index: number) => {
                 let parseImageArray = JSON.parse(restaurant.image)
                       let image_path = parseImageArray.image.length > 0 ? parseImageArray.image[0].url : BlankLocation.src
                   let address = restaurant.details.formatted_address
@@ -240,6 +246,13 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                   );
                 })}
           </div>
+          {restaurantData.length > postPerPage && (
+            <div className="flex justify-center mt-10">
+            <BlueButton onClick={() => {
+              setPostPerPage(postPerPage + 8) 
+            }} title={"Load more"} />
+            </div>
+      )}
         </Section>
       </div>
       <DetailModal
