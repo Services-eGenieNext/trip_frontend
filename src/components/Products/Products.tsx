@@ -23,10 +23,12 @@ import BlueButton from '../UIComponents/Buttons/BlueButton';
 interface IProduct {
   title: string;
   isAddButton?: boolean;
+  isHover?: boolean
   rows?: string;
+  v_type?: string
 }
 
-const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
+const Products = ({ title = "Title", isAddButton, rows, v_type="", isHover=true }: IProduct) => {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const [loading, setLoading] = useState(true);
   const [restaurantData, setRestaurant] = useState([]);
@@ -173,7 +175,7 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                     : restaurant.address_obj?.address_string;
                   let link = `/trip-plan?address=${address}&location_id=${
                     restaurant.location_id ?? ""
-                  }&place_id=${restaurant.place_id ?? ""}&restaurants=true`;
+                  }&place_id=${restaurant.place_id ?? ""}&restaurants=true&v_type=${v_type}`;
                   return (
                     <div key={index} className="md:pr-6 md:my-4 my-8 pr-0">
                       <div
@@ -185,9 +187,9 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                             alt={image_path}
                             className="object-cover lg:h-[200px] h-[250px] w-full cursor-pointer "
                           />
-                          {!isAddButton && (
+                          {isHover && (
                             <div
-                              className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center cursor-pointer ${styles["hover_overlay"]}`}
+                              className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}
                             >
                               <button
                                 onClick={(e) => onSetAddress(e, link)}
@@ -212,11 +214,9 @@ const Products = ({ title = "Title", isAddButton, rows }: IProduct) => {
                         </div>
                         <div className="p-7">
                           <div className="flex justify-between items-start">
-                            <Link href={link}>
-                              <h4 className="text-2xl font-semibold gilroy">
-                                {restaurant.name}
-                              </h4>
-                            </Link>
+                            <h4 className="text-2xl font-semibold gilroy" title={restaurant.name}>
+                              {restaurant.name.substring(0, 30)} {restaurant.name.length > 30 && '...'}
+                            </h4>
                             {isAddButton && (
                               <div
                                 className="flex justify-end items-center gap-2 cursor-pointer"
