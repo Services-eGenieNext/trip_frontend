@@ -7,6 +7,8 @@ import LocationSlider from '@/components/HomePage/LocationSlider'
 import LocationsCallFromDB  from '@/api-calls/fromDB/location'
 import RestaurantsCallFromDB  from '@/api-calls/fromDB/restaurants'
 import ActivitiesCallFromDB from '@/api-calls/fromDB/activity'
+import ClientTestimonials from '@/components/Client-Testimonials/client-testimonials'
+import HomeReviews from '@/components/HomePage/HomeReviews'
 
 export default function Home() {
     const [location, setLocation] = useState([])
@@ -17,21 +19,18 @@ export default function Home() {
         const _def = async () => {
             let res = await LocationsCallFromDB()
             setLocation(res)
-            console.log("locations from DB",res)
         }
         _def()
 
         const _restaurants = async () => {
             let res = await RestaurantsCallFromDB()
             setRestaurants(res)
-            console.log("_restaurants from DB",res)
         }
         _restaurants()
 
         const _activities = async () => {
             let res = await ActivitiesCallFromDB()
             setActivities(res)
-            console.log("_activities from DB",res)
         }
         _activities()
     }, [])
@@ -52,6 +51,8 @@ export default function Home() {
             <ActivitiesSlider activitiesState={activities} />
             
             <Products title="Top Restaurants In The World" isAddButton={false} rows="2" restaurantsState={restaurants} />
+
+            <HomeReviews locations={[...activities, ...location]} />
         </main>
     )
 }

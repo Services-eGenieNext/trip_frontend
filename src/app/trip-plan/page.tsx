@@ -7,6 +7,7 @@ import PageBanner from '@/components/PageBanner/PageBanner'
 import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide'
 import Products from '@/components/Products/Products'
 import SmallStory from '@/components/Story/SmallStory'
+import TripPlanReviews from '@/components/trip-plan/trip-plan-reviews'
 import TripPlanningCard from '@/components/tripPlanningCard/tripPlanning'
 import { useAppSelector } from '@/redux/hooks'
 import { setLocations } from '@/redux/reducers/locationSlice'
@@ -128,7 +129,8 @@ const TripPlan = () => {
             }
 
             <div className=' mt-20'>
-                <ClientTestimonials automateLocation={automateLocation} />
+                {/* <ClientTestimonials automateLocation={automateLocation} /> */}
+                <TripPlanReviews automateLocation={automateLocation} />
             </div>
         </div>
     )

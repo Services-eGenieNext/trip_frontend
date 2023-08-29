@@ -74,7 +74,7 @@ const SelectField = ({className,styling, label, data=[], value, placeholder, ico
                 <ul className={`list-none overflow-auto w-full ${styling?.dropdownHeight ? styling.dropdownHeight : "max-h-[300px]"}`}>
                     {
                         data.map((d: ISelectOptions, i: number) => {
-                            return <li key={i} className={`px-3 py-2 flex justify-center w-full cursor-pointer hover:bg-gray-50 ${value === d.id ? 'bg-[var(--dim-gray)]' : ''}`}
+                            return <li key={i} className={`px-3 py-2 flex justify-center w-full cursor-pointer hover:bg-gray-50 ${value === d.name ? 'bg-[var(--dim-gray)]' : ''}`}
                             onClick={(e) => {
                                 e.preventDefault()
                                 setOpenDropDown(false)
