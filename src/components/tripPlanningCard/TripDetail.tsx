@@ -3,7 +3,8 @@ import { DetailsCallByGoogle, getLocationImagesById } from '@/api-calls/location
 import { _getlocationImages } from '@/api-calls/locations-call'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import { convertToObject } from 'typescript'
+import MapIcon from "/public/images/google-map-icon.png";
+import Link from 'next/link'
 
 interface ITripDetail {
     item?: any
@@ -45,6 +46,7 @@ const TripDetail = ({item}: ITripDetail) => {
                 setImage(_images[0])
             }
         }
+        console.log('itemDetail',itemDetail)
         _defItemDetail()
     }, [itemDetail])
 
@@ -156,22 +158,48 @@ const TripDetail = ({item}: ITripDetail) => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 mt-10">
-                <div>
-                    <h3 className="font-medium gilroy text-[28px] leading-[32.96px]">{itemDetail?.name}</h3>
-                    <div className="h-[3px] w-[51px] bg-[var(--blue)] my-5"></div>
+                <div className="relative">
                     {
-                        itemDetail?.hours?.weekday_text || itemDetail?.opening_hours?.weekday_text && (
+                        (!detailLoading && itemDetail) ? (
                             <>
-                            <h4 className="text-[15px] leading-[18px] font-bold mb-2">Hours:</h4>
                             {
-                                itemDetail?.location_id ?
-                                itemDetail?.hours?.weekday_text && itemDetail.hours?.weekday_text.map((time: any, index: number) => {
-                                    return <div key={index} className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {time} </div>
-                                }) : itemDetail?.opening_hours?.weekday_text && itemDetail.opening_hours?.weekday_text.map((time: any, index: number) => {
-                                    return <div key={index} className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {time} </div>
-                                })
+                                itemDetail?.url && 
+                                <Link href={itemDetail?.url} target="_blank" className="absolute top-0 right-[1rem] shadow-lg rounded-xl overflow-hidden bg-white">
+                                    <Image src={MapIcon} alt='map icon' className="p-2" />
+                                </Link>
                             }
-                            </>       
+                            
+                            <h3 className="font-medium gilroy text-[28px] leading-[32.96px] max-w-[340px]">
+                                {itemDetail?.name} <span className="text-sm text-[var(--gray)]">({
+                                    itemDetail?.address_components?.find((adr: any) => adr.types[0] === "locality")?.long_name ?? (itemDetail?.address_components?.find((adr: any) => adr.types[0] === "sublocality_level_1")?.long_name ?? itemDetail?.address_components?.find((adr: any) => adr.types[0] === "postal_town")?.long_name ?? itemDetail?.address_components?.find((adr: any) => adr.types[0] === "country")?.long_name)
+                                })</span>
+                            </h3>
+                            <div className="h-[3px] w-[51px] bg-[var(--blue)] my-5"></div>
+                            {
+                                itemDetail?.hours?.weekday_text || itemDetail?.opening_hours?.weekday_text && (
+                                    <>
+                                    <h4 className="text-[15px] leading-[18px] font-bold mb-2">Hours:</h4>
+                                    {
+                                        itemDetail?.location_id ?
+                                        itemDetail?.hours?.weekday_text && itemDetail.hours?.weekday_text.map((time: any, index: number) => {
+                                            return <div key={index} className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {time} </div>
+                                        }) : itemDetail?.opening_hours?.weekday_text && itemDetail.opening_hours?.weekday_text.map((time: any, index: number) => {
+                                            return <div key={index} className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {time} </div>
+                                        })
+                                    }
+                                    </>       
+                                )
+                            }
+                            </>
+                        ) : (
+                            <>
+                            <div className="h-[20px] max-w-[340px] bg-gray-100 rounded-lg animate-pulse my-2" />
+                            <div className="h-[10px] max-w-[50px] bg-gray-100 rounded-lg animate-pulse my-5" />
+                            <div className="h-[10px] max-w-[150px] bg-gray-100 rounded-lg animate-pulse my-3" />
+                            <div className="h-[10px] max-w-[150px] bg-gray-100 rounded-lg animate-pulse my-3" />
+                            <div className="h-[10px] max-w-[150px] bg-gray-100 rounded-lg animate-pulse my-3" />
+                            <div className="h-[10px] max-w-[150px] bg-gray-100 rounded-lg animate-pulse my-3" />
+                            </>
                         )
                     }
                     {/* <div className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {'Tuesday - 09:00 – 17:00'} </div>
@@ -181,7 +209,14 @@ const TripDetail = ({item}: ITripDetail) => {
                     <div className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {'Sunday - 09:00 – 17:00'} </div> */}
                 </div>
                 <div>
-                    <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)]">{itemDetail?.location_id ? itemDetail?.description : itemDetail?.editorial_summary?.overview}</p>
+                    {
+                        !detailLoading ? <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)]">{itemDetail?.location_id ? itemDetail?.description : itemDetail?.editorial_summary?.overview}</p> : <>
+                            <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
+                            <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
+                            <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
+                            <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
+                        </>
+                    }
                 </div>
             </div>
         </div>
