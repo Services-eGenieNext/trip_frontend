@@ -32,6 +32,7 @@ const reviewOptions = [
 
 const HomeReviews = ({ locations }: IHomeReviews) => {
 
+    const [loading, setLoading] = useState(true)
     const [openModal, setOpenModal] = useState(false)
     const [showFilter, setShowFilter] = useState(false)
     const [showReviews, setShowReviews] = useState(true)
@@ -46,11 +47,9 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
         const _locationOptionFunc = async () => {
             if(locations.length > 0)
             {
-                let _loc = await locations.filter((loc: any) => loc?.details?.reviews?.length > 0).map((loc: any) => {
-                    return loc?.details?.reviews
-                })
+                let _loc = await locations.find((loc: any) => loc?.details?.reviews?.length > 0)
                 // _loc = [].concat(..._loc)
-                setData(_loc[0])
+                setData(_loc?.details?.reviews)
 
                 let _list = await locations.map((loc: any, index) => {
                     return {
@@ -59,6 +58,7 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
                     }
                 })
                 setLocationOptions([..._list])
+                setLoading(false)
             }
         }
 
@@ -123,7 +123,7 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
                         </div>
                     </div>
 
-                    <Reviews show={showReviews} loading={false} data={data} />
+                    <Reviews show={showReviews} loading={loading} data={data} />
                     
                     {
                         data!=null && data.length > 0 && (
