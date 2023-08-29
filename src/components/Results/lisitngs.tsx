@@ -5,8 +5,9 @@ import BlankLocation from "public/images/blank-location.jpg";
 import DetailModal from '../tripPlanningCard/TripPlanPopup';
 import Link from "next/link";
 import NotFound from 'public/images/data-not-found.jpg'
+import CSS from './pageBanner.module.css'
 
-export default function Lisitngs({ locations, loadData, setClearFilter }: any) {
+export default function Lisitngs({ locations, loadData, setClearFilter,setLoadData }: any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","9"];
   const [results, setResults] = useState([]);
   const [showTripPopup, setShowTripPopup] = useState(false);
@@ -14,6 +15,12 @@ export default function Lisitngs({ locations, loadData, setClearFilter }: any) {
   useEffect(() => {
       setResults(locations);
   }, [locations]);
+
+  useEffect(()=>{
+    if(results.length > 0){
+      setLoadData(false)
+    }
+  },[results])
 
   const reviewArr = new Array(5).fill(1);
 
@@ -50,14 +57,14 @@ export default function Lisitngs({ locations, loadData, setClearFilter }: any) {
                     </svg>
                   <div className="h-[25px] bg-white rounded-full dark:bg-gray-700 w-[50px] absolute top-2 right-2"></div>
                   </div>
-                  <div className="w-full">
+                  <div className="w-full pb-4">
                   <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 mx-4"></div>
                   <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5 mx-4"></div>
                   <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mx-4"></div>
-                  <div className="flex items-center my-4 space-x-3 mx-4">
+                  {/* <div className="flex items-center my-4 space-x-3 mx-4">
                   <div className="h-[32px] bg-gray-200 rounded-md dark:bg-gray-700 w-[106px]"></div>
                   <div className="h-[32px] bg-gray-200 rounded-md dark:bg-gray-700 w-[106px]"></div>
-                  </div>
+                  </div> */}
                   </div>
                   <span className="sr-only">Loading...</span>
                 </div>
@@ -78,12 +85,26 @@ export default function Lisitngs({ locations, loadData, setClearFilter }: any) {
                     key={index}
                     className="sm:w-[260px] w-[320px] overflow-hidden rounded-lg flex flex-col justify-between items-center"
                   >
-                    <div className="sm:h-[235px] h-[260px] w-full relative">
+                    <div className={`sm:h-[235px] h-[260px] w-full relative cursor-pointer ${CSS["slider_card"]}`}>
                     <img src={image_path} alt={image_path} style={{objectFit: "cover",}} className="h-full w-full" />
                       <div className="absolute top-2 right-2 flex items-center gap-x-2 bg-white py-1 px-4 rounded-full">
                         <FilledStar />
                         <p className="text-[#009DE2] font-semibold">{Math.floor(location?.details?.rating)}</p>
                       </div>
+                      <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
+                          <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
+                            Automate My Trip
+                          </Link>
+                          <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" onClick={()=> {
+                            setItem({
+                              location_id: location.location_id,
+                              place_id: location.place_id,
+                            })
+                            setShowTripPopup(true)
+                            }}>
+                            More Info
+                          </button>
+                        </div>
                     </div>
                     <p className="text-[22px] font-semibold text-[#2D2D2D] mt-2 sm:text-start text-center">
                     {location?.details?.address_components?.map((address: any, index: number) => {
@@ -125,20 +146,6 @@ export default function Lisitngs({ locations, loadData, setClearFilter }: any) {
                         </p>
                       </div>
                     </div> */}
-                    <div className="flex items-center gap-x-3 text-[12px] mt-4">
-                      <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=2`} className="w-[133px] h-[32px] rounded-md bg-[#009DE2] text-white text-center block leading-7 hover:bg-transparent border hover:border-[#009DE2] hover:text-[#2D2D2D]">
-                        Automate My Trip
-                      </Link>
-                      <button className="w-[106px] h-[32px] rounded-md text-[#2D2D2D] border border-[#2D2D2D]" onClick={()=>{
-                        setItem({
-                          locaiton_id: location.location_id,
-                          place_id: location.place_id,
-                        });
-                        setShowTripPopup(true)
-                        }}>
-                        More Info
-                      </button>
-                    </div>
                   </div>
                 );
               }) : (

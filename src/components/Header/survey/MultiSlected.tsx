@@ -218,13 +218,13 @@ useEffect(() => {
     setAddCustomeOption(false);
   };
   return (
-    <Box ref={selectRef} className={`relative sm:my-2 my-5 ${className}`}>
+    <Box ref={selectRef} className={`relative ${className}`}>
       <div className="absolute top-[-0.5rem] left-0 w-full flex justify-center items-center">
             <label className="px-[5px] text-[11px] uppercase letter-spacing"
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{Label}</label>
             </div>
-      <Box className="flex items-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-2">
+      <Box className="flex items-center border border-[#C9D2DD] min-h-[57px] w-full bg-white rounded-2xl px-2">
       <Box
         className="flex items-center justify-between overflow-hidden cursor-pointer w-full "
       >
@@ -256,7 +256,7 @@ useEffect(() => {
                 return (
                   <div
                     key={index}
-                    className="bg-gray-500 px-2 flex items-center justify-between h-[20px]"
+                    className="bg-[#009de2] px-2 flex items-center justify-between h-[20px]"
                   >
                     {Label !== "Occasion" &&(
                       <Typography

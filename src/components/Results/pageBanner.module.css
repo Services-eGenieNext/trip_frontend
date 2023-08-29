@@ -41,3 +41,12 @@
 .result_banner{
     box-shadow: 0px 4px 44px 0px #8089968e;
 }
+
+.hover_overlay{
+    background: rgba(0,0,0,.8);
+    visibility: hidden;
+  }
+
+  .slider_card:hover .hover_overlay{
+    visibility: visible;
+  }
