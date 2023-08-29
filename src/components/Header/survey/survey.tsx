@@ -352,9 +352,17 @@ setSurvey({...survey, location:"" })
               ></textarea>
             )}
           </div>
+          <div className="flex items-center gap-x-2">
+                <button
+                  type="button"
+                  className="rounded-xl text-[#009DE2] border border-[#009DE2] py-[14px] sm:w-[200px] w-full hover:bg-[#009DE2] hover:text-white bg-transparent mt-5 my-2"
+                  onClick={()=>{
+                    onClose()
+                  }}
+                >Exit</button>
           <BlueButton
             type="button"
-            className="text-[20px] py-[10px] sm:w-[400px] w-full mt-5"
+            className="text-[20px] py-[10px] sm:w-[200px] w-full mt-5"
             title={step < 5 ? "Next" : "Finish"}
             onClick={() => {
               if (step < 5) {
@@ -364,6 +372,7 @@ setSurvey({...survey, location:"" })
               }
             }}
           />
+          </div>
         </div>
       </div>
     </PopupWithOverlay>
