@@ -120,8 +120,15 @@ const TripPlan = () => {
                         Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} isAddButton={true} 
                         isDesc={true}
                         isHover={true}
-                        v_type={"2"} />
-                    <Products title={`Restaurants in ${automateLocation?.name ? automateLocation?.name : params_list.address}`} isAddButton={true} rows="2" />
+                        v_type={"2"}
+                    />
+
+                    <Products 
+                        title={`Restaurants in ${automateLocation?.name ? automateLocation?.name : params_list.address}`} 
+                        isAddButton={true} 
+                        rows="2"
+                        v_type='2'
+                    />
                 </>
             }
             
