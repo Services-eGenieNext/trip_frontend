@@ -175,7 +175,7 @@ const ProductHorizontalSlide = ({
                   : location.address_obj?.address_string;
                 return (
                     <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10`} >
-                      <div className={`grid grid-cols-1 ${v_type == "3" ? 'rounded-3xl shadow-lg h-max' : 'rounded-xl shadow-sm h-full'} border overflow-hidden relative cursor-pointer ${styles["slider_card"]}`} draggable={true} onDragStart={(e) => dragStartFunc(e, location)} >
+                      <div className={`grid grid-cols-1 ${v_type == "3" ? 'rounded-3xl shadow-lg h-max' : 'rounded-xl shadow-sm h-full'} border overflow-hidden relative ${styles["slider_card"]}`} draggable={true} onDragStart={(e) => dragStartFunc(e, location)} >
                         <div className={`${ type == "title-card" ? 'h-[310px]' : 'h-[178px]'} bg-gray-100 relative`} >
                           <Image
                             src={image_path}
@@ -190,14 +190,41 @@ const ProductHorizontalSlide = ({
                                 "linear-gradient(0deg, rgb(0 0 0 / 70%), transparent)",
                             }}
                           ></div>
+                          {
+                            (isHover == true) && (
+                              <div
+                                className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}
+                              >
+                                <Link
+                                  href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}
+                                  className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
+                                >
+                                  Automate My Trip
+                                </Link>
+                                <button
+                                  className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
+                                  onClick={() => {
+                                    console.log("location", location);
+                                    setItem({
+                                      locaiton_id: location.location_id,
+                                      place_id: location.place_id,
+                                    });
+                                    setShowTripPopup(true);
+                                  }}
+                                >
+                                  More Info
+                                </button>
+                              </div>
+                            )
+                          }
                         </div>
                         <div className={`${type == "title-card" ? "absolute bottom-4 left-4 text-white font-bold text-[25px] pe-5" : "p-4"}`}>
                           <div className="grid grid-cols-2 justify-center items-center mb-2 relative px-5">
-                            <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}>
+                            <div>
                               <h4 className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${isAddButton ? "col-span-1" : "col-span-2"} `} >
                                 {location.name}
                               </h4>
-                            </Link>
+                            </div>
                             
                             {isAddButton && (
                               <div
@@ -261,33 +288,6 @@ const ProductHorizontalSlide = ({
                             </p>
                           )}
                         </div>
-                        {
-                          (isAddButton == false && isHover == true) && (
-                            <div
-                              className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${styles["hover_overlay"]}`}
-                            >
-                              <Link
-                                href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}
-                                className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
-                              >
-                                Automate My Trip
-                              </Link>
-                              <button
-                                className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
-                                onClick={() => {
-                                  console.log("location", location);
-                                  setItem({
-                                    locaiton_id: location.location_id,
-                                    place_id: location.place_id,
-                                  });
-                                  setShowTripPopup(true);
-                                }}
-                              >
-                                More Info
-                              </button>
-                            </div>
-                          )
-                        }
                       </div>
                     </div>
                 );

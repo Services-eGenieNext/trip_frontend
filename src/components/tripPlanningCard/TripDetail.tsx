@@ -46,7 +46,7 @@ const TripDetail = ({item}: ITripDetail) => {
                 setImage(_images[0])
             }
         }
-        console.log('itemDetail',itemDetail)
+        
         _defItemDetail()
     }, [itemDetail])
 
