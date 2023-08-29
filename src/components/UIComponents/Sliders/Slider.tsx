@@ -12,7 +12,7 @@ interface ISliderComponent {
 
 const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
 
-      const [prevBtnDisabled, setPrevBtnDisabled] = useState(true)
+      const [prevBtnDisabled, setPrevBtnDisabled] = useState(false)
   const [nextBtnDisabled, setNextBtnDisabled] = useState(false)
 
     function SampleNextArrow(props: any) {
@@ -66,17 +66,17 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
         );
     }
 
-    const afterChange = (prev: number) => {
-        if(prev == 0){
-          setPrevBtnDisabled(true)
-        }else{
-          setPrevBtnDisabled(false)
-        }
-      };
+    // const afterChange = (prev: number) => {
+    //     if(prev == 0){
+    //       setPrevBtnDisabled(true)
+    //     }else{
+    //       setPrevBtnDisabled(false)
+    //     }
+    //   };
 
     const settings = {
         dots: false,
-        infinite: false,
+        infinite: true,
         speed: 500,
         slidesToShow: slidesToShow,
         slidesToScroll: slidesToShow,
@@ -117,7 +117,7 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
             },
         },
         ],
-        afterChange,
+        // afterChange,
     };
 
     return (
