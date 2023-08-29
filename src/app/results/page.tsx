@@ -28,9 +28,6 @@ export default function Results() {
       let res = await LocationsCallFromDB()
       setLocationState(res)
       setLocationsData(res);
-      if(res.length > 0){
-        setLoading(false);
-      }
   };
   useEffect(()=>{
     _def()

@@ -244,14 +244,15 @@ useEffect(() => {
           <Box
             // display="flex"
             // alignItems="center"
-            className="flex flex-wrap gap-1 h-full w-full cursor-pointer"
+            className="flex gap-1 h-full w-full cursor-pointer"
             sx={{
-              overflowY: "scroll",
-              overflowX: "hidden",
-              // "::-webkit-scrollbar": {
-              //   // display: "none",
-              // },
-              scrollbarWidth: "none",
+              overflowY: "hidden",
+              overflowX: "scroll",
+              "::-webkit-scrollbar": {
+                // display: "none",
+                width: "5px !important",
+              },
+              // scrollbarWidth: "none",
             }}
           >
             {optsSelected?.length > 0 &&
@@ -259,7 +260,7 @@ useEffect(() => {
                 return (
                   <div
                     key={index}
-                    className="bg-gray-500 px-2 py-1 flex items-center justify-between "
+                    className="bg-[#009de2] px-2 py-1 flex items-center justify-between "
                   >
                     {Label !== "Occasion" &&(
                       <Typography
