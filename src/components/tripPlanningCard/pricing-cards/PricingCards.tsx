@@ -296,7 +296,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                         itineraryDays.map((_item, index) => {
                             return (
                             <PricingCard
-                                variation={'list'}
+                                variation={params_list.v_type == '3' ? 'cards-list' : 'list'}
                                 isDropdownButton={params_list.v_type == "2" ? true : false}
                                 rows="1"
                                 key={index}
@@ -342,7 +342,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                         </div>
 
                         {
-                            params_list.v_type !== '2' && <SmallStory positioning="block" item={item} />
+                            (params_list.v_type !== '3' && params_list.v_type !== '2') && <SmallStory positioning="block" item={item} />
                         }
                     </div>
                 </div>
