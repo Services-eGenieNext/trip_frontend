@@ -174,7 +174,7 @@ const ProductHorizontalSlide = ({
                   ? location.formatted_address
                   : location.address_obj?.address_string;
                 return (
-                    <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10`} >
+                    <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10 ${v_type == "2" || v_type == "3" && "cursor-move" }`} >
                       <div className={`grid grid-cols-1 ${v_type == "3" ? 'rounded-3xl shadow-lg h-max' : 'rounded-xl shadow-sm h-full'} border overflow-hidden relative ${styles["slider_card"]}`} draggable={true} onDragStart={(e) => dragStartFunc(e, location)} >
                         <div className={`${ type == "title-card" ? 'h-[310px]' : 'h-[178px]'} bg-gray-100 relative`} >
                           <Image

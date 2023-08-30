@@ -182,7 +182,7 @@ const TripPlanReviews = ({ automateLocation }:IReviews) => {
                     {
                         reviewsData!=null && reviewsData.length > 0 && (
                         <div className="mt-20 flex justify-center">
-                            <button className="w-[150px] border-[var(--blue)] bg-[var(--blue)] text-white py-2 rounded-md" onClick={()=>{setShowReviews(!showReviews)}}>{showReviews == true ? "Hide" : "Read"}</button>
+                            <button className="w-[150px] border-[var(--blue)] bg-[var(--blue)] text-white py-2 rounded-md" onClick={()=>{setShowReviews(!showReviews)}}>{showReviews == true ? "Hide Reviews" : "Read Reviews"}</button>
                         </div>
                         )
                     }

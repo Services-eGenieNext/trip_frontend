@@ -103,16 +103,16 @@ export default function PricingCard({
       )}
     </div>
   ) : (
-    <div className="grid grid-cols-6 mb-10">
-      <div className="col-span-1 w-[90px] select-none">
-        <span className="uppercase flex flex-col md:flex-row justify-between items-center text-sm md:text-base  bg-[var(--lite-green)] rounded-xl w-max px-3">
+    <div className={`grid ${ variation === "cards-list" ? 'grid-cols-1 bg-[#F6FDFF] rounded-lg border-2 border-dashed border-[#AEDCF0] py-5' : 'grid-cols-6'} mb-5`}>
+      <div className={`${variation === "cards-list" ? 'pl-5' : 'col-span-1'} w-[90px] select-none`}>
+        <span className={`uppercase ${variation === "cards-list" ? 'font-semibold' : 'flex flex-col md:flex-row justify-between items-center text-sm md:text-base  bg-[var(--lite-green)] rounded-xl px-3'} w-max`}>
           {data.day}
           {/* <span className="w-[38px] h-[29px] text-[var(--green)] bg-[var(--lite-green)] flex justify-center items-center rounded-lg">
             {data.day}
           </span>{" "} */}
         </span>
       </div>
-      <div className="col-span-5">
+      <div className={variation === "cards-list" ? '' : `col-span-5`}>
         <div className="pl-5 flex flex-col justify-between">
           {data.times &&
             data.times.map((time: any, index: any) => {
@@ -126,6 +126,7 @@ export default function PricingCard({
               }
                 return (
                   <ScheduleCard
+                    variation={variation}
                     day={data.day}
                     distanceObject={{origin: origin, destination: destination}}
                     key={index}
