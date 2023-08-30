@@ -195,7 +195,11 @@ function ActivitiesSlider({activitiesState}:any) {
                       index:number
                     ) => {
                         let parseImageArray = JSON.parse(activities.image)
-                      let image_path = parseImageArray.image.length > 0 ? parseImageArray.image[0].url : BlankLocation.src
+                        let image_path = parseImageArray.image.length > 0 ? parseImageArray.image[0].url : BlankLocation.src
+                        let address = activities.details.formatted_address
+                        ? activities.details.formatted_address
+                        : activities.details.address_components[0].long_name +
+                        activities.details.address_components[1].long_name;
                       return (
                         <div key={index} className='px-4'>
                           <div className={`flex flex-col items-center justify-center w-full relative cursor-pointer ${CSS["slider_card"]}`}>
@@ -204,7 +208,7 @@ function ActivitiesSlider({activitiesState}:any) {
                               />
                               <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center z-10 ${CSS["hover_overlay"]}`}>
                                 <Link
-                                href={`/trip-plan?address=${activities.name}&location_id=${activities.location_id ? activities.location_id : ''}&place_id=${activities.location_id ? activities.location_id : ''}`}
+                                href={`/trip-plan?address=${address}&location_id=${activities.location_id ?? ''}&place_id=${activities.place_id ?? ""}&v_type=`}
                                 className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
                               >
                                 Automate My Trip
