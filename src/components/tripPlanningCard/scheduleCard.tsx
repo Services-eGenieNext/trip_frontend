@@ -10,11 +10,14 @@ interface IScheduleCard extends IPlanningCard {
   distanceObject?: any
   time?: any
   day: string
+  variation?: 'list' | 'cards-list'
 }
 
-export default function ScheduleCard({day, distanceObject, items, isDropdownButton, onOpen, time}:IScheduleCard) {
+export default function ScheduleCard({day, distanceObject, items, isDropdownButton, onOpen, time, variation = 'list'}:IScheduleCard) {
     const [isShowTooltip, setIsShowTooltip] = useState(false);
     const [editTime, setEditTime] = useState(false)
+    const [isDragOver, setIsDragOver] = useState(false)
+    const [dragOverLocation, setdragOverLocation] = useState<any | null>(null)
     const [deleteTime, setDeleteTime] = useState(false)
     const [addEvent, setAddEvent] = useState(false)
     const [addNewEventValue, setaddNewEventValue] = useState("")
@@ -25,6 +28,9 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
     const [duration, setDuration] = useState(null)
 
     const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
+
+    const editTimeRef = useRef<HTMLDivElement | null>(null)
+    const cardRef = useRef<HTMLDivElement | null>(null)
 
     function formatTime(timeString: string) {
       if(timeString == "" || timeString.search('Open') !== -1)
@@ -42,19 +48,35 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
     const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
       let _loc = e.dataTransfer.getData('product')
       _loc = JSON.parse(_loc)
+      setdragOverLocation(_loc)
+      // let _itineraryDays = [...itineraryDays]
+      // let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
+      // let timeIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location.name === items.name)
+      // _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
+      // _itineraryDays[dayIndex].times = [..._itineraryDays[dayIndex].times]
+      // _itineraryDays[dayIndex].times[timeIndex] = {..._itineraryDays[dayIndex].times[timeIndex]}
+      // _itineraryDays[dayIndex].times[timeIndex].location = _loc
 
+      // dispatch(setItineraryDays([..._itineraryDays]))
+      
+    }
+
+    const replaceConfirm = () => {
       let _itineraryDays = [...itineraryDays]
       let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
       let timeIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location.name === items.name)
       _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
       _itineraryDays[dayIndex].times = [..._itineraryDays[dayIndex].times]
       _itineraryDays[dayIndex].times[timeIndex] = {..._itineraryDays[dayIndex].times[timeIndex]}
-      _itineraryDays[dayIndex].times[timeIndex].location = _loc
+      _itineraryDays[dayIndex].times[timeIndex].location = dragOverLocation
 
       dispatch(setItineraryDays([..._itineraryDays]))
+      clearConfirm()
+    }
 
-      
-      console.log(_loc)
+    const clearConfirm = () => {
+      setdragOverLocation(null)
+      setIsDragOver(false)
     }
 
     const ChangeTimeFunc = () => {
@@ -74,10 +96,23 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
     
     }
 
+    const delEventFunc = () => {
+      let _itineraryDays = [...itineraryDays]
+      let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
+      _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
+      _itineraryDays[dayIndex].times = _itineraryDays[dayIndex].times.filter(_time => _time.location !== items)
+      dispatch(setItineraryDays([..._itineraryDays]))
+    }
+
+    const onClickItem = () => {
+      onOpen(items);
+      let number = document.querySelector('body .width')?.scrollHeight ?? 0
+      window.scrollTo(0, number)
+    }
+
     useEffect(() => {
       const _def = async () => {
         let duration = await LocationsDurationCall(distanceObject.origin, distanceObject.destination)
-        console.log('duration found', duration)
         if(duration.status == 200 && duration.data.rows[0]?.elements[0]?.duration?.text)
         {
           setDuration(duration.data.rows[0].elements[0].duration.text)
@@ -89,18 +124,62 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
       }
     }, [distanceObject])
 
+    useEffect(() => {
+      if(cardRef)
+      {
+        window.addEventListener('click', (e) => {
+          if(cardRef.current)
+          {
+            if(!cardRef.current.contains((e.target as Element)))
+            {
+              setEditTime(false)
+            }
+          }
+        })
+      }
+    }, [])
+
+
+    useEffect(() => {
+      if(editTime)
+      {
+          editTimeRef.current?.classList.remove('hidden')
+          editTimeRef.current?.classList.add('flex')
+          setTimeout(() => {
+            editTimeRef.current?.classList.remove('opacity-0')
+            editTimeRef.current?.classList.remove('-translate-y-5')
+          }, 200);
+      }
+      else
+      {
+        editTimeRef.current?.classList.add('opacity-0')
+        editTimeRef.current?.classList.add('-translate-y-5')
+          setTimeout(() => {
+            editTimeRef.current?.classList.add('hidden')
+            editTimeRef.current?.classList.remove('flex')
+          }, 200);
+      }
+    }, [editTime])
+
   return (
     <>
     {
-      (time.suggestedTime?.duration_time || duration) && <span className="flex rounded-full px-2 h-max bg-[var(--blue)] text-white text-[12px] whitespace-nowrap w-max -translate-y-full">{time.suggestedTime?.duration_time ? time.suggestedTime?.duration_time : duration}</span>
+      (time.suggestedTime?.duration_time || duration) && <span className={`flex rounded-full px-2 h-max bg-[var(--blue)] text-white text-[12px] whitespace-nowrap w-max -translate-y-full`}>{time.suggestedTime?.duration_time ? time.suggestedTime?.duration_time : duration}</span>
     }
-    <div
+    <div ref={cardRef}
       className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
 
       onDrop={(e) => onDropFunc(e)}
-      onDragOver={(e) => {e.preventDefault()}}
+      onDragOver={(e) => {
+        e.preventDefault()
+        setIsDragOver(true)
+      }}
+      onDragLeave={(e) => {
+        e.preventDefault()
+        setIsDragOver(false)
+      }}
     >
-      <div className="mt-6">
+      <div className={`mt-6`}>
         <div>
           <div className="w-[20px] h-[20px] bg-[#AEDCF0] rounded-full flex justify-center items-center">
             <div className="w-[10px] h-[10px] bg-[#009DE2] rounded-full"></div>
@@ -109,85 +188,99 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
         <div className={`h-full ml-2 ${CSS["divider"]}`} />
       </div>
       <span
-        className={`text-[13px] max-w-[259px] w-full text-black hover:text-[#009DE2] p-4 rounded-lg flex justify-between items-center gap-2 ${CSS["plan-time-wrapper"]}`}
-        onClick={() => {
-          onOpen(items);
-          let number = document.querySelector('body .width')?.scrollHeight ?? 0
-          window.scrollTo(0, number)
-        }}
-      >
-        <p className="gilroy text-[11px] font-semibold">{
-              !time.suggestedTime?.startTime && !time.suggestedTime?.endTime ? (
-                  time.time
-              ) : (
-                  (time.suggestedTime?.startTime ? (formatTime(time.suggestedTime.startTime)+ ' ') : " ") + (time.suggestedTime?.endTime ? '- '+(formatTime(time.suggestedTime.endTime)) : "")
-              )
-          } - </p>
-        <div className="flex justify-between items-center">
-          <p className="font-medium w-[90px]">{suggestedLocation ? suggestedLocation : items.name}</p>
-          {isDropdownButton == true ? (
-            <div className="relative">
-              <span
-                className={`w-[18px] block h-[13px] rounded ${CSS["svg"]}`}
-                onClick={() => {
-                  setIsShowTooltip(!isShowTooltip);
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-[14px] h-[12px] mx-auto"
+        className={`text-[13px] max-w-[259px] w-full hover:text-[#009DE2] p-4 rounded-lg ${CSS["plan-time-wrapper"]} ${variation === "list" ? '' : 'hover:bg-white ml-2 mr-4'} ${isDragOver ? 'bg-white text-[#009DE2] shadow-lg' : 'text-black'}`} >
+        <div className="flex justify-between items-center gap-2">
+          <p className="gilroy text-[11px] font-semibold" onClick={() => onClickItem()}>{
+                !time.suggestedTime?.startTime && !time.suggestedTime?.endTime ? (
+                    time.time
+                ) : (
+                    (time.suggestedTime?.startTime ? (formatTime(time.suggestedTime.startTime)+ ' ') : " ") + (time.suggestedTime?.endTime ? '- '+(formatTime(time.suggestedTime.endTime)) : "")
+                )
+            } - </p>
+          <div className="flex justify-between items-center">
+            <p className="font-medium w-[90px]" onClick={() => onClickItem()}>{suggestedLocation ? suggestedLocation : items.name}</p>
+            {isDropdownButton == true ? (
+              <div className="relative">
+                <span
+                  className={`w-[18px] block h-[13px] rounded ${CSS["svg"]}`}
+                  onClick={() => {
+                    setIsShowTooltip(!isShowTooltip);
+                  }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-                  />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-[14px] h-[12px] mx-auto"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                </span>
+                {
+                  isShowTooltip === true && (
+                    <div className="absolute top-3 right-0 w-[122px] h-[110px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-between py-3 px-4">
+                        <p className="text-black hover:text-[#9AB044]" onClick={()=>{
+                            // setIsShowTooltip(false)
+                            setEditTime(true)
+                        }}>Edit time</p>
+                        <p className="text-black hover:text-[#9AB044]" onClick={()=>{
+                            setIsShowTooltip(false)
+                            delEventFunc()
+                        }}>Delete event</p>
+                        <p className="text-black hover:text-[#9AB044]" onClick={()=>{
+                            setIsShowTooltip(false)
+                            setAddEvent(true)
+                            }}>Add event</p>
+                    </div>
+                  )
+                }
+
+                <div ref={editTimeRef} className="hidden -translate-y-5 transition-all duration-300 absolute top-2 right-0 sm:w-[462px] rounded-md shadow-lg border z-10 bg-white flex-col justify-center py-10 px-8 text-black max-w-[200px]">
+                  
+                  <InputField type="time" label="Opening Time" className="my-2" placeholder='Which place are you suggesting?' value={editTimeForm.startTime} onChange={(e) => setEditTimeForm({...editTimeForm, startTime: e.target.value})} />
+
+                  <InputField type="time" label="Closing Time" className="my-2" placeholder='Which place are you suggesting?' value={editTimeForm.endTime} onChange={(e) => setEditTimeForm({...editTimeForm, endTime: e.target.value})} />
+
+                  <div className="mt-4 w-full">
+                    <button className="w-full font-bold text-[14px] bg-[#009DE2] text-white py-2 rounded-lg" onClick={()=> {
+                      ChangeTimeFunc()
+                      }}>Change Time</button>
+                  </div>
+                  
+                </div>
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+        {
+          dragOverLocation && <div className="border border-dashed p-2 rounded-xl flex justify-between items-center">
+            <span>{dragOverLocation.name}</span>
+            <div>
+              <span className="flex">
+              <span className="bg-green-500 h-max w-max rounded-full mr-1" onClick={() => replaceConfirm()}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#fff" className="w-5 h-5 p-1">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                 </svg>
               </span>
-              {
-                isShowTooltip === true && (
-                  <div className="absolute top-2 right-0 w-[122px] h-[110px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-between py-3 px-4">
-                      <p className="text-black hover:text-[#9AB044]" onClick={()=>{
-                          setIsShowTooltip(false)
-                          setEditTime(true)
-                      }}>Edit time</p>
-                      <p className="text-black hover:text-[#9AB044]" onClick={()=>{
-                          setIsShowTooltip(false)
-                          setDeleteTime(true)
-                      }}>Delete event</p>
-                      <p className="text-black hover:text-[#9AB044]" onClick={()=>{
-                          setIsShowTooltip(false)
-                          setAddEvent(true)
-                          }}>Add event</p>
-                  </div>
-                )
-              }
-              {
-                editTime === true && (
-                  <div className="absolute top-2 right-0 sm:w-[462px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-center py-10 px-8 text-black max-w-[200px]">
-                    
-                    <InputField type="time" label="Opening Time" className="my-2" placeholder='Which place are you suggesting?' value={editTimeForm.startTime} onChange={(e) => setEditTimeForm({...editTimeForm, startTime: e.target.value})} />
 
-                    <InputField type="time" label="Closing Time" className="my-2" placeholder='Which place are you suggesting?' value={editTimeForm.endTime} onChange={(e) => setEditTimeForm({...editTimeForm, endTime: e.target.value})} />
+              <span className="bg-red-500 h-max w-max rounded-full" onClick={() => clearConfirm()}>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#fff" className="w-5 h-5 p-1">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </span>
 
-                    <div className="mt-4 w-full">
-                      <button className="w-full font-bold text-[14px] bg-[#009DE2] text-white py-2 rounded-lg" onClick={()=> {
-                        ChangeTimeFunc()
-                        }}>Change Time</button>
-                    </div>
-                    
-                  </div>
-                )
-              }
+              </span>
             </div>
-          ) : (
-            ""
-          )}
-        </div>
+          </div>
+        }
       </span>
     </div>
     </>

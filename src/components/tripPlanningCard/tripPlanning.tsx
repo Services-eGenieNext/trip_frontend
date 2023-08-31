@@ -74,6 +74,7 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
                 setLoading(false)
             }
         }
+        
         _recomendFunc()
     }, [recommendations])
 
