@@ -19,8 +19,11 @@ import { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { setLocations } from "@/redux/reducers/locationSlice";
 import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
 import OccassionsIncrement from "@/api-calls/fromDB/occasionsTrendingIncrement";
+import PrioritiesIncrement from "@/api-calls/fromDB/prioritiesTrendingIncrement";
 import Occassions from '@/api-calls/fromDB/occassions'
 import { setOccasions } from '@/redux/reducers/occasionsSlice'
+import Priorities from '@/api-calls/fromDB/priority'
+import { setPriorities } from '@/redux/reducers/prioritySlice'
 
 export default function HeroFilterSection() {
   const dispatch = useAppDispatch();
@@ -34,7 +37,9 @@ export default function HeroFilterSection() {
   const { surveySlice } = useAppSelector((state) => state.surveyReducer);
   const [saveData, setSaveData] = useState(false)
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
+  const { priorityState } = useAppSelector((state) => state.prioritySlice);
   const [occasions,setOccasionsArray] = useState<any>([])
+  const [prioritiesValue, setPrioritiesValue] = useState<any>([])
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: [],
@@ -49,6 +54,12 @@ if(ocassionsState.length > 0){
   setOccasionsArray(ocassionsState)
 }
   },[ocassionsState])
+
+  useEffect(()=>{
+if(priorityState.length > 0){
+  setPrioritiesValue(priorityState)
+}
+  },[priorityState])
 
   useEffect(()=>{
     setSaveData(true)
@@ -82,6 +93,15 @@ setLocationSearch({...locationSearch,surveySlice})
         if(res){
           let updatedOccasionsList = await Occassions()
           dispatch(setOccasions(updatedOccasionsList))
+        }
+      }
+    }
+    if(locationSearch.priority.length > 0){
+      for(var i = 0; i < locationSearch.priority.length; i++){
+        let res = await PrioritiesIncrement(locationSearch.priority[i].id)
+        if(res){
+          let updatedOccasionsList = await Priorities()
+          dispatch(setPriorities(updatedOccasionsList))
         }
       }
     }
@@ -154,7 +174,7 @@ setLocationSearch({...locationSearch,surveySlice})
 
       <MultiSelectDropdown key={2}
         // searchBar
-        items={Priority}
+        items={prioritiesValue}
         Label={"Priority"}
         heightItemsContainer="300px"
         className={"sm:w-[170px]"}
