@@ -172,10 +172,16 @@ const ProductHorizontalSlide = ({
                 let address = location.formatted_address
                   ? location.formatted_address
                   : location.address_obj?.address_string;
+
+                let isExistLocArr: any[] = itineraryDays.map(itinerary => itinerary.times.map(time => time.location.name === location.name))
+                let locArrBoolean: boolean[] = [].concat(...isExistLocArr)
+                let isExistInItinerary = locArrBoolean.includes(true)
+
                 return (
                     <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10 ${v_type == "2" || v_type == "3" && "cursor-move" }`} >
                       <div className={`grid grid-cols-1 ${v_type == "3" ? 'rounded-3xl shadow-lg h-max' : 'rounded-xl shadow-sm h-full'} border overflow-hidden relative ${styles["slider_card"]}`} draggable={true} onDragStart={(e) => dragStartFunc(e, location)} >
                         <div className={`${ type == "title-card" ? 'h-[310px]' : 'h-[178px]'} bg-gray-100 relative`} >
+                          <div className={`absolute top-0 left-0 z-[1] ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
                           <Image
                             src={image_path}
                             alt={location.name}

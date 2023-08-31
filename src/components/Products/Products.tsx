@@ -42,7 +42,7 @@ const Products = ({ title = "Title", isAddButton, rows, v_type="", isHover=true 
   const [showTripPopup, setShowTripPopup] = useState(false);
   const [item, setItem] = useState({});
   const [openRestaurant, setOpenRestaurant] = useState(null);
-    const [postPerPage, setPostPerPage] = useState(8);
+  const [postPerPage, setPostPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
 
   const indexOfLastPost = currentPage * postPerPage;
@@ -52,6 +52,8 @@ const Products = ({ title = "Title", isAddButton, rows, v_type="", isHover=true 
   const { restaurantsState }: any = useAppSelector(
     (state) => state.restaurantsReducer
   );
+
+  const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
 
   useEffect(() => {
     setRestaurant(restaurantsState);
@@ -176,11 +178,17 @@ const Products = ({ title = "Title", isAddButton, rows, v_type="", isHover=true 
                   let link = `/trip-plan?address=${address}&location_id=${
                     restaurant.location_id ?? ""
                   }&place_id=${restaurant.place_id ?? ""}&restaurants=true&v_type=${v_type}`;
+
+                  let isExistLocArr: any[] = itineraryDays.map(itinerary => itinerary.times.map(time => time.location.name === restaurant.name))
+                  let locArrBoolean: boolean[] = [].concat(...isExistLocArr)
+                  let isExistInItinerary = locArrBoolean.includes(true)
+
                   return (
                     <div key={index} className="md:pr-6 md:my-4 my-8 pr-0">
                       <div
                         className={`rounded-xl overflow-hidden border border-[#C9D2DD] grid grid-cols-1 lg:grid-cols-2 bg-white h-full w-full relative ${styles["slider_card"]}`}
                       >
+                        <div className={`absolute top-0 left-0 z-[1] ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
                         <div className="relative w-full h-full">
                           <img
                             src={image_path}
