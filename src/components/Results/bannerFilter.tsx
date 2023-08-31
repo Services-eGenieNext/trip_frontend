@@ -24,6 +24,9 @@ import {useAppSelector} from '@/redux/hooks'
 import OccassionsIncrement from "@/api-calls/fromDB/occasionsTrendingIncrement";
 import Occassions from '@/api-calls/fromDB/occassions'
 import { setOccasions } from '@/redux/reducers/occasionsSlice'
+import PrioritiesIncrement from "@/api-calls/fromDB/prioritiesTrendingIncrement";
+import Priorities from '@/api-calls/fromDB/priority'
+import { setPriorities } from '@/redux/reducers/prioritySlice'
 
 export default function HeroFilterSection({ surveyData }: any) {
   const dispatch = useAppDispatch();
@@ -36,6 +39,7 @@ export default function HeroFilterSection({ surveyData }: any) {
   const [saveData, setSaveData] = useState(false)
   const [occasions,setOccasionsArray] = useState<any>([])
    const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
+   const { priorityState } = useAppSelector((state) => state.prioritySlice);
 
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
@@ -45,12 +49,19 @@ export default function HeroFilterSection({ surveyData }: any) {
     dates: "",
     spending:"",
   });
+  const [prioritiesValue, setPrioritiesValue] = useState<any>([])
 
   useEffect(()=>{
     if(ocassionsState.length > 0){
       setOccasionsArray(ocassionsState)
     }
       },[ocassionsState])
+
+      useEffect(()=>{
+        if(priorityState.length > 0){
+          setPrioritiesValue(priorityState)
+        }
+          },[priorityState])
 
 
   useEffect(() => {
@@ -92,6 +103,15 @@ export default function HeroFilterSection({ surveyData }: any) {
         if(res){
           let updatedOccasionsList = await Occassions()
           dispatch(setOccasions(updatedOccasionsList))
+        }
+      }
+    }
+    if(locationSearch.priority.length > 0){
+      for(var i = 0; i < locationSearch.priority.length; i++){
+        let res = await PrioritiesIncrement(locationSearch.priority[i].id)
+        if(res){
+          let updatedOccasionsList = await Priorities()
+          dispatch(setPriorities(updatedOccasionsList))
         }
       }
     }
@@ -159,7 +179,7 @@ export default function HeroFilterSection({ surveyData }: any) {
 
       <MultiSelectDropdown
         // searchBar
-        items={Priority}
+        items={prioritiesValue}
         Label={"Priority"}
         heightItemsContainer="300px"
         className={'sm:w-[150px]'}

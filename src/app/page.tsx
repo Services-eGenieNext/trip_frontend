@@ -11,6 +11,8 @@ import HomeReviews from '@/components/HomePage/HomeReviews'
 import Occassions from '@/api-calls/fromDB/occassions'
 import { setOccasions } from '@/redux/reducers/occasionsSlice'
 import { useAppDispatch,useAppSelector } from '@/redux/hooks'
+import PriorityValue from '@/api-calls/fromDB/priority'
+import { setPriorities } from '@/redux/reducers/prioritySlice'
 
 export default function Home() {
     const dispatch = useAppDispatch()
@@ -42,6 +44,12 @@ export default function Home() {
             dispatch(setOccasions(res))
         }
         _Occassions()
+
+        const _Priorities = async () => {
+            let res = await PriorityValue()
+            dispatch(setPriorities(res))
+        }
+        _Priorities()
 
     }, [])
 

@@ -26,6 +26,9 @@ import Tooltip from '@mui/material/Tooltip';
 import Occassions from '@/api-calls/fromDB/occassions'
 import { setOccasions } from '@/redux/reducers/occasionsSlice'
 import OccassionsIncrement from "@/api-calls/fromDB/occasionsTrendingIncrement";
+import PriorityValue from '@/api-calls/fromDB/priority'
+import { setPriorities } from '@/redux/reducers/prioritySlice'
+import PrioritiesIncrement from "@/api-calls/fromDB/prioritiesTrendingIncrement";
 
 const Survey = ({ show, onClose }: ISurvey) => {
   const dispatch = useAppDispatch();
@@ -39,7 +42,9 @@ const Survey = ({ show, onClose }: ISurvey) => {
     message: "",
   });
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
+  const { priorityState } = useAppSelector((state) => state.prioritySlice);
   const [occasions,setOccasionsArray] = useState<any>([])
+  const [prioritiesValue, setPrioritiesValue] = useState<any>([])
 
   const [date, setDate] = useState<Range>({
     key: "selection",
@@ -107,8 +112,14 @@ const Survey = ({ show, onClose }: ISurvey) => {
     dispatch(setOccasions(res))
 }
 
+const _Priorities = async () => {
+  let res = await PriorityValue()
+  dispatch(setPriorities(res))
+}
+
   useEffect(()=>{
     _Occassions()
+    _Priorities()
   },[])
 
   useEffect(()=>{
@@ -116,6 +127,12 @@ const Survey = ({ show, onClose }: ISurvey) => {
       setOccasionsArray(ocassionsState)
     }
       },[ocassionsState])
+
+      useEffect(()=>{
+        if(priorityState.length > 0){
+          setPrioritiesValue(priorityState)
+        }
+          },[priorityState])
     
 
   useEffect(() => {
@@ -171,8 +188,15 @@ setSurvey({...survey, location:"" })
       for(var i = 0; i < survey.occassion.length; i++){
         let res = await OccassionsIncrement(survey.occassion[i].id)
         if(res){
-          let updatedOccasionsList = await Occassions()
-          dispatch(setOccasions(updatedOccasionsList))
+          _Occassions()
+        }
+      }
+    }
+    if(survey.priority.length > 0){
+      for(var i = 0; i < survey.priority.length; i++){
+        let res = await PrioritiesIncrement(survey.priority[i].id)
+        if(res){
+          _Priorities()
         }
       }
     }
@@ -353,7 +377,7 @@ setSurvey({...survey, location:"" })
                 disabled
                 saveData={saveData}
                 setSaveData={setSaveData}
-                items={Priorities}
+                items={prioritiesValue}
                 Label={"Priority"}
                 heightItemsContainer="300px"
                 className={`sm:mr-2 sm:my-2 my-5 sm:w-[400px] w-full`}
