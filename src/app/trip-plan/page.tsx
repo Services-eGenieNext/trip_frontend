@@ -7,6 +7,7 @@ import PageBanner from '@/components/PageBanner/PageBanner'
 import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide'
 import Products from '@/components/Products/Products'
 import SmallStory from '@/components/Story/SmallStory'
+import Section from '@/components/UIComponents/Section'
 import TripPlanReviews from '@/components/trip-plan/trip-plan-reviews'
 import TripPlanningCard from '@/components/tripPlanningCard/tripPlanning'
 import { useAppSelector } from '@/redux/hooks'
@@ -133,7 +134,7 @@ const TripPlan = () => {
             }
             
             {
-                automateLocation && <SmallStory positioning="inline" item={automateLocation} />
+                automateLocation && <Section className="mx-auto"><SmallStory positioning="inline" item={automateLocation} /></Section>
             }
 
             <div className=' mt-20'>

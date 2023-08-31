@@ -126,12 +126,11 @@ const ProductHorizontalSlide = ({
   };
 
   return (
-    <div className="w-full flex justify-center">
-    <Section className="relative">
+    <Section className="relative mx-auto">
       {!loading ? (
           <div className="flex flex-col items-center">
           <ComponentTitle title={Title} />
-        <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2">We keep track of what cities are on the rise and which ones are falling so you can always stay ahead of the curve!</p>
+        <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2 text-center">We keep track of what cities are on the rise and which ones are falling so you can always stay ahead of the curve!</p>
           </div>
         ):(
           <div className="md:px-0 px-5">
@@ -387,7 +386,6 @@ const ProductHorizontalSlide = ({
         }}
       />
     </Section>
-    </div>
   );
 };
 
