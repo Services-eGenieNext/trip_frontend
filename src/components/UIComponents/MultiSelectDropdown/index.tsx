@@ -10,6 +10,7 @@ import { useAppDispatch,useAppSelector } from "@/redux/hooks";
 import addPriorities from '@/api-calls/fromDB/addPriorities'
 import Priorities from '@/api-calls/fromDB/priority'
 import { setPriorities } from '@/redux/reducers/prioritySlice'
+import styles from './index.module.css'
 
 interface TypeProps {
   items: string[] | any;
@@ -65,6 +66,7 @@ export default function SelectCheckBoxSimple({
   const [addFieldError, setAddFieldError] = useState(false)
   const ref = useRef<HTMLInputElement>(null);
   const [requestFailedError,setRequestFailedError] = useState(false)
+  const [selectedOptionString, setSelectedOptionString] = useState("")
 
   useEffect(()=>{
     if(SelectedData?.length > 0 && saveData == true){
@@ -123,6 +125,13 @@ useEffect(() => {
 }, [showDropDown])
 
   useEffect(() => {
+    let SelectedOption:any[] = []
+    optsSelected.map((opt:any,index:number)=>{
+      SelectedOption.push(opt.opt)
+    })
+    let convertIntoString = SelectedOption.toString()
+    setSelectedOptionString(convertIntoString)
+
     let empty: any = [];
     const selected = optsSelected?.map((opt) => opt);
     if (optsSelected?.length > 0) {
@@ -272,7 +281,7 @@ if(AddField){
         className="flex items-center justify-between w-full overflow-hidden cursor-pointer"
       >
         <Box
-        className="overflow-hidden pt-4 pb-2 h-[57px]"
+        className="overflow-hidden pt-4 pb-2"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
@@ -288,14 +297,10 @@ if(AddField){
             sx={{
               overflowY: "hidden",
               overflowX: "hidden",
-              "::-webkit-scrollbar": {
-                // display: "none",
-                // width: "5px !important",
-              },
-              // scrollbarWidth: "none",
             }}
           >
-            {optsSelected?.length > 0 &&
+            <div className="text-ellipsis overflow-hidden whitespace-nowrap">{selectedOptionString}</div>
+            {/* {optsSelected?.length > 0 &&
               optsSelected?.map(( opt , index) => {
                 return (
                   <div
@@ -328,24 +333,11 @@ if(AddField){
                     />
                   </div>
                 );
-              })}
+              })} */}
             {!optsSelected?.length && (
               <Typography color="#999999">{placeholder}</Typography>
             )}
           </Box>
-          {/* {optsSelected?.length > 0 && (
-            <Box className="flex items-center mx-2">
-              <Box className="py-1 px-2 flex justify-center items-center rounded-md bg-[#4B9AD4] text-white">
-                <Typography
-                  fontSize="10px"
-                  fontWeight="400px"
-                  color="common.white"
-                >
-                  {optsSelected.length}
-                </Typography>
-              </Box>
-            </Box>
-          )} */}
         </Box>
       </Box>
       <Box
@@ -386,6 +378,45 @@ if(AddField){
         <Box className="relative">
         {disabled && optsSelected.length >= 10 && (
           <Box className="absolute top-0 left-0 w-full h-full bg-gray-500 opacity-25 z-10"></Box>
+        )}
+        {optsSelected.length > 0 && (
+        <div 
+        className={`w-[98%] flex items-center gap-x-2 px-3 py-2 overflow-x-auto ${styles["showSelectedOptions"]}`}
+        >
+              {optsSelected.map((opt:any,index:number)=>{
+                return (
+                  <div
+                    key={index}
+                    className="bg-[#009de2] px-3 py-1 flex items-center justify-center rounded-full w-max whitespace-nowrap"
+                  >
+                    {Label !== "Occasion" &&(
+                      <Typography
+                      className="mr-2"
+                        color="common.white"
+                        fontSize="10px"
+                        fontWeight="400"
+                      >
+                        {opt.id}.
+                      </Typography>
+                    )}
+                    <Typography
+                    className="text-center"
+                      color="common.white"
+                      fontSize="10px"
+                      fontWeight="400"
+                    >
+                      {opt?.opt}
+                    </Typography>
+                    <img
+                      className="cursor-pointer w-[10px] h-[10px] ml-3"
+                      src="/images/icons/close-white-icon.svg"
+                      alt=""
+                      onClick={() => clearOne(opt?.opt)}
+                    />
+                  </div>
+                )
+              })}
+          </div>
         )}
         {searchBar && addCustomeOption === false && (
           <Box
@@ -484,13 +515,13 @@ if(AddField){
                 }}
               >
                 {Label !== "Occasion" && (
-                <span className="text-[#9e9e9e] mr-2">{opt?.id}.</span>
+                <span className="text-[#9e9e9e] mr-2">{index+1}.</span>
                 )}
                 <CheckboxLabel
                   label={opt?.name}
                   onChange={handleChange}
                   name={opt?.name}
-                  id={opt?.id}
+                  id={index+1}
                   checked={checked}
                   marginLabel="7px"
                 />
