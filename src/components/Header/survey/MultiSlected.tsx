@@ -3,6 +3,10 @@ import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CheckboxLabel from "../../UIComponents/MultiSelectDropdown/label";
 import { AiFillCheckCircle, AiFillCloseCircle } from "react-icons/ai";
+import addOccasion from '@/api-calls/fromDB/addOccasion'
+import Occassions from '@/api-calls/fromDB/occassions'
+import { setOccasions } from '@/redux/reducers/occasionsSlice'
+import { useAppDispatch,useAppSelector } from "@/redux/hooks";
 
 interface TypeProps {
   items: string[] | any;
@@ -47,6 +51,7 @@ export default function SelectCheckBoxSimple({
   saveData,
   setSaveData
 }: TypeProps) {
+  const dispatch = useAppDispatch();
   const [showDropDown, setShowDropDown] = useState(false);
   const [search, setSearch] = useState("");
   const [opts, setOpts] = useState<any[]>([]);
@@ -55,6 +60,8 @@ export default function SelectCheckBoxSimple({
   const [addCustomeOption, setAddCustomeOption] = useState(false);
   const [customeField, setCustomeField] = useState("");
   const ref = useRef<HTMLInputElement>(null);
+  const [addFieldError, setAddFieldError] = useState(false)
+    const [requestFailedError,setRequestFailedError] = useState(false)
   useEffect(()=>{
 if(SelectedData.length > 0 && saveData == true){
   setOptsSelected(SelectedData)
@@ -70,6 +77,7 @@ if(SelectedData.length > 0 && saveData == true){
 
   useEffect(()=>{
 if(addCustomeOption == false){
+  setAddFieldError(false)
   setCustomeField("")
 }
   },[addCustomeOption])
@@ -91,6 +99,7 @@ if(addCustomeOption == false){
 
 useEffect(() => {
   setAddCustomeOption(false)
+  setAddFieldError(false)
   setCustomeField("")
   if(showDropDown)
   {
@@ -147,6 +156,7 @@ useEffect(() => {
 
   const handleAddLabel = (e: React.MouseEvent<HTMLInputElement>) => {
     setAddCustomeOption(true);
+    setRequestFailedError(false)
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -201,21 +211,34 @@ useEffect(() => {
     setOpts(newArray);
   };
   const filtered = opts?.filter(({ opt }) => {
-    return opt?.name?.toLocaleLowerCase().includes(search.toLocaleLowerCase());
+    return opt?.name?.toLocaleLowerCase().includes(customeField.toLocaleLowerCase());
   });
 
-  const AddField = () => {
-    let optionAdd: any = opts;
-    if (customeField !== "") {
-      optionAdd.unshift({ checked: true, opt: { name: customeField, id: "" } });
+  const AddField = async () => {
+    if(Label == "Occasion"){
+      const filteredArray = opts?.filter(({ opt }) => {
+        return opt?.name?.toLocaleLowerCase() == customeField.toLocaleLowerCase();
+      });
+      if(filteredArray.length <= 0 ){
+let AddField = await addOccasion(customeField)
+setCustomeField("");
+setAddCustomeOption(false);
+if(AddField){
+  let updatedOccasionsList = await Occassions()
+  dispatch(setOccasions(updatedOccasionsList))
+}else{
+  setRequestFailedError(true)
+}
+      }else{
+        setAddFieldError(true)
+      }
+    } 
+    if(Label == "Priority"){
+      console.log(customeField,"customeField Priority")
     }
-    setOpts([...optionAdd]);
-    setOptsSelected([
-      ...optsSelected,
-      { opt: customeField, checked: true, id: "" },
-    ]);
-    setCustomeField("");
-    setAddCustomeOption(false);
+    
+    // setCustomeField("");
+    // setAddCustomeOption(false);
   };
   return (
     <Box ref={selectRef} className={`relative ${className}`}>
@@ -243,8 +266,8 @@ useEffect(() => {
             // alignItems="center"
             className="flex flex-wrap gap-1 h-full w-full mr-2 cursor-pointer"
             sx={{
-              overflowY: "scroll",
               overflowX: "hidden",
+              overflowY: "hidden",
               // "::-webkit-scrollbar": {
               //   // display: "none",
               // },
@@ -256,7 +279,7 @@ useEffect(() => {
                 return (
                   <div
                     key={index}
-                    className="bg-[#009de2] px-2 flex items-center justify-between h-[20px]"
+                    className="bg-[#009de2] px-2 py-1 flex items-center justify-center"
                   >
                     {Label !== "Occasion" &&(
                       <Typography
@@ -357,6 +380,7 @@ useEffect(() => {
                 style={{ outline: "none" }}
                 ref={inputSearch}
                 placeholder="Search"
+                onFocus={()=>{setAddFieldError(false)}}
               />
             </Box>
             <Box>
@@ -379,6 +403,7 @@ useEffect(() => {
               style={{ outline: "none" }}
               placeholder={`Add ${Label}`}
               value={customeField}
+              onFocus={()=>{setAddFieldError(false)}}
             />
           </Box>
           <Box className="flex items-center text-[20px]">
@@ -391,10 +416,17 @@ useEffect(() => {
               onClick={() => {
                 setCustomeField("");
                 setAddCustomeOption(false);
+                setAddFieldError(false)
               }}
             />
           </Box>
         </Box>
+        {addFieldError == true && addCustomeOption == true && customeField != "" &&(
+          <p className="text-[red] text-[14px] mt-1 text-center">{Label} already exist.</p>
+        )}
+        {requestFailedError == true && (
+          <p className="text-[red] text-[14px] mt-1 text-center">{Label} not exist.</p>
+        )}
 
         <Box
         className="flex flex-col items-center"

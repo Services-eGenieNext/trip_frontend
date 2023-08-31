@@ -7,10 +7,13 @@ import LocationSlider from '@/components/HomePage/LocationSlider'
 import LocationsCallFromDB  from '@/api-calls/fromDB/location'
 import RestaurantsCallFromDB  from '@/api-calls/fromDB/restaurants'
 import ActivitiesCallFromDB from '@/api-calls/fromDB/activity'
-import ClientTestimonials from '@/components/Client-Testimonials/client-testimonials'
 import HomeReviews from '@/components/HomePage/HomeReviews'
+import Occassions from '@/api-calls/fromDB/occassions'
+import { setOccasions } from '@/redux/reducers/occasionsSlice'
+import { useAppDispatch,useAppSelector } from '@/redux/hooks'
 
 export default function Home() {
+    const dispatch = useAppDispatch()
     const [location, setLocation] = useState([])
     const [restaurants, setRestaurants] = useState([])
     const [activities, setActivities] = useState([])
@@ -33,6 +36,13 @@ export default function Home() {
             setActivities(res)
         }
         _activities()
+
+        const _Occassions = async () => {
+            let res = await Occassions()
+            dispatch(setOccasions(res))
+        }
+        _Occassions()
+
     }, [])
 
     return (
