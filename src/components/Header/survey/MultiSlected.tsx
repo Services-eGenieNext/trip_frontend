@@ -7,6 +7,9 @@ import addOccasion from '@/api-calls/fromDB/addOccasion'
 import Occassions from '@/api-calls/fromDB/occassions'
 import { setOccasions } from '@/redux/reducers/occasionsSlice'
 import { useAppDispatch,useAppSelector } from "@/redux/hooks";
+import addPriorities from '@/api-calls/fromDB/addPriorities'
+import Priorities from '@/api-calls/fromDB/priority'
+import { setPriorities } from '@/redux/reducers/prioritySlice'
 
 interface TypeProps {
   items: string[] | any;
@@ -234,7 +237,22 @@ if(AddField){
       }
     } 
     if(Label == "Priority"){
-      console.log(customeField,"customeField Priority")
+      const filteredArray = opts?.filter(({ opt }) => {
+        return opt?.name?.toLocaleLowerCase() == customeField.toLocaleLowerCase();
+      });
+      if(filteredArray.length <= 0 ){
+let AddField = await addPriorities(customeField)
+setCustomeField("");
+setAddCustomeOption(false);
+if(AddField){
+  let updatedOccasionsList = await Priorities()
+  dispatch(setPriorities(updatedOccasionsList))
+}else{
+  setRequestFailedError(true)
+}
+      }else{
+        setAddFieldError(true)
+      }
     }
     
     // setCustomeField("");

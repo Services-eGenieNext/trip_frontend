@@ -7,6 +7,9 @@ import addOccasion from '@/api-calls/fromDB/addOccasion'
 import Occassions from '@/api-calls/fromDB/occassions'
 import { setOccasions } from '@/redux/reducers/occasionsSlice'
 import { useAppDispatch,useAppSelector } from "@/redux/hooks";
+import addPriorities from '@/api-calls/fromDB/addPriorities'
+import Priorities from '@/api-calls/fromDB/priority'
+import { setPriorities } from '@/redux/reducers/prioritySlice'
 
 interface TypeProps {
   items: string[] | any;
@@ -64,7 +67,6 @@ export default function SelectCheckBoxSimple({
   const [requestFailedError,setRequestFailedError] = useState(false)
 
   useEffect(()=>{
-    console.log(SelectedData,"SelectedData")
     if(SelectedData?.length > 0 && saveData == true){
       setOptsSelected(SelectedData)
       setSaveData(false)
@@ -235,8 +237,24 @@ if(AddField){
         setAddFieldError(true)
       }
     } 
+
     if(Label == "Priority"){
-      console.log(customeField,"customeField Priority")
+      const filteredArray = opts?.filter(({ opt }) => {
+        return opt?.name?.toLocaleLowerCase() == customeField.toLocaleLowerCase();
+      });
+      if(filteredArray.length <= 0 ){
+let AddField = await addPriorities(customeField)
+setCustomeField("");
+setAddCustomeOption(false);
+if(AddField){
+  let updatedOccasionsList = await Priorities()
+  dispatch(setPriorities(updatedOccasionsList))
+}else{
+  setRequestFailedError(true)
+}
+      }else{
+        setAddFieldError(true)
+      }
     }
     
     // setCustomeField("");

@@ -13,6 +13,8 @@ import { setLocations } from "@/redux/reducers/locationSlice";
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
 import Occassions from '@/api-calls/fromDB/occassions'
 import { setOccasions } from '@/redux/reducers/occasionsSlice'
+import PriorityValue from '@/api-calls/fromDB/priority'
+import { setPriorities } from '@/redux/reducers/prioritySlice'
 
 export default function Results() {
   const dispatch = useAppDispatch();
@@ -36,10 +38,16 @@ export default function Results() {
             let res = await Occassions()
             dispatch(setOccasions(res))
         }
+
+        const _Priorities = async () => {
+          let res = await PriorityValue()
+          dispatch(setPriorities(res))
+      }
         
   useEffect(()=>{
     _def()
     _Occassions()
+    _Priorities()
   },[])
 
   useEffect(()=>{
