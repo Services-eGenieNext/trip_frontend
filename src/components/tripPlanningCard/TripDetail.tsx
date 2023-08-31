@@ -16,6 +16,7 @@ const TripDetail = ({item}: ITripDetail) => {
     const [image, setImage] = useState('')
     const [detailLoading, setDetailLoading] = useState(false)
     const [itemDetail, setItemDetail] = useState<any | null>(null)
+    const [viewMore, setViewMore] = useState(false)
 
     useEffect(() => {
         const _defItemDetail = async () => {
@@ -156,7 +157,18 @@ const TripDetail = ({item}: ITripDetail) => {
                     }
                 </div>
             </div>
-
+            {
+                images.length > 4 && <span className="text-[var(--blue)] text-right ml-auto block cursor-pointer select-none" onClick={() => setViewMore(!viewMore)}>View more pics</span>
+            }
+            <div className="flex flex-wrap">
+                {
+                    viewMore && images.slice(4).map((img: string, imgIndex: number) => {
+                        return <div key={imgIndex} className="h-[98px] w-[200px] bg-gray-100 rounded-xl overflow-hidden relative mx-1 mb-2">
+                            <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} />
+                        </div>
+                    })
+                }
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 mt-10">
                 <div className="relative">
                     {
