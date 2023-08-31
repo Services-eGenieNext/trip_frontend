@@ -25,6 +25,7 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            top: "-0.5rem"
             }}
             onClick={onClick}
         >
@@ -56,6 +57,7 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            top: "-0.5rem"
             }}
             onClick={onClick}
         >

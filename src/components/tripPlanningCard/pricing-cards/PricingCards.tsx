@@ -26,7 +26,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
 
     const [LocationDetails, setLocationDetails] = useState<any>([])
     const [showTripPopup, setShowTripPopup] = useState(false);
-    const [item, setItem] = useState({});
+    const [item, setItem] = useState<any>({});
     const [loading, setLoading] = useState<boolean>(true);
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
@@ -341,9 +341,9 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                         }
                         </div>
 
-                        {
-                            (params_list.v_type !== '3' && params_list.v_type !== '2') && <SmallStory positioning="block" item={item} />
-                        }
+                        {/* {
+                            automateLocation?.name !== item.name && <SmallStory positioning="block" className="md:mb-0" item={item} />
+                        } */}
                     </div>
                 </div>
             )

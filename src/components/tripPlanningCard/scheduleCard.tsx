@@ -5,6 +5,9 @@ import InputField from "../UIComponents/InputField/InputField";
 import { LocationsDurationCall } from "@/api-calls";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
+import SelectField from "../UIComponents/InputField/SelectField";
+import { _calculateStartAndEndTime } from "./pricing-cards/functions";
+import { ITime } from "@/interfaces";
 
 interface IScheduleCard extends IPlanningCard {
   distanceObject?: any
@@ -26,10 +29,13 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
     const [editTimeForm, setEditTimeForm] = useState(initialEditTimeFormValues)
     const [suggestedLocation, setSuggestedLocation] = useState('')
     const [duration, setDuration] = useState(null)
+    const [destinationLocations, setDestinationLocations] = useState<any[]>([])
+    const [newEvent, setNewEvent] = useState<any>({})
 
     const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
 
     const editTimeRef = useRef<HTMLDivElement | null>(null)
+    const addEventRef = useRef<HTMLDivElement | null>(null)
     const cardRef = useRef<HTMLDivElement | null>(null)
 
     function formatTime(timeString: string) {
@@ -104,6 +110,25 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
       dispatch(setItineraryDays([..._itineraryDays]))
     }
 
+    const addNewEvent = async () => {
+      let _itineraryDays = [...itineraryDays]
+      let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
+      _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
+      let locIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location === items)
+
+      let newTime = newEvent.current_opening_hours?.weekday_text[0].split(': ')[1]
+      _itineraryDays[dayIndex].times = [
+        ..._itineraryDays[dayIndex].times.slice(0, locIndex+1), 
+        {time: newTime, location: newEvent}, 
+        ..._itineraryDays[dayIndex].times.slice(locIndex, _itineraryDays[dayIndex].times.length)
+      ]
+
+      let suggestedTime = await _calculateStartAndEndTime(_itineraryDays[dayIndex].times, locIndex+1)
+      _itineraryDays[dayIndex].times[locIndex+1] = {..._itineraryDays[dayIndex].times[locIndex+1], suggestedTime: suggestedTime}
+
+      dispatch(setItineraryDays([..._itineraryDays]))
+    }
+
     const onClickItem = () => {
       onOpen(items);
       let number = document.querySelector('body .width')?.scrollHeight ?? 0
@@ -133,6 +158,7 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
             if(!cardRef.current.contains((e.target as Element)))
             {
               setEditTime(false)
+              setAddEvent(false)
             }
           }
         })
@@ -161,13 +187,42 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
       }
     }, [editTime])
 
+    useEffect(() => {
+      if(addEvent)
+      {
+          addEventRef.current?.classList.remove('hidden')
+          addEventRef.current?.classList.add('flex')
+          setTimeout(() => {
+            addEventRef.current?.classList.remove('opacity-0')
+            addEventRef.current?.classList.remove('-translate-y-5')
+          }, 200);
+      }
+      else
+      {
+        addEventRef.current?.classList.add('opacity-0')
+        addEventRef.current?.classList.add('-translate-y-5')
+          setTimeout(() => {
+            addEventRef.current?.classList.add('hidden')
+            addEventRef.current?.classList.remove('flex')
+          }, 200);
+      }
+    }, [addEvent])
+
+    useEffect(() => {
+      const _defDestinationFunc = async () => {
+        let _d : any[] = await itineraryDays.filter(itinerary => itinerary.day !== day).map(itin => itin.times.map(tim => tim.location))
+        setDestinationLocations([].concat(..._d))
+      }
+      _defDestinationFunc()
+    }, [itineraryDays])
+
   return (
     <>
     {
       (time.suggestedTime?.duration_time || duration) && <span className={`flex rounded-full px-2 h-max bg-[var(--blue)] text-white text-[12px] whitespace-nowrap w-max -translate-y-full`}>{time.suggestedTime?.duration_time ? time.suggestedTime?.duration_time : duration}</span>
     }
     <div ref={cardRef}
-      className={`flex gap-x-4 mb-10 cursor-pointer h-full ${CSS["pricingCard"]}`}
+      className={`flex gap-x-4 mb-10 h-full ${CSS["pricingCard"]}`}
 
       onDrop={(e) => onDropFunc(e)}
       onDragOver={(e) => {
@@ -190,7 +245,7 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
       <span
         className={`text-[13px] max-w-[259px] w-full hover:text-[#009DE2] p-4 rounded-lg ${CSS["plan-time-wrapper"]} ${variation === "list" ? '' : 'hover:bg-white ml-2 mr-4'} ${isDragOver ? 'bg-white text-[#009DE2] shadow-lg' : 'text-black'}`} >
         <div className="flex justify-between items-center gap-2">
-          <p className="gilroy text-[11px] font-semibold" onClick={() => onClickItem()}>{
+          <p className="gilroy text-[11px] font-semibold cursor-pointer" onClick={() => onClickItem()}>{
                 !time.suggestedTime?.startTime && !time.suggestedTime?.endTime ? (
                     time.time
                 ) : (
@@ -198,11 +253,11 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
                 )
             } - </p>
           <div className="flex justify-between items-center">
-            <p className="font-medium w-[90px]" onClick={() => onClickItem()}>{suggestedLocation ? suggestedLocation : items.name}</p>
+            <p className="font-medium w-[90px] cursor-pointer" onClick={() => onClickItem()}>{suggestedLocation ? suggestedLocation : items.name}</p>
             {isDropdownButton == true ? (
               <div className="relative">
                 <span
-                  className={`w-[18px] block h-[13px] rounded ${CSS["svg"]}`}
+                  className={`w-[18px] block h-[13px] rounded cursor-pointer ${CSS["svg"]}`}
                   onClick={() => {
                     setIsShowTooltip(!isShowTooltip);
                   }}
@@ -225,15 +280,15 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
                 {
                   isShowTooltip === true && (
                     <div className="absolute top-3 right-0 w-[122px] h-[110px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-between py-3 px-4">
-                        <p className="text-black hover:text-[#9AB044]" onClick={()=>{
+                        <p className="text-black hover:text-[#9AB044] cursor-pointer" onClick={()=>{
                             // setIsShowTooltip(false)
                             setEditTime(true)
                         }}>Edit time</p>
-                        <p className="text-black hover:text-[#9AB044]" onClick={()=>{
+                        <p className="text-black hover:text-[#9AB044] cursor-pointer" onClick={()=>{
                             setIsShowTooltip(false)
                             delEventFunc()
                         }}>Delete event</p>
-                        <p className="text-black hover:text-[#9AB044]" onClick={()=>{
+                        <p className="text-black hover:text-[#9AB044] cursor-pointer" onClick={()=>{
                             setIsShowTooltip(false)
                             setAddEvent(true)
                             }}>Add event</p>
@@ -254,6 +309,37 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
                   </div>
                   
                 </div>
+
+                <div ref={addEventRef} className="hidden -translate-y-5 transition-all duration-300 absolute top-2 right-0 sm:w-[462px] rounded-xl shadow-lg border z-10 bg-white flex-col justify-center py-5 px-8 text-black max-w-[300px]">
+
+                  <SelectField
+                    label="Choose Destination"
+                    placeholder="Select ..."
+                    data={destinationLocations.map(itinerary => {
+                        return {
+                          id: itinerary.name,
+                          name: itinerary.name
+                        }
+                      })
+                    }
+                    className={`mr-2 sm:my-2 my-5 w-full`}
+                    styling={{
+                      shadow: "drop-shadow-xl ",
+                      left: "0px",
+                      top: "70px",
+                    }}
+                    value={newEvent.name}
+                    onChange={(val) => {
+                      setNewEvent(destinationLocations.find(_d => _d.name == val))
+                    }}
+                    onAdditionalChange={(_data) => {}}
+                  />
+
+                  <div className="mt-4 w-full">
+                    <button className="w-full font-bold text-[14px] bg-[#009DE2] text-white py-2 rounded-lg" onClick={()=> {addNewEvent()}}>Add Now</button>
+                  </div>
+                  
+                </div>
               </div>
             ) : (
               ""
@@ -265,13 +351,13 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
             <span>{dragOverLocation.name}</span>
             <div>
               <span className="flex">
-              <span className="bg-green-500 h-max w-max rounded-full mr-1" onClick={() => replaceConfirm()}>
+              <span className="bg-green-500 h-max w-max rounded-full mr-1 cursor-pointer" onClick={() => replaceConfirm()}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="#fff" className="w-5 h-5 p-1">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                 </svg>
               </span>
 
-              <span className="bg-red-500 h-max w-max rounded-full" onClick={() => clearConfirm()}>
+              <span className="bg-red-500 h-max w-max rounded-full cursor-pointer" onClick={() => clearConfirm()}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="#fff" className="w-5 h-5 p-1">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
