@@ -12,7 +12,7 @@ import CityLocation from '@/data/city.json'
 import AllLocation from '@/data/mixLocation.json'
 import SelectField from "@/components/UIComponents/InputField/SelectField";
 import InputField from "@/components/UIComponents/InputField/InputField";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch,useAppSelector } from "@/redux/hooks";
 import surveySlice, { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { useRouter } from "next/navigation";
 import { Range } from "react-date-range";
@@ -23,6 +23,9 @@ import MultiSelectDropdown from "@/components/Header/survey/MultiSlected";
 import RadioInputs from "@/components/UIComponents/RadioInput/RadioInput";
 import SimpleLocation from "../../icons/SimpleLocation";
 import Tooltip from '@mui/material/Tooltip';
+import Occassions from '@/api-calls/fromDB/occassions'
+import { setOccasions } from '@/redux/reducers/occasionsSlice'
+import OccassionsIncrement from "@/api-calls/fromDB/occasionsTrendingIncrement";
 
 const Survey = ({ show, onClose }: ISurvey) => {
   const dispatch = useAppDispatch();
@@ -35,6 +38,8 @@ const Survey = ({ show, onClose }: ISurvey) => {
     dates: "",
     message: "",
   });
+  const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
+  const [occasions,setOccasionsArray] = useState<any>([])
 
   const [date, setDate] = useState<Range>({
     key: "selection",
@@ -96,6 +101,23 @@ const Survey = ({ show, onClose }: ISurvey) => {
     },
   ])
 
+
+  const _Occassions = async () => {
+    let res = await Occassions()
+    dispatch(setOccasions(res))
+}
+
+  useEffect(()=>{
+    _Occassions()
+  },[])
+
+  useEffect(()=>{
+    if(ocassionsState.length > 0){
+      setOccasionsArray(ocassionsState)
+    }
+      },[ocassionsState])
+    
+
   useEffect(() => {
     if(survey.selectedOption == "continent"){
       setLocationInputLabel("Continent")
@@ -143,8 +165,17 @@ setSurvey({...survey, location:"" })
     setQuestions([...OptionFiltered])
   },[survey])
 
-  const handleSurvey = () => {
+  const handleSurvey = async () => {
     dispatch(setSurveyValue(survey));
+    if(survey.occassion.length > 0){
+      for(var i = 0; i < survey.occassion.length; i++){
+        let res = await OccassionsIncrement(survey.occassion[i].id)
+        if(res){
+          let updatedOccasionsList = await Occassions()
+          dispatch(setOccasions(updatedOccasionsList))
+        }
+      }
+    }
     if (survey.dates.startDate) {
       router.push("/trip-plan?address=" + survey.location);
       onClose();
@@ -303,7 +334,7 @@ setSurvey({...survey, location:"" })
             {questions[step - 1]?.type === "occasions" && (
               <MultiSelectDropdown
                 // searchBar
-                items={Occasion}
+                items={occasions}
                 saveData={saveData}
                 setSaveData={setSaveData}
                 Label={"Occasion"}

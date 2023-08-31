@@ -5,6 +5,7 @@ import popularActivities from "./reducers/popularActivities";
 import reviewsReducer from './reducers/reviews'
 import surveyReducer from "./reducers/surveySlice";
 import itineraryReducer from "./reducers/itinerarySlice";
+import occasionsSlice from "./reducers/occasionsSlice";
 
 export const store = configureStore({
     reducer: {
@@ -13,7 +14,8 @@ export const store = configureStore({
         popularActivities,
         reviewsReducer,
         surveyReducer,
-        itineraryReducer
+        itineraryReducer,
+        occasionsSlice
     },
     devTools: process.env.NODE_ENV !== "production",
 });

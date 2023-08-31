@@ -18,6 +18,9 @@ import { useAppDispatch,useAppSelector } from "@/redux/hooks";
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { setLocations } from "@/redux/reducers/locationSlice";
 import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
+import OccassionsIncrement from "@/api-calls/fromDB/occasionsTrendingIncrement";
+import Occassions from '@/api-calls/fromDB/occassions'
+import { setOccasions } from '@/redux/reducers/occasionsSlice'
 
 export default function HeroFilterSection() {
   const dispatch = useAppDispatch();
@@ -30,6 +33,8 @@ export default function HeroFilterSection() {
   const [daysLength, setDaysLength] = useState<number | null>(null)
   const { surveySlice } = useAppSelector((state) => state.surveyReducer);
   const [saveData, setSaveData] = useState(false)
+  const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
+  const [occasions,setOccasionsArray] = useState<any>([])
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: [],
@@ -38,6 +43,12 @@ export default function HeroFilterSection() {
     dates: "",
     spending:"",
   });
+
+  useEffect(()=>{
+if(ocassionsState.length > 0){
+  setOccasionsArray(ocassionsState)
+}
+  },[ocassionsState])
 
   useEffect(()=>{
     setSaveData(true)
@@ -63,8 +74,17 @@ setLocationSearch({...locationSearch,surveySlice})
     calculateDaysRemaining();
   }, [date]);
 
-  const handleRoute = () => {
+  const handleRoute = async () => {
     dispatch(setSurveyValue({...surveySlice,locationSearch}))
+    if(locationSearch.occassion.length > 0){
+      for(var i = 0; i < locationSearch.occassion.length; i++){
+        let res = await OccassionsIncrement(locationSearch.occassion[i].id)
+        if(res){
+          let updatedOccasionsList = await Occassions()
+          dispatch(setOccasions(updatedOccasionsList))
+        }
+      }
+    }
     if (locationSearch.dates.startDate) {
       router.push("/trip-plan?address=" + locationSearch.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
@@ -119,7 +139,7 @@ setLocationSearch({...locationSearch,surveySlice})
 
       <MultiSelectDropdown key={1}
         // searchBar
-        items={Occasion}
+        items={occasions}
         Label={"Occasion"}
         heightItemsContainer="300px"
         className={"sm:w-[170px]"}

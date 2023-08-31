@@ -20,6 +20,10 @@ import LocationJson from '@/data/location.json'
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { useSearchParams } from 'next/navigation'
 import Spending from '@/data/spending.json'
+import {useAppSelector} from '@/redux/hooks'
+import OccassionsIncrement from "@/api-calls/fromDB/occasionsTrendingIncrement";
+import Occassions from '@/api-calls/fromDB/occassions'
+import { setOccasions } from '@/redux/reducers/occasionsSlice'
 
 export default function HeroFilterSection({ surveyData }: any) {
   const dispatch = useAppDispatch();
@@ -30,6 +34,8 @@ export default function HeroFilterSection({ surveyData }: any) {
     key: "selection",
   });
   const [saveData, setSaveData] = useState(false)
+  const [occasions,setOccasionsArray] = useState<any>([])
+   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
 
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
@@ -41,8 +47,11 @@ export default function HeroFilterSection({ surveyData }: any) {
   });
 
   useEffect(()=>{
-console.log(locationSearch,"locationSearch123")
-  },[locationSearch])
+    if(ocassionsState.length > 0){
+      setOccasionsArray(ocassionsState)
+    }
+      },[ocassionsState])
+
 
   useEffect(() => {
     let data = {
@@ -75,12 +84,21 @@ console.log(locationSearch,"locationSearch123")
     calculateDaysRemaining();
 }, [date]);
 
-  const handleRoute = () => {
-    if (locationSearch.dates.startDate !== "") {
+  const handleRoute = async () => {
+    dispatch(setSurveyValue(locationSearch))
+    if(locationSearch.occassion.length > 0){
+      for(var i = 0; i < locationSearch.occassion.length; i++){
+        let res = await OccassionsIncrement(locationSearch.occassion[i].id)
+        if(res){
+          let updatedOccasionsList = await Occassions()
+          dispatch(setOccasions(updatedOccasionsList))
+        }
+      }
+    }
+    if (locationSearch.dates.startDate) {
       router.push("/trip-plan?address=" + locationSearch.location);
     } else {
       router.push("/results?address=" + locationSearch.location);
-      dispatch(setSurveyValue(locationSearch))
     }
   };
 
@@ -126,7 +144,7 @@ console.log(locationSearch,"locationSearch123")
 
       <MultiSelectDropdown
         // searchBar
-        items={Occasion}
+        items={occasions}
         Label={"Occasion"}
         heightItemsContainer="300px"
         className={'sm:w-[150px]'}

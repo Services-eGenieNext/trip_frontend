@@ -11,6 +11,8 @@ import { useSearchParams } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
 import { setLocations } from "@/redux/reducers/locationSlice";
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
+import Occassions from '@/api-calls/fromDB/occassions'
+import { setOccasions } from '@/redux/reducers/occasionsSlice'
 
 export default function Results() {
   const dispatch = useAppDispatch();
@@ -29,8 +31,15 @@ export default function Results() {
       setLocationState(res)
       setLocationsData(res);
   };
+
+  const _Occassions = async () => {
+            let res = await Occassions()
+            dispatch(setOccasions(res))
+        }
+        
   useEffect(()=>{
     _def()
+    _Occassions()
   },[])
 
   useEffect(()=>{
