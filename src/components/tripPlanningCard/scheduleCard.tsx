@@ -253,7 +253,7 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
                 )
             } - </p>
           <div className="flex justify-between items-center">
-            <p className="font-medium w-[90px] cursor-pointer" onClick={() => onClickItem()}>{suggestedLocation ? suggestedLocation : items.name}</p>
+            <p className="font-medium w-[90px] cursor-pointer text-ellipsis whitespace-nowrap overflow-hidden" title={items.name} onClick={() => onClickItem()}>{suggestedLocation ? suggestedLocation : items.name}</p>
             {isDropdownButton == true ? (
               <div className="relative">
                 <span

@@ -5,17 +5,22 @@ import { DateRange, Range } from "react-date-range"
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
+interface IDate extends Range {
+    endDateChanged?: boolean
+}
+
 const DateRangeField = ({className, label, value, placeholder="", icon, onChange= (val: Range)=>{}}: IDateRangeField) => {
 
     let startDate = new Date()
     let endDate = new Date()
     endDate.setDate(endDate.getDate() + 6)
 
-    const [date, setDate] = useState<Range>(value)
+    const [date, setDate] = useState<IDate>(value)
 
     const [openDropDown, setOpenDropDown] = useState(false)
     const selectRef = useRef<HTMLDivElement | null>(null)
     const dropDownRef = useRef<HTMLDivElement | null>(null)
+    const dateRangeErrorRef = useRef<HTMLDivElement | null>(null)
 
     useEffect(() => {
         onChange(date)
@@ -27,7 +32,6 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
             window.addEventListener('click', (e) => {
                 if(selectRef.current)
                 {
-                    // console.log('window event',selectRef.current.contains((e.target as Element)))
                     if(!selectRef.current.contains((e.target as Element)))
                     {
                         setOpenDropDown(false)
@@ -53,8 +57,26 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
             setTimeout(() => {
                 dropDownRef.current?.classList.add('hidden')
             }, 200);
+
+            if(!date.endDateChanged)
+            {
+                dateRangeErrorRef.current?.classList.remove('hidden')
+                setTimeout(() => {
+                    dateRangeErrorRef.current?.classList.remove('opacity-0')
+                    dateRangeErrorRef.current?.classList.remove('-translate-y-full')
+                    dateRangeErrorRef.current?.classList.add('-translate-y-1/2')
+                }, 200);
+
+                setTimeout(() => {
+                    dateRangeErrorRef.current?.classList.add('opacity-0')
+                    dateRangeErrorRef.current?.classList.remove('-translate-y-1/2')
+                    dateRangeErrorRef.current?.classList.add('-translate-y-full')
+                    setTimeout(() => {
+                        dateRangeErrorRef.current?.classList.add('hidden')
+                    }, 200);
+                }, 3000)
+            }
         }
-        console.log('openDropDown', openDropDown)
     }, [openDropDown])
 
     return (
@@ -96,17 +118,29 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
                     }]}
                     showDateDisplay={false}
                     onChange={(item) => {
+                        console.log('item', item)
                         let _item = item
-                        
+                        let endDateChanged = true
                         if(_item.selection.startDate === _item.selection.endDate)
                         {
+                            endDateChanged = false
                             const endDate: any = _item.selection.startDate
                             _item.selection.endDate = addDays(endDate, 6)
                         }
 
-                        setDate(item.selection)
+                        setDate({...item.selection, endDateChanged: endDateChanged})
                     }}
                 />
+            </div>
+
+            <div ref={dateRangeErrorRef} className="fixed top-[50%] left-[50%] -translate-y-1/2 -translate-x-1/2 rounded-lg bg-yellow-50 text-yellow-500 large-shadow p-4 z-10 transition-all duration-300">
+                <p className="flex"> 
+                <span className='mr-1'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                    </svg>
+                </span>
+                End date is not selected yet in {label}!</p>
             </div>
         </div>
     )
