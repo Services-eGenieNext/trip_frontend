@@ -11,7 +11,7 @@ import CountryLocation from '@/data/country.json'
 import CityLocation from '@/data/city.json'
 import AllLocation from '@/data/mixLocation.json'
 import SelectField from "@/components/UIComponents/InputField/SelectField";
-import InputField from "@/components/UIComponents/InputField/InputField";
+import InputField from "@/components/UIComponents/InputField/inputWithSuggestions";
 import { useAppDispatch,useAppSelector } from "@/redux/hooks";
 import surveySlice, { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { useRouter } from "next/navigation";
@@ -29,6 +29,13 @@ import OccassionsIncrement from "@/api-calls/fromDB/occasionsTrendingIncrement";
 import PriorityValue from '@/api-calls/fromDB/priority'
 import { setPriorities } from '@/redux/reducers/prioritySlice'
 import PrioritiesIncrement from "@/api-calls/fromDB/prioritiesTrendingIncrement";
+import TopCountries from '@/api-calls/fromDB/topCountries'
+import TopCities from '@/api-calls/fromDB/topCities'
+import { setTopCountries } from '@/redux/reducers/topCountries'
+import AddLocation from "@/api-calls/fromDB/addLocation";
+import LocationIncrement from "@/api-calls/fromDB/topCountriesIncrement";
+import AddCities from "@/api-calls/fromDB/addCities";
+import TopCitiesIncrement from "@/api-calls/fromDB/topCitiesIncrement";
 
 const Survey = ({ show, onClose }: ISurvey) => {
   const dispatch = useAppDispatch();
@@ -43,8 +50,11 @@ const Survey = ({ show, onClose }: ISurvey) => {
   });
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
   const { priorityState } = useAppSelector((state) => state.prioritySlice);
+  const { topCountriesState } = useAppSelector((state) => state.topCountriesSlice);
   const [occasions,setOccasionsArray] = useState<any>([])
   const [prioritiesValue, setPrioritiesValue] = useState<any>([])
+  const [topCountriesValue, setTopCountriesValue] = useState<any>([])
+  const [topCities, setTopCities] = useState<any>([])
 
   const [date, setDate] = useState<Range>({
     key: "selection",
@@ -117,23 +127,50 @@ const _Priorities = async () => {
   dispatch(setPriorities(res))
 }
 
+const _TopCountries = async () => {
+  let res = await TopCountries()
+  dispatch(setTopCountries(res))
+}
+
+const _TopCities = async () => {
+  let res = await TopCities()
+  if(res.length > 0){
+    setTopCities(res)
+  }else{
+    setTopCities([])
+  }
+}
+
   useEffect(()=>{
     _Occassions()
     _Priorities()
+    _TopCountries()
+    _TopCities()
   },[])
 
   useEffect(()=>{
-    if(ocassionsState.length > 0){
+    if(ocassionsState?.length > 0){
       setOccasionsArray(ocassionsState)
+    }else{
+      setOccasionsArray([])
     }
       },[ocassionsState])
 
       useEffect(()=>{
-        if(priorityState.length > 0){
+        if(priorityState?.length > 0){
           setPrioritiesValue(priorityState)
+        }else{
+          setPrioritiesValue([])
         }
           },[priorityState])
     
+          useEffect(()=>{
+            if(topCountriesState?.length > 0){
+              setTopCountriesValue(topCountriesState)
+            }else{
+              setTopCountriesValue([])
+            }
+          },[topCountriesState])
 
   useEffect(() => {
     if(survey.selectedOption == "continent"){
@@ -142,11 +179,11 @@ const _Priorities = async () => {
     }
     if(survey.selectedOption == "country"){
       setLocationInputLabel("Country")
-      setDropdownLocationValue(CountryLocation)
+      setDropdownLocationValue(topCountriesValue)
     }
     if(survey.selectedOption == "city"){
       setLocationInputLabel("City")
-      setDropdownLocationValue(CityLocation)
+      setDropdownLocationValue(topCities)
     }
     if(survey.selectedOption == "no"){
       setLocationInputLabel("Trending Locations")
@@ -197,6 +234,42 @@ setSurvey({...survey, location:"" })
         let res = await PrioritiesIncrement(survey.priority[i].id)
         if(res){
           _Priorities()
+        }
+      }
+    }
+    if(survey.location != ""){
+      const filtered = dropdownLocationValue?.filter((country:any) => {
+        return country?.name?.toLocaleLowerCase() == survey.location.toLocaleLowerCase();
+      });
+      if(filtered.length > 0){
+        for(var i = 0; i < filtered.length; i++){
+          if(survey.selectedOption == "country"){
+            let res = await LocationIncrement(filtered[i].id)
+            if(res){
+              let updatedOccasionsList = await TopCountries()
+              dispatch(setTopCountries(updatedOccasionsList))
+            }
+          }
+          if(survey.selectedOption == "city"){
+            let res = await TopCitiesIncrement(filtered[i].id)
+            if(res){
+              _TopCities()
+            }
+          }
+        }
+      }else{
+        if(survey.selectedOption == "country"){
+          let res = await AddLocation(survey.location)
+          if(res){
+            let updatedOccasionsList = await TopCountries()
+              dispatch(setTopCountries(updatedOccasionsList))
+          }
+          if(survey.selectedOption == "city"){
+            let res = await AddCities(survey.location)
+            if(res){
+              _TopCities()
+            }
+          }
         }
       }
     }
@@ -342,10 +415,11 @@ setSurvey({...survey, location:"" })
       type="text"
       label={locationInputLabel}
       placeholder={`Enter ${locationInputLabel}`}
-      value={survey.location}
+      value={survey?.location}
+      items={dropdownLocationValue}
       icon={<SimpleLocation />}
-      onChange={(e)=>{
-        setSurvey({...survey, location: e.target.value})
+      onChange={(val:any)=>{
+        setSurvey({...survey, location: val})
       }}
       />
                   )}

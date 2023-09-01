@@ -20,8 +20,8 @@ interface IInputField {
     onAdditionalChange?: (value?: any) => void,
     name?: string,
     styling?: any ,
+    items?:[] | any
 }
-
 export interface ISelectField extends IInputField  {
     data: any
 }
