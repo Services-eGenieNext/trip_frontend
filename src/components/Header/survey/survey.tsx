@@ -34,6 +34,8 @@ import TopCities from '@/api-calls/fromDB/topCities'
 import { setTopCountries } from '@/redux/reducers/topCountries'
 import AddLocation from "@/api-calls/fromDB/addLocation";
 import LocationIncrement from "@/api-calls/fromDB/topCountriesIncrement";
+import AddCities from "@/api-calls/fromDB/addCities";
+import TopCitiesIncrement from "@/api-calls/fromDB/topCitiesIncrement";
 
 const Survey = ({ show, onClose }: ISurvey) => {
   const dispatch = useAppDispatch();
@@ -236,23 +238,38 @@ setSurvey({...survey, location:"" })
       }
     }
     if(survey.location != ""){
-      const filtered = topCountriesValue?.filter((country:any) => {
-        return country?.country?.toLocaleLowerCase() == survey.location.toLocaleLowerCase();
+      const filtered = dropdownLocationValue?.filter((country:any) => {
+        return country?.name?.toLocaleLowerCase() == survey.location.toLocaleLowerCase();
       });
       if(filtered.length > 0){
         for(var i = 0; i < filtered.length; i++){
-          console.log(filtered[i].id)
-          let res = await LocationIncrement(filtered[i].id)
-          if(res){
-            let updatedOccasionsList = await TopCountries()
-            dispatch(setTopCountries(updatedOccasionsList))
+          if(survey.selectedOption == "country"){
+            let res = await LocationIncrement(filtered[i].id)
+            if(res){
+              let updatedOccasionsList = await TopCountries()
+              dispatch(setTopCountries(updatedOccasionsList))
+            }
+          }
+          if(survey.selectedOption == "city"){
+            let res = await TopCitiesIncrement(filtered[i].id)
+            if(res){
+              _TopCities()
+            }
           }
         }
       }else{
-        let res = await AddLocation(survey.location)
-        if(res){
-          let updatedOccasionsList = await TopCountries()
-            dispatch(setTopCountries(updatedOccasionsList))
+        if(survey.selectedOption == "country"){
+          let res = await AddLocation(survey.location)
+          if(res){
+            let updatedOccasionsList = await TopCountries()
+              dispatch(setTopCountries(updatedOccasionsList))
+          }
+          if(survey.selectedOption == "city"){
+            let res = await AddCities(survey.location)
+            if(res){
+              _TopCities()
+            }
+          }
         }
       }
     }

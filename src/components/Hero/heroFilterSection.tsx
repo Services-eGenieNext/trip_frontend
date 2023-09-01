@@ -125,7 +125,7 @@ setLocationSearch({...locationSearch,surveySlice})
     }
     if(locationSearch.location != ""){
       const filtered = topCountriesValue?.filter((country:any) => {
-        return country?.country?.toLocaleLowerCase() == locationSearch.location.toLocaleLowerCase();
+        return country?.name?.toLocaleLowerCase() == locationSearch.location.toLocaleLowerCase();
       });
       if(filtered.length > 0){
         for(var i = 0; i < filtered.length; i++){
