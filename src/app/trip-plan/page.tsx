@@ -97,9 +97,12 @@ const TripPlan = () => {
         })
     }, [params])
 
+    const city = automateLocation?.address_components.find((adr: any) => adr.types[0] === "administrative_area_level_1")?.long_name ?? ''
+    const country = automateLocation?.address_components.find((adr: any) => adr.types[0] === "country")?.long_name ?? ''
+
     return (
         <div className='overflow-x-hidden w-full'>
-            <PageBanner title={automateLocation?.address_components.find((adr: any) => adr.types[0] === "administrative_area_level_1")?.long_name ?? 'Trip Plan'} automateLocation={automateLocation} />
+            <PageBanner title={(country && city) ? `${city}, ${country}` : 'Trip Plan'} automateLocation={automateLocation} />
             {
                 params_list.address && 
                 <TripPlanningCard 
