@@ -281,8 +281,8 @@ const TripDetail = ({item}: ITripDetail) => {
                     <Slider {...settings}>
                         {
                             images.slice(4).map((img: string, imgIndex: number) => {
-                                return <div className="px-1">
-                                    <div key={imgIndex} className="h-[98px] w-[100%] bg-gray-100 rounded-xl overflow-hidden relative">
+                                return <div key={imgIndex}  className="px-1">
+                                    <div className="h-[98px] w-[100%] bg-gray-100 rounded-xl overflow-hidden relative">
                                         <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} />
                                     </div>
                                 </div>
