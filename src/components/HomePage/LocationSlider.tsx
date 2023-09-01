@@ -144,7 +144,7 @@ const LocationSlider = ({
             </p>
           </div>
         ) : (
-          <div className="md:px-0 px-5">
+          <div className="md:px-0 px-5 flex flex-col items-center">
             <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[400px] w-full h-[30px]"></div>
             <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[600px] w-full h-[10px]"></div>
             <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[300px] w-full h-[10px]"></div>

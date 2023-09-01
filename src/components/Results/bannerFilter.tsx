@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import InputField from "../UIComponents/InputField/InputField";
+import InputField from "../UIComponents/InputField/inputWithSuggestions";
 import SimpleLocation from "../icons/SimpleLocation";
 import CalenderIcon from "../icons/Calender";
 import BlueButton from "../UIComponents/Buttons/BlueButton";
@@ -27,6 +27,11 @@ import { setOccasions } from '@/redux/reducers/occasionsSlice'
 import PrioritiesIncrement from "@/api-calls/fromDB/prioritiesTrendingIncrement";
 import Priorities from '@/api-calls/fromDB/priority'
 import { setPriorities } from '@/redux/reducers/prioritySlice'
+import TopCountries from '@/api-calls/fromDB/topCountries'
+import { setTopCountries } from '@/redux/reducers/topCountries'
+import LocationIncrement from "@/api-calls/fromDB/topCountriesIncrement";
+import AddLocation from "@/api-calls/fromDB/addLocation";
+
 
 export default function HeroFilterSection({ surveyData }: any) {
   const dispatch = useAppDispatch();
@@ -38,8 +43,10 @@ export default function HeroFilterSection({ surveyData }: any) {
   });
   const [saveData, setSaveData] = useState(false)
   const [occasions,setOccasionsArray] = useState<any>([])
+  const [topCountriesValue, setTopCountriesValue] = useState<any>([])
    const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
    const { priorityState } = useAppSelector((state) => state.prioritySlice);
+   const { topCountriesState } = useAppSelector((state) => state.topCountriesSlice);
 
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
@@ -52,16 +59,32 @@ export default function HeroFilterSection({ surveyData }: any) {
   const [prioritiesValue, setPrioritiesValue] = useState<any>([])
 
   useEffect(()=>{
-    if(ocassionsState.length > 0){
+setLocationSearch({...locationSearch,location: paramsAddress})
+  },[paramsAddress])
+
+  useEffect(()=>{
+    if(ocassionsState?.length > 0){
       setOccasionsArray(ocassionsState)
+    }else{
+      setOccasionsArray([])
     }
       },[ocassionsState])
 
       useEffect(()=>{
-        if(priorityState.length > 0){
+        if(priorityState?.length > 0){
           setPrioritiesValue(priorityState)
+        }else{
+          setPrioritiesValue([])
         }
           },[priorityState])
+
+          useEffect(()=>{
+            if(topCountriesState?.length > 0){
+              setTopCountriesValue(topCountriesState)
+            }else{
+              setTopCountriesValue([])
+            }
+          },[topCountriesState])
 
 
   useEffect(() => {
@@ -115,6 +138,27 @@ export default function HeroFilterSection({ surveyData }: any) {
         }
       }
     }
+    if(locationSearch.location != ""){
+      const filtered = topCountriesValue?.filter((country:any) => {
+        return country?.name?.toLocaleLowerCase() == locationSearch.location.toLocaleLowerCase();
+      });
+      if(filtered.length > 0){
+        for(var i = 0; i < filtered.length; i++){
+          console.log(filtered[i].id)
+          let res = await LocationIncrement(filtered[i].id)
+          if(res){
+            let updatedOccasionsList = await TopCountries()
+            dispatch(setTopCountries(updatedOccasionsList))
+          }
+        }
+      }else{
+        let res = await AddLocation(locationSearch.location)
+        if(res){
+          let updatedOccasionsList = await TopCountries()
+            dispatch(setTopCountries(updatedOccasionsList))
+        }
+      }
+    }
     if (locationSearch.dates.startDate) {
       router.push("/trip-plan?address=" + locationSearch.location);
     } else {
@@ -123,6 +167,11 @@ export default function HeroFilterSection({ surveyData }: any) {
   };
 
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
+
+
+  useEffect(()=>{
+    console.log(locationSearch,"locationSearch banner")
+      },[locationSearch])
   return (
     <div
       className={`bg-white p-8 sm:flex block flex-wrap justify-center rounded-xl sm-width`}
@@ -147,10 +196,11 @@ export default function HeroFilterSection({ surveyData }: any) {
       type="text"
       label="Location"
       placeholder="Enter Location"
-      value={locationSearch.location}
+      value={locationSearch?.location}
+      items={topCountriesValue}
       icon={<SimpleLocation />}
-      onChange={(e)=>{
-        setLocationSearch({...locationSearch, location: e.target.value})
+      onChange={(val:any)=>{
+        setLocationSearch({...locationSearch, location: val})
       }}
       />
 

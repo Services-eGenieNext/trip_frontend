@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import InputField from "../UIComponents/InputField/InputField";
+import InputField from "../UIComponents/InputField/inputWithSuggestions";
 import SimpleLocation from "../icons/SimpleLocation";
 import CalenderIcon from "../icons/Calender";
 import BlueButton from "../UIComponents/Buttons/BlueButton";
@@ -20,10 +20,14 @@ import { setLocations } from "@/redux/reducers/locationSlice";
 import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
 import OccassionsIncrement from "@/api-calls/fromDB/occasionsTrendingIncrement";
 import PrioritiesIncrement from "@/api-calls/fromDB/prioritiesTrendingIncrement";
+import LocationIncrement from "@/api-calls/fromDB/topCountriesIncrement";
 import Occassions from '@/api-calls/fromDB/occassions'
 import { setOccasions } from '@/redux/reducers/occasionsSlice'
 import Priorities from '@/api-calls/fromDB/priority'
 import { setPriorities } from '@/redux/reducers/prioritySlice'
+import TopCountries from '@/api-calls/fromDB/topCountries'
+import { setTopCountries } from '@/redux/reducers/topCountries'
+import AddLocation from "@/api-calls/fromDB/addLocation";
 
 export default function HeroFilterSection() {
   const dispatch = useAppDispatch();
@@ -38,8 +42,10 @@ export default function HeroFilterSection() {
   const [saveData, setSaveData] = useState(false)
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
   const { priorityState } = useAppSelector((state) => state.prioritySlice);
+  const { topCountriesState } = useAppSelector((state) => state.topCountriesSlice);
   const [occasions,setOccasionsArray] = useState<any>([])
   const [prioritiesValue, setPrioritiesValue] = useState<any>([])
+  const [topCountriesValue, setTopCountriesValue] = useState<any>([])
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: [],
@@ -50,16 +56,28 @@ export default function HeroFilterSection() {
   });
 
   useEffect(()=>{
-if(ocassionsState.length > 0){
+if(ocassionsState?.length > 0){
   setOccasionsArray(ocassionsState)
+}else{
+  setOccasionsArray([])
 }
   },[ocassionsState])
 
   useEffect(()=>{
-if(priorityState.length > 0){
+if(priorityState?.length > 0){
   setPrioritiesValue(priorityState)
+}else{
+  setPrioritiesValue([])
 }
   },[priorityState])
+
+  useEffect(()=>{
+    if(topCountriesState?.length > 0){
+      setTopCountriesValue(topCountriesState)
+    }else{
+      setTopCountriesValue([])
+    }
+  },[topCountriesState])
 
   useEffect(()=>{
     setSaveData(true)
@@ -105,6 +123,27 @@ setLocationSearch({...locationSearch,surveySlice})
         }
       }
     }
+    if(locationSearch.location != ""){
+      const filtered = topCountriesValue?.filter((country:any) => {
+        return country?.name?.toLocaleLowerCase() == locationSearch.location.toLocaleLowerCase();
+      });
+      if(filtered.length > 0){
+        for(var i = 0; i < filtered.length; i++){
+          console.log(filtered[i].id)
+          let res = await LocationIncrement(filtered[i].id)
+          if(res){
+            let updatedOccasionsList = await TopCountries()
+            dispatch(setTopCountries(updatedOccasionsList))
+          }
+        }
+      }else{
+        let res = await AddLocation(locationSearch.location)
+        if(res){
+          let updatedOccasionsList = await TopCountries()
+            dispatch(setTopCountries(updatedOccasionsList))
+        }
+      }
+    }
     if (locationSearch.dates.startDate) {
       router.push("/trip-plan?address=" + locationSearch.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
@@ -112,6 +151,10 @@ setLocationSearch({...locationSearch,surveySlice})
       dispatch(setSurveyValue(locationSearch))
     }
   };
+
+  useEffect(()=>{
+    console.log(locationSearch,"locationSearch")
+      },[locationSearch])
   return (
     <div
       className={`bg-white p-8 sm:flex block flex-wrap justify-center rounded-xl sm-width gap-y-5`}
@@ -139,10 +182,11 @@ setLocationSearch({...locationSearch,surveySlice})
       type="text"
       label="Location"
       placeholder="Enter Location"
-      value={locationSearch.location}
+      value={locationSearch?.location?.country}
+      items={topCountriesValue}
       icon={<SimpleLocation />}
-      onChange={(e)=>{
-        setLocationSearch({...locationSearch, location: e.target.value})
+      onChange={(val:any)=>{
+        setLocationSearch({...locationSearch, location: val})
       }}
       />
 

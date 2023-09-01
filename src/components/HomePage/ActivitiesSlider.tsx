@@ -9,6 +9,7 @@ import { useAppSelector } from "@/redux/hooks";
 import BlankLocation from "public/images/blank-location.jpg"
 import DetailModal from '../tripPlanningCard/TripPlanPopup';
 import Link from 'next/link';
+import ComponentTitle from "../UIComponents/ComponentTitle";
 
 function ActivitiesSlider({activitiesState}:any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","1", "2", "3", "4", "5", "6", "7", "8"];
@@ -150,15 +151,13 @@ function ActivitiesSlider({activitiesState}:any) {
       <Image src={Ballon} alt='Baloon 1' className={`absolute lg:right-24 lg:flex hidden right-18 bottom-[12%] select-none ${CSS["image_opacity"]}`} />
       <Image src={Ballon} alt='Baloon 1' className={`absolute right-[13%] md:flex hidden bottom-[-14%] select-none w-[70px]`} />
       <div className="sm-width flex flex-col items-center relative">
-        <div className="flex flex-col items-center">
-          <p className="text-2xl md:text-[36px] gilroy font-bold">
-            Popular Activities For You
-          </p>
-          <p className="text-[var(--gray)] text-center mt-4 lato">
+          <div className="flex flex-col items-center">
+            <ComponentTitle title={"Popular Activities For You"} />
+            <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2 text-center">
             Explore some of the most exciting and trending activities across the
             globe!
-          </p>
-        </div>
+            </p>
+          </div>
         <div className="mt-10 w-[90%] arrow_remove">
           <Slider {...settings}>
           {loading === true
