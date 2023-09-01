@@ -7,6 +7,7 @@ import surveyReducer from "./reducers/surveySlice";
 import itineraryReducer from "./reducers/itinerarySlice";
 import occasionsSlice from "./reducers/occasionsSlice";
 import prioritySlice from "./reducers/prioritySlice";
+import topCountriesSlice from "./reducers/topCountries";
 
 export const store = configureStore({
     reducer: {
@@ -17,7 +18,8 @@ export const store = configureStore({
         surveyReducer,
         itineraryReducer,
         occasionsSlice,
-        prioritySlice
+        prioritySlice,
+        topCountriesSlice
     },
     devTools: process.env.NODE_ENV !== "production",
 });

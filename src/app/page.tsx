@@ -13,6 +13,8 @@ import { setOccasions } from '@/redux/reducers/occasionsSlice'
 import { useAppDispatch,useAppSelector } from '@/redux/hooks'
 import PriorityValue from '@/api-calls/fromDB/priority'
 import { setPriorities } from '@/redux/reducers/prioritySlice'
+import TopCountries from '@/api-calls/fromDB/topCountries'
+import { setTopCountries } from '@/redux/reducers/topCountries'
 
 export default function Home() {
     const dispatch = useAppDispatch()
@@ -50,6 +52,12 @@ export default function Home() {
             dispatch(setPriorities(res))
         }
         _Priorities()
+
+        const _TopCountries = async () => {
+            let res = await TopCountries()
+            dispatch(setTopCountries(res))
+        }
+        _TopCountries()
 
     }, [])
 

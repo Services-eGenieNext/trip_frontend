@@ -15,6 +15,8 @@ import Occassions from '@/api-calls/fromDB/occassions'
 import { setOccasions } from '@/redux/reducers/occasionsSlice'
 import PriorityValue from '@/api-calls/fromDB/priority'
 import { setPriorities } from '@/redux/reducers/prioritySlice'
+import TopCountries from '@/api-calls/fromDB/topCountries'
+import { setTopCountries } from '@/redux/reducers/topCountries'
 
 export default function Results() {
   const dispatch = useAppDispatch();
@@ -43,11 +45,17 @@ export default function Results() {
           let res = await PriorityValue()
           dispatch(setPriorities(res))
       }
+
+      const _TopCountries = async () => {
+        let res = await TopCountries()
+        dispatch(setTopCountries(res))
+    }
         
   useEffect(()=>{
     _def()
     _Occassions()
     _Priorities()
+    _TopCountries()
   },[])
 
   useEffect(()=>{
