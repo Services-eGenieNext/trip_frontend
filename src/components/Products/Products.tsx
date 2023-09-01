@@ -63,7 +63,6 @@ const Products = ({ title = "Title", isAddButton, rows, v_type="", isHover=true 
     if (restaurantData.length > 0) {
       setLoading(false);
     }
-    console.log("restaurantData", restaurantData);
   }, [restaurantData]);
 
   const placeForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {

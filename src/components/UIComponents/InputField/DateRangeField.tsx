@@ -58,7 +58,7 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
                 dropDownRef.current?.classList.add('hidden')
             }, 200);
 
-            if(!date.endDateChanged)
+            if(date.endDateChanged == false)
             {
                 dateRangeErrorRef.current?.classList.remove('hidden')
                 setTimeout(() => {
@@ -133,7 +133,7 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
                 />
             </div>
 
-            <div ref={dateRangeErrorRef} className="fixed top-[50%] left-[50%] -translate-y-1/2 -translate-x-1/2 rounded-lg bg-yellow-50 text-yellow-500 large-shadow p-4 z-10 transition-all duration-300">
+            <div ref={dateRangeErrorRef} className="hidden opacity-0 -translate-y-full fixed top-[50%] left-[50%] -translate-x-1/2 rounded-lg bg-yellow-50 text-yellow-500 large-shadow p-4 z-10 transition-all duration-300">
                 <p className="flex"> 
                 <span className='mr-1'>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">

@@ -31,7 +31,7 @@ const TripPlan = () => {
         if(query)
         {
             let res = await LocationsCall(`best places for visit in ${query} for tourist `)
-            dispatch(setLocations(res))
+            dispatch(setLocations([...res]))
         }
     }
 
@@ -39,7 +39,7 @@ const TripPlan = () => {
         if(query)
         {
             let res = await LocationsCall("restaurants in " + query)
-            dispatch(setRestaurants(res))
+            dispatch(setRestaurants([...res]))
         }
     }
 
@@ -142,7 +142,7 @@ const TripPlan = () => {
 
             <div className=' mt-20'>
                 {/* <ClientTestimonials automateLocation={automateLocation} /> */}
-                <TripPlanReviews automateLocation={automateLocation} />
+                <TripPlanReviews automateLocation={automateLocation} locations={locationsState.filter(loc => loc.reviews)} />
             </div>
         </div>
     )
