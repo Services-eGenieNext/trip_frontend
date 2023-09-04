@@ -65,6 +65,7 @@ const ProductHorizontalSlide = ({
   }
 
   const [formFields, setForlFields] = useState(formInitialField)
+  const [formErrors, setFormErrors] = useState(formInitialField)
 
 
   const placeForm = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -111,6 +112,14 @@ const ProductHorizontalSlide = ({
 
       setForlFields(formInitialField)
       setVisible(false)
+    }
+    else
+    {
+      setFormErrors({
+        day: formFields.day == "" ? "Day cannot be empty!" : "",
+        startTime: formFields.startTime == "" ? "Start time cannot be empty!" : "",
+        endTime: formFields.endTime == "" ? "End time cannot be empty!" : ""
+      })
     }
   }
 
@@ -313,7 +322,10 @@ const ProductHorizontalSlide = ({
         <div className="relative">
           <span
             className="absolute top-[-2.5em] right-[-2.4rem] w-[30px] h-[30px] bg-[#F9F9F9] flex justify-center items-center rounded-full p-2 cursor-pointer select-none"
-            onClick={() => setVisible(false)}
+            onClick={() => {
+              setForlFields(formInitialField)
+              setVisible(false)
+            }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -331,54 +343,86 @@ const ProductHorizontalSlide = ({
             </svg>
           </span>
         </div>
-        <InputField
-          type="time"
-          label="Start Time"
-          className="w-full mb-5"
-          placeholder="Choose time"
-          value={formFields.startTime}
-          onChange={(e) => setForlFields({...formFields, startTime: e.target.value})}
-          icon={<TimerOutlined />}
-        />
 
-        <InputField
-          type="time"
-          label="End time"
-          className="w-full mb-5"
-          placeholder="Choose time"
-          value={formFields.endTime}
-          onChange={(e) => setForlFields({...formFields, endTime: e.target.value})}
-          icon={<TimerOutlined />}
-        />
-
-        <SelectField
-          label="Choose day"
-          placeholder="Select ..."
-          data={itineraryDays.filter(itin => itin.times.length > 0).map(itinerary => {
-              return {
-                id: itinerary.day,
-                name: itinerary.day
-              }
-            })
+        <div className="mb-5">
+          <InputField
+            type="time"
+            label="Start Time"
+            className="w-full"
+            placeholder="Choose time"
+            value={formFields.startTime}
+            onChange={(e) => {
+              setFormErrors({
+                ...formErrors, startTime: e.target.value == "" ? "Start time cannot be empty!" : ""
+              })
+              setForlFields({...formFields, startTime: e.target.value})
+            }}
+            icon={<TimerOutlined />}
+          />
+          {
+            formErrors.startTime && <div className="text-red-500 text-sm">{formErrors.startTime}</div>
           }
-          className={`mr-2 sm:my-2 my-5 w-full`}
-          styling={{
-            shadow: "drop-shadow-xl ",
-            left: "0px",
-            top: "70px",
-          }}
-          value={formFields.day}
-          onChange={(val) => {
-            setForlFields({...formFields, day: val})
-          }}
-          onAdditionalChange={(_data) => {}}
-        />
+        </div>
+
+        <div className="mb-5">
+          <InputField
+            type="time"
+            label="End time"
+            className="w-full mb-5"
+            placeholder="Choose time"
+            value={formFields.endTime}
+            onChange={(e) => {
+              setFormErrors({
+                ...formErrors, endTime: e.target.value == "" ? "End time cannot be empty!" : ""
+              })
+              setForlFields({...formFields, endTime: e.target.value})
+            }}
+            icon={<TimerOutlined />}
+          />
+          {
+            formErrors.endTime && <div className="text-red-500 text-sm">{formErrors.endTime}</div>
+          }
+        </div>
+
+        <div className="mb-5">
+          <SelectField
+            label="Choose day"
+            placeholder="Select ..."
+            data={itineraryDays.filter(itin => itin.times.length > 0).map(itinerary => {
+                return {
+                  id: itinerary.day,
+                  name: itinerary.day
+                }
+              })
+            }
+            className={`mr-2 sm:my-2 my-5 w-full`}
+            styling={{
+              shadow: "drop-shadow-xl ",
+              left: "0px",
+              top: "70px",
+            }}
+            value={formFields.day}
+            onChange={(val) => {
+              setFormErrors({
+                ...formErrors, day: val == "" ? "Day cannot be empty!" : ""
+              })
+              setForlFields({...formFields, day: val})
+            }}
+            onAdditionalChange={(_data) => {}}
+          />
+          {
+            formErrors.day && <div className="text-red-500 text-sm">{formErrors.day}</div>
+          }
+        </div>
 
         <div className="flex justify-between">
           <BlueButtonOutLined
             title="Cancel"
             className="w-[150px]"
-            onClick={() => setVisible(false)}
+            onClick={() => {
+              setForlFields(formInitialField)
+              setVisible(false)
+            }}
           />
 
           <BlueButton title="Save" className="w-[150px]" onClick={(e) => storeLocation()} />

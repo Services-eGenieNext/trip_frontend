@@ -23,6 +23,7 @@
     "date-fns": "^2.30.0",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.10",
+    "google-maps-react": "^2.0.6",
     "next": "13.4.10",
     "next-redux-wrapper": "^8.1.0",
     "react": "18.2.0",
