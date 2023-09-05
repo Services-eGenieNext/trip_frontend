@@ -32,7 +32,7 @@ const SearchPopup = ({show, onClose}: ISearchPopup)=> {
             {
                 searchLocations(searchInput)
             }
-        }, 3000)
+        }, 500)
 
         return () => clearTimeout(delayDebounceFn)
     }, [searchInput])
@@ -40,7 +40,7 @@ const SearchPopup = ({show, onClose}: ISearchPopup)=> {
     return (
         <PopupWithOverlay show={show} onClose={() => {onClose()}}>
             <div className="px-4">
-                <InputField type="text" label="Search" placeholder='Find your best ...' value={searchInput} onChange={(e) => setSearchInput(e.target.value)} />
+                <InputField type="text" label="Search" placeholder='Find your best ...' value={searchInput} onChange={(e) => (e.target.value.length == 0 || e.target.value.trim() !== "") && setSearchInput(e.target.value)} />
 
                 {
                     loadingSearch ? loadingLength.map((length, index) => (
@@ -107,6 +107,13 @@ const SearchPopup = ({show, onClose}: ISearchPopup)=> {
                                     </div>
                                 })
                             }
+                        </div>
+                    )
+                }
+                {
+                    (searchList.length == 0 && searchInput.length > 0 && !loadingSearch) && (
+                        <div className="text-center mt-5">
+                            <p className="bg-gray-50 rounded-xl py-2">Locations not found!</p>
                         </div>
                     )
                 }

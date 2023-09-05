@@ -9,6 +9,8 @@ import Slider from 'react-slick'
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CSS from "./TripDetail.module.css"
+import TripDetailGoogleMap from './TripDetailGoogleMap'
+
 
 interface ITripDetail {
     item?: any
@@ -53,6 +55,7 @@ const TripDetail = ({item}: ITripDetail) => {
         }
         
         _defItemDetail()
+
     }, [itemDetail])
 
     useEffect(() => {
@@ -273,7 +276,7 @@ const TripDetail = ({item}: ITripDetail) => {
                 </div>
             </div>
             {
-                images.length > 4 && <span className="text-[var(--blue)] text-right ml-auto block cursor-pointer select-none" onClick={() => setViewMore(!viewMore)}>View more pics</span>
+                images.length > 4 && <span className="text-[var(--blue)] text-right ml-auto block cursor-pointer select-none" onClick={() => setViewMore(!viewMore)}>{viewMore ? 'Hide pics' : 'View more pics'}</span>
             }
             <div className="w-[90%] mx-auto arrow_remove mt-4">
                 {
@@ -291,36 +294,38 @@ const TripDetail = ({item}: ITripDetail) => {
                     </Slider>
                 }
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 mt-10">
-                <div className="relative">
+            <div className="grid grid-cols-1 mt-10">
+                <div className="relative text-center">
                     {
                         (!detailLoading && itemDetail) ? (
                             <>
-                            {
+                            {/* {
                                 itemDetail?.url && 
                                 <Link href={itemDetail?.url} target="_blank" className="absolute top-0 right-[1rem] shadow-lg rounded-xl overflow-hidden bg-white">
                                     <Image src={MapIcon} alt='map icon' className="p-2" />
                                 </Link>
-                            }
+                            } */}
                             
-                            <h3 className="font-medium gilroy text-[28px] leading-[32.96px] max-w-[340px]">
+                            <h3 className="font-medium gilroy text-[28px] leading-[32.96px] w-full">
                                 {itemDetail?.name} <span className="text-sm text-[var(--gray)]">({
                                     itemDetail?.address_components?.find((adr: any) => adr.types[0] === "locality")?.long_name ?? (itemDetail?.address_components?.find((adr: any) => adr.types[0] === "sublocality_level_1")?.long_name ?? itemDetail?.address_components?.find((adr: any) => adr.types[0] === "postal_town")?.long_name ?? itemDetail?.address_components?.find((adr: any) => adr.types[0] === "country")?.long_name)
                                 })</span>
                             </h3>
-                            <div className="h-[3px] w-[51px] bg-[var(--blue)] my-5"></div>
+                            <div className="h-[3px] w-[51px] bg-[var(--blue)] my-5 mx-auto"></div>
                             {
                                 itemDetail?.hours?.weekday_text || itemDetail?.opening_hours?.weekday_text && (
                                     <>
                                     <h4 className="text-[15px] leading-[18px] font-bold mb-2">Hours:</h4>
+                                    <div className="flex flex-wrap justify-center">
                                     {
                                         itemDetail?.location_id ?
                                         itemDetail?.hours?.weekday_text && itemDetail.hours?.weekday_text.map((time: any, index: number) => {
                                             return <div key={index} className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {time} </div>
                                         }) : itemDetail?.opening_hours?.weekday_text && itemDetail.opening_hours?.weekday_text.map((time: any, index: number) => {
-                                            return <div key={index} className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {time} </div>
+                                            return <div key={index} className="text-[var(--blue)] font-semibold text-[14px] leading-[23px] m-1 bg-blue-100 px-1 rounded-full"> {time} </div>
                                         })
                                     }
+                                    </div>
                                     </>       
                                 )
                             }
@@ -342,9 +347,22 @@ const TripDetail = ({item}: ITripDetail) => {
                     <div className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {'Saturday 09:00 - 17:00'} </div>
                     <div className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {'Sunday - 09:00 – 17:00'} </div> */}
                 </div>
-                <div>
+                {
+                    itemDetail?.url && (
+                        <div className="w-full my-5">
+                            <h4 className="text-[15px] leading-[18px] font-bold my-2 text-center">Map: <Link href={itemDetail?.url} target="_blank" className='text-[var(--blue)] font-normal hover:border-b border-[var(--blue)]'>view location</Link></h4>
+                            <div className="relative h-[200px]">
+                                <TripDetailGoogleMap place_id={itemDetail.place_id} />
+                            </div>
+                        </div>
+                    )
+                }
+                <div className="mt-4 text-center">
                     {
-                        !detailLoading ? <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)]">{itemDetail?.location_id ? itemDetail?.description : itemDetail?.editorial_summary?.overview}</p> : <>
+                        !detailLoading ? <div className="">
+                            <span className='text-[15px] leading-[18px] font-bold mb-2'>Description</span>
+                            <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)]">{itemDetail?.location_id ? itemDetail?.description : itemDetail?.editorial_summary?.overview}</p>
+                            </div> : <>
                             <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
                             <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
                             <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />

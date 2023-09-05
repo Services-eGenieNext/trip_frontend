@@ -31,6 +31,7 @@ export default function Home() {
 
         const _restaurants = async () => {
             let res = await RestaurantsCallFromDB()
+            console.log('restaurants', res)
             setRestaurants(res)
         }
         _restaurants()
