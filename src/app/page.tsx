@@ -79,7 +79,6 @@ export default function Home() {
             
             <Products title="Top Restaurants In The World" isAddButton={false} rows="2" restaurantsState={restaurants} />
 
-
             <HomeReviews locations={[...activities, ...location]} />
         </main>
     )
