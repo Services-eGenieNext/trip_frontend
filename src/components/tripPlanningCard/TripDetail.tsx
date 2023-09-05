@@ -190,8 +190,6 @@ const TripDetail = ({item}: ITripDetail) => {
         // afterChange,
     };
 
-    // console.log('itemDetail', itemDetail)
-
     return (
         <div className='w-full sm:px-0 px-4'>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
@@ -351,12 +349,11 @@ const TripDetail = ({item}: ITripDetail) => {
                 </div>
                 {
                     itemDetail?.url && (
-                        <div className="w-full">
+                        <div className="w-full my-5">
                             <h4 className="text-[15px] leading-[18px] font-bold my-2 text-center">Map: <Link href={itemDetail?.url} target="_blank" className='text-[var(--blue)] font-normal hover:border-b border-[var(--blue)]'>view location</Link></h4>
-                            <div className="relative h-[250px]">
-                                <TripDetailGoogleMap />
+                            <div className="relative h-[200px]">
+                                <TripDetailGoogleMap place_id={itemDetail.place_id} />
                             </div>
-                            {/* <iframe src={'https://www.google.com/maps/embed/v1/view?key='+process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY+'&center=-33.8569,151.2152'} width="100%" height="150" style={{border:0}} allowFullScreen={false} loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe> */}
                         </div>
                     )
                 }
