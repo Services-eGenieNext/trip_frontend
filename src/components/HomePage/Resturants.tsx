@@ -153,6 +153,8 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                   );
                 })
               : currentPost?.map((restaurant: any, index: number) => {
+                let City = ""
+                let Country = ""
                 let parseImageArray = JSON.parse(restaurant.image)
                       let image_path = parseImageArray.image.length > 0 ? parseImageArray.image[0].url : BlankLocation.src
                   let address = restaurant.details.formatted_address
@@ -170,30 +172,6 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                             alt={image_path}
                             className="object-cover lg:h-[200px] h-[250px] w-full cursor-pointer "
                           />
-                          {!isAddButton && (
-                            <div
-                              className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center cursor-pointer ${styles["hover_overlay"]}`}
-                            >
-                              <button
-                                onClick={(e) => onSetAddress(e, link)}
-                                className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px]"
-                              >
-                                Automate My Trip
-                              </button>
-                              <button
-                                className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
-                                onClick={() => {
-                                  setItem({
-                                    locaiton_id: restaurant.location_id,
-                                    place_id: restaurant.place_id,
-                                  });
-                                  setShowTripPopup(true);
-                                }}
-                              >
-                                More Info
-                              </button>
-                            </div>
-                          )}
                         </div>
                         <div className="p-7">
                           <div className="flex justify-center items-start">
@@ -237,10 +215,45 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                               <LocationIcon className="h-4 w-4" />
                             </div>
                             <span className="ml-2 text-center">
-                              {address}
+                            {restaurant?.details?.address_components?.forEach((address: any, index: number) => {
+                                  if(address?.types[0] == "locality"){
+                                    City = address.long_name
+                                  }
+                                  if(address?.types[0] == "country"){
+                                    Country = address.long_name
+                                  }
+                                }
+                              )}
+                                <span className="text-center">
+                              {`${City}${City !== "" && Country !=="" ? "," : ""} ${Country}`}
+                              </span>
                             </span>
                           </div>
                         </div>
+                      {!isAddButton && (
+                            <div
+                              className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center cursor-pointer ${styles["hover_overlay"]}`}
+                            >
+                              <button
+                                onClick={(e) => onSetAddress(e, link)}
+                                className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px]"
+                              >
+                                Automate My Trip
+                              </button>
+                              <button
+                                className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
+                                onClick={() => {
+                                  setItem({
+                                    locaiton_id: restaurant.location_id,
+                                    place_id: restaurant.place_id,
+                                  });
+                                  setShowTripPopup(true);
+                                }}
+                              >
+                                More Info
+                              </button>
+                            </div>
+                          )}
                       </div>
                     </div>
                   );
