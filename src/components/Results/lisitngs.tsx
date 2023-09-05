@@ -76,15 +76,20 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
               location.image.image.length > 0
                 ? location.image.image[0].url
                 : BlankLocation.src;
-                let address = location.details.formatted_address
+                let address = location?.details?.formatted_address
                 ? location.details.formatted_address
-                : location.details.address_components[0].long_name +
-                  location.details.address_components[1].long_name;
+                : location.details?.address_components[0]?.long_name +
+                  location.details?.address_components[1]?.long_name;
+                  let City = ""
+                  let Place = ""
+                  let Country = ""
                 return (
-                  <div
-                    key={index}
-                    className="sm:w-[260px] w-[320px] overflow-hidden rounded-lg flex flex-col justify-between items-center"
-                  >
+                  <>
+                  {location.details && (
+                      <div
+                        key={index}
+                        className="sm:w-[260px] w-[320px] overflow-hidden rounded-lg flex flex-col justify-between items-center"
+                      >
                     <div className={`sm:h-[235px] h-[260px] w-full relative cursor-pointer ${CSS["slider_card"]}`}>
                     <img src={image_path} alt={image_path} style={{objectFit: "cover",}} className="h-full w-full" />
                       <div className="absolute top-2 right-2 flex items-center gap-x-2 bg-white py-1 px-4 rounded-full">
@@ -106,19 +111,36 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
                           </button>
                         </div>
                     </div>
-                    <p className="text-[22px] font-semibold text-[#2D2D2D] mt-2 sm:text-start text-center">
-                    {location?.details?.address_components?.map((address: any, index: number) => {
-                                  return(
-                                    <span key={index}>
-                                      {address?.types[0] == "country" && (
-                                        <>
-                                        <span>{address.long_name}</span>
-                                        </>
-                                      )}
-                                    </span>
-                                  )
+                    <p className="text-[22px] font-semibold text-[#2D2D2D] my-2 flex justify-center">
+                    {location?.details?.address_components?.forEach((address: any, index: number) => {
+                                  // return(
+                                  //   <span key={index}>
+                                  //     {address?.types[0] == "sublocality_level_1" && (
+                                  //       <>
+                                  //       <span className="ml-2 text-center">{address.long_name},</span>
+                                  //       </>
+                                  //     )}
+                                  //     {address?.types[0] == "locality" && (
+                                  //       <>
+                                  //       <span className="ml-2 text-center">{address.long_name}</span>
+                                  //       </>
+                                  //     )}
+                                  //   </span>
+                                  // )
+                                  if(address?.types[0] == "sublocality_level_1"){
+                                    Place = address.long_name
+                                  }
+                                  if(address?.types[0] == "locality"){
+                                    City = address.long_name
+                                  }
+                                  if(address?.types[0] == "country"){
+                                    Country = address.long_name
+                                  }
                                 }
                               )}
+                              <span className="text-center">
+                              {`${Place}${Place !== "" ? "," : ""} ${City !== "" ? City : Country}`}
+                              </span>
                     </p>
                     <div className="flex items-center gap-x-2">
                     {reviewArr &&
@@ -130,23 +152,10 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
                 }
               })}
               <span className="text-gray-500">{"("}{location?.details?.reviews.length}{")"}</span>
-              </div>
-                    {/* <p className="text-[13px] text-[#242424] mt-2">
-                      31 Dec 2022 - 9 Jan 2023
-                    </p> */}
-                    {/* <div className="grid grid-cols-2 mt-2">
-                      <div className="flex items-center gap-x-2">
-                        <div className="w-[7px] h-[7px] rounded-full bg-[#9AB044]"></div>
-                        <p className="text-[12px] text-[#242424]">Sanur Beach</p>
-                      </div>
-                      <div className="flex items-center gap-x-2">
-                        <div className="w-[7px] h-[7px] rounded-full bg-[#9AB044]"></div>
-                        <p className="text-[12px] text-[#242424]">
-                          Pura Tirta Empul
-                        </p>
-                      </div>
-                    </div> */}
+              </div>  
                   </div>
+                    )}
+                    </>
                 );
               }) : (
                 <div className="flex flex-col items-center mt-10 w-full">

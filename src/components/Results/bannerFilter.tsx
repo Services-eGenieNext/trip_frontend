@@ -140,7 +140,7 @@ setLocationSearch({...locationSearch,location: paramsAddress})
     }
     if(locationSearch.location != ""){
       const filtered = topCountriesValue?.filter((country:any) => {
-        return country?.name?.toLocaleLowerCase() == locationSearch.location.toLocaleLowerCase();
+        return country?.name?.toLocaleLowerCase() == locationSearch?.location?.toLocaleLowerCase();
       });
       if(filtered.length > 0){
         for(var i = 0; i < filtered.length; i++){
@@ -168,10 +168,6 @@ setLocationSearch({...locationSearch,location: paramsAddress})
 
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
 
-
-  useEffect(()=>{
-    console.log(locationSearch,"locationSearch banner")
-      },[locationSearch])
   return (
     <div
       className={`bg-white p-8 sm:flex block flex-wrap justify-center rounded-xl sm-width`}
