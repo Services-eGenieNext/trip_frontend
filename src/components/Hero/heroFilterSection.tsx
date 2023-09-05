@@ -79,10 +79,20 @@ if(priorityState?.length > 0){
     }
   },[topCountriesState])
 
-  useEffect(()=>{
+  useEffect(() => {
+    let data = {
+      location: surveySlice.location,
+      occassion: surveySlice.occassion && surveySlice.occassion.length > 0 ? surveySlice.occassion : [],
+      priority: surveySlice.priority && surveySlice.priority.length > 0 ? surveySlice.priority : [],
+      person: surveySlice.person ? surveySlice.person : "",
+      spending: surveySlice.spending ? surveySlice.spending : "",
+      dates: "",
+    }
     setSaveData(true)
-setLocationSearch({...locationSearch,surveySlice})
-  },[surveySlice])
+    setLocationSearch(
+      data
+    );
+  }, [surveySlice]);
 
   useEffect(() => {
     setLocationSearch({ ...locationSearch, dates: date });
@@ -104,7 +114,7 @@ setLocationSearch({...locationSearch,surveySlice})
   }, [date]);
 
   const handleRoute = async () => {
-    dispatch(setSurveyValue({...surveySlice,locationSearch}))
+    dispatch(setSurveyValue(locationSearch))
     if(locationSearch.occassion.length > 0){
       for(var i = 0; i < locationSearch.occassion.length; i++){
         let res = await OccassionsIncrement(locationSearch.occassion[i].id)
@@ -152,9 +162,6 @@ setLocationSearch({...locationSearch,surveySlice})
     }
   };
 
-  useEffect(()=>{
-    console.log(locationSearch,"locationSearch")
-      },[locationSearch])
   return (
     <div
       className={`bg-white p-8 sm:flex block flex-wrap justify-center rounded-xl sm-width gap-y-5`}

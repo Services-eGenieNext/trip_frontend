@@ -276,16 +276,16 @@ if(AddField){
             style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
             >{Label}</label>
             </div>
-      <Box className="flex items-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-2">
+      <Box className="flex items-center justify-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-2">
       <Box
-        className="flex items-center justify-between w-full overflow-hidden cursor-pointer"
+        className="flex items-center justify-center w-full overflow-hidden cursor-pointer"
       >
         <Box
         className="overflow-hidden pt-4 pb-2"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
-          width="100%"
+          // width="100%"
           onClick={()=>{
           setShowDropDown(true)
         }}
@@ -339,9 +339,8 @@ if(AddField){
             )}
           </Box>
         </Box>
-      </Box>
-      <Box
-        className="flex justify-center items-center cursor-pointer"
+      <span
+        className="flex justify-center items-center cursor-pointer w-auto ml-3"
         onClick={()=>{
           setShowDropDown(!showDropDown)
           setSearch("")
@@ -362,6 +361,7 @@ if(AddField){
             d="M19.5 8.25l-7.5 7.5-7.5-7.5"
           />
         </svg>
+      </span>
       </Box>
       </Box>
 
@@ -515,7 +515,7 @@ if(AddField){
                 }}
               >
                 {Label !== "Occasion" && (
-                <span className="text-[#9e9e9e] mr-2">{index+1}.</span>
+                <span className="text-[#9e9e9e] mr-2 w-[20px] flex justify-end">{index+1}.</span>
                 )}
                 <CheckboxLabel
                   label={opt?.name}
