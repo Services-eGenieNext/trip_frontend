@@ -31,6 +31,7 @@ export default function Home() {
 
         const _restaurants = async () => {
             let res = await RestaurantsCallFromDB()
+            console.log('restaurants', res)
             setRestaurants(res)
         }
         _restaurants()
@@ -77,7 +78,6 @@ export default function Home() {
             <ActivitiesSlider activitiesState={activities} />
             
             <Products title="Top Restaurants In The World" isAddButton={false} rows="2" restaurantsState={restaurants} />
-
 
             <HomeReviews locations={[...activities, ...location]} />
         </main>
