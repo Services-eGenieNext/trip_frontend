@@ -14,80 +14,131 @@ import Reviews from "../reviews/reviews";
 
 interface IReviews {
   automateLocation?: any
+  locations: any[]
 }
-const TripPlanReviews = ({ automateLocation }:IReviews) => {
-    const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
+const TripPlanReviews = ({ automateLocation, locations }:IReviews) => {
+    
     const [loading, setLoading] = useState(true);
     const [reviewsData, setReviewsData] = useState<any[] | null>(null);
 
-    const { itineraryDays }: any = useAppSelector((state) => state.itineraryReducer);
+    const { itineraryDays } = useAppSelector((state) => state.itineraryReducer);
     const [openModal, setOpenModal] = useState(false);
     const [showReviews, setShowReviews] = useState(true)
     const [showFilter, setShowFilter] = useState(false)
     const [selectedLocation, setSelectedLocation] = useState<any>({})
     const [locaitonList, setLocationList] = useState<any[]>([])
     const [locaitonOptions, setLocationOptions] = useState<any[]>([])
+    const [inSchedule, setInSchedule] = useState<boolean | null>(null)
     const [filterData, setFilterData] = useState({
         locationIndex: "",
-        reviews: "All"
+        reviews: "All",
     })
 
+    // use Effect for Location and Reviews Filter
     useEffect(() => {
         
-        if(filterData.locationIndex !== "")
-        {
-        let index = locaitonList.findIndex(opt => opt.name === filterData.locationIndex)
-
-        setSelectedLocation(locaitonList[index])
-        setReviewsData(locaitonList[Number(index)].reviews === undefined ? [] : (filterData.reviews !== "All" ? locaitonList[Number(index)].reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : locaitonList[Number(index)].reviews));
-        }
-        else
-        {
-        if(selectedLocation?.reviews)
-        {
-            setReviewsData(filterData.reviews !== "All" ? selectedLocation.reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : selectedLocation.reviews);
-        }
-        else if(locaitonList.length > 0)
-        {
-            setReviewsData(locaitonList[0].reviews === undefined ? [] : (filterData.reviews !== "All" ? locaitonList[0].reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : locaitonList[0].reviews));
-        }
+        const _defFilter = () => {
+            let _selectedLocation = selectedLocation
+            if(filterData.locationIndex !== "")
+            {
+                let index = locaitonList.findIndex(opt => opt.name === filterData.locationIndex)
+                _selectedLocation = locaitonList[Number(index)]
+                setSelectedLocation(_selectedLocation)
+            }
         }
         
+        _defFilter()
+
     }, [filterData]);
 
+    // use Effect for In Schedule Filter
     useEffect(() => {
-        const _def = async () => {
-        let locations = await itineraryDays.map((itin: any) => 
-        itin.times.map((time: any) => 
-            time.location 
-        )
-        )
-        locations = await [].concat(...locations)
 
-        setLocationList([...locations])
+        const _defInSchedule = async () => {
+            let isExistLocArr: any[] = itineraryDays.map(itinerary => itinerary.times.map(time => time.location))
+            let itineraryLocations: any[] = [].concat(...isExistLocArr)
+            let inScheduleLocations
+            if(inSchedule == true)
+            {
+                inScheduleLocations = await locaitonList.filter(loc => itineraryLocations.filter(itineraryLoc => itineraryLoc.name === loc.name).length > 0)
+            }
+            else if(inSchedule == false)
+            {
+                inScheduleLocations = await locaitonList.filter(loc => itineraryLocations.filter(itineraryLoc => itineraryLoc.name === loc.name).length == 0)
+            }
+            inScheduleLocations = [...new Set(inScheduleLocations)]
 
+            let _list = await inScheduleLocations.map((loc: any, index) => {
+                return {
+                    id: index+1,
+                    name: loc.name
+                }
+            })
+
+            setLocationOptions([..._list])
+            
+            
+
+            if(inScheduleLocations.length > 0)
+            {
+                setSelectedLocation(inScheduleLocations[0])
+                setFilterData({
+                    locationIndex: inScheduleLocations[0].name,
+                    reviews: "All",
+                })
+                // let reviews = await inScheduleLocations[0].reviews === undefined ? [] : (filterData.reviews !== "All" ? inScheduleLocations[0].reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : inScheduleLocations[0].reviews)
+            }
+            else
+            {
+                setSelectedLocation({})
+                setFilterData({
+                    locationIndex: '',
+                    reviews: "All",
+                })
+            }
         }
-        _def()
-    }, [itineraryDays])
+        
+        _defInSchedule()
+    }, [inSchedule])
 
     useEffect(() => {
         const _locationOptionFunc = async () => {
-        if(locaitonList.length > 0)
-        {
-            setReviewsData(locaitonList[0].reviews === undefined ? [] : (filterData.reviews !== "All" ? locaitonList[0].reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : locaitonList[0].reviews));
+            if(locaitonList.length > 0)
+            {
+                setSelectedLocation(locaitonList[0])
+                // setReviewsData(locaitonList[0].reviews === undefined ? [] : (filterData.reviews !== "All" ? locaitonList[0].reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : locaitonList[0].reviews));
 
-            let _list = await locaitonList.map((loc: any, index) => {
-            return {
-                id: index+1,
-                name: loc.name
+                let _list = await locaitonList.map((loc: any, index) => {
+                return {
+                    id: index+1,
+                    name: loc.name
+                }
+                })
+                setLocationOptions([..._list])
             }
-            })
-            setLocationOptions([..._list])
-        }
         }
 
         _locationOptionFunc()
     }, [locaitonList])
+
+    useEffect(() => {
+        
+        const _def = async () => {
+            let _locations = await itineraryDays.map((itin: any) => 
+            itin.times.map((time: any) => 
+                time.location 
+            )
+            )
+            _locations = await [].concat(..._locations)
+            
+            _locations = _locations.concat(...locations)
+            _locations = [...new Set(_locations)]
+
+            setLocationList([..._locations])
+        }
+        _def()
+
+    }, [itineraryDays])
 
     useEffect(() => {
         
@@ -100,6 +151,12 @@ const TripPlanReviews = ({ automateLocation }:IReviews) => {
     useEffect(() => {
         setSelectedLocation(automateLocation ? {...automateLocation} : (locaitonList.length > 0 ? {...locaitonList[0]} : null))
     }, [automateLocation, locaitonList]);
+
+    useEffect(() => {
+
+        setReviewsData(selectedLocation?.reviews === undefined ? [] : (filterData.reviews !== "All" ? selectedLocation.reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : selectedLocation.reviews));
+    
+    }, [selectedLocation])
 
     const reviewArr = new Array(5).fill(1);
 
@@ -130,7 +187,7 @@ const TripPlanReviews = ({ automateLocation }:IReviews) => {
                 <div className="sm-width sm:px-4 px-0">
                     <div className="flex flex-wrap sm:justify-between justify-center items-center">
                         <div>
-                            <ComponentTitle title="Clients testimonials" />
+                            <ComponentTitle title="Client's Reviews" />
                             <span className="flex flex-wrap gap-2 items-center mt-3">
                                 {reviewArr &&
                                 reviewArr.map((review, index) => {
@@ -174,6 +231,26 @@ const TripPlanReviews = ({ automateLocation }:IReviews) => {
                             setFilterData({...filterData, reviews: val})
                             }
                             />
+
+                            {/* <SelectField
+                                label="Reviews"
+                                placeholder="Select ..."
+                                data={[
+                                    {id: "In-Schedule", name: "In-Schedule"},
+                                    {id: "Not In-Schedule", name: "Not In-Schedule"}
+                                ]}
+                                className={`sm:mr-2 sm:my-2 my-5 w-full`}
+                                value={inSchedule ? "In-Schedule" : "Not In-Schedule"}
+                                onChange={(val) =>
+                                setInSchedule(val == 'In-Schedule' ? true : false)
+                            }
+                            /> */}
+
+                            <div className="flex items-center">
+                                <label htmlFor="in-schedule">
+                                    <input type="checkbox" name="in-schedule" id="in-schedule" checked={inSchedule ? true : false} onChange={() => setInSchedule(!inSchedule)} /> In Schedule
+                                </label>
+                            </div>
                         </div>
                     </div>
 

@@ -309,8 +309,10 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                         })}
                     </div>
                     <div className="lg:col-span-2 w-full">
-                        <div className="large-shadow sm:p-8 py-8 rounded-xl w-full">
-                        <TripDetail item={item} />
+                        <div className="w-full">
+                        <div className="large-shadow p-4 rounded-xl">
+                            <TripDetail item={item} />
+                        </div>
                         {
                             (params_list.v_type === '2' || params_list.v_type === '3') && (
                                 <>
