@@ -186,8 +186,7 @@ const TripDetail = ({item}: ITripDetail) => {
             prevArrow: <SamplePrevArrow />,
             },
         },
-        ],
-        // afterChange,
+        ]
     };
 
     return (

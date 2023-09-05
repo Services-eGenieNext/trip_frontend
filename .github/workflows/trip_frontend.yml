@@ -14,7 +14,7 @@ jobs:
         run: cd /usr/share/nginx/trip_frontend && git pull
 
       - name: Build Frontend
-        run: cd /usr/share/nginx/trip_frontend && npm i && npm run build
+        run: cd /usr/share/nginx/trip_frontend && npm i --legacy-peer-deps && npm run build
 
       - name: Restart Frontend Service
         run: sudo systemctl restart trip_frontend
