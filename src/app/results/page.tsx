@@ -17,10 +17,13 @@ import PriorityValue from '@/api-calls/fromDB/priority'
 import { setPriorities } from '@/redux/reducers/prioritySlice'
 import TopCountries from '@/api-calls/fromDB/topCountries'
 import { setTopCountries } from '@/redux/reducers/topCountries'
+import SearchLocation from '@/api-calls/locations-call'
 
 export default function Results() {
   const dispatch = useAppDispatch();
   const { surveySlice } = useAppSelector((state) => state.surveyReducer);
+  const params = useSearchParams()
+  const paramsAddress = params.get("address")
   // const { locationsState }: any = useAppSelector(
   //   (state) => state.locationReducer
   // );
@@ -50,9 +53,32 @@ export default function Results() {
         let res = await TopCountries()
         dispatch(setTopCountries(res))
     }
+
+    const _locationSearch = async () => {
+      setLoading(true)
+      if(paramsAddress){
+      let res = await SearchLocation(`Best Location in ${paramsAddress} for tourist`)
+      if(res){
+        setLocationState(res)
+      setLocationsData(res);
+      }
+    }
+  }
+
+  useEffect(()=>{
+if(paramsAddress){
+  dispatch(setSurveyValue({...surveySlice, location: paramsAddress}))
+  _locationSearch()
+}else{
+  _def()
+}
+  },[paramsAddress])
+
+    // useEffect(()=>{
+    //   _locationSearch()
+    // },[paramsAddress])
         
   useEffect(()=>{
-    _def()
     _Occassions()
     _Priorities()
     _TopCountries()

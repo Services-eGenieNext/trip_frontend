@@ -50,7 +50,7 @@ if(value != ""){
 
       const filtered = () => {
         const filtered = items?.filter((country:any) => {
-            return country?.name?.toLocaleLowerCase().includes(values.toLocaleLowerCase());
+            return country?.name?.toLocaleLowerCase().includes(values?.toLocaleLowerCase());
           });
           setFilteredArray(filtered)
       }

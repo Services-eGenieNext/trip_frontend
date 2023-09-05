@@ -12,16 +12,16 @@ const _getlocationImages = async (photo_reference: string | number, max_width="4
     return images_Data
 }
 
-// const _getDetails = async (location_id:string | number) => {
-//     let detailData:any = await axios.get(`${API_URL}/location/details/${location_id}/en`)
-//     .then((response)=>{
-// return response.data
-//     })
-//     .catch((error)=>{
-//         console.log(error,"error")
-//     })
-//     return detailData
-// }
+const _getDetails = async (location_id:string | number) => {
+    let detailData:any = await axios.get(`${API_URL}/google/placedetails?name=${location_id}`)
+    .then((response)=>{
+return response.data
+    })
+    .catch((error)=>{
+        console.log(error,"error")
+    })
+    return detailData
+}
 
 const LocationsCall = async (query:any) => {
 
@@ -33,13 +33,14 @@ const LocationsCall = async (query:any) => {
         for (let index = 0; index < location_res.length; index++) {
             if(location_res[index].photos){
                 let images_Data: any = await _getlocationImages(location_res[index].photos[0].photo_reference)
-                // let detail_Data: any = await _getDetails(location_res[index].location_id)
+                let detail_Data: any = await _getDetails(location_res[index].location_id ? location_res[index].location_id : location_res[index].place_id)
+                console.log(location_res,"location_res")
                 _store_locations.push({
-                    ...location_res[index], images: images_Data
+                    ...location_res[index], images: images_Data, image: {image: [{url:images_Data}]}, details: detail_Data.result
                 })
             }else{
                 _store_locations.push({
-                    ...location_res[index], images: ""
+                    ...location_res[index], images: "", image: {image: [{url:""}]}
                 })
             }
         }
