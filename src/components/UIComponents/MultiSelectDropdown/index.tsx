@@ -293,7 +293,7 @@ if(AddField){
           <Box
             // display="flex"
             // alignItems="center"
-            className="flex gap-1 h-full w-full cursor-pointer"
+            className="flex gap-1 h-full w-full justify-center cursor-pointer"
             sx={{
               overflowY: "hidden",
               overflowX: "hidden",

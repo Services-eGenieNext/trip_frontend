@@ -243,7 +243,7 @@ setLocationSearch({...locationSearch,surveySlice})
         onAdditionalChange={(_data) => {}}
       />
 
-<SelectField
+      <SelectField
         label="Budget"
         placeholder="Select"
         data={SpendingValue}

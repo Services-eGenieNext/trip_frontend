@@ -85,7 +85,7 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
                 <span className="border border-[#C9D2DD] bg-white rounded-2xl py-4 px-5 flex items-center justify-between"
                 onClick={() => setOpenDropDown(!openDropDown)}
                 >
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center w-full">
                         {
                             icon && <span className="mr-2">{icon}</span>
                         }
