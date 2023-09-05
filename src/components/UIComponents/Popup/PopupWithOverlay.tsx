@@ -48,7 +48,7 @@ const PopupWithOverlay = ({show, onClose=()=> {}, children, childrenParentClass,
                             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </span>
-                    <div className={`max-h-[80vh] h-full overflow-auto pt-4 ${childrenParentClass ?? ''}`}>
+                    <div className={`max-h-[80vh] h-full overflow-auto pt-4 pr-2 ${childrenParentClass ?? ''}`}>
                         {children}
                     </div>
                 </div>
