@@ -73,7 +73,7 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                         className={`outline-none w-full`} 
                         placeholder={placeholder ? placeholder : label} 
                         onChange={(e)=>{
-                            // setValue(e.target.value)
+                            setValue(e.target.value)
                             onChange(e.target.value)
                         }}
                         value={value}
