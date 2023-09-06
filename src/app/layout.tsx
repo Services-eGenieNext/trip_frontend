@@ -3,6 +3,7 @@ import Header from '@/components/Header/header'
 import Footer from '@/components/Footer/footer'
 import type { Metadata } from 'next'
 import { Providers } from '@/redux/provider'
+import { AlertProvider } from '@/contextapi/Alert'
 
 export const metadata: Metadata = {
   title: 'WePlan - Trip',
@@ -14,9 +15,11 @@ function RootLayout({ children, }: { children: React.ReactNode }) {
         <html lang="en">
             <body>
                 <Providers>
-                    <Header />
-                        {children}
-                    <Footer/>
+                    <AlertProvider>
+                        <Header />
+                            {children}
+                        <Footer/>
+                    </AlertProvider>
                 </Providers>
             </body>
         </html>

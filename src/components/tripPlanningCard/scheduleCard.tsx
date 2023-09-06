@@ -8,6 +8,7 @@ import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
 import SelectField from "../UIComponents/InputField/SelectField";
 import { _calculateStartAndEndTime } from "./pricing-cards/functions";
 import { ITime } from "@/interfaces";
+import { useAlertContext } from "@/contextapi/Alert";
 
 interface IScheduleCard extends IPlanningCard {
   distanceObject?: any
@@ -49,22 +50,13 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
       return (Number(hourString) % 12 || 12) + ":" + (Number(minute.substring(0,2)) < 10 ? '0'+Number(minute.substring(0,2)) : minute) + (Number(hourString) < 12 ? " AM" : " PM");
     }
 
+    const { showAlert } = useAlertContext()
     const dispatch = useAppDispatch()
 
     const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
       let _loc = e.dataTransfer.getData('product')
       _loc = JSON.parse(_loc)
       setdragOverLocation(_loc)
-      // let _itineraryDays = [...itineraryDays]
-      // let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
-      // let timeIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location.name === items.name)
-      // _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
-      // _itineraryDays[dayIndex].times = [..._itineraryDays[dayIndex].times]
-      // _itineraryDays[dayIndex].times[timeIndex] = {..._itineraryDays[dayIndex].times[timeIndex]}
-      // _itineraryDays[dayIndex].times[timeIndex].location = _loc
-
-      // dispatch(setItineraryDays([..._itineraryDays]))
-      
     }
 
     const replaceConfirm = () => {
@@ -78,11 +70,21 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
 
       dispatch(setItineraryDays([..._itineraryDays]))
       clearConfirm()
+
+      showAlert({
+        title: `<b>${dragOverLocation.name}</b> replaced successfully`,
+        type: "success"
+      })
     }
 
     const clearConfirm = () => {
       setdragOverLocation(null)
       setIsDragOver(false)
+
+      showAlert({
+        title: `<b>${dragOverLocation.name}</b> not replaced in itinerary`,
+        type: "error"
+      })
     }
 
     const ChangeTimeFunc = () => {

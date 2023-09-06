@@ -7,6 +7,7 @@ import { LocationsDurationCall } from "@/api-calls";
 import PricingCardLocation from "./pricing-cards/pricing-card-location";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
+import { useAlertContext } from "@/contextapi/Alert";
 
 export default function PricingCard({
   data,
@@ -25,12 +26,15 @@ export default function PricingCard({
   })
 
   const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
+  const { showAlert } = useAlertContext()
+  
   const dispatch = useAppDispatch()
 
   const delDay = async () => {
     let _itineraryDays = await itineraryDays.filter(itinerary => itinerary.day !== data.day)
     setShowDel(false)
     dispatch(setItineraryDays([..._itineraryDays]))
+    showAlert({title: `${data.day} is deleted from itinerary`, type: "error"})
   }
 
   useEffect(() => {
