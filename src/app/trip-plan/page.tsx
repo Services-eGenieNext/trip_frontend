@@ -85,8 +85,7 @@ const TripPlan = () => {
         let start_day_index: any = params.get('start_day_index')
         let days_length: any = params.get('days_length')
 
-
-        setParamsList({
+        let initialParams = {
             address: _address ?? 'USA',
             location_id: _location_id ?? '',
             place_id: _place_id ?? '',
@@ -94,15 +93,13 @@ const TripPlan = () => {
             restaurants: restaurants ?? '',
             start_day_index: start_day_index ?? '',
             days_length: days_length ?? ''
-        })
+        }
+        setParamsList(initialParams)
     }, [params])
-
-    const city = automateLocation?.address_components.find((adr: any) => adr.types[0] === "administrative_area_level_1")?.long_name ?? ''
-    const country = automateLocation?.address_components.find((adr: any) => adr.types[0] === "country")?.long_name ?? ''
 
     return (
         <div className='overflow-x-hidden w-full'>
-            <PageBanner title={(country && city) ? `${city}, ${country}` : 'Trip Plan'} automateLocation={automateLocation} />
+            <PageBanner automateLocation={automateLocation} />
             {
                 params_list.address && 
                 <TripPlanningCard 
