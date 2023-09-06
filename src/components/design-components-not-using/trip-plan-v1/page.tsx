@@ -12,7 +12,7 @@ const TripPlanPage = () => {
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     return (
         <div>
-            <PageBanner title='Bali, Indonesia' />
+            <PageBanner />
           
             <TripPlanningCard address='' totalOpeningHours={null} />
 

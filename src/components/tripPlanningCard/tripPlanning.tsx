@@ -9,7 +9,8 @@ import PricingCards from "./pricing-cards/PricingCards";
 import Card_skelton from '@/components/UIComponents/card_skelton';
 import { VariationType } from "@/interfaces/product";
 import { LocationsCall } from "@/api-calls";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { reset } from "@/redux/reducers/itinerarySlice";
 
 interface ITripPlanningCard {
     params_list?: any,
@@ -26,7 +27,9 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
     const [showTripPopup, setShowTripPopup] = useState(false);
     const [item, setItem] = useState({});
     const [loading, setLoading] = useState(true)
-    const { itineraryLoading } = useAppSelector((state) => state.itineraryReducer)
+    // const {  } = useAppSelector((state) => state.itineraryReducer)
+
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         const handleClickOutside = (event:any) => {
@@ -40,8 +43,8 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
     const [recommendations, setRecommendations] = useState<any[]>([])
     const [locationDetails, setLocationDetails] = useState<any[]>([])
 
-    const setLocationDetailsByAddress = async () => {
-        let res = await LocationsCall(`best places for visit in ${params_list.address} for tourist`)
+    const setLocationDetailsByAddress = async (address: string) => {
+        let res = await LocationsCall(`places to visit in ${address ?? params_list.address} for tourist`)
         
         setRecommendations([...res])
     }
@@ -82,15 +85,19 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
         
         if(params_list.address && params_list.address!='')
         {
-            axios.post(`${PY_API_URL}/get-recommendation`, {input: params_list.address}).then(response => {
+            let adrArr = params_list.address.split(',')
+            let filterAddress = adrArr.length < 2 ? params_list.address : `${adrArr[adrArr.length - 2].trim()}, ${adrArr[adrArr.length - 1].trim()}`
+            axios.post(`${PY_API_URL}/get-recommendation`, {input: filterAddress}).then(response => {
                 
+                dispatch(reset())
+                console.log('recommendation', response.data.recommendations)
                 if(response.data.recommendations.length == 0)
                 {
-                    setLocationDetailsByAddress()
+                    setLocationDetailsByAddress(filterAddress)
                 }
                 else
                 {
-                    setRecommendations(response.data.recommendations)
+                    setRecommendations([...response.data.recommendations])
                 }
             })
         }
@@ -114,7 +121,6 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
                                 locationDetails={locationDetails} 
                                 totalOpeningHours={totalOpeningHours} 
                                 automateLocation={automateLocation}
-                                v_type={params_list.v_type}
                             />
                         )
                         }
