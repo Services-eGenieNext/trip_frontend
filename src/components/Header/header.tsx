@@ -10,6 +10,8 @@ import Survey from './survey/survey'
 import { useAppDispatch } from '@/redux/hooks'
 import { useRouter } from "next/navigation";
 import Tooltip from '@mui/material/Tooltip';
+import { useAppSelector } from '@/redux/hooks'
+import { setShow } from '@/redux/reducers/surveySlice'
 
 const Header = () => {
     const router = useRouter()
@@ -17,9 +19,9 @@ const Header = () => {
     const [openMobileSearch, setOpenMobileSearch] = useState(false)
     const [showPopup, setShowPopup] = useState(false)
     const [showSurvey, setShowSurvey] = useState(false)
+    const {show} = useAppSelector(state => state.surveyReducer)
 
     const dispatch = useAppDispatch()
-
 
     useEffect(() => {
         window.addEventListener('scroll', () =>{
@@ -74,10 +76,11 @@ const Header = () => {
                             <Link href={'/trip-plan?address=USA'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300">Build a Trip</Link>
                             </Tooltip>
                             <Link href={'/'} 
-                            onMouseEnter={() => setShowSurvey(true)}
+                            onMouseEnter={() => dispatch(setShow(true))}
                             onClick={(e) => {
                                 e.preventDefault()
-                                setShowSurvey(true)
+                                dispatch(setShow(true))
+                                // setShowSurvey(true)
                             }} className="p-4 lg:p-5 hover:text-[var(--blue)] transition-all duration-300">Survey</Link>
                         </div>
                     </div>
@@ -149,7 +152,7 @@ const Header = () => {
             {/* Mobile Responsive Search Drawer */}
             <MobileSearchDrawer show={openMobileSearch} onClose={()=>setOpenMobileSearch(!openMobileSearch)} />
 
-            <Survey show={showSurvey} onClose={() => setShowSurvey(false)} />
+            <Survey show={show} onClose={() => dispatch(setShow(false))} />
         </div>
     )
 }

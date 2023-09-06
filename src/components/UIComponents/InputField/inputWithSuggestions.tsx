@@ -42,12 +42,6 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
   }
 }, [showDropDown])
 
-useEffect(()=>{
-if(value != ""){
-  setValue(value)
-}
-},[value])
-
       const filtered = () => {
         const filtered = items?.filter((country:any) => {
             return country?.name?.toLocaleLowerCase().includes(values?.toLocaleLowerCase());
@@ -65,7 +59,6 @@ if(value != ""){
 
     useEffect(()=>{
         filtered()
-onChange(values)
     },[values])
 
     return (
@@ -80,9 +73,10 @@ onChange(values)
                         className={`outline-none w-full`} 
                         placeholder={placeholder ? placeholder : label} 
                         onChange={(e)=>{
-                            setValue(e.target.value)
+                            // setValue(e.target.value)
+                            onChange(e.target.value)
                         }}
-                        value={values}
+                        value={value}
                         name={name}
                         autoComplete="off"
                     />

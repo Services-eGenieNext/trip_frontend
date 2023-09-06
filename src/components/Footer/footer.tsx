@@ -13,6 +13,8 @@ import {
 import Link from "next/link";
 import Survey from "../Header/survey/survey";
 import Modal from './modalForLocation'
+import { useAppDispatch } from "@/redux/hooks";
+import { setShow } from "@/redux/reducers/surveySlice";
 
 const SocialIcons = [
   { icon: FaFacebookF, name: "Facebook", Link:"" },
@@ -22,6 +24,7 @@ const SocialIcons = [
 ];
 
 export default function Footer() {
+  const dispatch = useAppDispatch()
   const [showSurvey, setShowSurvey] = useState(false);
   const [showModal, setShowModal] = useState(false);
   return (
@@ -53,7 +56,8 @@ export default function Footer() {
             className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium sm:border-r-2 border-[#444658] cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
-              setShowSurvey(true);
+              dispatch(setShow(true))
+              // setShowSurvey(true);
             }}
           >
             Survey
@@ -88,7 +92,7 @@ export default function Footer() {
           </p>
         </div> */}
       </div>
-      <Survey show={showSurvey} onClose={() => setShowSurvey(false)} />
+      {/* <Survey show={showSurvey} onClose={() => setShowSurvey(false)} /> */}
       <Modal show={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
