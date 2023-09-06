@@ -50,9 +50,13 @@ const Reviews = ({show, loading, data}:IReviews) => {
                     </div>
                 );
             })
-            : data!=null && data.map((client: any, index: number) => {
+            : data!=null && data.length > 0 ? data.map((client: any, index: number) => {
                 return <Review key={index} client={client} />
-            })
+            }) : (
+                <div className="text-center mt-5">
+                    <p className="bg-gray-50 rounded-xl py-2">Reviews not found!</p>
+                </div>
+            )
             }
         </div> : <></>
     )

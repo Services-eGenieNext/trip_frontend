@@ -197,7 +197,7 @@ function ActivitiesSlider({activitiesState}:any) {
                         let image_path = parseImageArray.image.length > 0 ? parseImageArray.image[0].url : BlankLocation.src
                         let address = activities.details.formatted_address
                         ? activities.details.formatted_address
-                        : activities.details.address_components[0].long_name +
+                        : activities.name + " " +activities.details.address_components[0].long_name + " " +
                         activities.details.address_components[1].long_name;
                       return (
                         <div key={index} className='px-4'>

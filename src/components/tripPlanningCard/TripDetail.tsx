@@ -349,26 +349,24 @@ const TripDetail = ({item}: ITripDetail) => {
                 {
                     itemDetail?.url && (
                         <div className="w-full my-5">
-                            <h4 className="text-[15px] leading-[18px] font-bold my-2 text-center">Map: <Link href={itemDetail?.url} target="_blank" className='text-[var(--blue)] font-normal hover:border-b border-[var(--blue)]'>view location</Link></h4>
+                            <h4 className="text-[15px] leading-[18px] font-bold my-2 text-center">Map: <Link href={itemDetail?.url} target="_blank" className='text-[var(--blue)] font-normal hover:border-b border-[var(--blue)]'>View location</Link></h4>
                             <div className="relative h-[200px]">
                                 <TripDetailGoogleMap place_id={itemDetail.place_id} />
                             </div>
                         </div>
                     )
                 }
-                <div className="mt-4 text-center">
-                    {
-                        !detailLoading ? <div className="">
-                            <span className='text-[15px] leading-[18px] font-bold mb-2'>Description</span>
-                            <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)]">{itemDetail?.location_id ? itemDetail?.description : itemDetail?.editorial_summary?.overview}</p>
-                            </div> : <>
-                            <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
-                            <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
-                            <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
-                            <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
-                        </>
-                    }
-                </div>
+
+                {
+                    !detailLoading ? (itemDetail?.description || itemDetail?.editorial_summary?.overview) &&  <div className="mt-4 w-full text-center">
+                        <span className='text-[15px] leading-[18px] font-bold mb-2'>Description</span>
+                        <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)]">{itemDetail?.location_id ? itemDetail?.description : itemDetail?.editorial_summary?.overview}</p>
+                        </div> : <>
+                        <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
+                        <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
+                        <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
+                    </>
+                }
             </div>
         </div>
     )
