@@ -189,7 +189,7 @@ if(priorityState?.length > 0){
       type="text"
       label="Location"
       placeholder="Enter Location"
-      value={locationSearch?.location?.country}
+      value={locationSearch?.location}
       items={topCountriesValue}
       icon={<SimpleLocation />}
       onChange={(val:any)=>{
