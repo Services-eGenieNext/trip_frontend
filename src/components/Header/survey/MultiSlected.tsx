@@ -482,13 +482,13 @@ if(AddField){
                 }}
               >
                 {Label !== "Occasion" && (
-                <span className="text-[#9e9e9e] mr-2  w-[20px] flex justify-end">{opt?.id}.</span>
+                <span className="text-[#9e9e9e] mr-2  w-[20px] flex justify-end">{index+1}.</span>
                 )}
                 <CheckboxLabel
                   label={opt?.name}
                   onChange={handleChange}
                   name={opt?.name}
-                  id={opt?.id}
+                  id={index+1}
                   checked={checked}
                   marginLabel="7px"
                 />
