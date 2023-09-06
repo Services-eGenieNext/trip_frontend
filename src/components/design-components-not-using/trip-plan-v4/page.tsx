@@ -13,7 +13,7 @@ export default function Page() {
   return (
     <div className="w-full flex justify-center">
         <Section className="relative">
-      <PageBanner title="Bali, Indonesia" />
+      <PageBanner />
       <TripPlanningV4 />
       <ProductHorizontalSlide
         url="variation_2"

@@ -10,7 +10,7 @@ export default function page() {
   return (
     <div className="w-full flex justify-center">
         <Section className="relative">
-      <PageBanner title="Bali, Indonesia" />
+      <PageBanner />
       <TripPlanningV6 />
       <SmallStory positioning="inline" />
       <ClientTestimonials />

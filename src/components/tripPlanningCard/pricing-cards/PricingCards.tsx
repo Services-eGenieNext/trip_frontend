@@ -22,7 +22,7 @@ interface IPricingCards {
     v_type?: VariationType
 }
 
-const PricingCards = ({params_list, locationDetails, totalOpeningHours, automateLocation, v_type}: IPricingCards) => {
+const PricingCards = ({params_list, locationDetails, totalOpeningHours, automateLocation}: IPricingCards) => {
 
     const [LocationDetails, setLocationDetails] = useState<any>([])
     const [showTripPopup, setShowTripPopup] = useState(false);
@@ -261,7 +261,7 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
     return (
         <>
         {
-            itineraryLoading ? 
+            (itineraryLoading || itineraryDays.length == 0) ? 
             skelton.map((list:string,index:number)=>{
                 return <Card_skelton key={index}/>
             }) : (

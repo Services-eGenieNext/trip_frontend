@@ -1,4 +1,4 @@
-import React, { CSSProperties, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PageBannerImg from "/public/images/page-banner.jpg"
 import Ballon from "/public/images/baloon-transparent.png";
 import Image from "next/image";
@@ -9,13 +9,14 @@ import { getLocationImagesById } from '@/api-calls/location-details-call';
 import Link from 'next/link';
 
 interface IPageBanner {
-    title: string;
     automateLocation?: any
 }
 
-const PageBanner = ({title, automateLocation}: IPageBanner) => {
+const PageBanner = ({automateLocation}: IPageBanner) => {
     
     const [bgImage , setBgImage] = useState<string | null>(null)
+    const [Title, setTitle] = useState<string>('')
+    
 
     useEffect(() => {
         const _def = async () => {
@@ -34,6 +35,11 @@ const PageBanner = ({title, automateLocation}: IPageBanner) => {
                 let res = await _getlocationImages(automateLocation.photos[0].photo_reference, "3000")
                 setBgImage(res)
             }
+
+            const city = automateLocation?.address_components.find((adr: any) => adr.types[0] === "administrative_area_level_1")?.long_name ?? ''
+            const country = automateLocation?.address_components.find((adr: any) => adr.types[0] === "country")?.long_name ?? ''
+
+            setTitle((country && city) ? `${city}, ${country}` : 'Trip Plan')
         }
         _def()
     }, [automateLocation])
@@ -58,7 +64,7 @@ const PageBanner = ({title, automateLocation}: IPageBanner) => {
             <div className="h-[405px] w-full rounded-xl flex justify-center items-center relative overflow-hidden">
                 <Image src={bgImage ? bgImage : PageBannerImg.src} fill={true} alt='banner' style={{objectFit: "cover"}} className="z-0" />
                 <div className="absolute inset-0" style={{background: 'linear-gradient(360deg, #00000069, #00000069, transparent)'}}></div>
-                <span className="font-extrabold text-5xl md:text-7xl Poppins text-white text-center z-[1]">{title}</span>
+                <span className="font-extrabold text-5xl md:text-7xl Poppins text-white text-center z-[1]">{Title}</span>
             </div>
             {
                 automateLocation?.url && 
