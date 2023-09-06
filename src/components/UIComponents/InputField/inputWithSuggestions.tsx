@@ -117,6 +117,7 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                 onClick={()=>{
                     setValue(country.name)
                     setShowDropDown(false)
+                    onChange(country.name)
                 }}
               >
                 <span className="text-[#9e9e9e] mr-2">{country.name}</span>
