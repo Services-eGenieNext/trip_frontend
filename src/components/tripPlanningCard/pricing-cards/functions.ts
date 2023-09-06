@@ -42,8 +42,6 @@ const calculateDuration = async (times: any, i: number, duration: string) => {
 
         let _prevEndTime: any = times[i-1].suggestedTime?.endTime
 
-        console.log('------------------------')
-        console.log('_prevEndTime', _prevEndTime, _currentEndTime, i)
 
         if(!_prevEndTime)
         {
@@ -54,7 +52,6 @@ const calculateDuration = async (times: any, i: number, duration: string) => {
         }
 
         _prevEndTime = await getTime(_prevEndTime)
-        console.log('formated end time', _prevEndTime)
 
         if(duration.search('days') !== -1)
         {
@@ -68,7 +65,6 @@ const calculateDuration = async (times: any, i: number, duration: string) => {
         {
             _prevEndTime.setMinutes(_prevEndTime.getMinutes() + Number(duration.substring(0,2)))
         }
-        console.log('formated increased end time', _prevEndTime)
 
         let suggestedStartTime = _currentStartTime
         let blockedStartTime = await getTime('07:00 AM')
@@ -95,8 +91,6 @@ const calculateDuration = async (times: any, i: number, duration: string) => {
         }
 
         let endTime = `${suggestedLastTime.getHours()}:${suggestedLastTime.getMinutes()}`
-        console.log('suggestedStartTime', suggestedStartTime, startTime)
-        console.log('suggestedLastTime', suggestedLastTime, endTime)
 
         return {
             startTime: startTime,
@@ -111,8 +105,6 @@ const calculateDuration = async (times: any, i: number, duration: string) => {
 }
 
 const _calculateStartAndEndTime = async (times: any, i: number) => {
-
-    console.log('time',times[i])
 
     let _currentStartTime: any = times[i].time.replace(' – ', ' - ').split(' - ')[0]
     
@@ -153,8 +145,6 @@ const _calculateStartAndEndTime = async (times: any, i: number) => {
     {
         _durationTime = duration.data.rows[0].elements[0].duration.text
     }
-
-    console.log('_durationTime', origin, '---', destination, '---', _durationTime)
 
     let returnData = await calculateDuration(times, i, _durationTime)
     return {...returnData, duration_time: _durationTime}

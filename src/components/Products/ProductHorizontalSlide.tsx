@@ -17,6 +17,8 @@ import DetailModal from "../tripPlanningCard/TripPlanPopup";
 import SelectField from "../UIComponents/InputField/SelectField";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
+import { useAlertContext } from "@/contextapi/Alert";
+import { Tooltip } from "@mui/material";
 
 const ProductHorizontalSlide = ({
   Title,
@@ -90,6 +92,8 @@ const ProductHorizontalSlide = ({
     }
   };
 
+  const { showAlert } = useAlertContext()
+
   const dispatch = useAppDispatch()
   const storeLocation = () => {
 
@@ -112,6 +116,7 @@ const ProductHorizontalSlide = ({
 
       setForlFields(formInitialField)
       setVisible(false)
+      showAlert({title: `<b>${openLocation.name}</b> added in ${formFields.day}`, type: "success"})
     }
     else
     {
@@ -187,8 +192,9 @@ const ProductHorizontalSlide = ({
                 let isExistInItinerary = locArrBoolean.includes(true)
 
                 return (
-                    <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10 ${v_type == "2" || v_type == "3" && "cursor-move" }`} >
-                      <div className={`grid grid-cols-1 ${v_type == "3" ? 'rounded-3xl shadow-lg h-max' : 'rounded-xl shadow-sm h-full'} border overflow-hidden relative ${styles["slider_card"]}`} draggable={true} onDragStart={(e) => dragStartFunc(e, location)} >
+                    <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10 ${v_type == "3" && "cursor-move" }`} >
+                      <Tooltip title={(v_type === "3") ? "Dragable in itinerary days." : ""}>
+                      <div className={`grid grid-cols-1 ${v_type == "3" ? 'rounded-3xl shadow-lg h-max' : 'rounded-xl shadow-sm h-full'} border overflow-hidden relative ${styles["slider_card"]}`} draggable={(v_type === "3") ? true : false} onDragStart={(e) => dragStartFunc(e, location)} >
                         <div className={`${ type == "title-card" ? 'h-[310px]' : 'h-[178px]'} bg-gray-100 relative`} >
                           <div className={`absolute top-0 left-0 z-[1] ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
                           <Image
@@ -303,6 +309,7 @@ const ProductHorizontalSlide = ({
                           )}
                         </div>
                       </div>
+                      </Tooltip>
                     </div>
                 );
               })}
