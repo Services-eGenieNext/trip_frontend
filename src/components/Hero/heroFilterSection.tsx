@@ -253,7 +253,7 @@ if(priorityState?.length > 0){
 
       <SelectField
         label="Budget"
-        placeholder="Select"
+        placeholder="Select..."
         data={SpendingValue}
         className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] h-[46px]`}
         value={locationSearch.spending}

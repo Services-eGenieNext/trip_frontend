@@ -71,6 +71,7 @@ export default function SelectCheckBoxSimple({
   const ref = useRef<HTMLInputElement>(null);
   const [requestFailedError,setRequestFailedError] = useState(false)
   const [selectedOptionString, setSelectedOptionString] = useState("")
+  const [inputValue, setInputValue] = useState("")
   const [showSorting, setShowSorting] = useState(false)
 
   const sortRef = useRef<HTMLInputElement>(null);
@@ -202,6 +203,7 @@ if(addCustomeOption == false){
     const optChecked = e.target.checked;
     const optId = e.target.id;
 
+    setInputValue("")
     const newArray = opts.map((opt) =>
       optName === opt.opt ? { ...opt, checked: optChecked, id: optId } : opt
     );
@@ -251,7 +253,7 @@ if(addCustomeOption == false){
   };
 
   const filtered = opts?.filter(({ opt }) => {
-    return opt?.name?.toLocaleLowerCase().includes(customeField.toLocaleLowerCase());
+    return opt?.name?.toLocaleLowerCase().includes(customeField != "" ? customeField.toLocaleLowerCase(): inputValue.toLocaleLowerCase());
   });
 
   const AddField = async () => {
@@ -322,33 +324,21 @@ if(addCustomeOption == false){
             setShowDropDown(true)
           }}
           >
-            <Box
-              // display="flex"
-              // alignItems="center"
-              className="flex gap-1 h-full w-full justify-center cursor-pointer"
-              sx={{
-                overflowY: "hidden",
-                overflowX: "hidden",
-              }}
-            >
+            {optsSelected.length <= 0 ?(
+            <input className="text-[#999999] border-none outline-none h-full w-full" placeholder="Select..." value={inputValue} onChange={(e)=>{
+              setInputValue(e.target.value)
+            }}/>
+            ):(
               <div className="text-ellipsis overflow-hidden whitespace-nowrap">{selectedOptionString}</div>
-              {/* {optsSelected?.length > 0 &&
-                optsSelected?.map(( opt , index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="bg-[#009de2] px-2 py-1 flex items-center justify-center"
-                    >
-                      {Label !== "Occasion" &&(
-                        <Typography
-                        className="mr-2"
-                          color="common.white"
-                          fontSize="10px"
-                          fontWeight="400"
-                        >
-                          {opt.id}.
-                        </Typography>
-                      )}
+            )}
+            {/* {optsSelected?.length > 0 &&
+              optsSelected?.map(( opt , index) => {
+                return (
+                  <div
+                    key={index}
+                    className="bg-[#009de2] px-2 py-1 flex items-center justify-center"
+                  >
+                    {Label !== "Occasion" &&(
                       <Typography
                       className="text-center"
                         color="common.white"
@@ -357,19 +347,27 @@ if(addCustomeOption == false){
                       >
                         {opt?.opt}
                       </Typography>
-                      <img
-                        className="cursor-pointer w-[10px] h-[10px] ml-3"
-                        src="/images/icons/close-white-icon.svg"
-                        alt=""
-                        onClick={() => clearOne(opt?.opt)}
-                      />
-                    </div>
-                  );
-                })} */}
-              {!optsSelected?.length && (
-                <Typography color="#999999">{placeholder}</Typography>
-              )}
-            </Box>
+                    )}
+                    <Typography
+                    className="text-center"
+                      color="common.white"
+                      fontSize="10px"
+                      fontWeight="400"
+                    >
+                      {opt?.opt}
+                    </Typography>
+                    <img
+                      className="cursor-pointer w-[10px] h-[10px] ml-3"
+                      src="/images/icons/close-white-icon.svg"
+                      alt=""
+                      onClick={() => clearOne(opt?.opt)}
+                    />
+                  </div>
+                );
+              })} */}
+            {/* {!optsSelected?.length && (
+              <Typography color="#999999">{placeholder}</Typography>
+            )} */}
           </Box>
           <span
             className="flex justify-center items-center cursor-pointer w-auto ml-3"
@@ -408,9 +406,9 @@ if(addCustomeOption == false){
         zIndex="3"
       >
         <Box className="relative">
-          {disabled && optsSelected.length >= 10 && (
+          {/* {disabled && optsSelected.length >= 10 && (
             <Box className="absolute top-0 left-0 w-full h-full bg-gray-500 opacity-25 z-10"></Box>
-          )}
+          )} */}
         
           {/* Selected Options List */}
           {optsSelected.length > 0 && (
