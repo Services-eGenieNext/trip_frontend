@@ -227,6 +227,7 @@ if(priorityState?.length > 0){
         // searchBar
         items={prioritiesValue}
         Label={"Priority"}
+        allowSorting={true}
         heightItemsContainer="300px"
         className={"sm:w-[170px]"}
         SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
