@@ -204,7 +204,7 @@ const Products = ({ title = "Title", isAddButton, rows, v_type="", isHover=true 
                             </h4>
                             {isAddButton && (
                               <div
-                                className="flex justify-end items-center gap-2 cursor-pointer"
+                                className="flex justify-end items-center gap-2 cursor-pointer z-10"
                                 onClick={() => {
                                   setOpenRestaurant(restaurant);
                                   setOpenModal(true);

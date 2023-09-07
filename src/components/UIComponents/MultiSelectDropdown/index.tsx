@@ -67,6 +67,7 @@ export default function SelectCheckBoxSimple({
   const ref = useRef<HTMLInputElement>(null);
   const [requestFailedError,setRequestFailedError] = useState(false)
   const [selectedOptionString, setSelectedOptionString] = useState("")
+  const [inputValue, setInputValue] = useState("")
 
   useEffect(()=>{
     if(SelectedData?.length > 0 && saveData == true){
@@ -176,6 +177,7 @@ useEffect(() => {
     const optChecked = e.target.checked;
     const optId = e.target.id;
 
+    setInputValue("")
     const newArray = opts.map((opt) =>
       optName === opt.opt ? { ...opt, checked: optChecked, id: optId } : opt
     );
@@ -224,7 +226,7 @@ useEffect(() => {
     setOpts(newArray);
   };
   const filtered = opts?.filter(({ opt }) => {
-    return opt?.name?.toLocaleLowerCase().includes(customeField.toLocaleLowerCase());
+    return opt?.name?.toLocaleLowerCase().includes(customeField != "" ? customeField.toLocaleLowerCase(): inputValue.toLocaleLowerCase());
   });
 
   const AddField = async () => {
@@ -299,7 +301,13 @@ if(AddField){
               overflowX: "hidden",
             }}
           >
-            <div className="text-ellipsis overflow-hidden whitespace-nowrap">{selectedOptionString}</div>
+            {optsSelected.length <= 0 ?(
+            <input className="text-[#999999] border-none outline-none h-full w-full" placeholder="Select..." value={inputValue} onChange={(e)=>{
+              setInputValue(e.target.value)
+            }}/>
+            ):(
+              <div className="text-ellipsis overflow-hidden whitespace-nowrap">{selectedOptionString}</div>
+            )}
             {/* {optsSelected?.length > 0 &&
               optsSelected?.map(( opt , index) => {
                 return (
@@ -334,9 +342,9 @@ if(AddField){
                   </div>
                 );
               })} */}
-            {!optsSelected?.length && (
+            {/* {!optsSelected?.length && (
               <Typography color="#999999">{placeholder}</Typography>
-            )}
+            )} */}
           </Box>
         </Box>
       <span
@@ -376,9 +384,9 @@ if(AddField){
         zIndex="3"
       >
         <Box className="relative">
-        {disabled && optsSelected.length >= 10 && (
+        {/* {disabled && optsSelected.length >= 10 && (
           <Box className="absolute top-0 left-0 w-full h-full bg-gray-500 opacity-25 z-10"></Box>
-        )}
+        )} */}
         {optsSelected.length > 0 && (
         <div 
         className={`w-[98%] flex items-center gap-x-2 px-3 py-2 overflow-x-auto ${styles["showSelectedOptions"]}`}
