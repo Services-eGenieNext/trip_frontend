@@ -598,7 +598,7 @@ if(addCustomeOption == false){
               <h4 className="font-semibold text-[24px]">Sort {Label}</h4>
               {
                 optsSelected.map((opt:TypeOpt, index:number) => {
-                  return <SortPopupOptions index={index} opt={opt} onSort={async (num, dropPlace) => {
+                  return <SortPopupOptions key={index} index={index} opt={opt} onSort={async (num, dropPlace) => {
 
                     let _optsSelected = [...optsSelected]
                     if (dropPlace === "after")
