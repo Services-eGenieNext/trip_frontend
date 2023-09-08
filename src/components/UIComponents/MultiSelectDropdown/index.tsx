@@ -266,8 +266,14 @@ if(addCustomeOption == false){
         setCustomeField("");
         setAddCustomeOption(false);
         if(AddField){
-          let updatedOccasionsList = await Occassions()
-          dispatch(setOccasions(updatedOccasionsList))
+          // let updatedOccasionsList = await Occassions()
+          // dispatch(setOccasions(updatedOccasionsList))
+          let array = opts
+          let selected = optsSelected
+          array.unshift({opt:{name:customeField, id:""}, checked: true})
+          selected.unshift({opt:customeField, id:"", checked: true})
+          setOpts([...array])
+          setOptsSelected([...selected])
         }else{
           setRequestFailedError(true)
         }
@@ -286,8 +292,12 @@ if(addCustomeOption == false){
         setCustomeField("");
         setAddCustomeOption(false);
         if(AddField){
-          let updatedOccasionsList = await Priorities()
-          dispatch(setPriorities(updatedOccasionsList))
+          let array = opts
+          let selected = optsSelected
+          array.unshift({opt:{name:customeField, id:""}, checked: true})
+          selected.unshift({opt:customeField, id:"", checked: true})
+          setOpts([...array])
+          setOptsSelected([...selected])
         }else{
           setRequestFailedError(true)
         }
@@ -547,41 +557,52 @@ if(addCustomeOption == false){
                 </span>
                 <p className="text-[#4B9AD4] text-[14px]">Add {Label}</p>
               </span>
-              {filtered?.map(({ opt, checked }, index) => {
-                return (
-                  <Box
-                    key={index}
-                    display="flex"
-                    alignItems="center"
-                    py="5px"
-                    pl="20px"
-                    sx={{
-                      cursor: "pointer",
-                      "&:hover": {
-                        bgcolor: "grey.200",
-                      },
-                    }}
-                  >
-                    {Label !== "Occasion" && (
-                    <span className="text-[#9e9e9e] mr-2 w-[20px] flex justify-end">{index+1}.</span>
-                    )}
-                    <CheckboxLabel
-                      label={opt?.name}
-                      onChange={handleChange}
-                      name={opt?.name}
-                      id={index+1}
-                      checked={checked}
-                      marginLabel="7px"
-                    />
-                  </Box>
-                );
-              })}
+              {filtered.length > 0 ? (
+                filtered?.map(({ opt, checked }, index) => {
+                  return (
+                    <Box
+                      key={index}
+                      display="flex"
+                      alignItems="center"
+                      py="5px"
+                      pl="20px"
+                      sx={{
+                        cursor: "pointer",
+                        "&:hover": {
+                          bgcolor: "grey.200",
+                        },
+                      }}
+                    >
+                      {Label !== "Occasion" && (
+                      <span className="text-[#9e9e9e] mr-2 w-[20px] flex justify-end">{index+1}.</span>
+                      )}
+                      <CheckboxLabel
+                        label={opt?.name}
+                        onChange={handleChange}
+                        name={opt?.name}
+                        id={index+1}
+                        checked={checked}
+                        marginLabel="7px"
+                      />
+                    </Box>
+                  );
+                })
+              ):(
+                <div className="h-full w-full flex items-center justify-center px-2 mt-10">
+<p className="text-black text-[14px] mt-1 text-center">{Label} not exist. 
+<span 
+onClick={()=>{
+setAddCustomeOption
+(true)
+}} className="text-[#009de2] underline ml-2 cursor-pointer">Add {Label}</span> if you want.</p>
+                </div>
+              )}
             </div>
           </Box>
         </Box>
       </Box>
 
-      <div ref={sortRef} className={`hidden opacity-0 inset-0 bg-[rgba(0,0,0,0.5)] z-[3] transition-all duration-300`} >
+      <div ref={sortRef} className={`hidden opacity-0 inset-0 bg-[rgba(0,0,0,0.5)] z-20 transition-all duration-300`} >
         <div className="absolute top-[50%] -translate-y-1/2 left-[50%] -translate-x-1/2 transition-all duration-300 max-w-[400px] w-full">
           <div 
             className="bg-white shadow p-4 mx-auto rounded-xl relative">
