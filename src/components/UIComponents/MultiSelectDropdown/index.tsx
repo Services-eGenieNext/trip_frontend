@@ -335,7 +335,7 @@ if(addCustomeOption == false){
           }}
           >
             {optsSelected.length <= 0 ?(
-            <input className="text-[#999999] border-none outline-none h-full w-full" placeholder="Select..." value={inputValue} onChange={(e)=>{
+            <input className="text-[#999999]  outline-none h-full w-[70px]" placeholder="Select..." value={inputValue} onChange={(e)=>{
               setInputValue(e.target.value)
             }}/>
             ):(
