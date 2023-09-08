@@ -134,7 +134,7 @@ const _TopCountries = async () => {
 
 const _TopCities = async () => {
   let res = await TopCities()
-  if(res.length > 0){
+  if(res?.length > 0){
     setTopCities(res)
   }else{
     setTopCities([])
@@ -449,6 +449,7 @@ setSurvey({...survey, location:"" })
               <MultiSelectDropdown
                 // searchBar
                 disabled
+                 allowSorting={true}
                 saveData={saveData}
                 setSaveData={setSaveData}
                 items={prioritiesValue}

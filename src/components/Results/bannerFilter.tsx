@@ -227,6 +227,7 @@ setLocationSearch({...locationSearch,location: paramsAddress})
         // searchBar
         items={prioritiesValue}
         Label={"Priority"}
+         allowSorting={true}
         heightItemsContainer="300px"
         className={'sm:w-[150px]'}
         SelectedData={locationSearch?.priority?.length > 0 ? locationSearch.priority : []}

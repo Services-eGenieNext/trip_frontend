@@ -26,7 +26,7 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
 
   return (
     <div className="lg:pl-12 md:pl-12 sm:pl-6 pl-3">
-      {results.length > 0 ? (
+      {results?.length > 0 ? (
       <p className="text-[18px] text-[#3F3F3F]">
         Show listing of {results.length} Places...
       </p>
