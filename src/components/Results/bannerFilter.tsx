@@ -215,7 +215,7 @@ setLocationSearch({...locationSearch,location: paramsAddress})
         heightItemsContainer="300px"
         className={'sm:w-[150px]'}
         SelectedData={locationSearch?.occassion?.length > 0 ? locationSearch.occassion : []}
-        placeholder="Select..."
+        placeholder="Enter Occasion"
         saveData={saveData}
         setSaveData={setSaveData}
         onChange={(val: any) =>
@@ -233,7 +233,7 @@ setLocationSearch({...locationSearch,location: paramsAddress})
         SelectedData={locationSearch?.priority?.length > 0 ? locationSearch.priority : []}
         saveData={saveData}
         setSaveData={setSaveData}
-        placeholder="Select..."
+        placeholder="Enter Priority"
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, priority: val })
         }

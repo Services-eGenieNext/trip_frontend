@@ -217,7 +217,7 @@ if(priorityState?.length > 0){
         SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
         saveData={saveData}
         setSaveData={setSaveData}
-        placeholder="Select..."
+        placeholder="Enter Occasion"
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
         }
@@ -233,7 +233,7 @@ if(priorityState?.length > 0){
         SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
         saveData={saveData}
         setSaveData={setSaveData}
-        placeholder="Select..."
+        placeholder="Enter Priority"
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, priority: val })
         }
