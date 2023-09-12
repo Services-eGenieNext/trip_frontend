@@ -198,7 +198,7 @@ export default function PricingCard({
         </div>
       )
     }
-    <div ref={pricingCardRef} className="fixed top-[50%] left-[50%] -translate-y-1/2 -translate-x-1/2 rounded-lg bg-white large-shadow p-4 z-10 transition-all duration-300">
+    <div ref={pricingCardRef} className="hidden opacity-0 fixed top-[50%] left-[50%] -translate-y-full -translate-x-1/2 rounded-lg bg-white large-shadow p-4 z-10 transition-all duration-300">
       <p className="mb-4 font-medium">Are you sure you want to delete this day?</p>
       <div className="flex justify-end">
         <span className="block rounded-lg px-4 py-2 border border-[var(--green)] bg-white hover:bg-[var(--green)] text-[var(--green)] hover:text-white transition-all duration-300 cursor-pointer select-none" onClick={() => delDay()}>Yes</span>
