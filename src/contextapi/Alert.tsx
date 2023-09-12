@@ -64,6 +64,13 @@ export const AlertProvider = ( {children} : IAlertProvider ) => {
                 }, 200);
             }, 3000)
         }
+        else
+        {
+            alertRef.current?.classList.add('opacity-0')
+            alertRef.current?.classList.remove('-translate-y-1/2')
+            alertRef.current?.classList.add('-translate-y-full')
+            alertRef.current?.classList.add('hidden')
+        }
     }, [alertRef, isAlert])
 
     const svgsFunc = () => {
