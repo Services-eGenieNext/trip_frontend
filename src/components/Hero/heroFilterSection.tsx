@@ -217,7 +217,7 @@ if(priorityState?.length > 0){
         SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
         saveData={saveData}
         setSaveData={setSaveData}
-        placeholder="Select..."
+        placeholder="Enter Occasion"
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
         }
@@ -233,7 +233,7 @@ if(priorityState?.length > 0){
         SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
         saveData={saveData}
         setSaveData={setSaveData}
-        placeholder="Select..."
+        placeholder="Enter Priority"
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, priority: val })
         }
@@ -253,7 +253,7 @@ if(priorityState?.length > 0){
 
       <SelectField
         label="Budget"
-        placeholder="Select"
+        placeholder="Select..."
         data={SpendingValue}
         className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] h-[46px]`}
         value={locationSearch.spending}
