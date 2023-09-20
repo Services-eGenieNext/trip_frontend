@@ -18,6 +18,7 @@ import { setPriorities } from '@/redux/reducers/prioritySlice'
 import TopCountries from '@/api-calls/fromDB/topCountries'
 import { setTopCountries } from '@/redux/reducers/topCountries'
 import SearchLocation from '@/api-calls/locations-call'
+import TopCities from '@/api-calls/fromDB/topCities'
 
 export default function Results() {
   const dispatch = useAppDispatch();
@@ -49,8 +50,8 @@ export default function Results() {
           dispatch(setPriorities(res))
       }
 
-      const _TopCountries = async () => {
-        let res = await TopCountries()
+      const _TopCities = async () => {
+        let res = await TopCities()
         dispatch(setTopCountries(res))
     }
 
@@ -81,7 +82,7 @@ if(paramsAddress){
   useEffect(()=>{
     _Occassions()
     _Priorities()
-    _TopCountries()
+    _TopCities()
   },[])
 
   useEffect(()=>{

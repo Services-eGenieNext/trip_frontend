@@ -599,12 +599,8 @@ if(addCustomeOption == false){
                 })
               ):(
                 <div className="h-full w-full flex items-center justify-center px-2 mt-10">
-<p className="text-black text-[14px] mt-1 text-center">{Label} not exist. 
-<span 
-onClick={()=>{
-setAddCustomeOption
-(true)
-}} className="text-[#009de2] underline ml-2 cursor-pointer">Add {Label}</span> if you want.</p>
+<p className="text-black text-[14px] mt-1 text-center">{Label} not exist.
+</p>
                 </div>
               )}
             </div>

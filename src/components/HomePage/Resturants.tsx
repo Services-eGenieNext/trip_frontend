@@ -13,6 +13,8 @@ import DetailModal from "../tripPlanningCard/TripPlanPopup";
 import AddProductModel from "../Products/AddProductModel";
 import Section from "../UIComponents/Section";
 import BlueButton from '../UIComponents/Buttons/BlueButton';
+import Slider from "react-slick";
+
 
 interface IProduct {
   title: string;
@@ -22,7 +24,96 @@ interface IProduct {
 }
 
 const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IProduct) => {
-  const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
+  function SampleNextArrow(props: any) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={`cursor-pointer select-none  ${styles["restaurant-slick-next"]}`}
+        style={{
+          ...style,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onClick={onClick}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-5 h-5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M8.25 4.5l7.5 7.5-7.5 7.5"
+          />
+        </svg>
+      </div>
+    );
+  }
+
+  function SamplePrevArrow(props: any) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={`cursor-pointer select-none ${styles["restaurant-slick-prev"]}`}
+        style={{
+          ...style,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        onClick={onClick}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+          className="w-5 h-5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M15.75 19.5L8.25 12l7.5-7.5"
+          />
+        </svg>
+      </div>
+    );
+  }
+const settings = {
+// className: "center",
+centerMode: true,
+infinite: true,
+centerPadding: "60px",
+slidesToShow: 1,
+speed: 500,
+rows: 4,
+slidesPerRow: 2,
+nextArrow: <SampleNextArrow />,
+prevArrow: <SamplePrevArrow />,
+responsive: [
+{
+  breakpoint: 850,
+  settings: {
+    centerMode: true,
+    infinite: true,
+    centerPadding: "60px",
+    slidesToShow: 1,
+    speed: 500,
+    rows: 4,
+    slidesPerRow: 1,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />,
+  },
+}
+]
+};
+  const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","9","10","1", "2", "3", "4", "5", "6"];
   const [loading, setLoading] = useState(true);
   const [restaurantData, setRestaurant] = useState([]);
   const slideRef = useRef<null | HTMLDivElement>(null);
@@ -106,16 +197,17 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
           </p>
           </div>
 
-          <div className={`grid grid-cols-1 md:grid-cols-${rows}`}>
+          {/* <div className={`grid grid-cols-1 md:grid-cols-${rows}`}> */}
+            <Slider {...settings}>
             {loading === true
               ? skelton.map((show: string, index: number) => {
                   return (
                     <div
                       key={index}
                       role="status"
-                      className="md:mx-4 md:my-4 my-8 mx-0 rounded shadow animate-pulse"
+                      className="md:px-6 md:my-4 my-8 px-0 animate-pulse bg-none"
                     >
-                      <div className="rounded-xl overflow-hidden grid grid-cols-1 md:grid-cols-2 h-full w-full">
+                      <div className="rounded-xl overflow-hidden grid grid-cols-1 md:grid-cols-2 h-full w-full shadow">
                         <div className="flex items-center justify-center h-full mb-4 bg-gray-300 rounded dark:bg-gray-700">
                           <svg
                             className="w-10 h-10 text-gray-200 dark:text-gray-600"
@@ -152,7 +244,7 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                     </div>
                   );
                 })
-              : currentPost?.map((restaurant: any, index: number) => {
+              : restaurantData?.map((restaurant: any, index: number) => {
                 let City = ""
                 let Country = ""
                 let parseImageArray = JSON.parse(restaurant.image)
@@ -162,7 +254,7 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                     restaurant.location_id ?? ""
                   }&place_id=${restaurant.place_id ?? ""}&restaurants=true`;
                   return (
-                    <div key={index} className="md:pr-6 md:my-4 my-8 pr-0">
+                    <div key={index} className="md:my-4 my-8 px-6 lg:mt-0 mt-14">
                       <div
                         className={`rounded-xl overflow-hidden border border-[#C9D2DD] grid grid-cols-1 lg:grid-cols-2 bg-white h-full w-full relative ${styles["slider_card"]}`}
                       >
@@ -258,14 +350,15 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
                     </div>
                   );
                 })}
-          </div>
-          {restaurantData.length > postPerPage && (
+                </Slider>
+          {/* </div> */}
+          {/* {restaurantData.length > postPerPage && (
             <div className="flex justify-center mt-10">
             <BlueButton onClick={() => {
               setPostPerPage(postPerPage + 8) 
             }} title={"Load more"} />
             </div>
-      )}
+      )} */}
         </Section>
       </div>
       <DetailModal

@@ -15,6 +15,7 @@ import PriorityValue from '@/api-calls/fromDB/priority'
 import { setPriorities } from '@/redux/reducers/prioritySlice'
 import TopCountries from '@/api-calls/fromDB/topCountries'
 import { setTopCountries } from '@/redux/reducers/topCountries'
+import TopCities from '@/api-calls/fromDB/topCities'
 
 export default function Home() {
     const dispatch = useAppDispatch()
@@ -54,11 +55,11 @@ export default function Home() {
         }
         _Priorities()
 
-        const _TopCountries = async () => {
-            let res = await TopCountries()
+        const _TopCities = async () => {
+            let res = await TopCities()
             dispatch(setTopCountries(res))
         }
-        _TopCountries()
+        _TopCities()
 
     }, [])
 
