@@ -160,12 +160,11 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
             if(!cardRef.current.contains((e.target as Element)))
             {
               setEditTime(false)
-              setAddEvent(false)
             }
           }
         })
       }
-    }, [])
+    }, [addEventRef, cardRef])
 
 
     useEffect(() => {
@@ -192,21 +191,27 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
     useEffect(() => {
       if(addEvent)
       {
+        if(addEventRef.current?.classList.contains('opacity-0'))
+        {
           addEventRef.current?.classList.remove('hidden')
           addEventRef.current?.classList.add('flex')
           setTimeout(() => {
             addEventRef.current?.classList.remove('opacity-0')
             addEventRef.current?.classList.remove('-translate-y-5')
           }, 200);
+        }
       }
       else
       {
-        addEventRef.current?.classList.add('opacity-0')
-        addEventRef.current?.classList.add('-translate-y-5')
+        if(!addEventRef.current?.classList.contains('opacity-0'))
+        {
+          addEventRef.current?.classList.add('opacity-0')
+          addEventRef.current?.classList.add('-translate-y-5')
           setTimeout(() => {
             addEventRef.current?.classList.add('hidden')
             addEventRef.current?.classList.remove('flex')
           }, 200);
+        }
       }
     }, [addEvent])
 
@@ -283,7 +288,6 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
                   isShowTooltip === true && (
                     <div className="absolute top-3 right-0 w-[122px] h-[110px] rounded-md shadow-lg border z-10 bg-white flex flex-col justify-between py-3 px-4">
                         <p className="text-black hover:text-[#9AB044] cursor-pointer" onClick={()=>{
-                            // setIsShowTooltip(false)
                             setEditTime(true)
                         }}>Edit time</p>
                         <p className="text-black hover:text-[#9AB044] cursor-pointer" onClick={()=>{
@@ -291,7 +295,6 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
                             delEventFunc()
                         }}>Delete event</p>
                         <p className="text-black hover:text-[#9AB044] cursor-pointer" onClick={()=>{
-                            setIsShowTooltip(false)
                             setAddEvent(true)
                             }}>Add event</p>
                     </div>
@@ -312,35 +315,43 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
                   
                 </div>
 
-                <div ref={addEventRef} className="hidden -translate-y-5 transition-all duration-300 absolute top-2 right-0 sm:w-[462px] rounded-xl shadow-lg border z-10 bg-white flex-col justify-center py-5 px-8 text-black max-w-[300px]">
-
-                  <SelectField
-                    label="Choose Destination"
-                    placeholder="Select ..."
-                    data={destinationLocations.map(itinerary => {
-                        return {
-                          id: itinerary.name,
-                          name: itinerary.name
-                        }
-                      })
-                    }
-                    className={`mr-2 sm:my-2 my-5 w-full`}
-                    styling={{
-                      shadow: "drop-shadow-xl ",
-                      left: "0px",
-                      top: "70px",
+                <div ref={addEventRef} className="transition-all duration-300 absolute top-2 right-0 sm:w-[462px] rounded-xl shadow-lg border z-[11] bg-white max-w-[300px]">
+                  <div className="flex flex-col justify-center py-5 px-8 text-black w-full relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 absolute top-[-0.5rem] right-[-0.5rem] bg-white rounded-full cursor-pointer"
+                    onClick={() =>{
+                      setIsShowTooltip(false)
+                      setAddEvent(false)
                     }}
-                    value={newEvent.name}
-                    onChange={(val) => {
-                      setNewEvent(destinationLocations.find(_d => _d.name == val))
-                    }}
-                    onAdditionalChange={(_data) => {}}
-                  />
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <SelectField
+                      label="Choose Destination"
+                      placeholder="Select ..."
+                      data={destinationLocations.map(itinerary => {
+                          return {
+                            id: itinerary.name,
+                            name: itinerary.name
+                          }
+                        })
+                      }
+                      className={`mr-2 sm:my-2 my-5 w-full`}
+                      styling={{
+                        shadow: "drop-shadow-xl ",
+                        left: "0px",
+                        top: "70px",
+                      }}
+                      value={newEvent.name}
+                      onChange={(val) => {
+                        setNewEvent(destinationLocations.find(_d => _d.name == val))
+                      }}
+                      onAdditionalChange={(_data) => {}}
+                    />
 
-                  <div className="mt-4 w-full">
-                    <button className="w-full font-bold text-[14px] bg-[#009DE2] text-white py-2 rounded-lg" onClick={()=> {addNewEvent()}}>Add Now</button>
+                    <div className="mt-4 w-full">
+                      <button className="w-full font-bold text-[14px] bg-[#009DE2] text-white py-2 rounded-lg" onClick={()=> {addNewEvent()}}>Add Now</button>
+                    </div>
                   </div>
-                  
                 </div>
               </div>
             ) : (

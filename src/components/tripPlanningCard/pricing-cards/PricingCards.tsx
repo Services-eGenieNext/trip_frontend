@@ -22,7 +22,7 @@ interface IPricingCards {
     v_type?: VariationType
 }
 
-const PricingCards = ({params_list, locationDetails, totalOpeningHours, automateLocation}: IPricingCards) => {
+const PricingCards = ({params_list, locationDetails, automateLocation}: IPricingCards) => {
 
     const [LocationDetails, setLocationDetails] = useState<any>([])
     const [showTripPopup, setShowTripPopup] = useState(false);
@@ -290,14 +290,14 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                     </>       
                 ) : (
                 <div className={`grid grid-cols-1 lg:grid-cols-3 gap-3 ${styles.tripPlanning}`}>
-                    <div className={`lg:col-span-1 flex flex-wrap justify-center max-h-[1550px] h-full overflow-auto`}>
+                    <div className={`lg:col-span-1 flex flex-wrap justify-center h-full overflow-auto`} style={{maxHeight: document.querySelector('#second-wrapped-locations')?.scrollHeight ? `${Number(document.querySelector('#second-wrapped-locations')?.scrollHeight) - 30}px` : '1550px'}} >
                         {
                         (!loading && itineraryDays) &&
                         itineraryDays.map((_item, index) => {
                             return (
                             <PricingCard
-                                variation={params_list.v_type == '3' ? 'cards-list' : 'list'}
-                                isDropdownButton={params_list.v_type == "2" ? true : false}
+                                variation={'list'}
+                                isDropdownButton={true}
                                 rows="1"
                                 key={index}
                                 data={_item}
@@ -308,44 +308,42 @@ const PricingCards = ({params_list, locationDetails, totalOpeningHours, automate
                             );
                         })}
                     </div>
-                    <div className="lg:col-span-2 w-full">
+                    <div className="lg:col-span-2 w-full" id='second-wrapped-locations'>
                         <div className="w-full">
-                        <div className="large-shadow p-4 rounded-xl">
-                            <TripDetail item={item} />
-                        </div>
-                        {
-                            (params_list.v_type === '2' || params_list.v_type === '3') && (
-                                <>
-                                <ProductHorizontalSlide 
-                                    url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
-                                    Title={`${automateLocation?.name} Location To Visit`} 
-                                    Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} 
-                                    isAddButton={false} 
-                                    isHover={params_list.v_type === "2" ? true : false}
-                                    isDesc={false} 
-                                    locationsState = {locationsState}
-                                    slidesToShow={3}
-                                    v_type={"3"}
-                                />
+                            <div className="large-shadow p-4 rounded-xl">
+                                <TripDetail item={item} />
+                            </div>
+                            {
+                                (params_list.v_type === '2' || params_list.v_type === '3') && (
+                                    <>
+                                    <ProductHorizontalSlide 
+                                        url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
+                                        Title={`${automateLocation?.name} Location To Visit`} 
+                                        Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} 
+                                        isAddButton={false} 
+                                        isHover={params_list.v_type === "2" ? true : false}
+                                        isDesc={false} 
+                                        locationsState = {locationsState}
+                                        slidesToShow={3}
+                                        v_type={"3"}
+                                        isAutomate={false}
+                                    />
 
-                                <ProductHorizontalSlide 
-                                    url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
-                                    Title={`Most popular restaurants`} 
-                                    isAddButton={false} 
-                                    isHover={params_list.v_type === "2" ? true : false}
-                                    isDesc={false} 
-                                    locationsState = {restaurantsState}
-                                    slidesToShow={3}
-                                    v_type={"3"}
-                                />
-                                </>
-                            )
-                        }
+                                    <ProductHorizontalSlide 
+                                        url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
+                                        Title={`Most popular restaurants`} 
+                                        isAddButton={false} 
+                                        isHover={params_list.v_type === "2" ? true : false}
+                                        isDesc={false} 
+                                        locationsState = {restaurantsState}
+                                        slidesToShow={3}
+                                        v_type={"3"}
+                                        isAutomate={false}
+                                    />
+                                    </>
+                                )
+                            }
                         </div>
-
-                        {/* {
-                            automateLocation?.name !== item.name && <SmallStory positioning="block" className="md:mb-0" item={item} />
-                        } */}
                     </div>
                 </div>
             )

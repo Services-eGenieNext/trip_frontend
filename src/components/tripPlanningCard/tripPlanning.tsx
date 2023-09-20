@@ -105,8 +105,7 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
     }, [params_list])
 
     return (
-        <div className="w-full flex justify-center">
-        <Section className="relative">
+        <Section className="relative mx-auto">
             <div className="w-full flex justify-center relative">
                 <div className="flex flex-col sm-width gilroy">
                     <TripPlanningHeader variation="space-between" />
@@ -128,6 +127,5 @@ export default function TripPlanningCard({params_list, address, totalOpeningHour
                 </div>
             </div>
         </Section>
-        </div>
     );
 }
