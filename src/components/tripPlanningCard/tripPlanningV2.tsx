@@ -29,7 +29,7 @@ const TripPlanningV2 = () => {
                     </div>
                     <div className="lg:col-span-2 mt-10 ">
                         <div className="large-shadow sm:p-8 py-8 rounded-xl">
-                            <TripDetail item={''} />
+                            <TripDetail item={{location_id: "", place_id: ""}} />
 
                             <ProductHorizontalSlide 
                                 url = 'variation_2'
