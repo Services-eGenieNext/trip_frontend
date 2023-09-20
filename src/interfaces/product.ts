@@ -11,4 +11,5 @@ export interface IProductHorizontalSlide {
     type?: 'detail-card' | 'title-card'
     v_type?: VariationType
     slidesToShow?: number
+    isAutomate?: boolean
 }

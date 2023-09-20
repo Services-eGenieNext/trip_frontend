@@ -80,7 +80,7 @@ const DateRangeField = ({className, label, value, placeholder="", icon, onChange
                             icon && <span className="mr-2">{icon}</span>
                         }
                         <span className={`${value.startDate ? 'text-black' : `text-[var(--lite-gray)]`} overflow-ellipsis overflow-hidden whitespace-nowrap`}>
-                            {value?.startDate ? `${new Date(value.startDate).toLocaleDateString()}${ value?.endDate ? ' - ' + new Date(value?.endDate).toLocaleDateString() : ''}` : (placeholder ? placeholder : label)}
+                            {value?.startDate ? `${new Date(value.startDate).toLocaleDateString()}${ value?.endDate ? ' - ' + new Date(value?.endDate).toLocaleDateString() : ''}` : (placeholder ? `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}` : label)}
                         </span>
                     </div>
                     <span className="ml-3">

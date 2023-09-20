@@ -89,7 +89,7 @@ const TripPlan = () => {
             address: _address ?? 'USA',
             location_id: _location_id ?? '',
             place_id: _place_id ?? '',
-            v_type: _v_type ? _v_type : '',
+            v_type: _v_type ? _v_type : '2',
             restaurants: restaurants ?? '',
             start_day_index: start_day_index ?? '',
             days_length: days_length ?? ''

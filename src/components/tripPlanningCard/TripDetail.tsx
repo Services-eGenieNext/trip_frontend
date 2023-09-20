@@ -10,10 +10,15 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CSS from "./TripDetail.module.css"
 import TripDetailGoogleMap from './TripDetailGoogleMap'
+import { BlankStar, FilledStar } from '../icons/Stars'
+import AddInItineraryForm from './add-in-itinerary/add-in-itinerary-form'
 
 
 interface ITripDetail {
-    item?: any
+    item?: {
+        location_id: string
+        place_id: string
+    }
 }
 
 const TripDetail = ({item}: ITripDetail) => {
@@ -23,6 +28,9 @@ const TripDetail = ({item}: ITripDetail) => {
     const [detailLoading, setDetailLoading] = useState(false)
     const [itemDetail, setItemDetail] = useState<any | null>(null)
     const [viewMore, setViewMore] = useState(false)
+    const reviewArr = new Array(5).fill(1);
+    const [openLocation, setOpenLocation] = useState<any | null>(null)
+    const [showInItineraryModel, setShowInItineraryModel] = useState(false)
 
     useEffect(() => {
         const _defItemDetail = async () => {
@@ -63,12 +71,13 @@ const TripDetail = ({item}: ITripDetail) => {
         setImage('')
         const _def = async () => {
             setDetailLoading(true)
-            if(item.location_id)
+            setItemDetail(null)
+            if(item?.location_id)
             {
                 let item_Detail: any = await DetailCall(item.location_id)
                 setItemDetail(item_Detail.data)
             }
-            else if(item.place_id)
+            else if(item?.place_id)
             {
                 let item_Detail: any = await DetailsCallByGoogle(item.place_id)
                 setItemDetail(item_Detail.data.result)
@@ -149,7 +158,7 @@ const TripDetail = ({item}: ITripDetail) => {
         infinite: true,
         speed: 500,
         slidesToShow: 3,
-        slidesToScroll: 1,
+        slidesToScroll: 3,
         nextArrow: <SampleNextArrow />,
         prevArrow: <SamplePrevArrow />,
         responsive: [
@@ -190,12 +199,12 @@ const TripDetail = ({item}: ITripDetail) => {
     };
 
     return (
-        <div className='w-full sm:px-0 px-4'>
+        <div className='w-full sm:px-0 px-4 relative'>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
                 <div className="h-[200px] min-w-[400px] w-full bg-gray-100 rounded-xl overflow-hidden relative">
                     {
                         (!detailLoading && image) ? 
-                            <Image src={image} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} /> : (
+                            <Image src={image} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={image} placeholder="blur" /> : (
                             <div className="animate-pulse flex justify-center items-center h-full">
                                 <svg
                                 className="w-20 h-20 text-gray-200 dark:text-gray-600"
@@ -267,7 +276,7 @@ const TripDetail = ({item}: ITripDetail) => {
                         ) : (
                             images.slice(0,4).map((img: string, imgIndex: number) => {
                                 return <div key={imgIndex} className="h-[98px] bg-gray-100 rounded-xl overflow-hidden relative">
-                                    <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} />
+                                    <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur" />
                                 </div>
                             })
                         )
@@ -285,7 +294,7 @@ const TripDetail = ({item}: ITripDetail) => {
                             images.slice(4).map((img: string, imgIndex: number) => {
                                 return <div key={imgIndex}  className="px-1">
                                     <div className="h-[98px] w-[100%] bg-gray-100 rounded-xl overflow-hidden relative">
-                                        <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} />
+                                        <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur" />
                                     </div>
                                 </div>
                             })
@@ -310,7 +319,54 @@ const TripDetail = ({item}: ITripDetail) => {
                                     itemDetail?.address_components?.find((adr: any) => adr.types[0] === "locality")?.long_name ?? (itemDetail?.address_components?.find((adr: any) => adr.types[0] === "sublocality_level_1")?.long_name ?? itemDetail?.address_components?.find((adr: any) => adr.types[0] === "postal_town")?.long_name ?? itemDetail?.address_components?.find((adr: any) => adr.types[0] === "country")?.long_name)
                                 })</span>
                             </h3>
+                            <p>Address: <span className='text-sm text-[var(--gray)]'>{ itemDetail.formatted_address ? itemDetail.formatted_address : itemDetail.address_obj?.address_string }</span> </p>
+
+                            <div className="flex flex-wrap justify-center gap-2 items-center my-2">
+                                <span>{itemDetail?.rating ? itemDetail?.rating : ""}</span>
+                                {
+                                    reviewArr &&
+                                    reviewArr.map((review, index) => {
+                                        if (index < itemDetail?.rating) {
+                                            return <FilledStar key={index} />;
+                                        } else {
+                                            return <BlankStar key={index} />;
+                                        }
+                                    })
+                                }
+                                <span className="text-[var(--lite-gray)]">
+                                    {itemDetail?.user_ratings_total ? `(${itemDetail?.user_ratings_total})` : ""}
+                                </span>
+                            </div>
                             <div className="h-[3px] w-[51px] bg-[var(--blue)] my-5 mx-auto"></div>
+
+                            <div
+                                className="flex justify-center items-center gap-2 cursor-pointer"
+                                onClick={(e) => {
+                                setOpenLocation(itemDetail)
+                                setShowInItineraryModel(true)
+                                }}
+                            >
+                                <span className="text-[11px] text-[var(--green)]">
+                                Add in Itinerary
+                                </span>
+                                <span className="w-[23px] h-[23px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={2}
+                                    stroke="currentColor"
+                                    className="w-[15px] h-[15px]"
+                                >
+                                    <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M12 4.5v15m7.5-7.5h-15"
+                                    />
+                                </svg>
+                                </span>
+                            </div>
+
                             {
                                 itemDetail?.hours?.weekday_text || itemDetail?.opening_hours?.weekday_text && (
                                     <>
@@ -330,21 +386,21 @@ const TripDetail = ({item}: ITripDetail) => {
                             }
                             </>
                         ) : (
-                            <>
-                            <div className="h-[20px] max-w-[340px] bg-gray-100 rounded-lg animate-pulse my-2" />
-                            <div className="h-[10px] max-w-[50px] bg-gray-100 rounded-lg animate-pulse my-5" />
-                            <div className="h-[10px] max-w-[150px] bg-gray-100 rounded-lg animate-pulse my-3" />
-                            <div className="h-[10px] max-w-[150px] bg-gray-100 rounded-lg animate-pulse my-3" />
-                            <div className="h-[10px] max-w-[150px] bg-gray-100 rounded-lg animate-pulse my-3" />
-                            <div className="h-[10px] max-w-[150px] bg-gray-100 rounded-lg animate-pulse my-3" />
-                            </>
+                            <div>
+                                <div className="h-[15px] max-w-[340px] mx-auto bg-gray-100 rounded-lg animate-pulse mt-3" />
+                                <br />
+                                <div className="h-[10px] w-[50px] mx-auto bg-gray-100 rounded-lg animate-pulse mb-3" />
+                                <div className='w-full flex flex-wrap gap-4 justify-center'>
+                                    <div className="h-[20px] w-[150px] bg-gray-100 rounded-lg animate-pulse my-1" />
+                                    <div className="h-[20px] w-[150px] bg-gray-100 rounded-lg animate-pulse my-1" />
+                                    <div className="h-[20px] w-[150px] bg-gray-100 rounded-lg animate-pulse my-1" />
+                                    <div className="h-[20px] w-[150px] bg-gray-100 rounded-lg animate-pulse my-1" />
+                                    <div className="h-[20px] w-[150px] bg-gray-100 rounded-lg animate-pulse my-1" />
+                                    <div className="h-[20px] w-[150px] bg-gray-100 rounded-lg animate-pulse my-1" />
+                                </div>
+                            </div>
                         )
                     }
-                    {/* <div className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {'Tuesday - 09:00 – 17:00'} </div>
-                    <div className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {'Wednesday - 09:00 – 17:00'} </div>
-                    <div className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {'Friday 09:00 - 17:00'} </div>
-                    <div className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {'Saturday 09:00 - 17:00'} </div>
-                    <div className="text-[var(--lite-gray)] font-semibold text-[14px] leading-[23px] my-1"> {'Sunday - 09:00 – 17:00'} </div> */}
                 </div>
                 {
                     itemDetail?.url && (
@@ -358,16 +414,22 @@ const TripDetail = ({item}: ITripDetail) => {
                 }
 
                 {
-                    !detailLoading ? (itemDetail?.description || itemDetail?.editorial_summary?.overview) &&  <div className="mt-4 w-full text-center">
+                    !detailLoading ? (
+                        (itemDetail?.description || itemDetail?.editorial_summary?.overview) &&  <div className="mt-4 w-full text-center">
                         <span className='text-[15px] leading-[18px] font-bold mb-2'>Description</span>
                         <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)]">{itemDetail?.location_id ? itemDetail?.description : itemDetail?.editorial_summary?.overview}</p>
-                        </div> : <>
+                        </div>
+                    ) : (
+                        <>
                         <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
                         <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
                         <div className="h-[20px] w-full bg-gray-100 rounded-lg animate-pulse my-2" />
-                    </>
+                        </>
+                    )
                 }
             </div>
+
+            <AddInItineraryForm show={showInItineraryModel} setShow={setShowInItineraryModel} openLocation={openLocation} />
         </div>
     )
 }
