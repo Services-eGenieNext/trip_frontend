@@ -100,3 +100,35 @@
     height: 30px;
     border-radius: 10%;
   }
+
+  .restaurant-slick-prev {
+    right: 5.5rem !important;
+    position: absolute;
+    top: -70px;
+    color: white;
+    background: #009de2;
+    width: 30px;
+    height: 30px;
+    border-radius: 10%;
+  }
+  .restaurant-slick-next {
+    right: 3rem !important;
+    position: absolute;
+    top: -70px;
+    display: flex;
+    background: #009DE2;
+    width: 30px;
+    height: 30px;
+    color: white;
+    border-radius: 10%;
+  }
+  @media screen and (max-width: 840px) {
+    .restaurant-slick-prev,.restaurant-slick-next{
+      top: -30px;
+    }
+  }
+  @media screen and (max-width: 767px) {
+    .restaurant-slick-prev,.restaurant-slick-next{
+      top: -10px;
+    }
+  }

@@ -28,6 +28,9 @@ import { setPriorities } from '@/redux/reducers/prioritySlice'
 import TopCountries from '@/api-calls/fromDB/topCountries'
 import { setTopCountries } from '@/redux/reducers/topCountries'
 import AddLocation from "@/api-calls/fromDB/addLocation";
+import TopCities from '@/api-calls/fromDB/topCities'
+import AddCities from "@/api-calls/fromDB/addCities";
+import TopCitiesIncrement from "@/api-calls/fromDB/topCitiesIncrement";
 
 export default function HeroFilterSection() {
   const dispatch = useAppDispatch();
@@ -140,16 +143,16 @@ if(priorityState?.length > 0){
       if(filtered.length > 0){
         for(var i = 0; i < filtered.length; i++){
           console.log(filtered[i].id)
-          let res = await LocationIncrement(filtered[i].id)
+          let res = await TopCitiesIncrement(filtered[i].id)
           if(res){
-            let updatedOccasionsList = await TopCountries()
+            let updatedOccasionsList = await TopCities()
             dispatch(setTopCountries(updatedOccasionsList))
           }
         }
       }else{
-        let res = await AddLocation(locationSearch.location)
+        let res = await AddCities(locationSearch.location)
         if(res){
-          let updatedOccasionsList = await TopCountries()
+          let updatedOccasionsList = await TopCities()
             dispatch(setTopCountries(updatedOccasionsList))
         }
       }

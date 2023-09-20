@@ -26,7 +26,7 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
 
   return (
     <div className="lg:pl-12 md:pl-12 sm:pl-6 pl-3">
-      {results?.length > 0 ? (
+      {loadData === false ? (
       <p className="text-[18px] text-[#3F3F3F]">
         Show listing of {results.length} Places...
       </p>
@@ -151,7 +151,7 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
                   return <BlankStar key={index} />;
                 }
               })}
-              <span className="text-gray-500">{"("}{location?.details?.reviews.length}{")"}</span>
+              <span className="text-gray-500">{"("}{location?.details?.reviews?.length}{")"}</span>
               </div>  
                   </div>
                     )}
