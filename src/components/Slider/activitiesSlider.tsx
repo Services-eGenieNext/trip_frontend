@@ -174,9 +174,6 @@ function ActivitiesSlider() {
     // afterChange,
 };
 
-  useEffect(()=>{
-console.log(prevBtnDisabled,"prevBtnDisabled")
-  },[prevBtnDisabled])
   return (
     <div className="w-full flex justify-center relative mt-20 bg-[#F9FDFF] py-12 px-10">
       <Image src={Ballon} alt='Baloon 1' className={`absolute left-12 top-[-10%] select-none ${CSS["image_opacity"]}`} />

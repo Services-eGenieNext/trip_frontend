@@ -69,6 +69,12 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                         icon && <div className="mr-1">{icon}</div>
                     }
                     <input 
+                    onFocus={()=>{
+                      if(values == ""){
+                        setFilteredArray(items)
+                        setShowDropDown(true)
+                      }
+                    }}
                         type={type ? type : 'text'} 
                         className={`outline-none w-full`} 
                         placeholder={placeholder ? placeholder : label} 
