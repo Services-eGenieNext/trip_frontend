@@ -4,26 +4,32 @@ import { Box, Typography } from "@mui/material";
 
 const InputWithSuggestion = ({className,name, label, type, placeholder="", onChange= (e)=>{}, icon,items,value}: IInputField) => {
     const ref = useRef<HTMLInputElement>(null);
+    const wrapperRef = useRef<HTMLInputElement>(null);
     const [showDropDown, setShowDropDown] = useState(false);
     const [values,setValue] = useState<any>("")
     const [filteredArray, setFilteredArray] = useState([])
 
+    useEffect(()=>{
+        setFilteredArray(items)
+    },[items])
+
     useEffect(() => {
-        if(ref)
+        if(wrapperRef)
         {
             window.addEventListener('click', (e) => {
-                if(ref.current)
+                if(wrapperRef.current)
                 {
-                    if(!ref.current.contains((e.target as Element)))
+                    if(!wrapperRef.current.contains((e.target as Element)))
                     {
                         setShowDropDown(false)
                     }
                 }
             })
         }
-    }, [])
+    }, [wrapperRef])
 
     useEffect(() => {
+      console.log('showDropDown', showDropDown)
   if(showDropDown)
   {
       ref.current?.classList.remove('hidden')
@@ -49,13 +55,14 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
           setFilteredArray(filtered)
       }
 
-      useEffect(()=>{
-        if(filteredArray.length > 0){
-            setShowDropDown(true)
-        }else{
-            setShowDropDown(false)
-        }
-      },[filteredArray])
+    //   useEffect(()=>{
+    //     console.log(filteredArray,"filteredArray")
+    //     if(filteredArray.length > 0){
+    //         setShowDropDown(true)
+    //     }else{
+    //         setShowDropDown(false)
+    //     }
+    //   },[filteredArray])
 
     useEffect(()=>{
         filtered()
@@ -63,18 +70,15 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
 
     return (
         <div className={`relative ${className}`}>
-            <div className="relative">
+            <div ref={wrapperRef} className="relative">
                 <div className="border border-[#C9D2DD] bg-white rounded-2xl py-4 px-5 flex items-center">
                     {
                         icon && <div className="mr-1">{icon}</div>
                     }
                     <input 
-                    onFocus={()=>{
-                      if(values == ""){
-                        setFilteredArray(items)
-                        setShowDropDown(true)
-                      }
-                    }}
+                        onClick={()=>{
+                            setShowDropDown(!showDropDown)
+                        }}
                         type={type ? type : 'text'} 
                         className={`outline-none w-full`} 
                         placeholder={placeholder ? placeholder : label} 
@@ -88,57 +92,56 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                     />
                 </div>
                 <div>
-                <Box
-      ref={ref}
-      className="sm:w-[300px] w-full overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300"
-        position="absolute"
-        left="0"
-        right="0"
-        bgcolor="common.white"
-        zIndex="3"
-      >
-        <Box className="relative">
-
-        <Box
-        className="flex flex-col items-center justify-center max-h-[250px] h-auto"
-          py="10px"
-          sx={{ overflowY: "auto" }}
-        >
-          {filteredArray?.map((country:any, index:number) => {
-            return (
-              <Box
-              className="w-full"
-                key={index}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                py="5px"
-                pl="20px"
-                sx={{
-                  cursor: "pointer",
-                  "&:hover": {
-                    bgcolor: "grey.200",
-                  },
-                }}
-                onClick={()=>{
-                    setValue(country.name)
-                    setShowDropDown(false)
-                    onChange(country.name)
-                }}
-              >
-                <span className="text-[#9e9e9e] mr-2">{country.name}</span>
-              </Box>
-            );
-          })}
-        </Box>
-      </Box>
-      </Box>
+                    <Box
+                        ref={ref}
+                        className="sm:w-[300px] w-full overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300"
+                            position="absolute"
+                            left="0"
+                            right="0"
+                            bgcolor="common.white"
+                            zIndex="3"
+                    >
+                        <Box className="relative">
+                            <Box
+                            className="flex flex-col items-center justify-center max-h-[250px] h-auto"
+                            py="10px"
+                            sx={{ overflowY: "auto" }}
+                            >
+                                {filteredArray?.map((country:any, index:number) => {
+                                    return (
+                                    <Box
+                                    className="w-full"
+                                        key={index}
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        py="5px"
+                                        pl="20px"
+                                        sx={{
+                                        cursor: "pointer",
+                                        "&:hover": {
+                                            bgcolor: "grey.200",
+                                        },
+                                        }}
+                                        onClick={()=>{
+                                            setValue(country.name)
+                                            setShowDropDown(false)
+                                            onChange(country.name)
+                                        }}
+                                    >
+                                        <span className="text-[#9e9e9e] mr-2">{country.name}</span>
+                                    </Box>
+                                    );
+                                })}
+                            </Box>
+                        </Box>
+                    </Box>
                 </div>
             </div>
             <div className="absolute top-[-0.5rem] left-0 w-full flex justify-center items-center">
-            <label className="px-[5px] text-[11px] uppercase letter-spacing"
-            style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
-            >{label}</label>
+                <label className="px-[5px] text-[11px] uppercase letter-spacing"
+                style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
+                >{label}</label>
             </div>
         </div>
     )

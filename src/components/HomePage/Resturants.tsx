@@ -87,7 +87,7 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
   }
 const settings = {
 // className: "center",
-centerMode: true,
+// centerMode: true,
 infinite: true,
 centerPadding: "60px",
 slidesToShow: 1,
