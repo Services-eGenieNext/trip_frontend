@@ -131,7 +131,13 @@ const TripPlanReviews = ({ automateLocation, locations }:IReviews) => {
             )
             _locations = await [].concat(..._locations)
             
-            _locations = _locations.concat(...locations)
+            let _sortedLocations = await locations.map(loc => {
+                return {
+                    ...loc, ...loc.details
+                }
+            })
+
+            _locations = _locations.concat(..._sortedLocations)
             _locations = [...new Set(_locations)]
 
             setLocationList([..._locations])
