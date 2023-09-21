@@ -50,7 +50,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
   });
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
   const { priorityState } = useAppSelector((state) => state.prioritySlice);
-  const { topCountriesState } = useAppSelector((state) => state.topCountriesSlice);
+  // const { topCountriesState } = useAppSelector((state) => state.topCountriesSlice);
   const [occasions,setOccasionsArray] = useState<any>([])
   const [prioritiesValue, setPrioritiesValue] = useState<any>([])
   const [topCountriesValue, setTopCountriesValue] = useState<any>([])
@@ -129,7 +129,8 @@ const _Priorities = async () => {
 
 const _TopCountries = async () => {
   let res = await TopCountries()
-  dispatch(setTopCountries(res))
+  // dispatch(setTopCountries(res))
+  setTopCountriesValue(res)
 }
 
 const _TopCities = async () => {
@@ -164,13 +165,13 @@ const _TopCities = async () => {
         }
           },[priorityState])
     
-          useEffect(()=>{
-            if(topCountriesState?.length > 0){
-              setTopCountriesValue(topCountriesState)
-            }else{
-              setTopCountriesValue([])
-            }
-          },[topCountriesState])
+          // useEffect(()=>{
+          //   if(topCountriesState?.length > 0){
+          //     setTopCountriesValue(topCountriesState)
+          //   }else{
+          //     setTopCountriesValue([])
+          //   }
+          // },[topCountriesState])
 
   useEffect(() => {
     if(survey.selectedOption == "continent"){

@@ -351,10 +351,10 @@ const TripDetail = ({item}: ITripDetail) => {
                                         setShowInItineraryModel(true)
                                         }}
                                     >
-                                        <span className="text-[11px] text-[var(--green)]">
+                                        <span className="text-[14px] text-[var(--green)]">
                                         Add in Itinerary
                                         </span>
-                                        <span className="w-[23px] h-[23px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
+                                        <span className="w-[35px] h-[35px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
