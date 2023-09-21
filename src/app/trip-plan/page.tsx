@@ -139,7 +139,7 @@ const TripPlan = () => {
 
             <div className=' mt-20'>
                 {/* <ClientTestimonials automateLocation={automateLocation} /> */}
-                <TripPlanReviews automateLocation={automateLocation} locations={locationsState.filter(loc => loc.details.reviews)} />
+                <TripPlanReviews automateLocation={automateLocation} />
             </div>
         </div>
     )
