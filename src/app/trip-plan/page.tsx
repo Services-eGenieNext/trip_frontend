@@ -76,6 +76,8 @@ const TripPlan = () => {
 
     }, [params_list])
 
+    console.log('locationsState', locationsState)
+
     useEffect(() => {
         let _address: any = params.get('address')
         let _location_id: any = params.get('location_id')
@@ -139,7 +141,7 @@ const TripPlan = () => {
 
             <div className=' mt-20'>
                 {/* <ClientTestimonials automateLocation={automateLocation} /> */}
-                <TripPlanReviews automateLocation={automateLocation} locations={locationsState.filter(loc => loc.reviews)} />
+                <TripPlanReviews automateLocation={automateLocation} locations={locationsState.filter(loc => loc.details.reviews)} />
             </div>
         </div>
     )
