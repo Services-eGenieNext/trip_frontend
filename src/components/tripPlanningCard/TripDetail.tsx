@@ -12,6 +12,7 @@ import CSS from "./TripDetail.module.css"
 import TripDetailGoogleMap from './TripDetailGoogleMap'
 import { BlankStar, FilledStar } from '../icons/Stars'
 import AddInItineraryForm from './add-in-itinerary/add-in-itinerary-form'
+import { useAppSelector } from '@/redux/hooks'
 
 
 interface ITripDetail {
@@ -31,6 +32,8 @@ const TripDetail = ({item}: ITripDetail) => {
     const reviewArr = new Array(5).fill(1);
     const [openLocation, setOpenLocation] = useState<any | null>(null)
     const [showInItineraryModel, setShowInItineraryModel] = useState(false)
+
+    const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
 
     useEffect(() => {
         const _defItemDetail = async () => {
@@ -338,34 +341,38 @@ const TripDetail = ({item}: ITripDetail) => {
                                 </span>
                             </div>
                             <div className="h-[3px] w-[51px] bg-[var(--blue)] my-5 mx-auto"></div>
-
-                            <div
-                                className="flex justify-center items-center gap-2 cursor-pointer"
-                                onClick={(e) => {
-                                setOpenLocation(itemDetail)
-                                setShowInItineraryModel(true)
-                                }}
-                            >
-                                <span className="text-[11px] text-[var(--green)]">
-                                Add in Itinerary
-                                </span>
-                                <span className="w-[23px] h-[23px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={2}
-                                    stroke="currentColor"
-                                    className="w-[15px] h-[15px]"
-                                >
-                                    <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M12 4.5v15m7.5-7.5h-15"
-                                    />
-                                </svg>
-                                </span>
-                            </div>
+                            
+                            {
+                                itineraryDays.length > 0 && (
+                                    <div
+                                        className="flex justify-center items-center gap-2 cursor-pointer"
+                                        onClick={(e) => {
+                                        setOpenLocation(itemDetail)
+                                        setShowInItineraryModel(true)
+                                        }}
+                                    >
+                                        <span className="text-[11px] text-[var(--green)]">
+                                        Add in Itinerary
+                                        </span>
+                                        <span className="w-[23px] h-[23px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            strokeWidth={2}
+                                            stroke="currentColor"
+                                            className="w-[15px] h-[15px]"
+                                        >
+                                            <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M12 4.5v15m7.5-7.5h-15"
+                                            />
+                                        </svg>
+                                        </span>
+                                    </div>
+                                )
+                            }
 
                             {
                                 itemDetail?.hours?.weekday_text || itemDetail?.opening_hours?.weekday_text && (
