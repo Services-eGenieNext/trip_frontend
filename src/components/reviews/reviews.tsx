@@ -1,6 +1,4 @@
-import Image from 'next/image'
 import React from 'react'
-import { BlankStar, FilledStar } from '../icons/Stars'
 import styles from "./reviews.module.css"
 import Review from './review'
 
@@ -13,8 +11,6 @@ interface IReviews {
 const Reviews = ({show, loading, data}:IReviews) => {
 
     const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
-
-    const reviewArr = new Array(5).fill(1);
 
     return (
         show ? <div className="my-10 md:my-20">

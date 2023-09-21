@@ -14,14 +14,15 @@ import Reviews from "../reviews/reviews";
 
 interface IReviews {
   automateLocation?: any
-  locations: any[]
 }
-const TripPlanReviews = ({ automateLocation, locations }:IReviews) => {
+const TripPlanReviews = ({ automateLocation }:IReviews) => {
     
     const [loading, setLoading] = useState(true);
     const [reviewsData, setReviewsData] = useState<any[] | null>(null);
 
     const { itineraryDays } = useAppSelector((state) => state.itineraryReducer);
+    const { locationsState } = useAppSelector((state) => state.locationReducer)
+
     const [openModal, setOpenModal] = useState(false);
     const [showReviews, setShowReviews] = useState(true)
     const [showFilter, setShowFilter] = useState(false)
@@ -101,6 +102,7 @@ const TripPlanReviews = ({ automateLocation, locations }:IReviews) => {
         _defInSchedule()
     }, [inSchedule])
 
+    // useEffect to set location options from location list
     useEffect(() => {
         const _locationOptionFunc = async () => {
             if(locaitonList.length > 0)
@@ -121,6 +123,8 @@ const TripPlanReviews = ({ automateLocation, locations }:IReviews) => {
         _locationOptionFunc()
     }, [locaitonList])
 
+
+    // useEffect to set locations list
     useEffect(() => {
         
         const _def = async () => {
@@ -131,28 +135,20 @@ const TripPlanReviews = ({ automateLocation, locations }:IReviews) => {
             )
             _locations = await [].concat(..._locations)
             
-            let _sortedLocations = await locations.map(loc => {
+            let _sortedLocations = await locationsState.map(loc => {
                 return {
                     ...loc, ...loc.details
                 }
             })
 
-            _locations = _locations.concat(..._sortedLocations)
+            _locations = _sortedLocations.concat(..._locations)
             _locations = [...new Set(_locations)]
 
             setLocationList([..._locations])
         }
         _def()
 
-    }, [itineraryDays])
-
-    useEffect(() => {
-        
-        if (reviewsData!=null) {
-            setLoading(false);
-        }
-
-    }, [reviewsData]);
+    }, [itineraryDays, locationsState])
 
     useEffect(() => {
         setSelectedLocation(automateLocation ? {...automateLocation} : (locaitonList.length > 0 ? {...locaitonList[0]} : null))
@@ -163,6 +159,14 @@ const TripPlanReviews = ({ automateLocation, locations }:IReviews) => {
         setReviewsData(selectedLocation?.reviews === undefined ? [] : (filterData.reviews !== "All" ? selectedLocation.reviews.filter((review: any) => review.rating === Number(filterData.reviews)) : selectedLocation.reviews));
     
     }, [selectedLocation])
+
+    useEffect(() => {
+        
+        if (reviewsData!=null && reviewsData.length > 0) {
+            setLoading(false);
+        }
+
+    }, [reviewsData]);
 
     const reviewArr = new Array(5).fill(1);
 
@@ -206,14 +210,21 @@ const TripPlanReviews = ({ automateLocation, locations }:IReviews) => {
                                 {selectedLocation?.rating} Reviews
                             </span>
                         </div>
-                        <div className="relative"
-                        onClick={() => {
-                            setOpenModal(!openModal);
-                        }}
-                        >
-                            <BlueButton onClick={() => setShowFilter(!showFilter)} title={"Filter Reviews"} />
-                        </div>
+                        {
+                            itineraryDays.length > 0 ? (
+                                <div className="relative"
+                                    onClick={() => {
+                                        setOpenModal(!openModal);
+                                    }}
+                                >
+                                    <BlueButton onClick={() => setShowFilter(!showFilter)} title={"Filter Reviews"} />
+                                </div>
+                            ) : (
+                                <div className="animate-pulse w-[200px] h-[50px] my-5 rounded-xl bg-gray-200 dark:bg-gray-700 shadow"></div>
+                            )
+                        }
                     </div>
+
                     <div id="rating-filter" className={`transition-all duration-300 ${!openModal ? 'overflow-hidden' : 'pt-8'}`} style={{height: openModal ? window.innerWidth < 768 ? "200px" : "74px" : "0px"}}>
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <SelectField
