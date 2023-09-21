@@ -47,8 +47,10 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
         const _locationOptionFunc = async () => {
             if(locations.length > 0)
             {
+                
                 let _loc = await locations.find((loc: any) => loc?.details?.reviews?.length > 0)
-                // _loc = [].concat(..._loc)
+
+                setFilterData({...filterData, locationIndex: _loc[0].name})
                 setData(_loc?.details?.reviews)
 
                 let _list = await locations.map((loc: any, index) => {
