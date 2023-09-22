@@ -33,7 +33,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
     const { itineraryDays, itineraryLoading } = useAppSelector((state) => state.itineraryReducer)
 
     const daysLength = Number(params_list.days_length) ?? 7
-    // const daysLengtArr = new Array(daysLength).fill(null)
+
     const dispatch = useAppDispatch()
     const [days, setDays] = useState<any[]>([
         {

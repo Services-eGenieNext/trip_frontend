@@ -45,10 +45,11 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
 
     useEffect(() => {
         const _locationOptionFunc = async () => {
+            setLoading(true)
             if(locations.length > 0)
             {
+                
                 let _loc = await locations.find((loc: any) => loc?.details?.reviews?.length > 0)
-                // _loc = [].concat(..._loc)
                 setData(_loc?.details?.reviews)
 
                 let _list = await locations.map((loc: any, index) => {
@@ -57,7 +58,14 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
                         name: loc.name
                     }
                 })
+
+                if(_list.length > 0)
+                {
+                    setFilterData({...filterData, locationIndex: _list[0]?.name})
+                }
+
                 setLocationOptions([..._list])
+                
                 setLoading(false)
             }
         }
@@ -88,13 +96,20 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
                         <div>
                             <ComponentTitle title="Client's Reviews" />
                         </div>
-                        <div className="relative"
-                        onClick={() => {
-                            setOpenModal(!openModal);
-                        }}
-                        >
-                            <BlueButton onClick={() => setShowFilter(!showFilter)} title={"Filter Reviews"} />
-                        </div>
+
+                        {
+                            data.length > 0 ? (
+                                <div className="relative"
+                                onClick={() => {
+                                    setOpenModal(!openModal);
+                                }}
+                                >
+                                    <BlueButton onClick={() => setShowFilter(!showFilter)} title={"Filter Reviews"} />
+                                </div>
+                            ) : (
+                                <div className="animate-pulse w-[200px] h-[50px] my-5 rounded-xl bg-gray-200 dark:bg-gray-700 shadow"></div>
+                            )
+                        }
                     </div>
                     <div id="rating-filter" className={`transition-all duration-300 ${!openModal ? 'overflow-hidden' : 'pt-8'}`} style={{height: openModal ? window.innerWidth < 768 ? "200px" : "74px" : "0px"}}>
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
