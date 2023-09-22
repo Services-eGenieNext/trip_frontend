@@ -320,7 +320,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                                         url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
                                         Title={`${automateLocation?.name} Location To Visit`} 
                                         Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} 
-                                        isAddButton={false} 
+                                        isAddButton={true} 
                                         isHover={params_list.v_type === "2" ? true : false}
                                         isDesc={false} 
                                         locationsState = {locationsState}
@@ -332,7 +332,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                                     <ProductHorizontalSlide 
                                         url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
                                         Title={`Most popular restaurants`} 
-                                        isAddButton={false} 
+                                        isAddButton={true} 
                                         isHover={params_list.v_type === "2" ? true : false}
                                         isDesc={false} 
                                         locationsState = {restaurantsState}

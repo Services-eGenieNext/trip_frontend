@@ -162,7 +162,7 @@ const TripPlanReviews = ({ automateLocation }:IReviews) => {
 
     useEffect(() => {
         
-        if (reviewsData!=null && reviewsData.length > 0) {
+        if (reviewsData!=null && reviewsData.length > 0 && itineraryDays.length > 0) {
             setLoading(false);
         }
 

@@ -48,6 +48,9 @@ const Survey = ({ show, onClose }: ISurvey) => {
     dates: "",
     message: "",
   });
+
+  const [startedDayIndex, setStartedDayIndex] = useState<number | null>(null)
+  const [daysLength, setDaysLength] = useState<number | null>(null)
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
   const { priorityState } = useAppSelector((state) => state.prioritySlice);
   // const { topCountriesState } = useAppSelector((state) => state.topCountriesSlice);
@@ -120,27 +123,27 @@ const Survey = ({ show, onClose }: ISurvey) => {
   const _Occassions = async () => {
     let res = await Occassions()
     dispatch(setOccasions(res))
-}
-
-const _Priorities = async () => {
-  let res = await PriorityValue()
-  dispatch(setPriorities(res))
-}
-
-const _TopCountries = async () => {
-  let res = await TopCountries()
-  // dispatch(setTopCountries(res))
-  setTopCountriesValue(res)
-}
-
-const _TopCities = async () => {
-  let res = await TopCities()
-  if(res?.length > 0){
-    setTopCities(res)
-  }else{
-    setTopCities([])
   }
-}
+
+  const _Priorities = async () => {
+    let res = await PriorityValue()
+    dispatch(setPriorities(res))
+  }
+
+  const _TopCountries = async () => {
+    let res = await TopCountries()
+    // dispatch(setTopCountries(res))
+    setTopCountriesValue(res)
+  }
+
+  const _TopCities = async () => {
+    let res = await TopCities()
+    if(res?.length > 0){
+      setTopCities(res)
+    }else{
+      setTopCities([])
+    }
+  }
 
   useEffect(()=>{
     _Occassions()
@@ -155,15 +158,15 @@ const _TopCities = async () => {
     }else{
       setOccasionsArray([])
     }
-      },[ocassionsState])
+  },[ocassionsState])
 
-      useEffect(()=>{
-        if(priorityState?.length > 0){
-          setPrioritiesValue(priorityState)
-        }else{
-          setPrioritiesValue([])
-        }
-          },[priorityState])
+  useEffect(()=>{
+    if(priorityState?.length > 0){
+      setPrioritiesValue(priorityState)
+    }else{
+      setPrioritiesValue([])
+    }
+  },[priorityState])
     
           // useEffect(()=>{
           //   if(topCountriesState?.length > 0){
@@ -197,13 +200,29 @@ const _TopCities = async () => {
   }, [survey]);
 
   useEffect(()=>{
-setSurvey({...survey, location:"" })
+    setSurvey({...survey, location:"" })
   },[survey.selectedOption])
 
   const [step, setStep] = useState(1);
 
   useEffect(() => {
     setSurvey({ ...survey, dates: date });
+
+    const calculateDaysRemaining = () => {
+      if(date?.endDate && date?.startDate)
+      {
+        const endDate = new Date(date?.endDate)
+        const startDate = new Date(date?.startDate)
+        setStartedDayIndex(startDate.getDay())
+        
+        const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+        const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        setDaysLength(daysRemaining+1)
+      }
+    };
+
+    calculateDaysRemaining();
+
   }, [date]);
 
   useEffect(()=>{
@@ -275,7 +294,7 @@ setSurvey({...survey, location:"" })
       }
     }
     if (survey.dates.startDate) {
-      router.push("/trip-plan?address=" + survey.location);
+      router.push("/trip-plan?address=" + survey.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
       onClose();
     } else {
       router.push(`/results?address=${survey.location}`);
@@ -409,25 +428,25 @@ setSurvey({...survey, location:"" })
                   value={survey}
                   checked={options.field}
                 />
-                {options.field == true && (
-                  <InputField
-      className={`sm:mr-2 sm:my-2 my-5 w-full h-[46px]`}
-      name="location"
-      type="text"
-      label={locationInputLabel}
-      placeholder={`Enter ${locationInputLabel}`}
-      value={survey?.location}
-      items={dropdownLocationValue}
-      icon={<SimpleLocation />}
-      onChange={(val:any)=>{
-        setSurvey({...survey, location: val})
-      }}
-      onFocus = {()=>{
-        console.log("")
-        // setInvalidLocation(false)
-        // setLocationRequired(false)
-      }}
-      />
+                  {options.field == true && (
+                    <InputField
+                      className={`sm:mr-2 sm:my-2 my-5 w-full h-[46px]`}
+                      name="location"
+                      type="text"
+                      label={locationInputLabel}
+                      placeholder={`Enter ${locationInputLabel}`}
+                      value={survey?.location}
+                      items={dropdownLocationValue}
+                      icon={<SimpleLocation />}
+                      onChange={(val:any)=>{
+                        setSurvey({...survey, location: val})
+                      }}
+                      onFocus = {()=>{
+                        console.log("")
+                        // setInvalidLocation(false)
+                        // setLocationRequired(false)
+                      }}
+                    />
                   )}
                 </div>
                 )

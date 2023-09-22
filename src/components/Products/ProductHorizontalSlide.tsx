@@ -78,14 +78,15 @@ const ProductHorizontalSlide = ({
     }, 300);
 
     if (slideRef.current) {
+      console.log('event.clientX', event.clientX, event.pageX)
       let xposition =
         event.clientX -
         slideRef.current?.offsetLeft -
-        slideRef.current?.offsetWidth / 3;
+        slideRef.current?.offsetWidth;
       let yposition =
         event.clientY -
         slideRef.current?.offsetTop -
-        slideRef.current?.offsetHeight / 3;
+        slideRef.current?.offsetHeight;
 
       setXPosition(xposition);
       setYPosition(yposition);
