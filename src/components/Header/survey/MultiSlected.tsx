@@ -130,6 +130,9 @@ if(addCustomeOption == false){
   }, [showSorting])
 
   useEffect(() => {
+    if(showDropDown == false){
+      setRequestFailedError(false)
+    }
     setAddCustomeOption(false)
     setAddFieldError(false)
     setCustomeField("")

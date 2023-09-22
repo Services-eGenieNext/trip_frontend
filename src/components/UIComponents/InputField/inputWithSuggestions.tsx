@@ -2,7 +2,7 @@ import { IInputField } from '@/interfaces'
 import React,{useEffect,useState,useRef} from 'react'
 import { Box, Typography } from "@mui/material";
 
-const InputWithSuggestion = ({className,name, label, type, placeholder="", onChange= (e)=>{}, icon,items,value}: IInputField) => {
+const InputWithSuggestion = ({className,name, label, type, placeholder="", onChange= (e)=>{}, icon,items,value,onFocus}: IInputField) => {
     const ref = useRef<HTMLInputElement>(null);
     const wrapperRef = useRef<HTMLInputElement>(null);
     const [showDropDown, setShowDropDown] = useState(false);
@@ -29,7 +29,6 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
     }, [wrapperRef])
 
     useEffect(() => {
-      console.log('showDropDown', showDropDown)
   if(showDropDown)
   {
       ref.current?.classList.remove('hidden')
@@ -56,7 +55,6 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
       }
 
     //   useEffect(()=>{
-    //     console.log(filteredArray,"filteredArray")
     //     if(filteredArray.length > 0){
     //         setShowDropDown(true)
     //     }else{
@@ -76,9 +74,6 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                         icon && <div className="mr-1">{icon}</div>
                     }
                     <input 
-                        onClick={()=>{
-                            setShowDropDown(!showDropDown)
-                        }}
                         type={type ? type : 'text'} 
                         className={`outline-none w-full`} 
                         placeholder={placeholder ? placeholder : label} 
@@ -89,6 +84,10 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                         value={value}
                         name={name}
                         autoComplete="off"
+                        onFocus = {()=>{
+                            onFocus()
+                            setShowDropDown(!showDropDown)
+                        }}
                     />
                 </div>
                 <div>

@@ -26,7 +26,8 @@ interface TypeProps {
   disabled?:any;
   saveData?:any;
   setSaveData?:any;
-  allowSorting?: boolean
+  allowSorting?: boolean;
+  dropdownWidth?:string
 }
 
 interface TypeOpt {
@@ -57,7 +58,8 @@ export default function SelectCheckBoxSimple({
   className,
   saveData,
   setSaveData,
-  allowSorting
+  allowSorting,
+  dropdownWidth
 }: TypeProps) {
   const dispatch = useAppDispatch();
   const [showDropDown, setShowDropDown] = useState(false);
@@ -131,6 +133,9 @@ if(addCustomeOption == false){
   }, [showSorting])
 
   useEffect(() => {
+    if(showDropDown == false){
+      setRequestFailedError(false)
+    }
     setAddCustomeOption(false)
     setAddFieldError(false)
     setCustomeField("")
@@ -296,6 +301,7 @@ if(addCustomeOption == false){
         setCustomeField("");
         setAddCustomeOption(false);
         if(AddField){
+          setLoading(false)
           let array = opts
           let selected = optsSelected
           array.unshift({opt:{name:customeField, id:""}, checked: true})
@@ -303,6 +309,7 @@ if(addCustomeOption == false){
           setOpts([...array])
           setOptsSelected([...selected])
         }else{
+          setLoading(false)
           setRequestFailedError(true)
         }
       }else{
@@ -412,7 +419,7 @@ if(addCustomeOption == false){
       {/* Dropdown list */}
       <Box
       ref={ref}
-      className="sm:w-[300px] w-full overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300"
+      className={`${dropdownWidth} w-full overflow-x-hidden rounded-xl large-shadow hidden opacity-0 -translate-y-5 transition-all duration-300`}
         position="absolute"
         left="0"
         right="0"

@@ -49,6 +49,8 @@ export default function HeroFilterSection() {
   const [occasions,setOccasionsArray] = useState<any>([])
   const [prioritiesValue, setPrioritiesValue] = useState<any>([])
   const [topCountriesValue, setTopCountriesValue] = useState<any>([])
+  const [invalidLocation,setInvalidLocation] = useState(false)
+  const [locationRequired,setLocationRequired] = useState(false)
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: [],
@@ -116,8 +118,7 @@ if(priorityState?.length > 0){
     calculateDaysRemaining();
   }, [date]);
 
-  const handleRoute = async () => {
-    dispatch(setSurveyValue(locationSearch))
+  const ValidateData = async () => {
     if(locationSearch.occassion.length > 0){
       for(var i = 0; i < locationSearch.occassion.length; i++){
         let res = await OccassionsIncrement(locationSearch.occassion[i].id)
@@ -136,32 +137,44 @@ if(priorityState?.length > 0){
         }
       }
     }
-    if(locationSearch.location != ""){
-      const filtered = topCountriesValue?.filter((country:any) => {
-        return country?.name?.toLocaleLowerCase() == locationSearch.location.toLocaleLowerCase();
-      });
-      if(filtered.length > 0){
-        for(var i = 0; i < filtered.length; i++){
-          console.log(filtered[i].id)
-          let res = await TopCitiesIncrement(filtered[i].id)
-          if(res){
-            let updatedOccasionsList = await TopCities()
-            dispatch(setTopCountries(updatedOccasionsList))
-          }
-        }
-      }else{
-        let res = await AddCities(locationSearch.location)
-        if(res){
-          let updatedOccasionsList = await TopCities()
-            dispatch(setTopCountries(updatedOccasionsList))
-        }
-      }
-    }
     if (locationSearch.dates.startDate) {
       router.push("/trip-plan?address=" + locationSearch.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
       router.push("/results?address=" + locationSearch.location);
       dispatch(setSurveyValue(locationSearch))
+    }
+  }
+
+  const handleRoute = async () => {
+    dispatch(setSurveyValue(locationSearch))
+    if(locationSearch.location == ""){
+      setLocationRequired(true)
+    }else{
+      if(locationSearch.location != ""){
+        const filtered = topCountriesValue?.filter((country:any) => {
+          return country?.name?.toLocaleLowerCase() == locationSearch.location.toLocaleLowerCase();
+        });
+        if(filtered.length > 0){
+          for(var i = 0; i < filtered.length; i++){
+            console.log(filtered[i].id)
+            let res = await TopCitiesIncrement(filtered[i].id)
+            if(res){
+              let updatedOccasionsList = await TopCities()
+              dispatch(setTopCountries(updatedOccasionsList))
+              ValidateData()
+            }
+          }
+        }else{
+          let res = await AddCities(locationSearch.location)
+          if(res){
+            let updatedOccasionsList = await TopCities()
+              dispatch(setTopCountries(updatedOccasionsList))
+              ValidateData()
+          }else{
+            setInvalidLocation(true)
+          }
+        }
+      }
     }
   };
 
@@ -186,8 +199,9 @@ if(priorityState?.length > 0){
         }
         onAdditionalChange={(_data) => {}}
       /> */}
+      <div className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px]`}>
       <InputField
-      className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] h-[46px]`}
+      className={`sm:w-[170px] h-[46px]`}
       name="location"
       type="text"
       label="Location"
@@ -198,7 +212,18 @@ if(priorityState?.length > 0){
       onChange={(val:any)=>{
         setLocationSearch({...locationSearch, location: val})
       }}
+      onFocus = {()=>{
+        setInvalidLocation(false)
+        setLocationRequired(false)
+      }}
       />
+      {invalidLocation == true && (
+      <p className="text-[red] text-[14px] mt-3">Invalid Location.</p>
+      )}
+      {locationRequired == true && (
+        <p className="text-[red] text-[14px] mt-3">Location Required.</p>
+      )}
+      </div>
 
       <DateRangeField
         label="Travel Date"
@@ -224,6 +249,7 @@ if(priorityState?.length > 0){
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
         }
+        dropdownWidth = "sm:w-[300px]"
       />
 
       <MultiSelectDropdown key={2}
@@ -240,6 +266,7 @@ if(priorityState?.length > 0){
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, priority: val })
         }
+        dropdownWidth = "sm:w-[300px]"
       />
 
       <SelectField
@@ -268,7 +295,7 @@ if(priorityState?.length > 0){
 
       <BlueButton
         title={locationSearch.dates.startDate ? "Automate My trip" : "Look For Inspiration"}
-        className="sm:w-[200px] w-full"
+        className="sm:w-[200px] w-full h-[56px]"
         onClick={handleRoute}
       />
     </div>
