@@ -57,8 +57,8 @@ const ProductHorizontalSlide = ({
   }, [locations]);
 
   const [visible, setVisible] = useState(false);
-  const [xPosition, setXPosition] = useState(0);
-  const [yPosition, setYPosition] = useState(0);
+  // const [xPosition, setXPosition] = useState(0);
+  // const [yPosition, setYPosition] = useState(0);
   const reviewArr = new Array(5).fill(1);
 
   const formInitialField = {
@@ -78,18 +78,17 @@ const ProductHorizontalSlide = ({
     }, 300);
 
     if (slideRef.current) {
-      console.log('event.clientX', event.clientX, event.pageX)
-      let xposition =
-        event.clientX -
-        slideRef.current?.offsetLeft -
-        slideRef.current?.offsetWidth;
-      let yposition =
-        event.clientY -
-        slideRef.current?.offsetTop -
-        slideRef.current?.offsetHeight;
+      // let xposition =
+      //   event.clientX -
+      //   slideRef.current?.offsetLeft -
+      //   slideRef.current?.offsetWidth;
+      // let yposition =
+      //   event.clientY -
+      //   slideRef.current?.offsetTop -
+      //   slideRef.current?.offsetHeight;
 
-      setXPosition(xposition);
-      setYPosition(yposition);
+      // setXPosition(xposition);
+      // setYPosition(yposition);
       setVisible(true);
     }
   };
@@ -327,10 +326,9 @@ const ProductHorizontalSlide = ({
         id="location-to-visit-form"
         className={`${
           !visible ? "hidden" : "block"
-        } absolute w-[471px] p-8 bg-white rounded-xl border border-[#EBEBEB] left-1/2} z-10 transition-all duration-300 ${
+        } fixed top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[471px] p-8 bg-white rounded-xl border border-[#EBEBEB] z-10 transition-all duration-300 ${
           styles.visitCard
         }`}
-        style={{ top: yPosition, left: xPosition }}
       >
         <div className="relative">
           <span
