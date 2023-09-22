@@ -19,7 +19,7 @@ import { Range } from "react-date-range";
 import DateRangeField from "../../UIComponents/InputField/DateRangeField";
 import CalenderIcon from "../../icons/Calender";
 import styles from "../Header.module.css";
-import MultiSelectDropdown from "@/components/Header/survey/MultiSlected";
+import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
 import RadioInputs from "@/components/UIComponents/RadioInput/RadioInput";
 import SimpleLocation from "../../icons/SimpleLocation";
 import Tooltip from '@mui/material/Tooltip';
@@ -444,6 +444,7 @@ setSurvey({...survey, location:"" })
                 onChange={(val: any) =>
                   setSurvey({ ...survey, occassion: val })
                 }
+                dropdownWidth = "sm:w-[400px]"
               />
             )}
             {questions[step - 1]?.type === "activities" && (
@@ -460,6 +461,7 @@ setSurvey({...survey, location:"" })
                 SelectedData={survey.priority}
                 placeholder="Select..."
                 onChange={(val: any) => setSurvey({ ...survey, priority: val })}
+                dropdownWidth = "sm:w-[400px]"
               />
             )}
             {questions[step - 1]?.type === "dates" && (
