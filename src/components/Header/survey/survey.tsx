@@ -422,6 +422,11 @@ setSurvey({...survey, location:"" })
       onChange={(val:any)=>{
         setSurvey({...survey, location: val})
       }}
+      onFocus = {()=>{
+        console.log("")
+        // setInvalidLocation(false)
+        // setLocationRequired(false)
+      }}
       />
                   )}
                 </div>
