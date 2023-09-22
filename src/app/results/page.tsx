@@ -58,10 +58,11 @@ export default function Results() {
     const _locationSearch = async () => {
       setLoading(true)
       if(paramsAddress){
-      let res = await SearchLocation(`Best Location in ${paramsAddress} for tourist`)
+        let _occasions = await surveySlice.occassion.map((oc: any) => oc.opt)
+        let res = await SearchLocation(`${_occasions ? _occasions.join(',') : 'Best Location'} in ${paramsAddress} for tourist`)
       if(res){
         setLocationState(res)
-      setLocationsData(res);
+        setLocationsData(res);
       }
     }
   }
@@ -83,6 +84,7 @@ if(paramsAddress){
     _Occassions()
     _Priorities()
     _TopCities()
+    console.log('surveySlice', surveySlice)
   },[])
 
   useEffect(()=>{
