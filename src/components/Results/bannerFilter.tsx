@@ -53,7 +53,6 @@ export default function HeroFilterSection({ surveyData }: any) {
   const { topCountriesState } = useAppSelector(
     (state) => state.topCountriesSlice
   );
-
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: [],
@@ -63,10 +62,12 @@ export default function HeroFilterSection({ surveyData }: any) {
     spending: "",
   });
   const [prioritiesValue, setPrioritiesValue] = useState<any>([]);
+  const [startedDayIndex, setStartedDayIndex] = useState<number | null>(null)
+  const [daysLength, setDaysLength] = useState<number | null>(null)
 
-  useEffect(() => {
-    setLocationSearch({ ...locationSearch, location: paramsAddress });
-  }, [paramsAddress]);
+  // useEffect(() => {
+  //   setLocationSearch({ ...locationSearch, location: paramsAddress });
+  // }, [paramsAddress]);
 
   useEffect(() => {
     if (ocassionsState?.length > 0) {
@@ -113,19 +114,35 @@ export default function HeroFilterSection({ surveyData }: any) {
 
   useEffect(() => {
     setLocationSearch({ ...locationSearch, dates: date });
-  }, [date]);
 
-  useEffect(() => {
     const calculateDaysRemaining = () => {
-      const currentDate = new Date();
-      const endDate = new Date(date.endDate);
-      const startDate = new Date(date.startDate);
-      const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
-      const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+      if(date?.endDate && date?.startDate)
+      {
+        const endDate = new Date(date?.endDate)
+        const startDate = new Date(date?.startDate)
+        setStartedDayIndex(startDate.getDay())
+        
+        const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+        const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+        setDaysLength(daysRemaining+1)
+      }
     };
 
     calculateDaysRemaining();
   }, [date]);
+
+  const _get_url = async () => {
+    let url = locationSearch.location ? locationSearch.location : ""
+
+    let occassion_arr = await locationSearch.occassion.map((oc: any) => oc.opt)
+    let priority_arr = await locationSearch.priority.map((pr: any) => pr.opt)
+    let arr = occassion_arr.concat(...priority_arr)
+    console.log('arr', arr, occassion_arr, priority_arr)
+
+    url = (url.trim() != "" && arr.length > 0) ? `${arr.join(',')} in ${url}` : url
+
+    return url
+  }
 
   const ValidateData = async () => {
     if (locationSearch.occassion.length > 0) {
@@ -146,10 +163,13 @@ export default function HeroFilterSection({ surveyData }: any) {
         }
       }
     }
+
+    let _url = await _get_url()
     if (locationSearch.dates.startDate) {
-      router.push("/trip-plan?address=" + locationSearch.location);
+      // router.push("/trip-plan?address=" + _url);
+      router.push("/trip-plan?address=" + _url + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
-      router.push("/results?address=" + locationSearch.location);
+      router.push("/results?address=" + _url);
     }
   }
 

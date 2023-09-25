@@ -2,7 +2,7 @@ import { DetailCall } from '@/api-calls'
 import { DetailsCallByGoogle, getLocationImagesById } from '@/api-calls/location-details-call'
 import { _getlocationImages } from '@/api-calls/locations-call'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import MapIcon from "/public/images/google-map-icon.png";
 import Link from 'next/link'
 import Slider from 'react-slick'
@@ -13,6 +13,7 @@ import TripDetailGoogleMap from './TripDetailGoogleMap'
 import { BlankStar, FilledStar } from '../icons/Stars'
 import AddInItineraryForm from './add-in-itinerary/add-in-itinerary-form'
 import { useAppSelector } from '@/redux/hooks'
+import Reviews from '../reviews/reviews'
 
 
 interface ITripDetail {
@@ -24,6 +25,8 @@ interface ITripDetail {
 
 const TripDetail = ({item}: ITripDetail) => {
 
+    const slideRef = useRef<HTMLDivElement | null>(null)
+
     const [images, setImages] = useState<any[]>([])
     const [image, setImage] = useState('')
     const [detailLoading, setDetailLoading] = useState(false)
@@ -32,6 +35,8 @@ const TripDetail = ({item}: ITripDetail) => {
     const reviewArr = new Array(5).fill(1);
     const [openLocation, setOpenLocation] = useState<any | null>(null)
     const [showInItineraryModel, setShowInItineraryModel] = useState(false)
+    const [selectedImage, setSelectedImage] = useState<number>(0)
+    const [showSlide, setShowSlide] = useState(false)
 
     const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
 
@@ -201,13 +206,34 @@ const TripDetail = ({item}: ITripDetail) => {
         ]
     };
 
+    useEffect(() => {
+        if(showSlide)
+        {
+            slideRef.current?.classList.remove('hidden')
+            setTimeout(() => {
+                slideRef.current?.classList.remove('opacity-0')
+            }, 200);
+        }
+        else
+        {
+            slideRef.current?.classList.add('opacity-0')
+            setTimeout(() => {
+                slideRef.current?.classList.add('hidden')
+            }, 200);
+        }
+      }, [showSlide])
+
     return (
+        <>
         <div className='w-full sm:px-0 px-4 relative'>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
                 <div className="h-[200px] min-w-[400px] w-full bg-gray-100 rounded-xl overflow-hidden relative">
                     {
                         (!detailLoading && image) ? 
-                            <Image src={image} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={image} placeholder="blur" /> : (
+                            <Image src={image} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={image} className="cursor-pointer" placeholder="blur" onClick={() => {
+                                setSelectedImage(0)
+                                setShowSlide(true)
+                            }} /> : (
                             <div className="animate-pulse flex justify-center items-center h-full">
                                 <svg
                                 className="w-20 h-20 text-gray-200 dark:text-gray-600"
@@ -279,7 +305,12 @@ const TripDetail = ({item}: ITripDetail) => {
                         ) : (
                             images.slice(0,4).map((img: string, imgIndex: number) => {
                                 return <div key={imgIndex} className="h-[98px] bg-gray-100 rounded-xl overflow-hidden relative">
-                                    <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur" />
+                                    <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur"
+                                    onClick={() => {
+                                        setSelectedImage(imgIndex)
+                                        setShowSlide(true)
+                                    }}
+                                    />
                                 </div>
                             })
                         )
@@ -297,7 +328,12 @@ const TripDetail = ({item}: ITripDetail) => {
                             images.slice(4).map((img: string, imgIndex: number) => {
                                 return <div key={imgIndex}  className="px-1">
                                     <div className="h-[98px] w-[100%] bg-gray-100 rounded-xl overflow-hidden relative">
-                                        <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur" />
+                                        <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur"
+                                        onClick={() => {
+                                            setSelectedImage(imgIndex+4)
+                                            setShowSlide(true)
+                                        }}
+                                        />
                                     </div>
                                 </div>
                             })
@@ -434,10 +470,79 @@ const TripDetail = ({item}: ITripDetail) => {
                         </>
                     )
                 }
+                {
+                    !detailLoading && (
+                        <>
+                        <div className="w-full mt-5 text-center">
+                            <span className='text-[15px] leading-[18px] font-bold mb-2'>Client Reviews</span>
+                        </div>
+                        <Reviews show={true} loading={false} data={itemDetail?.reviews ?? []} style={{margin: "0"}} />
+                        </>
+                    )
+                }
             </div>
 
             <AddInItineraryForm show={showInItineraryModel} setShow={setShowInItineraryModel} openLocation={openLocation} />
         </div>
+
+        <div ref={slideRef} className="hidden opacity-0 transition-all duration-300 fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,0.6)]">
+            <div className="absolute right-[2rem] top-2 w-max h-max text-white z-[1] cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"
+                onClick={() => {
+                    setShowSlide(false)
+                }}
+                >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </div>
+            <div className="flex flex-wrap flex-col justify-center items-center h-full relative">
+
+                <div className="absolute left-[2rem] top-[50%] -translate-y-1/2 w-max h-max text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 cursor-pointer"
+                    onClick={() => {
+                        let decrement = selectedImage-1
+                        setSelectedImage(decrement < 0 ? (images.length - Math.abs(decrement)) : ((decrement) % images.length))
+                    }}
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                </div>
+                {
+                    images.length > 0 && (
+                        <div className="px-1 h-[669px] w-[900px] mx-auto">
+                            <div className="h-[100%] w-[100%] bg-gray-100 rounded-xl overflow-hidden relative mx-auto">
+                                <Image src={images[selectedImage]} fill={true} alt={itemDetail?.name} style={{objectFit: "contain"}} blurDataURL={images[selectedImage]} placeholder="blur" />
+                            </div>
+                        </div>
+                    )
+                }
+
+                <div className="absolute right-[2rem] top-[50%] -translate-y-1/2 w-max h-max text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 cursor-pointer"
+                    onClick={() => {
+                        setSelectedImage((selectedImage+1) % images.length)
+                    }}
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                </div>
+                
+                <div className="flex flex-wrap mt-2">
+                {
+                    images.map((img: string, imgIndex: number) => {
+                        return <span key={imgIndex}  className={`w-[15px] h-[15px] bg-white rounded-full mx-1 cursor-pointer ${imgIndex === selectedImage ? `border-2 border-[var(--blue)]` : 'hover:border-2 hover:border-[var(--blue)]'}`}
+                        // style={{borderColor: imgIndex === selectedImage ? 'var(--blue)' : 'none'}}
+                        onClick={() => {
+                            setSelectedImage(imgIndex)
+                        }}
+                        >
+                        </span>
+                    })
+                }
+                </div>
+            </div>
+        </div>
+        </>
     )
 }
 

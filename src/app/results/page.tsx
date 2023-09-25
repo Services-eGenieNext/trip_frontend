@@ -41,25 +41,26 @@ export default function Results() {
   };
 
   const _Occassions = async () => {
-            let res = await Occassions()
-            dispatch(setOccasions(res))
-        }
+    let res = await Occassions()
+    dispatch(setOccasions(res))
+  }
 
-        const _Priorities = async () => {
-          let res = await PriorityValue()
-          dispatch(setPriorities(res))
-      }
+  const _Priorities = async () => {
+    let res = await PriorityValue()
+    dispatch(setPriorities(res))
+  }
 
-      const _TopCities = async () => {
-        let res = await TopCities()
-        dispatch(setTopCountries(res))
-    }
+  const _TopCities = async () => {
+    let res = await TopCities()
+    dispatch(setTopCountries(res))
+  }
 
-    const _locationSearch = async () => {
-      setLoading(true)
-      if(paramsAddress){
-        let _occasions = await surveySlice.occassion.map((oc: any) => oc.opt)
-        let res = await SearchLocation(`${_occasions ? _occasions.join(',') : 'Best Location'} in ${paramsAddress} for tourist`)
+  const _locationSearch = async () => {
+    setLoading(true)
+    if(paramsAddress){
+      // let _occasions = await surveySlice.occassion.map((oc: any) => oc.opt)
+      // let res = await SearchLocation(surveySlice.url ? surveySlice.url : `${_occasions ? _occasions.join(',') : 'Best Location'} in ${paramsAddress} for tourist`)
+      let res = await SearchLocation(paramsAddress)
       if(res){
         setLocationState(res)
         setLocationsData(res);
@@ -68,17 +69,13 @@ export default function Results() {
   }
 
   useEffect(()=>{
-if(paramsAddress){
-  dispatch(setSurveyValue({...surveySlice, location: paramsAddress}))
-  _locationSearch()
-}else{
-  _def()
-}
+    if(paramsAddress){
+      // dispatch(setSurveyValue({...surveySlice, location: paramsAddress}))
+      _locationSearch()
+    }else{
+      _def()
+    }
   },[paramsAddress])
-
-    // useEffect(()=>{
-    //   _locationSearch()
-    // },[paramsAddress])
         
   useEffect(()=>{
     _Occassions()
@@ -88,9 +85,9 @@ if(paramsAddress){
   },[])
 
   useEffect(()=>{
-if(clearFilter == true){
-  _def()
-}
+    if(clearFilter == true){
+      _def()
+    }
   },[clearFilter])
 
   useEffect(() => {
@@ -105,29 +102,29 @@ if(clearFilter == true){
       <PageBanner survey={surveySlice} />
       <div className="w-full flex justify-center mt-24">
         <div className="relative lg:w-[85%]">
-        <div className="mb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-4">
-            <div className="lg:col-span-1 max-w-[300px] w-full ">
-              <FilterSidebar
-                setClearFilter={setClearFilter}
-                locations={locationsState}
-                setLocationsData={setLocationsData}
-                setLoading={setLoading}
-                clearFilter={clearFilter}
-              />
-            </div>
-            <div className="lg:col-span-3 col-span-4">
-              <Lisitngs
-                setClearFilter={setClearFilter}
-                locations={locationsData}
-                loadData={loading}
-                setLoadData={setLoading}
-              />
+          <div className="mb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-4">
+              <div className="lg:col-span-1 max-w-[300px] w-full ">
+                <FilterSidebar
+                  setClearFilter={setClearFilter}
+                  locations={locationsState}
+                  setLocationsData={setLocationsData}
+                  setLoading={setLoading}
+                  clearFilter={clearFilter}
+                />
+              </div>
+              <div className="lg:col-span-3 col-span-4">
+                <Lisitngs
+                  setClearFilter={setClearFilter}
+                  locations={locationsData}
+                  loadData={loading}
+                  setLoadData={setLoading}
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }
