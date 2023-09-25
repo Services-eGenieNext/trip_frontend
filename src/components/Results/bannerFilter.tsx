@@ -163,7 +163,7 @@ export default function HeroFilterSection({ surveyData }: any) {
         }
       }
     }
-
+    console.log('validated')
     let _url = await _get_url()
     if (locationSearch.dates.startDate) {
       // router.push("/trip-plan?address=" + _url);
