@@ -14,6 +14,7 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
   const [item, setItem] = useState({});
   useEffect(() => {
       setResults(locations);
+      console.log('locations', locations)
   }, [locations]);
 
   useEffect(()=>{
@@ -139,7 +140,7 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
                                 }
                               )}
                               <span className="text-center">
-                              {`${Place}${Place !== "" ? "," : ""} ${City !== "" ? City : Country}`}
+                              {location.name ? location.name : `${Place}${Place !== "" ? "," : ""} ${City !== "" ? City : Country}`}
                               </span>
                     </p>
                     <div className="flex items-center gap-x-2">
@@ -151,7 +152,12 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
                   return <BlankStar key={index} />;
                 }
               })}
-              <span className="text-gray-500">{"("}{location?.details?.reviews?.length}{")"}</span>
+              <span className="text-gray-500 text-sm">{"("}{location.rating}{")"}</span>
+              {
+                location?.details?.reviews && (
+                  <span className="text-xs">Reviews {`(${location?.details?.reviews?.length})`}</span>
+                )
+              }
               </div>  
                   </div>
                     )}
