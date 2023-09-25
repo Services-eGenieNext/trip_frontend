@@ -59,21 +59,22 @@ export default function HeroFilterSection() {
     dates: "",
     spending:"",
   });
+  const [url_address, setUrlAddress] = useState('')
 
   useEffect(()=>{
-if(ocassionsState?.length > 0){
-  setOccasionsArray(ocassionsState)
-}else{
-  setOccasionsArray([])
-}
+    if(ocassionsState?.length > 0){
+      setOccasionsArray(ocassionsState)
+    }else{
+      setOccasionsArray([])
+    }
   },[ocassionsState])
 
   useEffect(()=>{
-if(priorityState?.length > 0){
-  setPrioritiesValue(priorityState)
-}else{
-  setPrioritiesValue([])
-}
+    if(priorityState?.length > 0){
+      setPrioritiesValue(priorityState)
+    }else{
+      setPrioritiesValue([])
+    }
   },[priorityState])
 
   useEffect(()=>{
@@ -83,6 +84,23 @@ if(priorityState?.length > 0){
       setTopCountriesValue([])
     }
   },[topCountriesState])
+
+  useEffect(()=>{
+
+    const _def = async () => {
+      let url = locationSearch.location ? locationSearch.location : ""
+
+      let occassion_arr = await locationSearch.occassion.map((oc: any) => oc.opt)
+      let priority_arr = await locationSearch.priority.map((pr: any) => pr.opt)
+      let arr = occassion_arr.concat(...priority_arr)
+
+      url = (url.trim() != "" && arr.length > 0) ? `${arr.join(',')} in ${url}` : url
+
+      setUrlAddress(url)
+    }
+
+    _def()
+  },[locationSearch])
 
   useEffect(() => {
     let data = {
@@ -138,9 +156,9 @@ if(priorityState?.length > 0){
       }
     }
     if (locationSearch.dates.startDate) {
-      router.push("/trip-plan?address=" + locationSearch.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
+      router.push("/trip-plan?address=" + url_address + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
-      router.push("/results?address=" + locationSearch.location);
+      router.push("/results?address=" + url_address);
       dispatch(setSurveyValue(locationSearch))
     }
   }
@@ -201,21 +219,21 @@ if(priorityState?.length > 0){
       /> */}
       <div className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px]`}>
       <InputField
-      className={`sm:w-[170px] h-[46px]`}
-      name="location"
-      type="text"
-      label="Location"
-      placeholder="Enter Location"
-      value={locationSearch?.location}
-      items={topCountriesValue}
-      icon={<SimpleLocation />}
-      onChange={(val:any)=>{
-        setLocationSearch({...locationSearch, location: val})
-      }}
-      onFocus = {()=>{
-        setInvalidLocation(false)
-        setLocationRequired(false)
-      }}
+        className={`sm:w-[170px] h-[46px]`}
+        name="location"
+        type="text"
+        label="Location"
+        placeholder="Enter Location"
+        value={locationSearch?.location}
+        items={topCountriesValue}
+        icon={<SimpleLocation />}
+        onChange={(val:any)=>{
+          setLocationSearch({...locationSearch, location: val})
+        }}
+        onFocus = {()=>{
+          setInvalidLocation(false)
+          setLocationRequired(false)
+        }}
       />
       {invalidLocation == true && (
       <p className="text-[red] text-[14px] mt-3">Invalid Location.</p>
