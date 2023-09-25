@@ -35,6 +35,8 @@ const TripDetail = ({item}: ITripDetail) => {
     const reviewArr = new Array(5).fill(1);
     const [openLocation, setOpenLocation] = useState<any | null>(null)
     const [showInItineraryModel, setShowInItineraryModel] = useState(false)
+    const [zoomImage, setZoomImage] = useState(false)
+    const [zoomImagePath, setZoomImagePath] = useState("")
     const [selectedImage, setSelectedImage] = useState<number>(0)
     const [showSlide, setShowSlide] = useState(false)
 
@@ -226,6 +228,23 @@ const TripDetail = ({item}: ITripDetail) => {
     return (
         <>
         <div className='w-full sm:px-0 px-4 relative'>
+            {zoomImage == true && (
+                <div className="w-full h-full absolute top-0 left-0 z-10 flex items-center bg-[rgba(0,0,0,0.8)] overflow-hidden rounded-lg">
+                    <div className="w-full h-full relative ">
+                    <Image src={zoomImagePath} className="w-full h-full " fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} />
+                    <span 
+                    className="absolute top-[1rem] right-[0.5rem] w-[30px] h-[30px] bg-[#F9F9F9] flex justify-center items-center rounded-full p-2 cursor-pointer select-none"
+                    onClick={() => {
+                        setZoomImage(false)
+                    }}
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </span>
+                    </div>
+                </div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
                 <div className="h-[200px] min-w-[400px] w-full bg-gray-100 rounded-xl overflow-hidden relative">
                     {

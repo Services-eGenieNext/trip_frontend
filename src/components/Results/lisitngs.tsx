@@ -29,11 +29,12 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
     <div className="lg:pl-12 md:pl-12 sm:pl-6 pl-3">
       {loadData === false ? (
       <p className="text-[18px] text-[#3F3F3F]">
-        Show listing of {results.length} Places...
+        Show listing of {results?.length} Places...
       </p>
       ):(
         <>
-        <div className="h-8 bg-gray-200 rounded-md dark:bg-gray-700 mb-2.5 mx-4 w-[30%]"></div>
+        <p className="text-[18px] text-[#3F3F3F]">Our AI engine is finding best option for you...</p>
+        {/* <div className="h-8 bg-gray-200 rounded-md dark:bg-gray-700 mb-2.5 mx-4 w-[30%]"></div> */}
         </>
       )}
       <div className="flex flex-wrap itemns-center lg:justify-start justify-center my-8 gap-y-14 gap-x-10">

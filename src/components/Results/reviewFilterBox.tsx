@@ -9,6 +9,7 @@ interface IFilters {
   type?: string;
   setRanking?: any;
   clearFilter?:any;
+  location?:any;
 }
 
 export default function ReviewFilterBox({
@@ -17,6 +18,7 @@ export default function ReviewFilterBox({
   type,
   setRanking,
   clearFilter,
+  location,
 }: IFilters) {
   const [filtersData, setFiltersData] = useState<any[]>([]);
 

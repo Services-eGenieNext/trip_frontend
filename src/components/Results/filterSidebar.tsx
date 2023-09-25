@@ -114,8 +114,8 @@ export default function FilterSidebar({locations,setLocationsData,setClearFilter
         type = "review"
         setRanking={setRanking}
         clearFilter={clearFilter}
+        location = {locationArray}
       />
-
       {/* <ReviewFilterBox
         filters={Filter_option.activityRanking}
         title="Activity Ranking"

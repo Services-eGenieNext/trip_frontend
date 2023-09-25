@@ -58,6 +58,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
   const [prioritiesValue, setPrioritiesValue] = useState<any>([])
   const [topCountriesValue, setTopCountriesValue] = useState<any>([])
   const [topCities, setTopCities] = useState<any>([])
+  const [locationOption, setLocationOption] = useState("") 
 
   const [date, setDate] = useState<Range>({
     key: "selection",
@@ -200,8 +201,8 @@ const Survey = ({ show, onClose }: ISurvey) => {
   }, [survey]);
 
   useEffect(()=>{
-    setSurvey({...survey, location:"" })
-  },[survey.selectedOption])
+setSurvey({...survey, location:"" })
+  },[locationOption])
 
   const [step, setStep] = useState(1);
 
@@ -403,21 +404,6 @@ const Survey = ({ show, onClose }: ISurvey) => {
         <div className="my-10 w-full text-center flex flex-col items-center">
           <p className="">{questions[step - 1]?.title}</p>
           <div className="my-4 pt-3 flex flex-col gap-4 items-start sm:w-auto w-full sm:px-0 px-5">
-           {/* <SelectField
-                  label={locationInputLabel}
-                  placeholder="Select ..."
-                  data={dropdownLocationValue}
-                  className={`mr-2 mt-5 mb-2 sm:w-[400px] w-full`}
-                  styling={{
-                      dropdownHeight: "max-h-[140px]",
-                      shadow: "drop-shadow-xl ",
-                      left: "0px",
-                      top: "70px",
-                    }}
-                    value={survey.location}
-                    onChange={(val) => setSurvey({ ...survey, location: val })}
-                    onAdditionalChange={(_data) => {}}
-                  /> */}
             {questions[step - 1]?.type === "location" ? (
               questions[step - 1].options.length > 0 && questions[step - 1].options.map((options:any,index:number)=>{
                 return (
@@ -425,6 +411,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                   <RadioInputs
                   label={{label:options.label, value: options.value}}
                   setValue={setSurvey}
+                  setLocationOption={setLocationOption}
                   value={survey}
                   checked={options.field}
                 />
