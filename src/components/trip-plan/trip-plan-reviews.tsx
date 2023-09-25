@@ -166,7 +166,7 @@ const TripPlanReviews = ({ automateLocation }:IReviews) => {
             setLoading(false);
         }
 
-    }, [reviewsData]);
+    }, [reviewsData, itineraryDays]);
 
     const reviewArr = new Array(5).fill(1);
 
