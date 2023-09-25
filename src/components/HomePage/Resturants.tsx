@@ -137,6 +137,7 @@ responsive: [
   }, [restaurantsState]);
 
   useEffect(() => {
+    console.log(restaurantData,"restaurantData")
     if (restaurantData?.length > 0) {
       setLoading(false);
     }
@@ -321,6 +322,12 @@ responsive: [
                               </span>
                             </span>
                           </div>
+                          {restaurant?.details?.editorial_summary?.overview && (
+                            <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)] text-center text-ellipsis overflow-hidden line-clamp-2">{restaurant?.details?.editorial_summary?.overview}</p>
+                          )}
+                          <p>
+
+                          </p>
                         </div>
                       {!isAddButton && (
                             <div

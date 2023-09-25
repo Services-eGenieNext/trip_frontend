@@ -88,14 +88,15 @@ useEffect(()=>{
         type = "review"
         setRanking={setRanking}
         clearFilter={clearFilter}
+        location = {locationArray}
       />
-      <ReviewFilterBox
+      {/* <ReviewFilterBox
         filters={Filter_option.activityRanking}
         title="Activity Ranking"
         type = "review"
         setRanking={setRanking}
         clearFilter={clearFilter}
-      />
+      /> */}
     </div>
     </>
   );

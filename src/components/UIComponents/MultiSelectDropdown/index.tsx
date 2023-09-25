@@ -13,6 +13,7 @@ import { setPriorities } from '@/redux/reducers/prioritySlice'
 import styles from './index.module.css'
 import Section from "../Section";
 import SortPopupOptions from "./sort-popup-options";
+import Tooltip from '@mui/material/Tooltip';
 
 interface TypeProps {
   items: string[] | any;
@@ -87,8 +88,22 @@ export default function SelectCheckBoxSimple({
       },[SelectedData])
 
   useEffect(() => {
-    const newArray: any = items?.map((opt: any) => ({ opt, checked: false }));
+    const newArray: any = items?.map((opt: any,index:number) => {
+      if(index < 1){
+        return { opt:{name: opt.name, id:opt.id}, checked: true }
+      }else{
+        return { opt:{name: opt.name, id:opt.id}, checked: false }
+      }
+    });
     setOpts(newArray);
+    const selectedOptions = newArray.map((selected:any)=>{
+      if(selected.checked == true){
+        setOptsSelected([
+          ...optsSelected,
+          { opt: selected.opt.name, checked: true, id: selected.opt.id },
+        ]);
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
@@ -175,7 +190,7 @@ if(addCustomeOption == false){
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optsSelected]);
 
-  const FetchData = (opts: any, optsSelected: any) => {
+  const FetchData = () => {
     var Arr: any = [];
     var result1 = opts?.filter((original: any) => {
       return optsSelected?.some((selected: any) => {
@@ -184,14 +199,15 @@ if(addCustomeOption == false){
           original?.checked == false
         ) {
           original.checked = true;
-          // Arr.push({ opt: original?.opt?.name, checked: true });
+          // Arr.push({ opt: original.opt.name, checked: true, id: original.opt.id });
         }
       });
     });
   };
 
   useEffect(() => {
-    FetchData(opts, optsSelected);
+    console.log(opts,"opts",optsSelected)
+    FetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opts, optsSelected]);
 
@@ -330,7 +346,7 @@ if(addCustomeOption == false){
           style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
         >{Label}</label>
       </div>
-      
+      <Tooltip title={`You can selecting multiple ${Label}`}>
       <Box className="flex items-center justify-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-2">
         <Box
           className="flex items-center justify-center w-full overflow-hidden cursor-pointer"
@@ -415,7 +431,7 @@ if(addCustomeOption == false){
           </span>
         </Box>
       </Box>
-
+      </Tooltip>
       {/* Dropdown list */}
       <Box
       ref={ref}
