@@ -102,7 +102,7 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                     >
                         <Box className="relative">
                             <Box
-                            className="flex flex-col items-center justify-center max-h-[250px] h-auto"
+                            className="max-h-[250px] h-auto"
                             py="10px"
                             sx={{ overflowY: "auto" }}
                             >

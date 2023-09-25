@@ -3,17 +3,19 @@ import styles from "./reviews.module.css"
 import Review from './review'
 
 interface IReviews {
+    className?: string
+    style?: any,
     show: boolean
     loading: boolean
     data: any[] | null
 }
 
-const Reviews = ({show, loading, data}:IReviews) => {
+const Reviews = ({show, loading, data, className='', style}:IReviews) => {
 
     const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
     return (
-        show ? <div className="my-10 md:my-20">
+        show ? <div className={`my-10 md:my-20 ${className}`} style={style}>
             {loading === true
             ? skelton.map((show: any, index: number) => {
                 return (
