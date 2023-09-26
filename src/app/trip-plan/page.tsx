@@ -8,6 +8,7 @@ import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide
 import Products from '@/components/Products/Products'
 import SmallStory from '@/components/Story/SmallStory'
 import Section from '@/components/UIComponents/Section'
+import DestinationRotueMap from '@/components/trip-plan/destination-rotue-map'
 import TripPlanReviews from '@/components/trip-plan/trip-plan-reviews'
 import TripPlanningCard from '@/components/tripPlanningCard/tripPlanning'
 import { useAppSelector } from '@/redux/hooks'
@@ -21,9 +22,11 @@ const TripPlan = () => {
 
     const params = useSearchParams()
     const [params_list, setParamsList] = useState<any>({address: '', location_id: '', place_id: '', v_type: '', restaurants: null, start_day_index: '', days_length: ''})
-    const { locationsState } = useAppSelector((state) => state.locationReducer)
     const [automateLocation, setAutomateLocation] = useState<any | null>(null)
     const [openingHours, setOpeningHours] = useState<number | null>(null)
+
+    const { locationsState } = useAppSelector((state) => state.locationReducer)
+    const { destinationModel } = useAppSelector((state) => state.itineraryReducer)
 
     const dispatch = useDispatch()
 
@@ -141,6 +144,8 @@ const TripPlan = () => {
                 {/* <ClientTestimonials automateLocation={automateLocation} /> */}
                 <TripPlanReviews automateLocation={automateLocation} />
             </div>
+
+            <DestinationRotueMap show={destinationModel} />
         </div>
     )
 }

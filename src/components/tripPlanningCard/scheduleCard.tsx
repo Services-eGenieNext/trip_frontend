@@ -4,7 +4,7 @@ import { IPlanningCard } from "@/interfaces/TripPlan";
 import InputField from "../UIComponents/InputField/InputField";
 import { LocationsDurationCall } from "@/api-calls";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
+import { setDestination, setItineraryDays } from "@/redux/reducers/itinerarySlice";
 import SelectField from "../UIComponents/InputField/SelectField";
 import { _calculateStartAndEndTime } from "./pricing-cards/functions";
 import { useAlertContext } from "@/contextapi/Alert";
@@ -225,7 +225,13 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
   return (
     <>
     {
-      (time.suggestedTime?.duration_time || duration) && <span className={`flex rounded-full px-2 h-max bg-[var(--blue)] text-white text-[12px] whitespace-nowrap w-max -translate-y-full`}>{time.suggestedTime?.duration_time ? time.suggestedTime?.duration_time : duration}</span>
+      (time.suggestedTime?.duration_time || duration) && <span className={`flex rounded-full px-2 h-max bg-[var(--blue)] text-white hover:underline text-[12px] whitespace-nowrap w-max -translate-y-full cursor-pointer select-none shadow-lg`}
+      style={{textUnderlinePosition: "under"}}
+      onClick={(e) => {
+        e.preventDefault()
+        dispatch(setDestination({origin: distanceObject.origin, destination: distanceObject.destination}))
+      }}
+      >{time.suggestedTime?.duration_time ? time.suggestedTime?.duration_time : duration}</span>
     }
     <div ref={cardRef}
       className={`flex gap-x-4 mb-10 h-full ${CSS["pricingCard"]} relative`}

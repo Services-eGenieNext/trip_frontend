@@ -402,10 +402,14 @@ const TripDetail = ({item}: ITripDetail) => {
                                 </span>
                             </div>
                             <div className="h-[3px] w-[51px] bg-[var(--blue)] my-5 mx-auto"></div>
-
-                            <div>
-                                <Link href={`tel:${itemDetail?.formatted_phone_number.replaceAll('-', '')}`} className="underline hover:text-[var(--blue)]" >{itemDetail?.formatted_phone_number}</Link>
-                            </div>
+                            
+                            {
+                                itemDetail?.formatted_phone_number && (
+                                    <div>
+                                        <Link href={`tel:${itemDetail?.formatted_phone_number?.replaceAll('-', '')}`} className="underline hover:text-[var(--blue)]" >{itemDetail?.formatted_phone_number}</Link>
+                                    </div>
+                                )
+                            }
                             
                             <BlueButton title="Automate my trip" className="mb-5" onClick={(e) => {
                                 e.preventDefault()
@@ -504,13 +508,16 @@ const TripDetail = ({item}: ITripDetail) => {
                         </>
                     )
                 }
+
+                {/* Client Reviews */}
                 {
                     !detailLoading && (
                         <>
                         <div className="w-full mt-5 text-center">
-                            <span className='text-[15px] leading-[18px] font-bold mb-2'>Client Reviews</span>
+                            <span className='text-[23px] leading-[18px] font-bold mb-2'>Client Reviews</span>
+                            <div className="h-[3px] w-[51px] bg-[var(--blue)] mt-5 mx-auto"></div>
                         </div>
-                        <Reviews show={true} loading={false} data={itemDetail?.reviews ?? []} style={{margin: "0"}} />
+                        <Reviews isCenterAlign={true} textSmall={true} show={true} loading={false} data={itemDetail?.reviews ?? []} style={{margin: "0"}} />
                         </>
                     )
                 }
@@ -521,7 +528,7 @@ const TripDetail = ({item}: ITripDetail) => {
 
         <div ref={slideRef} className="hidden opacity-0 transition-all duration-300 fixed top-0 left-0 bottom-0 right-0 bg-[rgba(0,0,0,0.6)]">
             <div className="absolute right-[2rem] top-2 w-max h-max text-white z-[1] cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6"
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 bg-[rgba(0,0,0,.2)] hover:bg-[rgba(0,0,0,.5)] rounded-full p-1"
                 onClick={() => {
                     setShowSlide(false)
                 }}
@@ -543,8 +550,8 @@ const TripDetail = ({item}: ITripDetail) => {
                 </div>
                 {
                     images.length > 0 && (
-                        <div className="px-1 h-[669px] w-[900px] mx-auto">
-                            <div className="h-[100%] w-[100%] bg-gray-100 rounded-xl overflow-hidden relative mx-auto">
+                        <div className="px-1 h-[700px] w-[1000px] mx-auto">
+                            <div className="h-[100%] w-[100%] rounded-xl overflow-hidden relative mx-auto">
                                 <Image src={images[selectedImage]} fill={true} alt={itemDetail?.name} style={{objectFit: "contain"}} blurDataURL={images[selectedImage]} placeholder="blur" />
                             </div>
                         </div>
@@ -564,7 +571,7 @@ const TripDetail = ({item}: ITripDetail) => {
                 <div className="flex flex-wrap mt-2">
                 {
                     images.map((img: string, imgIndex: number) => {
-                        return <span key={imgIndex}  className={`w-[15px] h-[15px] bg-white rounded-full mx-1 cursor-pointer ${imgIndex === selectedImage ? `border-2 border-[var(--blue)]` : 'hover:border-2 hover:border-[var(--blue)]'}`}
+                        return <span key={imgIndex}  className={`w-[15px] h-[15px] bg-white rounded-full mx-1 cursor-pointer transition-all duration-300 ${imgIndex === selectedImage ? `border-[5px] border-[var(--blue)]` : 'hover:border-[5px] hover:border-[var(--blue)]'}`}
                         // style={{borderColor: imgIndex === selectedImage ? 'var(--blue)' : 'none'}}
                         onClick={() => {
                             setSelectedImage(imgIndex)

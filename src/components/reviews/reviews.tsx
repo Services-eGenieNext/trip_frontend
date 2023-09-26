@@ -8,9 +8,12 @@ interface IReviews {
     show: boolean
     loading: boolean
     data: any[] | null
+    isCenterAlign?: boolean
+    isboxShadow?: boolean
+    textSmall?: boolean
 }
 
-const Reviews = ({show, loading, data, className='', style}:IReviews) => {
+const Reviews = ({show, loading, data, className='', style, isCenterAlign = false, isboxShadow = true, textSmall = false}:IReviews) => {
 
     const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
@@ -49,7 +52,7 @@ const Reviews = ({show, loading, data, className='', style}:IReviews) => {
                 );
             })
             : data!=null && data.length > 0 ? data.map((client: any, index: number) => {
-                return <Review key={index} client={client} />
+                return <Review key={index} client={client} isCenterAlign={isCenterAlign} isboxShadow={isboxShadow} textSmall={textSmall} />
             }) : (
                 <div className="text-center mt-5">
                     <p className="bg-gray-50 rounded-xl py-2">Reviews not found!</p>

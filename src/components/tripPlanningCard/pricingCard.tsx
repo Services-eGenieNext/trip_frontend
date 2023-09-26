@@ -6,7 +6,7 @@ import ScheduleCard from "./scheduleCard";
 import { LocationsDurationCall } from "@/api-calls";
 import PricingCardLocation from "./pricing-cards/pricing-card-location";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
+import { setDestination, setItineraryDays } from "@/redux/reducers/itinerarySlice";
 import { useAlertContext } from "@/contextapi/Alert";
 
 export default function PricingCard({
@@ -160,7 +160,29 @@ export default function PricingCard({
         <div className={`grid ${ variation === "cards-list" ? 'grid-cols-1 bg-[#F6FDFF] rounded-lg border-2 border-dashed border-[#AEDCF0] py-5' : 'grid-cols-1'} mb-10`}>
           <div className={`${variation === "cards-list" ? 'pl-5' : ''} w-[90px] select-none z-10`}>
             <div className="flex items-center">
-              <span className={`uppercase ${variation === "cards-list" ? 'font-semibold' : 'flex flex-col md:flex-row justify-between items-center text-sm md:text-base  bg-[var(--lite-green)] rounded-xl px-3'} h-max w-max`}>
+              <span className={`cursor-pointer uppercase hover:underline ${variation === "cards-list" ? 'font-semibold' : 'flex flex-col md:flex-row justify-between items-center text-sm md:text-base  bg-[var(--lite-green)] rounded-xl px-3'} h-max w-max`} style={{textUnderlinePosition: "under"}}
+              onClick={async (e) => {
+                e.preventDefault()
+                if(data.times.length > 1)
+                {
+                  let origin = data.times[0].location.place_id ? data.times[0].location.formatted_address : data.times[0].location.address_obj.address_string
+                  let destination = data.times[data.times.length - 1].location.place_id ? data.times[data.times.length - 1].location.formatted_address : data.times[data.times.length - 1].location.address_obj.address_string
+
+                  let waypoints;
+                  if(data.times.length > 2)
+                  {
+                    waypoints = await data.times.slice(1,data.times.length-1).map((tim: any) => {
+                      let adr = tim.location.place_id ? tim.location.formatted_address : tim.location.address_obj.address_string
+                      return {
+                        location: adr
+                      }
+                    })
+                  }
+
+                  dispatch(setDestination({origin: origin, destination: destination, waypoints}))
+                }
+              }}
+              >
                 {data.day}
                 {/* <span className="w-[38px] h-[29px] text-[var(--green)] bg-[var(--lite-green)] flex justify-center items-center rounded-lg">
                   {data.day}

@@ -4,18 +4,21 @@ import styles from "./reviews.module.css"
 import { BlankStar, FilledStar } from '../icons/Stars';
 
 interface IReview {
-    client: any
+    client: any,
+    isCenterAlign?: boolean,
+    isboxShadow?: boolean
+    textSmall?: boolean
 }
 
-const Review = ({ client } : IReview) => {
+const Review = ({ client, isCenterAlign = false, isboxShadow = true, textSmall = false } : IReview) => {
     let length = 400
     let showText = client.text.substring(0, length)
     const reviewArr = new Array(5).fill(1);
     const [showMore, setShowMore] = useState(false)
     return (
-        <div className={`bg-white rounded-xl p-8 my-10 ${styles.testimonialCard}`} >
+        <div className={`bg-white rounded-xl p-8 my-10 ${isboxShadow ? styles.testimonialCard : ''}`} >
             <div className="flex justify-between items-center mb-4">
-                <h5 className="text-[#333333] italic text-[23px] leading-[52px]">
+                <h5 className={`text-[#333333] italic ${textSmall ? 'text-[18px]' : 'text-[23px]'} leading-[52px] ${isCenterAlign ? 'text-center' : ''}`}>
                     {" "}
                     &ldquo;{showMore ? client.text : showText}
                     {
@@ -34,13 +37,13 @@ const Review = ({ client } : IReview) => {
                         )
                     }
                 </h5>
-                <span className="text-black font-semibold text-[15px] text-right leading-[18px] min-w-[150px]">
+                <span className={`text-black font-semibold text-[15px] text-right leading-[18px] min-w-[150px] ${isCenterAlign ? 'text-center' : ''}`}>
                     {client.relative_time_description}
                 </span>
             </div>
             {/* <p className="text-[#5C5B5B] italic text-[17px] leading-[27px] mb-4">{client.desc}</p> */}
 
-            <div className="flex flex-wrap gap-8 items-center">
+            <div className={`flex flex-wrap gap-8 items-center ${isCenterAlign ? 'justify-center' : ''}`}>
                 <div className="gilroy italic font-bold text-xl h-[50px] w-[50px] relative">
                     <Image src={client.profile_photo_url} fill={true} alt={""} />
                 </div>
