@@ -6,7 +6,7 @@
 .pricingCard:not(:last-child) .divider{
   border: 1px dashed #009DE2;
   width: 0px;
-  margin-top: 10px;
+  margin-right: 10px;
 }
 .pricingCard:last-child{
   margin-bottom: 0px;
@@ -38,3 +38,14 @@
   background: black;
   color: #fff;
 }
+
+/* .bottom-border::after {
+  content: '';
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 2px;
+  background: #f1f1f1;
+} */
