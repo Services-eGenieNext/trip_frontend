@@ -290,7 +290,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                     </>       
                 ) : (
                 <div className={`grid grid-cols-1 lg:grid-cols-3 gap-3 ${styles.tripPlanning}`}>
-                    <div className={`lg:col-span-1 flex flex-wrap justify-center h-full overflow-auto`} style={{maxHeight: document.querySelector('#second-wrapped-locations')?.scrollHeight ? `${Number(document.querySelector('#second-wrapped-locations')?.scrollHeight) - 30}px` : '1550px'}} >
+                    <div className={`lg:col-span-1 flex flex-wrap flex-col w-full justify-center h-max overflow-auto`} style={{maxHeight: document.querySelector('#second-wrapped-locations')?.scrollHeight ? `${Number(document.querySelector('#second-wrapped-locations')?.scrollHeight) - 30}px` : '1550px'}} >
                         {
                         (!loading && itineraryDays) &&
                         itineraryDays.map((_item, index) => {

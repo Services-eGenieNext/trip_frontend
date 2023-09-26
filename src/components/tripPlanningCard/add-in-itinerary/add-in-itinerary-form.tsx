@@ -167,7 +167,7 @@ const AddInItineraryForm = ({show, openLocation, setShow}: IAddInItineraryForm) 
                     label="Choose day"
                     placeholder="Select ..."
                     data={
-                        itineraryDays.filter(itin => itin.times.length > 0).map(itinerary => {
+                        itineraryDays.map(itinerary => {
                             return {
                             id: itinerary.day,
                             name: itinerary.day

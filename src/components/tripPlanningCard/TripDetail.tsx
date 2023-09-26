@@ -14,6 +14,8 @@ import { BlankStar, FilledStar } from '../icons/Stars'
 import AddInItineraryForm from './add-in-itinerary/add-in-itinerary-form'
 import { useAppSelector } from '@/redux/hooks'
 import Reviews from '../reviews/reviews'
+import BlueButton from '../UIComponents/Buttons/BlueButton'
+import { useRouter } from 'next/navigation'
 
 
 interface ITripDetail {
@@ -223,7 +225,11 @@ const TripDetail = ({item}: ITripDetail) => {
                 slideRef.current?.classList.add('hidden')
             }, 200);
         }
-      }, [showSlide])
+    }, [showSlide])
+
+    const router = useRouter()
+
+    const address = itemDetail?.formatted_address ? itemDetail.formatted_address : itemDetail?.address_obj?.address_string;
 
     return (
         <>
@@ -396,7 +402,16 @@ const TripDetail = ({item}: ITripDetail) => {
                                 </span>
                             </div>
                             <div className="h-[3px] w-[51px] bg-[var(--blue)] my-5 mx-auto"></div>
+
+                            <div>
+                                <Link href={`tel:${itemDetail?.formatted_phone_number.replaceAll('-', '')}`} className="underline hover:text-[var(--blue)]" >{itemDetail?.formatted_phone_number}</Link>
+                            </div>
                             
+                            <BlueButton title="Automate my trip" className="mb-5" onClick={(e) => {
+                                e.preventDefault()
+                                router.push(`/trip-plan?address=${address}&location_id=${itemDetail.location_id ?? ''}&place_id=${itemDetail.place_id ?? ''}&v_type=`)
+                            }} />
+
                             {
                                 itineraryDays.length > 0 && (
                                     <div

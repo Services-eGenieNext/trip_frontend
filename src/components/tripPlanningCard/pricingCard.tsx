@@ -31,10 +31,13 @@ export default function PricingCard({
   const dispatch = useAppDispatch()
 
   const delDay = async () => {
-    let _itineraryDays = await itineraryDays.filter(itinerary => itinerary.day !== data.day)
+    let _itineraryDayIndex = await itineraryDays.findIndex(itinerary => itinerary.day === data.day)
+    let _itineraryDays = [...itineraryDays]
+    _itineraryDays[_itineraryDayIndex] = {..._itineraryDays[_itineraryDayIndex]}
+    _itineraryDays[_itineraryDayIndex].times = []
     setShowDel(false)
     dispatch(setItineraryDays([..._itineraryDays]))
-    showAlert({title: `${data.day} is deleted from itinerary`, type: "error"})
+    showAlert({title: `${data.day} is empty from itinerary`, type: "error"})
   }
 
   useEffect(() => {
@@ -70,12 +73,15 @@ export default function PricingCard({
             
             <div className="flex justify-between items-center">
               <h1 className="text-2xl font-bold">{data.day}</h1>
-
-              <span className="text-gray-500 cursor-pointer hover:text-red-600 transition-all duration-300" title={`Delete ${data.day} from itinerary`} onClick={() => setShowDel(true)}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ml-1">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                </svg>
-              </span>
+              {
+                days && days.times.length > 0 && (
+                  <span className="text-gray-500 cursor-pointer hover:text-red-600 transition-all duration-300" title={`Delete ${data.day} from itinerary`} onClick={() => setShowDel(true)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ml-1">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                    </svg>
+                  </span>
+                )
+              }
             </div>
             
             <div className="w-full bg-white rounded-lg border border-dashed border-[#AEDCF0] mt-4">
@@ -151,8 +157,8 @@ export default function PricingCard({
           )}
         </div>
       ) : (
-        <div className={`grid ${ variation === "cards-list" ? 'grid-cols-1 bg-[#F6FDFF] rounded-lg border-2 border-dashed border-[#AEDCF0] py-5' : 'grid-cols-6'} mb-5`}>
-          <div className={`${variation === "cards-list" ? 'pl-5' : 'col-span-1'} w-[90px] select-none z-10`}>
+        <div className={`grid ${ variation === "cards-list" ? 'grid-cols-1 bg-[#F6FDFF] rounded-lg border-2 border-dashed border-[#AEDCF0] py-5' : 'grid-cols-1'} mb-10`}>
+          <div className={`${variation === "cards-list" ? 'pl-5' : ''} w-[90px] select-none z-10`}>
             <div className="flex items-center">
               <span className={`uppercase ${variation === "cards-list" ? 'font-semibold' : 'flex flex-col md:flex-row justify-between items-center text-sm md:text-base  bg-[var(--lite-green)] rounded-xl px-3'} h-max w-max`}>
                 {data.day}
@@ -160,16 +166,21 @@ export default function PricingCard({
                   {data.day}
                 </span>{" "} */}
               </span>
+              {
+                data?.times && data.times.length > 0 && (
 
-              <span className="text-gray-500 cursor-pointer hover:text-red-600 transition-all duration-300" onClick={() => setShowDel(true)}>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ml-1">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                </svg>
-              </span>
+                  <span className="text-gray-500 cursor-pointer hover:text-red-600 transition-all duration-300" onClick={() => setShowDel(true)}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4 ml-1">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                    </svg>
+                  </span>
+
+                )
+              }
             </div>
           </div>
-          <div className={variation === "cards-list" ? '' : `col-span-5`}>
-            <div className="pl-5 flex flex-col justify-between">
+          <div className={variation === "cards-list" ? '' : ``}>
+            <div className={`pl-5 flex flex-col justify-between w-full ${CSS['bottom-border']} relative`}>
               {data.times &&
                 data.times.map((time: any, index: any) => {
                   let origin = null
