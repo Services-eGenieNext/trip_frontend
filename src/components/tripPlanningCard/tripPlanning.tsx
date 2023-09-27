@@ -84,14 +84,13 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
     useEffect(() => {
         
         const _defLoadRecommendation = async () => {
-            let occassion_arr = await survey.occassion.map((oc: any) => oc.opt)
-            let priority_arr = await survey.priority.map((pr: any) => pr.opt)
+            let occassion_arr = await survey?.occassion ? survey?.occassion.map((oc: any) => oc.opt) : []
+            let priority_arr = await survey?.priority ? survey?.priority.map((pr: any) => pr.opt) : []
             let arr = occassion_arr.concat(...priority_arr)
 
-            // let adrArr = params_list.address.split(',')
-            // let filterAddress = adrArr.length < 2 ? params_list.address : `${adrArr[adrArr.length - 2].trim()}, ${adrArr[adrArr.length - 1].trim()}`
-            let filterAddress = survey.location
-            axios.post(`${PY_API_URL}/get-recommendation`, {input: filterAddress, types: arr.join(',')}).then(response => {
+            let adrArr = params_list.address.split(',')
+            let filterAddress = survey.location ? survey.location : (adrArr.length < 2 ? params_list.address : `${adrArr[adrArr.length - 2].trim()}, ${adrArr[adrArr.length - 1].trim()}`)
+            axios.post(`${PY_API_URL}/get-recommendation`, {input: filterAddress, types: arr.length > 0 ? arr.join(',') : ''}).then(response => {
                 
                 dispatch(reset())
                 console.log('recommendation', response.data.recommendations)
