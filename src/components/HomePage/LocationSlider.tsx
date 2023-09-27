@@ -179,7 +179,7 @@ const LocationSlider = ({
                 })
               : locations?.map((location: any, index) => {
                   let image_path =
-                    location.image.image.length > 0
+                    location.image?.image?.length > 0
                       ? location.image.image[0].url
                       : BlankLocation.src;
                   let address = location.details.formatted_address

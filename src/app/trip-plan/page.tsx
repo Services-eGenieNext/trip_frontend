@@ -22,6 +22,7 @@ const TripPlan = () => {
     const params = useSearchParams()
     const [params_list, setParamsList] = useState<any>({address: '', location_id: '', place_id: '', v_type: '', restaurants: null, start_day_index: '', days_length: ''})
     const { locationsState } = useAppSelector((state) => state.locationReducer)
+    const { surveySlice } = useAppSelector((state) => state.surveyReducer);
     const [automateLocation, setAutomateLocation] = useState<any | null>(null)
     const [openingHours, setOpeningHours] = useState<number | null>(null)
 
@@ -99,7 +100,7 @@ const TripPlan = () => {
 
     return (
         <div className='overflow-x-hidden w-full'>
-            <PageBanner automateLocation={automateLocation} />
+            <PageBanner automateLocation={automateLocation} survey={surveySlice} />
             {
                 params_list.address && 
                 <TripPlanningCard 
