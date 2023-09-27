@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ReviewFilterBox from './reviewFilterBox'
 import Filter_option from '@/api/filters'
 import PriceSlider from './priceSlider'
+import RankingSlider from './rankingSlider'
 import Occasion from '@/data/occasion.json'
 import Activities from '@/data/priority.json'
 import CardOptionsSearchListing from './filtersOptionsSearch'
@@ -21,7 +22,8 @@ export default function FilterSidebar({locations,setLocationsData,setClearFilter
 
   useEffect(()=>{
     const filteredArray = locationArray.filter((list:any)=>{
-      return parseInt(Ranking) == Math.floor(list?.details?.rating)
+      console.log(Ranking, list?.details?.rating , "rating")
+      return Ranking == list?.details?.rating
     })
     setLocationsData(filteredArray)
   },[Ranking])
@@ -107,15 +109,20 @@ export default function FilterSidebar({locations,setLocationsData,setClearFilter
           />
         )
       }
+      <RankingSlider
+        title="City Ranking"
+        clearData={clearFilter}
+        setRanking={setRanking}
+      />
 
-      <ReviewFilterBox
+      {/* <ReviewFilterBox
         filters={Filter_option.cityRanking}
         title="City Ranking"
         type = "review"
         setRanking={setRanking}
         clearFilter={clearFilter}
         location = {locationArray}
-      />
+      /> */}
       {/* <ReviewFilterBox
         filters={Filter_option.activityRanking}
         title="Activity Ranking"

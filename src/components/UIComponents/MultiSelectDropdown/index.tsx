@@ -88,22 +88,23 @@ export default function SelectCheckBoxSimple({
       },[SelectedData])
 
   useEffect(() => {
-    const newArray: any = items?.map((opt: any,index:number) => {
-      if(index < 1){
-        return { opt:{name: opt.name, id:opt.id}, checked: true }
-      }else{
-        return { opt:{name: opt.name, id:opt.id}, checked: false }
-      }
-    });
+    // const newArray: any = items?.map((opt: any,index:number) => {
+    //   if(index < 1){
+    //     return { opt:{name: opt.name, id:opt.id}, checked: true }
+    //   }else{
+    //     return { opt:{name: opt.name, id:opt.id}, checked: false }
+    //   }
+    // });
+    const newArray: any = items?.map((opt: any) => ({ opt, checked: false }));
     setOpts(newArray);
-    const selectedOptions = newArray.map((selected:any)=>{
-      if(selected.checked == true){
-        setOptsSelected([
-          ...optsSelected,
-          { opt: selected.opt.name, checked: true, id: selected.opt.id },
-        ]);
-      }
-    })
+    // const selectedOptions = newArray.map((selected:any)=>{
+    //   if(selected.checked == true){
+    //     setOptsSelected([
+    //       ...optsSelected,
+    //       { opt: selected.opt.name, checked: true, id: selected.opt.id },
+    //     ]);
+    //   }
+    // })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 
@@ -278,14 +279,14 @@ if(addCustomeOption == false){
     return opt?.name?.toLocaleLowerCase().includes(customeField != "" ? customeField.toLocaleLowerCase(): inputValue.toLocaleLowerCase());
   });
 
-  const AddField = async () => {
+  const AddField = async (value:string) => {
     setLoading(true)
     if(Label == "Occasion"){
       const filteredArray = opts?.filter(({ opt }) => {
-        return opt?.name?.toLocaleLowerCase() == customeField.toLocaleLowerCase();
+        return opt?.name?.toLocaleLowerCase() == value.toLocaleLowerCase();
       });
       if(filteredArray.length <= 0 ){
-        let AddField = await addOccasion(customeField)
+        let AddField = await addOccasion(value)
         setCustomeField("");
         setAddCustomeOption(false);
         if(AddField){
@@ -294,8 +295,8 @@ if(addCustomeOption == false){
           // dispatch(setOccasions(updatedOccasionsList))
           let array = opts
           let selected = optsSelected
-          array.unshift({opt:{name:customeField, id:""}, checked: true})
-          selected.unshift({opt:customeField, id:"", checked: true})
+          array.unshift({opt:{name:value, id:""}, checked: true})
+          selected.unshift({opt:value, id:"", checked: true})
           setOpts([...array])
           setOptsSelected([...selected])
         }else{
@@ -309,19 +310,19 @@ if(addCustomeOption == false){
 
     if(Label == "Priority"){
       const filteredArray = opts?.filter(({ opt }) => {
-        return opt?.name?.toLocaleLowerCase() == customeField.toLocaleLowerCase();
+        return opt?.name?.toLocaleLowerCase() == value.toLocaleLowerCase();
       });
 
       if(filteredArray.length <= 0 ){
-        let AddField = await addPriorities(customeField)
+        let AddField = await addPriorities(value)
         setCustomeField("");
         setAddCustomeOption(false);
         if(AddField){
           setLoading(false)
           let array = opts
           let selected = optsSelected
-          array.unshift({opt:{name:customeField, id:""}, checked: true})
-          selected.unshift({opt:customeField, id:"", checked: true})
+          array.unshift({opt:{name:value, id:""}, checked: true})
+          selected.unshift({opt:value, id:"", checked: true})
           setOpts([...array])
           setOptsSelected([...selected])
         }else{
@@ -333,7 +334,8 @@ if(addCustomeOption == false){
       }
     }
     
-    // setCustomeField("");
+    setCustomeField("");
+    setInputValue("")
     // setAddCustomeOption(false);
   };
 
@@ -364,7 +366,12 @@ if(addCustomeOption == false){
             {optsSelected.length <= 0 ?(
             <input className="text-[#999999]  outline-none h-full" placeholder={`Enter ${Label}`} value={inputValue} onChange={(e)=>{
               setInputValue(e.target.value)
-            }}/>
+            }}
+            onFocus = {()=>{
+              setAddFieldError(false)
+              setRequestFailedError(false)
+            }}
+            />
             ):(
               <div className="text-ellipsis overflow-hidden whitespace-nowrap">{selectedOptionString}</div>
             )}
@@ -489,6 +496,7 @@ if(addCustomeOption == false){
               </div>
               {
                 allowSorting && optsSelected.length > 1 && (
+                  <Tooltip title={"Click and Re-order the priorities through drag and drop."}>
                   <div className="text-[var(--blue)]">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.4} stroke="currentColor" className="w-7 h-7 p-[3px] mb-[5px] cursor-pointer"
                     onClick={() => setShowSorting(true)}
@@ -496,6 +504,7 @@ if(addCustomeOption == false){
                       <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
                     </svg>
                   </div>
+                  </Tooltip>
                 )
               }
             </div>
@@ -545,7 +554,7 @@ if(addCustomeOption == false){
             <Box className={`flex items-center text-[20px] ${loading == false ? "block" : "hidden"}`}>
               <AiFillCheckCircle
                 className="text-green-700 cursor-pointer mr-1"
-                onClick={AddField}
+                onClick={()=>{AddField(customeField)}}
               />
               <AiFillCloseCircle
                 className="text-red-500 cursor-pointer"
@@ -564,10 +573,10 @@ if(addCustomeOption == false){
 </div>
           </Box>
           {addFieldError == true && addCustomeOption == true && customeField != "" &&(
-            <p className="text-[red] text-[14px] mt-1 text-center">{Label} already exist.</p>
+            <p className="text-[red] text-[14px] mt-1 text-center">{Label} already exist in the list.</p>
           )}
           {requestFailedError == true && (
-            <p className="text-[red] text-[14px] mt-1 text-center">{Label} not exist.</p>
+            <p className="text-[red] text-[14px] mt-1 text-center">{Label} invalid.</p>
           )}
 
           <Box
@@ -622,7 +631,17 @@ if(addCustomeOption == false){
                 })
               ):(
                 <div className="h-full w-full flex items-center justify-center px-2 mt-10">
-<p className="text-black text-[14px] mt-1 text-center">{Label} not exist.
+<p className="text-black text-[14px] mt-1 text-center">{Label} not exist. {addCustomeOption == false && (
+  <span>
+    <span className="text-[#009de2] underline cursor-pointer" onClick={()=>{
+      if(optsSelected.length <= 0){
+        AddField(inputValue)
+      }else{
+        setAddCustomeOption(true)
+      }
+    }}>Add {Label} </span> if you want.
+  </span>
+)}
 </p>
                 </div>
               )}

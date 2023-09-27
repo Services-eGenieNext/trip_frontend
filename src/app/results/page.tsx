@@ -81,7 +81,6 @@ export default function Results() {
     _Occassions()
     _Priorities()
     _TopCities()
-    console.log('surveySlice', surveySlice)
   },[])
 
   useEffect(()=>{

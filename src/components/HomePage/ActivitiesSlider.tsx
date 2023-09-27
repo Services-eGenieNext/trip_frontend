@@ -105,7 +105,7 @@ function ActivitiesSlider({activitiesState}:any) {
     infinite: true,
     speed: 500,
     slidesToShow: 4,
-    slidesToScroll: 1,
+    slidesToScroll: 4,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     responsive: [
@@ -113,7 +113,7 @@ function ActivitiesSlider({activitiesState}:any) {
         breakpoint: 1200,
         settings: {
         slidesToShow: 3,
-        slidesToScroll: 1,
+        slidesToScroll: 3,
         infinite: false,
         dots: false,
         nextArrow: <SampleNextArrow />,
@@ -124,7 +124,7 @@ function ActivitiesSlider({activitiesState}:any) {
         breakpoint: 800,
         settings: {
         slidesToShow: 2,
-        slidesToScroll: 1,
+        slidesToScroll: 2,
         infinite: false,
         dots: false,
         nextArrow: <SampleNextArrow />,
@@ -162,31 +162,29 @@ function ActivitiesSlider({activitiesState}:any) {
           <Slider {...settings}>
           {loading === true
               ? skelton.map((limit: string, index: number) => {
-                  return (
-                    <div
+                return (
+                  <div
                     key={index}
-                      role="status"
-                      className="max-w-sm rounded animate-pulse relative px-4 flex flex-col items-center"
-                    >
-                      <div className="flex items-center h-[200px] justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700">
-                        <svg
-                          className="w-10 h-10 text-gray-200 dark:text-gray-600"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 16 20"
-                        >
-                          <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
-                          <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
-                        </svg>
-                        <div className="absolute bottom-4 left-0 w-full flex justify-center">
-                      <div className="h-[35px] bg-gray-200 rounded-md dark:bg-gray-700 w-[60%] mb-4"></div>
-                        </div>
-                      </div>
-                      <span className="sr-only">Loading...</span>
+                    role="status"
+                    className="max-w-sm rounded animate-pulse h-[350px] md:max-w-[300px] relative px-3 md:mt-0 mt-10"
+                  >
+                    <div className="flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 h-[350px]">
+                      <svg
+                        className="w-10 h-10 text-gray-200 dark:text-gray-600"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 16 20"
+                      >
+                        <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+                        <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+                      </svg>
                     </div>
-                  );
-                })
+                    <div className="h-[40px] bg-gray-200 rounded-md dark:bg-gray-700 w-[50%] mb-4 absolute bottom-4 left-6 z-10"></div>
+                    <span className="sr-only">Loading...</span>
+                  </div>
+                );
+              })
               :(
                 activity?.map(
                     (
@@ -200,9 +198,9 @@ function ActivitiesSlider({activitiesState}:any) {
                         : activities.name + " " +activities.details.address_components[0].long_name + " " +
                         activities.details.address_components[1].long_name;
                       return (
-                        <div key={index} className='px-4'>
-                          <div className={`flex flex-col items-center justify-center w-full relative cursor-pointer ${CSS["slider_card"]}`}>
-                            <div className="h-[200px] w-full relative rounded-xl overflow-hidden">
+                        <div key={index} className={`px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10`}>
+                          <div className={`rounded-xl border shadow-sm overflow-hidden h-full relative cursor-pointer ${CSS["slider_card"]}`}>
+                            <div className="h-[310px] bg-gray-100 relative">
                               <Image src={image_path} fill={true} alt={image_path} style={{objectFit: "cover"}}
                               />
                               <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center z-10 ${CSS["hover_overlay"]}`}>

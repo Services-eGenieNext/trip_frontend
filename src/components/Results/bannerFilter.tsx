@@ -255,9 +255,12 @@ export default function HeroFilterSection({ surveyData }: any) {
 
       <DateRangeField
         label="Travel Date"
-        className={`mr-2 sm:my-2 my-5 sm:w-[250px] ${styles.inputWrapper}`}
+        placeholder="Select ..."
+        className={`sm:mr-2 sm:my-2 my-7 sm:w-[250px] h-[46px] ${styles.inputWrapper}`}
         value={date}
-        onChange={(value) => setDate(value)}
+        onChange={(value) => {
+          setDate({...date, startDate: value.startDate, endDate: value.endDate})
+        }}
         icon={<CalenderIcon />}
       />
 
