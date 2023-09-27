@@ -107,7 +107,7 @@ const TripPlan = () => {
                 params_list.address && 
                 <TripPlanningCard 
                     params_list={params_list}
-                    address={`${params_list.address}`} 
+                    survey={surveySlice}
                     totalOpeningHours={openingHours} 
                     automateLocation={automateLocation} 
                     v_type={params_list.v_type}
