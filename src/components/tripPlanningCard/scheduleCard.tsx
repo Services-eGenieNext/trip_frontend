@@ -4,10 +4,9 @@ import { IPlanningCard } from "@/interfaces/TripPlan";
 import InputField from "../UIComponents/InputField/InputField";
 import { LocationsDurationCall } from "@/api-calls";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
+import { setDestination, setItineraryDays } from "@/redux/reducers/itinerarySlice";
 import SelectField from "../UIComponents/InputField/SelectField";
 import { _calculateStartAndEndTime } from "./pricing-cards/functions";
-import { ITime } from "@/interfaces";
 import { useAlertContext } from "@/contextapi/Alert";
 
 interface IScheduleCard extends IPlanningCard {
@@ -226,10 +225,16 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
   return (
     <>
     {
-      (time.suggestedTime?.duration_time || duration) && <span className={`flex rounded-full px-2 h-max bg-[var(--blue)] text-white text-[12px] whitespace-nowrap w-max -translate-y-full`}>{time.suggestedTime?.duration_time ? time.suggestedTime?.duration_time : duration}</span>
+      (time.suggestedTime?.duration_time || duration) && <span className={`flex rounded-full px-2 h-max bg-[var(--blue)] text-white hover:underline text-[12px] whitespace-nowrap w-max -translate-y-full cursor-pointer select-none shadow-lg`}
+      style={{textUnderlinePosition: "under"}}
+      onClick={(e) => {
+        e.preventDefault()
+        dispatch(setDestination({origin: distanceObject.origin, destination: distanceObject.destination}))
+      }}
+      >{time.suggestedTime?.duration_time ? time.suggestedTime?.duration_time : duration}</span>
     }
     <div ref={cardRef}
-      className={`flex gap-x-4 mb-10 h-full ${CSS["pricingCard"]}`}
+      className={`flex gap-x-4 mb-10 h-full ${CSS["pricingCard"]} relative`}
 
       onDrop={(e) => onDropFunc(e)}
       onDragOver={(e) => {
@@ -241,17 +246,17 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
         setIsDragOver(false)
       }}
     >
-      <div className={`mt-6`}>
+      <div className={`absolute top-[50%] translate-y-[-50%]`}>
         <div>
           <div className="w-[20px] h-[20px] bg-[#AEDCF0] rounded-full flex justify-center items-center">
             <div className="w-[10px] h-[10px] bg-[#009DE2] rounded-full"></div>
           </div>
         </div>
-        <div className={`h-full ml-2 ${CSS["divider"]}`} />
+        <div className={`h-full ml-2 ${CSS["divider"]} absolute top-[50%] mt-[1rem]`} />
       </div>
       <span
-        className={`text-[13px] max-w-[259px] w-full hover:text-[#009DE2] p-4 rounded-lg ${CSS["plan-time-wrapper"]} ${variation === "list" ? '' : 'hover:bg-white ml-2 mr-4'} ${isDragOver ? 'bg-white text-[#009DE2] shadow-lg' : 'text-black'}`} >
-        <div className="flex justify-between items-center gap-2">
+        className={`ml-[2rem] text-[13px] w-max hover:text-[#009DE2] p-4 rounded-lg ${CSS["plan-time-wrapper"]} ${variation === "list" ? '' : 'hover:bg-white ml-2 mr-4'} ${isDragOver ? 'bg-white text-[#009DE2] shadow-lg' : 'text-black'}`} >
+        <div className="flex items-center gap-2">
           <p className="gilroy text-[11px] font-semibold cursor-pointer" onClick={() => onClickItem()}>{
                 !time.suggestedTime?.startTime && !time.suggestedTime?.endTime ? (
                     time.time
@@ -259,8 +264,8 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
                     (time.suggestedTime?.startTime ? (formatTime(time.suggestedTime.startTime)+ ' ') : " ") + (time.suggestedTime?.endTime ? '- '+(formatTime(time.suggestedTime.endTime)) : "")
                 )
             } - </p>
-          <div className="flex justify-between items-center">
-            <p className="font-medium w-[90px] cursor-pointer text-ellipsis whitespace-nowrap overflow-hidden" title={items.name} onClick={() => onClickItem()}>{suggestedLocation ? suggestedLocation : items.name}</p>
+          <div className="flex justify-between items-center mr-2">
+            <p className="font-medium cursor-pointer text-ellipsis whitespace-nowrap overflow-hidden w-full max-w-[200px] mr-2" title={items.name} onClick={() => onClickItem()}>{suggestedLocation ? suggestedLocation : items.name}</p>
             {isDropdownButton == true ? (
               <div className="relative">
                 <span
