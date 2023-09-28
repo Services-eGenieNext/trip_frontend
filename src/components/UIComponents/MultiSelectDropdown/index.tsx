@@ -572,10 +572,10 @@ if(addCustomeOption == false){
     </svg>
 </div>
           </Box>
-          {addFieldError == true && addCustomeOption == true && customeField != "" &&(
+          {addFieldError == true && addCustomeOption == true && customeField != "" && Label != "Location"  &&(
             <p className="text-[red] text-[14px] mt-1 text-center">{Label} already exist in the list.</p>
           )}
-          {requestFailedError == true && (
+          {requestFailedError == true && Label != "Location" && (
             <p className="text-[red] text-[14px] mt-1 text-center">{Label} invalid.</p>
           )}
 
@@ -633,7 +633,7 @@ if(addCustomeOption == false){
                 })
               ):(
                 <div className="h-full w-full flex items-center justify-center px-2 mt-10">
-<p className="text-black text-[14px] mt-1 text-center">{Label} not exist. {addCustomeOption == false && (
+<p className="text-black text-[14px] mt-1 text-center">{Label} not exist. {addCustomeOption == false && Label != "Location" && (
   <span>
     <span className="text-[#009de2] underline cursor-pointer" onClick={()=>{
       if(optsSelected.length <= 0){
