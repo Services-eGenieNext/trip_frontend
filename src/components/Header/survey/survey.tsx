@@ -435,7 +435,7 @@ setSurvey({...survey, location:"" })
                       }}
                     />
                   )}
-                  {options.value == "no" && (
+                  {options.value == "no" && options.field == true && (
                     <MultiSelectDropdown
                     // searchBar
                     items={dropdownLocationValue}
@@ -444,7 +444,7 @@ setSurvey({...survey, location:"" })
                     Label={"Location"}
                     heightItemsContainer="300px"
                     SelectedData={survey.occassion}
-                    className={`sm:mr-2 sm:my-2 my-5 max-w-[400px] h-[46px]`}
+                    className={`sm:mr-2 sm:my-2 my-5 w-[400px] h-[46px]`}
                     placeholder="Select..."
                     onChange={(val: any) =>
                       setSurvey({...survey, location: "USA"})
