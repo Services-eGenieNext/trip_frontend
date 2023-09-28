@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import InputField from "../UIComponents/InputField/inputWithSuggestions";
+import InputField from "../UIComponents/InputField/locationInput";
 import SimpleLocation from "../icons/SimpleLocation";
 import CalenderIcon from "../icons/Calender";
 import BlueButton from "../UIComponents/Buttons/BlueButton";
 import SelectField from "../UIComponents/InputField/SelectField";
 import Occasion from "@/data/occasion.json";
 import LocationJson from "@/data/location.json";
-import SpendingValue from '@/data/spending.json'
+import SpendingValue from "@/data/spending.json";
 import Travelers from "@/data/travelers.json";
 import Priority from "@/data/priority.json";
 import DateRangeField from "../UIComponents/InputField/DateRangeField";
@@ -14,187 +14,325 @@ import styles from "./hero.module.css";
 import { Range } from "react-date-range";
 import { addDays } from "date-fns";
 import { useRouter } from "next/navigation";
-import { useAppDispatch,useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setSurveyValue } from "@/redux/reducers/surveySlice";
 import { setLocations } from "@/redux/reducers/locationSlice";
 import MultiSelectDropdown from "@/components/UIComponents/MultiSelectDropdown";
 import OccassionsIncrement from "@/api-calls/fromDB/occasionsTrendingIncrement";
 import PrioritiesIncrement from "@/api-calls/fromDB/prioritiesTrendingIncrement";
 import LocationIncrement from "@/api-calls/fromDB/topCountriesIncrement";
-import Occassions from '@/api-calls/fromDB/occassions'
-import { setOccasions } from '@/redux/reducers/occasionsSlice'
-import Priorities from '@/api-calls/fromDB/priority'
-import { setPriorities } from '@/redux/reducers/prioritySlice'
-import TopCountries from '@/api-calls/fromDB/topCountries'
-import { setTopCountries } from '@/redux/reducers/topCountries'
+import Occassions from "@/api-calls/fromDB/occassions";
+import { setOccasions } from "@/redux/reducers/occasionsSlice";
+import Priorities from "@/api-calls/fromDB/priority";
+import { setPriorities } from "@/redux/reducers/prioritySlice";
+import TopCountries from "@/api-calls/fromDB/topCountries";
+import { setTopCountries } from "@/redux/reducers/topCountries";
+import { setTopCities } from "@/redux/reducers/topCities";
 import AddLocation from "@/api-calls/fromDB/addLocation";
-import TopCities from '@/api-calls/fromDB/topCities'
+import TopCities from "@/api-calls/fromDB/topCities";
 import AddCities from "@/api-calls/fromDB/addCities";
 import TopCitiesIncrement from "@/api-calls/fromDB/topCitiesIncrement";
+import ContinentLocation from "@/data/continent.json";
+import TopCountriesIncrement from "@/api-calls/fromDB/topCountriesIncrement";
 
 export default function HeroFilterSection() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [date, setDate] = useState<Range>({
-    key: "selection"
+    key: "selection",
   });
 
-  const [startedDayIndex, setStartedDayIndex] = useState<number | null>(null)
-  const [daysLength, setDaysLength] = useState<number | null>(null)
+  const [startedDayIndex, setStartedDayIndex] = useState<number | null>(null);
+  const [daysLength, setDaysLength] = useState<number | null>(null);
   const { surveySlice } = useAppSelector((state) => state.surveyReducer);
-  const [saveData, setSaveData] = useState(false)
+  const [saveData, setSaveData] = useState(false);
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
   const { priorityState } = useAppSelector((state) => state.prioritySlice);
-  const { topCountriesState } = useAppSelector((state) => state.topCountriesSlice);
-  const [occasions,setOccasionsArray] = useState<any>([])
-  const [prioritiesValue, setPrioritiesValue] = useState<any>([])
-  const [topCountriesValue, setTopCountriesValue] = useState<any>([])
-  const [invalidLocation,setInvalidLocation] = useState(false)
-  const [locationRequired,setLocationRequired] = useState(false)
+  const { topCountriesState } = useAppSelector(
+    (state) => state.topCountriesSlice
+  );
+  const { topCitiesState } = useAppSelector((state) => state.topCitiesSlice);
+  const [occasions, setOccasionsArray] = useState<any>([]);
+  const [prioritiesValue, setPrioritiesValue] = useState<any>([]);
+  const [topCountriesValue, setTopCountriesValue] = useState<any>([]);
+  const [topCitiesValue, setTopCitiesValue] = useState<any>([]);
+  const [invalidLocation, setInvalidLocation] = useState(false);
+  const [locationRequired, setLocationRequired] = useState(false);
+  const [locationDropdownValue, setLocationDropdownValue] = useState<any[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [buttonText, setButtonText] = useState("Look For Inspiration");
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: [],
     priority: [],
     person: "",
     dates: "",
-    spending:"",
+    spending: "",
   });
-  const [url_address, setUrlAddress] = useState('')
+  const [url_address, setUrlAddress] = useState("");
 
-  useEffect(()=>{
-    if(ocassionsState?.length > 0){
-      setOccasionsArray(ocassionsState)
-    }else{
-      setOccasionsArray([])
+  useEffect(() => {
+    if (ocassionsState?.length > 0) {
+      setOccasionsArray(ocassionsState);
+    } else {
+      setOccasionsArray([]);
     }
-  },[ocassionsState])
+  }, [ocassionsState]);
 
-  useEffect(()=>{
-    if(priorityState?.length > 0){
-      setPrioritiesValue(priorityState)
-    }else{
-      setPrioritiesValue([])
+  useEffect(() => {
+    if (priorityState?.length > 0) {
+      setPrioritiesValue(priorityState);
+    } else {
+      setPrioritiesValue([]);
     }
-  },[priorityState])
+  }, [priorityState]);
 
-  useEffect(()=>{
-    if(topCountriesState?.length > 0){
-      setTopCountriesValue(topCountriesState)
-    }else{
-      setTopCountriesValue([])
+  useEffect(() => {
+    if (topCountriesState?.length > 0) {
+      setTopCountriesValue(topCountriesState);
+    } else {
+      setTopCountriesValue([]);
     }
-  },[topCountriesState])
+  }, [topCountriesState]);
 
-  useEffect(()=>{
+  useEffect(() => {
+    if (topCitiesState?.length > 0) {
+      setTopCitiesValue(topCitiesState);
+    } else {
+      setTopCitiesValue([]);
+    }
+  }, [topCitiesState]);
 
+  useEffect(() => {
     const _def = async () => {
-      let url = locationSearch.location ? locationSearch.location : ""
+      let url = locationSearch.location ? locationSearch.location : "";
 
-      let occassion_arr = await locationSearch.occassion.map((oc: any) => oc.opt)
-      let priority_arr = await locationSearch.priority.map((pr: any) => pr.opt)
-      let arr = occassion_arr.concat(...priority_arr)
+      let occassion_arr = await locationSearch.occassion.map(
+        (oc: any) => oc.opt
+      );
+      let priority_arr = await locationSearch.priority.map((pr: any) => pr.opt);
+      let arr = occassion_arr.concat(...priority_arr);
 
-      url = (url.trim() != "" && arr.length > 0) ? `${arr.join(',')} in ${url}` : url
+      url =
+        url.trim() != "" && arr.length > 0 ? `${arr.join(",")} in ${url}` : url;
 
-      setUrlAddress(url)
-    }
+      setUrlAddress(url);
+    };
 
-    _def()
-  },[locationSearch])
+    _def();
+  }, [locationSearch]);
 
   useEffect(() => {
     let data = {
       location: surveySlice.location,
-      occassion: surveySlice.occassion && surveySlice.occassion.length > 0 ? surveySlice.occassion : [],
-      priority: surveySlice.priority && surveySlice.priority.length > 0 ? surveySlice.priority : [],
+      occassion:
+        surveySlice.occassion && surveySlice.occassion.length > 0
+          ? surveySlice.occassion
+          : [],
+      priority:
+        surveySlice.priority && surveySlice.priority.length > 0
+          ? surveySlice.priority
+          : [],
       person: surveySlice.person ? surveySlice.person : "",
       spending: surveySlice.spending ? surveySlice.spending : "",
       dates: "",
-    }
-    setSaveData(true)
-    setLocationSearch(
-      data
-    );
+    };
+    setSaveData(true);
+    setLocationSearch(data);
   }, [surveySlice]);
 
   useEffect(() => {
     setLocationSearch({ ...locationSearch, dates: date });
 
     const calculateDaysRemaining = () => {
-      if(date?.endDate && date?.startDate)
-      {
-        const endDate = new Date(date?.endDate)
-        const startDate = new Date(date?.startDate)
-        setStartedDayIndex(startDate.getDay())
-        
-        const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+      if (date?.endDate && date?.startDate) {
+        const endDate = new Date(date?.endDate);
+        const startDate = new Date(date?.startDate);
+        setStartedDayIndex(startDate.getDay());
+
+        const timeDifference = Math.abs(
+          endDate.getTime() - startDate.getTime()
+        );
         const daysRemaining = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-        setDaysLength(daysRemaining+1)
+        setDaysLength(daysRemaining + 1);
       }
     };
 
     calculateDaysRemaining();
   }, [date]);
 
+  useEffect(() => {
+    if (topCitiesValue.length > 0) {
+      const newArray: any = topCitiesValue?.map((opt: any) => ({
+        ...opt,
+        type: "city",
+      }));
+      setLocationDropdownValue(newArray);
+    } else {
+      if (topCountriesValue.length > 0) {
+        const newArray: any = topCountriesValue?.map((opt: any) => ({
+          ...opt,
+          type: "country",
+        }));
+        setLocationDropdownValue(newArray);
+      } else {
+        const newArray: any = ContinentLocation?.map((opt: any) => ({
+          ...opt,
+          type: "continent",
+        }));
+        setLocationDropdownValue(newArray);
+      }
+    }
+  }, [topCitiesValue, topCountriesValue]);
+
   const ValidateData = async () => {
-    if(locationSearch.occassion.length > 0){
-      for(var i = 0; i < locationSearch.occassion.length; i++){
-        let res = await OccassionsIncrement(locationSearch.occassion[i].id)
-        if(res){
-          let updatedOccasionsList = await Occassions()
-          dispatch(setOccasions(updatedOccasionsList))
+    const filteredCity = topCitiesValue.filter((country: any) => {
+      return (
+        country?.name?.toLocaleLowerCase() ==
+        selectedLocation.toLocaleLowerCase()
+      );
+    });
+    if (locationSearch.occassion.length > 0) {
+      for (var i = 0; i < locationSearch.occassion.length; i++) {
+        let res = await OccassionsIncrement(locationSearch.occassion[i].id);
+        if (res) {
+          let updatedOccasionsList = await Occassions();
+          dispatch(setOccasions(updatedOccasionsList));
         }
       }
     }
-    if(locationSearch.priority.length > 0){
-      for(var i = 0; i < locationSearch.priority.length; i++){
-        let res = await PrioritiesIncrement(locationSearch.priority[i].id)
-        if(res){
-          let updatedOccasionsList = await Priorities()
-          dispatch(setPriorities(updatedOccasionsList))
+    if (locationSearch.priority.length > 0) {
+      for (var i = 0; i < locationSearch.priority.length; i++) {
+        let res = await PrioritiesIncrement(locationSearch.priority[i].id);
+        if (res) {
+          let updatedOccasionsList = await Priorities();
+          dispatch(setPriorities(updatedOccasionsList));
         }
       }
     }
-    if (locationSearch.dates.startDate) {
-      router.push("/trip-plan?address=" + url_address + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
+    if (filteredCity.length > 0) {
+      router.push(
+        "/trip-plan?address=" +
+          url_address +
+          "&start_day_index=" +
+          startedDayIndex +
+          "&days_length=" +
+          daysLength
+      );
     } else {
       router.push("/results?address=" + url_address);
-      dispatch(setSurveyValue(locationSearch))
+      dispatch(setSurveyValue(locationSearch));
     }
-  }
+  };
 
   const handleRoute = async () => {
-    dispatch(setSurveyValue(locationSearch))
-    if(locationSearch.location == ""){
-      setLocationRequired(true)
-    }else{
-      if(locationSearch.location != ""){
-        const filtered = topCountriesValue?.filter((country:any) => {
-          return country?.name?.toLocaleLowerCase() == locationSearch.location.toLocaleLowerCase();
-        });
-        if(filtered.length > 0){
-          for(var i = 0; i < filtered.length; i++){
-            console.log(filtered[i].id)
-            let res = await TopCitiesIncrement(filtered[i].id)
-            if(res){
-              let updatedOccasionsList = await TopCities()
-              dispatch(setTopCountries(updatedOccasionsList))
-              ValidateData()
+    dispatch(setSurveyValue(locationSearch));
+    if (locationSearch.location == "") {
+      setLocationRequired(true);
+    } else {
+      const filteredCity = topCitiesValue.filter((country: any) => {
+        return (
+          country?.name?.toLocaleLowerCase() ==
+          selectedLocation.toLocaleLowerCase()
+        );
+      });
+
+      const filteredCountry = topCountriesValue.filter((country: any) => {
+        return (
+          country?.name?.toLocaleLowerCase() ==
+          selectedLocation.toLocaleLowerCase()
+        );
+      });
+
+      const filteredContinent = ContinentLocation.filter((country: any) => {
+        return (
+          country?.name?.toLocaleLowerCase() ==
+          selectedLocation.toLocaleLowerCase()
+        );
+      });
+
+      if (
+        filteredCity.length > 0 ||
+        filteredCountry.length > 0 ||
+        filteredContinent.length > 0
+      ) {
+        if (filteredCity.length > 0) {
+            let res = await TopCitiesIncrement(filteredCity[0].id);
+            if (res) {
+              let updatedOccasionsList = await TopCities();
+              dispatch(setTopCities(updatedOccasionsList));
+              ValidateData();
             }
-          }
+        }
+        if (filteredCountry.length > 0) {
+            let res = await TopCountriesIncrement(filteredCountry[0].id);
+            if (res) {
+              let updatedOccasionsList = await TopCountries();
+              dispatch(setTopCountries(updatedOccasionsList));
+              ValidateData();
+            }
+        }
+        if (filteredContinent.length > 0) {
+          ValidateData();
+        }
+      } else {
+          let res = await AddCities(selectedLocation);
+          if (res) {
+            let updatedOccasionsList = await TopCities();
+            dispatch(setTopCities(updatedOccasionsList));
+            ValidateData();
         }else{
-          let res = await AddCities(locationSearch.location)
-          if(res){
-            let updatedOccasionsList = await TopCities()
-              dispatch(setTopCountries(updatedOccasionsList))
-              ValidateData()
+            let res = await AddLocation(selectedLocation);
+            if (res) {
+              let updatedOccasionsList = await TopCountries();
+              dispatch(setTopCountries(updatedOccasionsList));
+              ValidateData();
           }else{
-            setInvalidLocation(true)
+            if (filteredContinent.length > 0) {
+              ValidateData();
+            }else{
+              setInvalidLocation(true);
+            }
           }
         }
       }
     }
   };
+
+  useEffect(() => {
+    const filteredCity = topCitiesValue.filter((country: any) => {
+      return (
+        country?.name?.toLocaleLowerCase() ==
+        selectedLocation.toLocaleLowerCase()
+      );
+    });
+
+    const filteredCountry = topCountriesValue.filter((country: any) => {
+      return (
+        country?.name?.toLocaleLowerCase() ==
+        selectedLocation.toLocaleLowerCase()
+      );
+    });
+
+    const filteredContinent = ContinentLocation.filter((country: any) => {
+      return (
+        country?.name?.toLocaleLowerCase() ==
+        selectedLocation.toLocaleLowerCase()
+      );
+    });
+
+    if (filteredCity.length > 0) {
+      setButtonText("Automate My trip");
+    } else {
+      setButtonText("Look For Inspiration");
+    }
+    if (filteredCountry.length > 0) {
+      setButtonText("Look For Inspiration");
+    }
+    if (filteredContinent.length > 0) {
+      setButtonText("Look For Inspiration");
+    }
+  }, [selectedLocation]);
 
   return (
     <div
@@ -218,29 +356,35 @@ export default function HeroFilterSection() {
         onAdditionalChange={(_data) => {}}
       /> */}
       <div className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px]`}>
-      <InputField
-        className={`sm:w-[170px] h-[46px]`}
-        name="location"
-        type="text"
-        label="Location"
-        placeholder="Enter Location"
-        value={locationSearch?.location}
-        items={topCountriesValue}
-        icon={<SimpleLocation />}
-        onChange={(val:any)=>{
-          setLocationSearch({...locationSearch, location: val})
-        }}
-        onFocus = {()=>{
-          setInvalidLocation(false)
-          setLocationRequired(false)
-        }}
-      />
-      {invalidLocation == true && (
-      <p className="text-[red] text-[14px] mt-3">Invalid Location.</p>
-      )}
-      {locationRequired == true && (
-        <p className="text-[red] text-[14px] mt-3">Location Required.</p>
-      )}
+        <InputField
+          className={`sm:w-[170px] h-[46px]`}
+          name="location"
+          type="text"
+          label="Location"
+          placeholder="Enter Location"
+          locationList={{
+            city: topCitiesValue,
+            country: topCountriesValue,
+            continent: ContinentLocation,
+          }}
+          value={locationSearch?.location}
+          items={locationDropdownValue}
+          icon={<SimpleLocation />}
+          onChange={(val: any) => {
+            setSelectedLocation(val);
+            setLocationSearch({ ...locationSearch, location: val });
+          }}
+          onFocus={() => {
+            setInvalidLocation(false);
+            setLocationRequired(false);
+          }}
+        />
+        {invalidLocation == true && (
+          <p className="text-[red] text-[14px] mt-3">Invalid Location.</p>
+        )}
+        {locationRequired == true && (
+          <p className="text-[red] text-[14px] mt-3">Location Required.</p>
+        )}
       </div>
 
       <DateRangeField
@@ -249,42 +393,52 @@ export default function HeroFilterSection() {
         className={`sm:mr-2 sm:my-2 my-7 sm:w-[250px] h-[46px] ${styles.inputWrapper}`}
         value={date}
         onChange={(value) => {
-          setDate({...date, startDate: value.startDate, endDate: value.endDate})
+          setDate({
+            ...date,
+            startDate: value.startDate,
+            endDate: value.endDate,
+          });
         }}
         icon={<CalenderIcon />}
       />
 
-      <MultiSelectDropdown key={1}
+      <MultiSelectDropdown
+        key={1}
         // searchBar
         items={occasions}
         Label={"Occasion"}
         heightItemsContainer="300px"
         className={"sm:w-[170px]"}
-        SelectedData={locationSearch.occassion.length > 0 ? locationSearch.occassion : []}
+        SelectedData={
+          locationSearch.occassion.length > 0 ? locationSearch.occassion : []
+        }
         saveData={saveData}
         setSaveData={setSaveData}
         placeholder="Enter Occasion"
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, occassion: val })
         }
-        dropdownWidth = "sm:w-[300px]"
+        dropdownWidth="sm:w-[300px]"
       />
 
-      <MultiSelectDropdown key={2}
+      <MultiSelectDropdown
+        key={2}
         // searchBar
         items={prioritiesValue}
         Label={"Priority"}
         allowSorting={true}
         heightItemsContainer="300px"
         className={"sm:w-[170px]"}
-        SelectedData={locationSearch.priority.length > 0 ? locationSearch.priority : []}
+        SelectedData={
+          locationSearch.priority.length > 0 ? locationSearch.priority : []
+        }
         saveData={saveData}
         setSaveData={setSaveData}
         placeholder="Enter Priority"
         onChange={(val: any) =>
           setLocationSearch({ ...locationSearch, priority: val })
         }
-        dropdownWidth = "sm:w-[300px]"
+        dropdownWidth="sm:w-[300px]"
       />
 
       <SelectField
@@ -312,7 +466,7 @@ export default function HeroFilterSection() {
       />
 
       <BlueButton
-        title={locationSearch.dates.startDate ? "Automate My trip" : "Look For Inspiration"}
+        title={buttonText}
         className="sm:w-[200px] w-full h-[56px]"
         onClick={handleRoute}
       />

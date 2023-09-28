@@ -22,8 +22,7 @@ export default function FilterSidebar({locations,setLocationsData,setClearFilter
 
   useEffect(()=>{
     const filteredArray = locationArray.filter((list:any)=>{
-      console.log(Ranking, list?.details?.rating , "rating")
-      return Ranking == list?.details?.rating
+      return Ranking <= list?.details?.rating
     })
     setLocationsData(filteredArray)
   },[Ranking])
