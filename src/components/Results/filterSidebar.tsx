@@ -8,12 +8,15 @@ import Activities from '@/data/priority.json'
 import CardOptionsSearchListing from './filtersOptionsSearch'
 import { useAppSelector } from "@/redux/hooks";
 
-export default function FilterSidebar({locations,setLocationsData,setClearFilter,clearFilter}:any) {
+export default function FilterSidebar({locations,setLocationsData,setClearFilter,clearFilter, locationSearch}:any) {
 
   const [locationArray,setLocationArray] = useState([])
 
   const [showFilter, setShowFilter] = useState(false)
   const [Ranking, setRanking] = useState("")
+  const [selectedActivities, setSelectedActivities] = useState<any[]>([])
+  const [selectedOccasions, setSelectedOccasions] = useState<any[]>([])
+
   const { surveySlice } = useAppSelector(state => state.surveyReducer)
   
   useEffect(()=>{
@@ -26,6 +29,28 @@ export default function FilterSidebar({locations,setLocationsData,setClearFilter
     })
     setLocationsData(filteredArray)
   },[Ranking])
+
+  useEffect(()=>{
+    const defLoad = async () => {
+      let url = surveySlice.location ? surveySlice.location : "";
+
+      let occassion_arr = await selectedOccasions.map(
+        (oc: any) => oc.name
+      );
+      let priority_arr = await selectedActivities.map((pr: any) => pr.name);
+
+      console.log('priority_arr', priority_arr)
+
+      let arr = occassion_arr.concat(...priority_arr);
+      if(arr.length > 0)
+      {
+        url = url.trim() != "" && arr.length > 0 ? `${arr.join(",")} in ${url}` : url;
+        console.log('url', url)
+        locationSearch(url)
+      }
+    }
+    defLoad()
+  },[selectedActivities, selectedOccasions])
 
   return (
     <>
@@ -76,13 +101,17 @@ export default function FilterSidebar({locations,setLocationsData,setClearFilter
             surveySlice.priority.map((pr: any, index: number) => {
               return {
                 id: index,
-                name: pr.opt
+                name: pr.opt,
+                checked: selectedActivities.find(act => act.name == pr.opt) ? true : false
               }
             })
           }
-          // onChange={handleRetailer}
+          onChange={async (values: any[]) => {
+            console.log('values', values)
+            setSelectedActivities(values)
+          }}
           clearData={clearFilter}
-          // selectedData={selectedRetailer}
+          // selectedData={selectedActivities}
         />
       )}
 
@@ -98,13 +127,16 @@ export default function FilterSidebar({locations,setLocationsData,setClearFilter
             categories={surveySlice.occassion.map((oc: any, index: number) => {
                 return {
                   id: index,
-                  name: oc.opt
+                  name: oc.opt,
+                  checked: selectedOccasions.find(act => act.name == oc.opt) ? true : false
                 }
               })
             }
             clearData={clearFilter}
-            // onChange={handleRetailer}
-            // selectedData={selectedRetailer}
+            onChange={(values: any[]) => {
+              setSelectedOccasions(values)
+            }}
+            // selectedData={selectedOccasions}
           />
         )
       }

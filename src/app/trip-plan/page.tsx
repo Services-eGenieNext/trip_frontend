@@ -61,7 +61,7 @@ const TripPlan = () => {
             }
             else if(params_list.place_id)
             {
-                let item_Detail: any = await DetailsCallByGoogle(params_list.place_id)
+                let item_Detail: any = await DetailsCallByGoogle(`${params_list.place_id}&fields=address_components,place_id,photos,name,formatted_address,editorial_summary,rating,reviews,opening_hours`)
                 if(item_Detail.data?.result)
                 {
                     setAutomateLocation(item_Detail.data.result)

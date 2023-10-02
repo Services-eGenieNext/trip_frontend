@@ -13,7 +13,7 @@ export default function CardOptionsSearchListing({
 }: {
   title?: string;
   categories?: any;
-  onChange?: Function;
+  onChange?: (val: any[]) => void;
   clearData?: any;
   selectedData?: any;
 }) {
@@ -28,32 +28,32 @@ export default function CardOptionsSearchListing({
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   const currentPost = opt.slice(indexOfFirstPost, indexOfLastPost);
 
-  useEffect(() => {
-    if (selectedData?.length > 0) {
-      opt?.map((item: any) => {
-        item.checked = false;
-        setCheck(true);
-      });
-    } else {
-      opt?.map((item: any) => {
-        item.checked = false;
-        setOptSelected([]);
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedData]);
+  // useEffect(() => {
+  //   if (selectedData?.length > 0) {
+  //     opt?.map((item: any) => {
+  //       item.checked = false;
+  //       setCheck(true);
+  //     });
+  //   } else {
+  //     opt?.map((item: any) => {
+  //       item.checked = false;
+  //       setOptSelected([]);
+  //     });
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedData]);
 
-  useEffect(() => {
-    if (check == true) {
-      if (selectedData?.length > 0) {
-        setOptSelected(selectedData);
-        setCheck(false);
-      } else {
-        setOptSelected([]);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [check]);
+  // useEffect(() => {
+  //   if (check == true) {
+  //     if (selectedData?.length > 0) {
+  //       setOptSelected(selectedData);
+  //       setCheck(false);
+  //     } else {
+  //       setOptSelected([]);
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [check]);
 
 //   useEffect(() => {
 //     let empty: any = [];
@@ -67,26 +67,31 @@ export default function CardOptionsSearchListing({
 //   }, [optSelected]);
 
   useEffect(() => {
-    const newArray = categories?.map((name: any, index: any) => ({
-      name: name?.name,
-      checked: false,
-      id: name?.id,
-    }));
-    setOpt(newArray);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const _load = async () => {
+      const newArray = await categories?.map((name: any, index: any) => {
+        return {
+          name: name?.name,
+          checked: name.checked ? name.checked : false,
+          id: name?.id,
+        }
+      });
+      setOpt(newArray);
+    }
+
+    _load()
+
   }, [categories]);
 
   useEffect(() => {
     if (clearData == true) {
-      setOptSelected([]);
+      // setOptSelected([]);
       const newArray = categories?.map((name: any, index: any) => ({
         name: name?.name,
         checked: false,
         id: name?.id,
       }));
-      setOpt(newArray);
+      // setOpt(newArray);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [clearData]);
 
   const FetchData = (opt: any, optSelected: any) => {
@@ -99,28 +104,37 @@ export default function CardOptionsSearchListing({
     });
   };
 
-  useEffect(() => {
-    FetchData(opt, optSelected);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [optSelected, opt]);
+  // useEffect(() => {
+  //   if(typeof onChange !== "undefined")
+  //   {
+  //     onChange(optSelected)
+  //   }
+  //   // FetchData(opt, optSelected);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [optSelected, opt]);
 
-  const handleChange = (e: any) => {
+  const handleChange = async (e: any) => {
     const name = e.target.name;
     const optChecked = e.target.checked;
 
-    const newArray = opt?.map((opts: any) =>
+    const newArray = await opt?.map((opts: any) =>
       name === opts?.name ? { ...opts, checked: optChecked } : opts
     );
     setOpt(newArray);
-    if (optChecked) {
-      setOptSelected([...optSelected, { opt: name, checked: optChecked }]);
-    } else {
-      const arr = optSelected
-        .map((opt) =>
-          name === opt?.opt ? { ...opt, checked: optChecked } : opt
-        )
-        .filter((opt) => opt.checked && opt);
-      setOptSelected(arr);
+    // if (optChecked) {
+    //   setOptSelected([...optSelected, { opt: name, checked: optChecked }]);
+    // } else {
+    //   const arr = optSelected
+    //     .map((opt) =>
+    //       name === opt?.opt ? { ...opt, checked: optChecked } : opt
+    //     )
+    //     .filter((opt) => opt.checked && opt);
+    //   setOptSelected(arr);
+    // }
+    let selected = await newArray.filter(opts => opts.checked == true)
+    if(typeof onChange !== "undefined")
+    {
+      onChange(selected)
     }
   };
 
@@ -164,6 +178,7 @@ export default function CardOptionsSearchListing({
       {/* {isShowDropDown && ( */}
         <Box pt="10px" pb="13px">
           {currentPost.length > 0 && currentPost?.map(({ name, checked }: any, index: any) => {
+            console.log('checked', checked)
             return (
               <Box mb="10px" key={index}>
                 <Box display="flex" alignItems="center">
