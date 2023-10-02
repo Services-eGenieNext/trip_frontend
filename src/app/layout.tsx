@@ -4,6 +4,7 @@ import Footer from '@/components/Footer/footer'
 import type { Metadata } from 'next'
 import { Providers } from '@/redux/provider'
 import { AlertProvider } from '@/contextapi/Alert'
+import ModelInfo from '@/components/model-info/ModelInfo'
 
 export const metadata: Metadata = {
   title: 'WePlan - Trip',
@@ -20,6 +21,8 @@ function RootLayout({ children, }: { children: React.ReactNode }) {
                             {children}
                         <Footer/>
                     </AlertProvider>
+
+                    <ModelInfo />
                 </Providers>
             </body>
         </html>

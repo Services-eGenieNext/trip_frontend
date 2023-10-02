@@ -6,6 +6,8 @@ import LocationIcon from '../icons/Location'
 import Image from 'next/image'
 import { LocationsCall } from '@/api-calls'
 import BlankLocation from "public/images/blank-location.jpg";
+import { setItem } from '@/redux/reducers/PlacedetailSlice'
+import { useAppDispatch } from '@/redux/hooks'
 
 interface ISearchPopup {
     show: boolean,
@@ -19,6 +21,8 @@ const SearchPopup = ({show, onClose}: ISearchPopup)=> {
     const [loadingSearch, setLoadingSearch] = useState(false)
     const loadingLength = [1,1,1,1,1]
 
+    const dispatch = useAppDispatch()
+    
     const searchLocations = async (query: string) => {
         setLoadingSearch(true)
         let res = await LocationsCall(query)
@@ -91,7 +95,14 @@ const SearchPopup = ({show, onClose}: ISearchPopup)=> {
                                     let addressArr = item.formatted_address.split(', ')
                                     let country = `${addressArr[addressArr.length - 2]} ${addressArr[addressArr.length - 1]}`
                                     return <div key={index} className="py-4 pt-0">
-                                        <div className="rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-4 bg-white">
+                                        <span className="rounded-xl overflow-hidden shadow grid grid-cols-1 md:grid-cols-4 bg-white cursor-pointer"
+                                        onClick={() => {
+                                            dispatch(setItem({
+                                                location_id: item.location_id,
+                                                place_id: item.place_id
+                                            }))
+                                        }}
+                                        >
                                             <div className="relative w-full h-[300px] md:h-full col-span-1">
                                                 <Image src={item.images ? item.images : BlankLocation.src} fill={true} alt={'Product'} className="object-cover" />
                                             </div>
@@ -103,7 +114,7 @@ const SearchPopup = ({show, onClose}: ISearchPopup)=> {
                                                 </div>
                                                 <p className="text-[var(--gray)] text-sm">{item.formatted_address}</p>
                                             </div>
-                                        </div>
+                                        </span>
                                     </div>
                                 })
                             }

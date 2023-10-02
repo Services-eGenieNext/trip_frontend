@@ -9,11 +9,11 @@ import ComponentTitle from "../UIComponents/ComponentTitle";
 import { useRouter } from "next/navigation";
 import BlankLocation from "public/images/blank-location.jpg";
 import styles from "./style.module.css";
-import DetailModal from "../tripPlanningCard/TripPlanPopup";
 import AddProductModel from "../Products/AddProductModel";
 import Section from "../UIComponents/Section";
-import BlueButton from '../UIComponents/Buttons/BlueButton';
 import Slider from "react-slick";
+import { setItem } from "@/redux/reducers/PlacedetailSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 
 interface IProduct {
@@ -119,19 +119,22 @@ responsive: [
   const slideRef = useRef<null | HTMLDivElement>(null);
   const formRef = useRef<null | HTMLDivElement>(null);
 
-  const [visible, setVisible] = useState(false);
-  const [xPosition, setXPosition] = useState(0);
-  const [yPosition, setYPosition] = useState(0);
+  // const [visible, setVisible] = useState(false);
+  // const [xPosition, setXPosition] = useState(0);
+  // const [yPosition, setYPosition] = useState(0);
   const [openModal, setOpenModal] = useState(false);
-  const [showTripPopup, setShowTripPopup] = useState(false);
-  const [item, setItem] = useState({});
   const [openRestaurant, setOpenRestaurant] = useState(null);
-      const [postPerPage, setPostPerPage] = useState(8);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [postPerPage, setPostPerPage] = useState(8);
+  // const [currentPage, setCurrentPage] = useState(1);
 
-  const indexOfLastPost = currentPage * postPerPage;
-  const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPost = restaurantData.slice(indexOfFirstPost, indexOfLastPost);
+  // const indexOfLastPost = currentPage * postPerPage;
+  // const indexOfFirstPost = indexOfLastPost - postPerPage;
+  // const currentPost = restaurantData.slice(indexOfFirstPost, indexOfLastPost);
+
+  const {show, item} = useAppSelector(state => state.PlacedetailSlice);
+
+  const dispatch = useAppDispatch()
+
   useEffect(() => {
     setRestaurant(restaurantsState);
   }, [restaurantsState]);
@@ -150,18 +153,18 @@ responsive: [
     }, 300);
 
     if (slideRef.current) {
-      let xposition =
-        event.clientX -
-        slideRef.current?.offsetLeft -
-        slideRef.current?.offsetWidth / 3;
-      let yposition =
-        event.clientY -
-        slideRef.current?.offsetTop -
-        slideRef.current?.offsetHeight / 3;
+      // let xposition =
+      //   event.clientX -
+      //   slideRef.current?.offsetLeft -
+      //   slideRef.current?.offsetWidth / 3;
+      // let yposition =
+      //   event.clientY -
+      //   slideRef.current?.offsetTop -
+      //   slideRef.current?.offsetHeight / 3;
 
-      setXPosition(xposition);
-      setYPosition(yposition);
-      setVisible(true);
+      // setXPosition(xposition);
+      // setYPosition(yposition);
+      // setVisible(true);
     }
   };
 
@@ -342,11 +345,10 @@ responsive: [
                               <button
                                 className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
                                 onClick={() => {
-                                  setItem({
+                                  dispatch(setItem({
                                     locaiton_id: restaurant.location_id,
                                     place_id: restaurant.place_id,
-                                  });
-                                  setShowTripPopup(true);
+                                  }));
                                 }}
                               >
                                 More Info
@@ -368,13 +370,6 @@ responsive: [
       )} */}
         </Section>
       </div>
-      <DetailModal
-        item={item}
-        show={showTripPopup}
-        onClose={() => {
-          setShowTripPopup(false);
-        }}
-      />
 
       <AddProductModel
         show={openModal}
