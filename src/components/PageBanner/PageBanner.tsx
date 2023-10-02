@@ -15,23 +15,10 @@ interface IPageBanner {
     survey?:any;
 }
 
-const PageBanner = ({automateLocation,survey}: IPageBanner) => {
+const PageBanner = ({automateLocation}: IPageBanner) => {
     
     const [bgImage , setBgImage] = useState<string | null>(null)
     const [Title, setTitle] = useState<string>('')
-    const [locationSearch, setLocationSearch] = useState({
-        location: "",
-        occassion: [],
-        priority: [],
-        person:"",
-        cuisines: "",
-        message: "",
-        dates:"",
-      });
-
-      useEffect(() => {
-        setLocationSearch(survey)
-          }, [survey]);
     
 
     useEffect(() => {
@@ -95,12 +82,12 @@ const PageBanner = ({automateLocation,survey}: IPageBanner) => {
             <div
               className={`lg:block hidden mt-4 rounded-xl ${styles["result_banner"]}`}
             >
-              <BannerFilter surveyData={locationSearch} />
+              <BannerFilter />
             </div>
           </div>
         </div>
         <div className={`block lg:hidden ${styles["result_banner"]}`}>
-          <BannerFilter surveyData={locationSearch} />
+          <BannerFilter />
         </div>
       </div>
             {/* <div className="h-[405px] w-full rounded-xl flex justify-center items-center relative overflow-hidden">
