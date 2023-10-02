@@ -13,7 +13,7 @@ const _getlocationImages = async (photo_reference: string | number, max_width="4
 }
 
 const _getDetails = async (location_id:string | number) => {
-    let detailData:any = await axios.get(`${API_URL}/google/placedetails?name=${location_id}`)
+    let detailData:any = await axios.get(`${API_URL}/google/placedetails?name=${location_id}&fields=address_components,place_id,photos,name,geometry,formatted_address,rating,user_ratings_total,editorial_summary,formatted_phone_number,opening_hours,url,reviews,website`)
     .then((response)=>{
 return response.data
     })
@@ -25,10 +25,10 @@ return response.data
 
 const LocationsCall = async (query:any) => {
 
-    return await axios.get(`${API_URL}/google/textsearch?place=${query}`)
+    return await axios.get(`${API_URL}/google/textsearch?place=best%20locations%20in%20${query}`)
     .then(async (response) => {
         let location_res = response.data.results
-        console.log(location_res,query)
+        console.log(location_res,query,"123")
         let _store_locations: any = []
         for (let index = 0; index < location_res.length; index++) {
             if(location_res[index].photos){

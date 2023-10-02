@@ -16,6 +16,8 @@ import { useAppSelector } from '@/redux/hooks'
 import Reviews from '../reviews/reviews'
 import BlueButton from '../UIComponents/Buttons/BlueButton'
 import { useRouter } from 'next/navigation'
+import {BsFillTelephoneFill} from 'react-icons/bs'
+import {TbWorld} from 'react-icons/tb'
 
 
 interface ITripDetail {
@@ -91,7 +93,7 @@ const TripDetail = ({item}: ITripDetail) => {
             }
             else if(item?.place_id)
             {
-                let item_Detail: any = await DetailsCallByGoogle(`${item.place_id}&fields=address_components,place_id,photos,name,geometry,formatted_address,rating,user_ratings_total,editorial_summary,formatted_phone_number,opening_hours,url,reviews`)
+                let item_Detail: any = await DetailsCallByGoogle(`${item.place_id}&fields=address_components,place_id,photos,name,geometry,formatted_address,rating,user_ratings_total,editorial_summary,formatted_phone_number,opening_hours,url,reviews,website`)
                 setItemDetail(item_Detail.data.result)
                 
             }
@@ -405,8 +407,23 @@ const TripDetail = ({item}: ITripDetail) => {
                             
                             {
                                 itemDetail?.formatted_phone_number && (
-                                    <div>
-                                        <Link href={`tel:${itemDetail?.formatted_phone_number?.replaceAll('-', '')}`} className="underline hover:text-[var(--blue)]" >{itemDetail?.formatted_phone_number}</Link>
+                                    <div className="flex items-center justify-center gap-x-3">
+                                    <BsFillTelephoneFill/>
+                                        <Link href={`tel:${itemDetail?.formatted_phone_number?.replaceAll('-', '')}`} className="underline hover:text-[var(--blue)]" >
+                                            {itemDetail?.formatted_phone_number}
+                                            </Link>
+                                    </div>
+                                )
+                            }
+
+                            {
+                                itemDetail?.website && (
+                                    <div className="flex items-center justify-center gap-x-3 mt-4">
+                                    <TbWorld/>
+                                        <Link href={itemDetail?.website} className="underline hover:text-[var(--blue)]" target="_blank
+                                        ">
+                                            {itemDetail?.website}
+                                            </Link>
                                     </div>
                                 )
                             }
