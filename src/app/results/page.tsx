@@ -91,12 +91,6 @@ const _TopCountries = async () => {
     _TopCountries()
   },[])
 
-  useEffect(()=>{
-    if(clearFilter == true){
-      _def()
-    }
-  },[clearFilter])
-
   useEffect(() => {
     if (clearFilter == true) {
       setClearFilter(false);
