@@ -8,6 +8,7 @@ import itineraryReducer from "./reducers/itinerarySlice";
 import occasionsSlice from "./reducers/occasionsSlice";
 import prioritySlice from "./reducers/prioritySlice";
 import topCountriesSlice from "./reducers/topCountries";
+import topCitiesSlice from './reducers/topCities'
 
 export const store = configureStore({
     reducer: {
@@ -19,7 +20,8 @@ export const store = configureStore({
         itineraryReducer,
         occasionsSlice,
         prioritySlice,
-        topCountriesSlice
+        topCountriesSlice,
+        topCitiesSlice
     },
     devTools: process.env.NODE_ENV !== "production",
 });

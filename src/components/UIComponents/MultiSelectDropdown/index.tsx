@@ -465,7 +465,7 @@ if(addCustomeOption == false){
                       key={index}
                       className="bg-[#009de2] px-3 py-1 flex items-center justify-center rounded-full w-max whitespace-nowrap"
                     >
-                      {Label !== "Occasion" &&(
+                      {Label !== "Occasion" && Label != "Location" &&(
                         <Typography
                         className="mr-2"
                           color="common.white"
@@ -572,10 +572,10 @@ if(addCustomeOption == false){
     </svg>
 </div>
           </Box>
-          {addFieldError == true && addCustomeOption == true && customeField != "" &&(
+          {addFieldError == true && addCustomeOption == true && customeField != "" && Label != "Location"  &&(
             <p className="text-[red] text-[14px] mt-1 text-center">{Label} already exist in the list.</p>
           )}
-          {requestFailedError == true && (
+          {requestFailedError == true && Label != "Location" && (
             <p className="text-[red] text-[14px] mt-1 text-center">{Label} invalid.</p>
           )}
 
@@ -586,6 +586,7 @@ if(addCustomeOption == false){
             sx={{ overflowY: "auto" }}
           >
             <div className="w-[80%]">
+              {Label != "Location" && (
               <span
                 className={`flex items-center gap-x-3 pb-3 px-6 cursor-pointer select-none ${addCustomeOption ? "hidden" : ""}`}
                 onClick = {handleAddLabel}
@@ -599,6 +600,7 @@ if(addCustomeOption == false){
                 </span>
                 <p className="text-[#4B9AD4] text-[14px]">Add {Label}</p>
               </span>
+)}
               {filtered.length > 0 ? (
                 filtered?.map(({ opt, checked }, index) => {
                   return (
@@ -615,7 +617,7 @@ if(addCustomeOption == false){
                         },
                       }}
                     >
-                      {Label !== "Occasion" && (
+                      {Label !== "Occasion" && Label != "Location" && (
                       <span className="text-[#9e9e9e] mr-2 w-[20px] flex justify-end">{index+1}.</span>
                       )}
                       <CheckboxLabel
@@ -631,7 +633,7 @@ if(addCustomeOption == false){
                 })
               ):(
                 <div className="h-full w-full flex items-center justify-center px-2 mt-10">
-<p className="text-black text-[14px] mt-1 text-center">{Label} not exist. {addCustomeOption == false && (
+<p className="text-black text-[14px] mt-1 text-center">{Label} not exist. {addCustomeOption == false && Label != "Location" && (
   <span>
     <span className="text-[#009de2] underline cursor-pointer" onClick={()=>{
       if(optsSelected.length <= 0){

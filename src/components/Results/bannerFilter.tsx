@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import InputField from "../UIComponents/InputField/inputWithSuggestions";
+import InputField from "../UIComponents/InputField/locationInput";
 import SimpleLocation from "../icons/SimpleLocation";
 import CalenderIcon from "../icons/Calender";
 import BlueButton from "../UIComponents/Buttons/BlueButton";
@@ -29,11 +29,14 @@ import Priorities from "@/api-calls/fromDB/priority";
 import { setPriorities } from "@/redux/reducers/prioritySlice";
 import TopCountries from "@/api-calls/fromDB/topCountries";
 import { setTopCountries } from "@/redux/reducers/topCountries";
+import { setTopCities } from "@/redux/reducers/topCities";
 import LocationIncrement from "@/api-calls/fromDB/topCountriesIncrement";
 import AddLocation from "@/api-calls/fromDB/addLocation";
 import TopCities from "@/api-calls/fromDB/topCities";
 import AddCities from "@/api-calls/fromDB/addCities";
 import TopCitiesIncrement from "@/api-calls/fromDB/topCitiesIncrement";
+import ContinentLocation from "@/data/continent.json";
+import TopCountriesIncrement from "@/api-calls/fromDB/topCountriesIncrement";
 
 export default function HeroFilterSection({ surveyData }: any) {
   const dispatch = useAppDispatch();
@@ -48,11 +51,16 @@ export default function HeroFilterSection({ surveyData }: any) {
   const [invalidLocation,setInvalidLocation] = useState(false)
   const [locationRequired,setLocationRequired] = useState(false)
   const [topCountriesValue, setTopCountriesValue] = useState<any>([]);
+  const [topCitiesValue, setTopCitiesValue] = useState<any>([]);
+  const [locationDropdownValue, setLocationDropdownValue] = useState<any[]>([]);
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [buttonText, setButtonText] = useState("Look For Inspiration");
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
   const { priorityState } = useAppSelector((state) => state.prioritySlice);
   const { topCountriesState } = useAppSelector(
     (state) => state.topCountriesSlice
   );
+  const { topCitiesState } = useAppSelector((state) => state.topCitiesSlice);
   const [locationSearch, setLocationSearch] = useState<any>({
     location: "",
     occassion: [],
@@ -78,6 +86,14 @@ export default function HeroFilterSection({ surveyData }: any) {
   }, [ocassionsState]);
 
   useEffect(() => {
+    if (topCitiesState?.length > 0) {
+      setTopCitiesValue(topCitiesState);
+    } else {
+      setTopCitiesValue([]);
+    }
+  }, [topCitiesState]);
+
+  useEffect(() => {
     if (priorityState?.length > 0) {
       setPrioritiesValue(priorityState);
     } else {
@@ -92,6 +108,30 @@ export default function HeroFilterSection({ surveyData }: any) {
       setTopCountriesValue([]);
     }
   }, [topCountriesState]);
+
+  useEffect(() => {
+    if (topCitiesValue.length > 0) {
+      const newArray: any = topCitiesValue?.map((opt: any) => ({
+        ...opt,
+        type: "city",
+      }));
+      setLocationDropdownValue(newArray);
+    } else {
+      if (topCountriesValue.length > 0) {
+        const newArray: any = topCountriesValue?.map((opt: any) => ({
+          ...opt,
+          type: "country",
+        }));
+        setLocationDropdownValue(newArray);
+      } else {
+        const newArray: any = ContinentLocation?.map((opt: any) => ({
+          ...opt,
+          type: "continent",
+        }));
+        setLocationDropdownValue(newArray);
+      }
+    }
+  }, [topCitiesValue, topCountriesValue]);
 
   useEffect(() => {
     let data = {
@@ -145,6 +185,12 @@ export default function HeroFilterSection({ surveyData }: any) {
   }
 
   const ValidateData = async () => {
+    const filteredCity = topCitiesValue.filter((country: any) => {
+      return (
+        country?.name?.toLocaleLowerCase() ==
+        selectedLocation.toLocaleLowerCase()
+      );
+    });
     if (locationSearch.occassion.length > 0) {
       for (var i = 0; i < locationSearch.occassion.length; i++) {
         let res = await OccassionsIncrement(locationSearch.occassion[i].id);
@@ -163,51 +209,123 @@ export default function HeroFilterSection({ surveyData }: any) {
         }
       }
     }
-    console.log('validated')
     let _url = await _get_url()
-    if (locationSearch.dates.startDate) {
-      // router.push("/trip-plan?address=" + _url);
+    if (filteredCity.length > 0) {
       router.push("/trip-plan?address=" + _url + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
       router.push("/results?address=" + _url);
+      dispatch(setSurveyValue(locationSearch));
     }
-  }
+  };
 
   const handleRoute = async () => {
     dispatch(setSurveyValue(locationSearch));
-    if(locationSearch.location == ""){
-      setLocationRequired(true)
-    }else{
-      if (locationSearch.location != "") {
-        const filtered = topCountriesValue?.filter((country: any) => {
-          return (
-            country?.name?.toLocaleLowerCase() ==
-            locationSearch?.location?.toLocaleLowerCase()
-          );
-        });
-        if (filtered.length > 0) {
-          for (var i = 0; i < filtered.length; i++) {
-            console.log(filtered[i].id);
-            let res = await TopCitiesIncrement(filtered[i].id);
+    if (locationSearch.location == "") {
+      setLocationRequired(true);
+    } else {
+      const filteredCity = topCitiesValue.filter((country: any) => {
+        return (
+          country?.name?.toLocaleLowerCase() ==
+          selectedLocation.toLocaleLowerCase()
+        );
+      });
+
+      const filteredCountry = topCountriesValue.filter((country: any) => {
+        return (
+          country?.name?.toLocaleLowerCase() ==
+          selectedLocation.toLocaleLowerCase()
+        );
+      });
+
+      const filteredContinent = ContinentLocation.filter((country: any) => {
+        return (
+          country?.name?.toLocaleLowerCase() ==
+          selectedLocation.toLocaleLowerCase()
+        );
+      });
+
+      if (
+        filteredCity.length > 0 ||
+        filteredCountry.length > 0 ||
+        filteredContinent.length > 0
+      ) {
+        if (filteredCity.length > 0) {
+            let res = await TopCitiesIncrement(filteredCity[0].id);
             if (res) {
               let updatedOccasionsList = await TopCities();
-              dispatch(setTopCountries(updatedOccasionsList));
-              ValidateData()
+              dispatch(setTopCities(updatedOccasionsList));
+              ValidateData();
             }
-          }
-        } else {
-          let res = await AddCities(locationSearch.location);
+        }
+        if (filteredCountry.length > 0) {
+            let res = await TopCountriesIncrement(filteredCountry[0].id);
+            if (res) {
+              let updatedOccasionsList = await TopCountries();
+              dispatch(setTopCountries(updatedOccasionsList));
+              ValidateData();
+            }
+        }
+        if (filteredContinent.length > 0) {
+          ValidateData();
+        }
+      } else {
+          let res = await AddCities(selectedLocation);
           if (res) {
             let updatedOccasionsList = await TopCities();
-            dispatch(setTopCountries(updatedOccasionsList));
-            ValidateData()
+            dispatch(setTopCities(updatedOccasionsList));
+            ValidateData();
+        }else{
+            let res = await AddLocation(selectedLocation);
+            if (res) {
+              let updatedOccasionsList = await TopCountries();
+              dispatch(setTopCountries(updatedOccasionsList));
+              ValidateData();
           }else{
-            setInvalidLocation(true)
+            if (filteredContinent.length > 0) {
+              ValidateData();
+            }else{
+              setInvalidLocation(true);
+            }
           }
         }
       }
-    }  
+    }
   };
+
+  useEffect(() => {
+    const filteredCity = topCitiesValue.filter((country: any) => {
+      return (
+        country?.name?.toLocaleLowerCase() ==
+        selectedLocation.toLocaleLowerCase()
+      );
+    });
+
+    const filteredCountry = topCountriesValue.filter((country: any) => {
+      return (
+        country?.name?.toLocaleLowerCase() ==
+        selectedLocation.toLocaleLowerCase()
+      );
+    });
+
+    const filteredContinent = ContinentLocation.filter((country: any) => {
+      return (
+        country?.name?.toLocaleLowerCase() ==
+        selectedLocation.toLocaleLowerCase()
+      );
+    });
+
+    if (filteredCity.length > 0) {
+      setButtonText("Automate My trip");
+    } else {
+      setButtonText("Look For Inspiration");
+    }
+    if (filteredCountry.length > 0) {
+      setButtonText("Look For Inspiration");
+    }
+    if (filteredContinent.length > 0) {
+      setButtonText("Look For Inspiration");
+    }
+  }, [selectedLocation]);
 
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
 
@@ -228,22 +346,28 @@ export default function HeroFilterSection({ surveyData }: any) {
         onAdditionalChange={(_data) => {}}
       /> */}
       <div className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px]`}>
-        <InputField
+      <InputField
           className={`sm:w-[170px] h-[46px]`}
           name="location"
           type="text"
           label="Location"
           placeholder="Enter Location"
+          locationList={{
+            city: topCitiesValue,
+            country: topCountriesValue,
+            continent: ContinentLocation,
+          }}
           value={locationSearch?.location}
-          items={topCountriesValue}
+          items={locationDropdownValue}
           icon={<SimpleLocation />}
           onChange={(val: any) => {
+            setSelectedLocation(val);
             setLocationSearch({ ...locationSearch, location: val });
           }}
-          onFocus = {()=>{
-        setInvalidLocation(false)
-        setLocationRequired(false)
-      }} 
+          onFocus={() => {
+            setInvalidLocation(false);
+            setLocationRequired(false);
+          }}
         />
         {invalidLocation == true && (
       <p className="text-[red] text-[14px] mt-3">Invalid Location.</p>
@@ -326,11 +450,7 @@ export default function HeroFilterSection({ surveyData }: any) {
       />
 
       <BlueButton
-        title={
-          locationSearch.dates.startDate
-            ? "Automate My trip"
-            : "Look For Inspiration"
-        }
+        title={buttonText}
         className="sm:w-[200px] w-full h-[56px]"
         onClick={handleRoute}
       />

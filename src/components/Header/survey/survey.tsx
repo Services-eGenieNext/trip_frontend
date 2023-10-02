@@ -415,7 +415,7 @@ setSurvey({...survey, location:"" })
                   value={survey}
                   checked={options.field}
                 />
-                  {options.field == true && (
+                  {options.field == true && options.value !== "all" && options.value !== "no" && (
                     <InputField
                       className={`sm:mr-2 sm:my-2 my-5 w-full h-[46px]`}
                       name="location"
@@ -434,6 +434,23 @@ setSurvey({...survey, location:"" })
                         // setLocationRequired(false)
                       }}
                     />
+                  )}
+                  {options.value == "no" && options.field == true && (
+                    <MultiSelectDropdown
+                    // searchBar
+                    items={dropdownLocationValue}
+                    saveData={saveData}
+                    setSaveData={setSaveData}
+                    Label={"Location"}
+                    heightItemsContainer="300px"
+                    SelectedData={survey.occassion}
+                    className={`sm:mr-2 sm:my-2 my-5 w-[400px] h-[46px]`}
+                    placeholder="Select..."
+                    onChange={(val: any) =>
+                      setSurvey({...survey, location: "USA"})
+                    }
+                    dropdownWidth = "sm:w-full"
+                  />
                   )}
                 </div>
                 )
