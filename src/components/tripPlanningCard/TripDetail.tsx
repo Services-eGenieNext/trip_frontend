@@ -91,7 +91,7 @@ const TripDetail = ({item}: ITripDetail) => {
             }
             else if(item?.place_id)
             {
-                let item_Detail: any = await DetailsCallByGoogle(item.place_id)
+                let item_Detail: any = await DetailsCallByGoogle(`${item.place_id}&fields=address_components,place_id,photos,name,geometry,formatted_address,rating,user_ratings_total,editorial_summary,formatted_phone_number,opening_hours,url,reviews`)
                 setItemDetail(item_Detail.data.result)
                 
             }
@@ -488,7 +488,7 @@ const TripDetail = ({item}: ITripDetail) => {
                         <div className="w-full my-5">
                             <h4 className="text-[15px] leading-[18px] font-bold my-2 text-center">Map: <Link href={itemDetail?.url} target="_blank" className='text-[var(--blue)] font-normal hover:border-b border-[var(--blue)]'>View location</Link></h4>
                             <div className="relative h-[200px]">
-                                <TripDetailGoogleMap place_id={itemDetail.place_id} />
+                                <TripDetailGoogleMap location={itemDetail.geometry.location} />
                             </div>
                         </div>
                     )

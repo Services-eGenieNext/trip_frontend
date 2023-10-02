@@ -13,12 +13,12 @@ import styles from "./ProductHorizontalSlide.module.css";
 import BlankLocation from "public/images/blank-location.jpg";
 import Image from "next/image";
 import Link from "next/link";
-import DetailModal from "../tripPlanningCard/TripPlanPopup";
 import SelectField from "../UIComponents/InputField/SelectField";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
 import { useAlertContext } from "@/contextapi/Alert";
 import { Tooltip } from "@mui/material";
+import { setItem } from "@/redux/reducers/PlacedetailSlice";
 
 const ProductHorizontalSlide = ({
   Title,
@@ -39,8 +39,7 @@ const ProductHorizontalSlide = ({
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState([]);
   const [openLocation, setOpenLocation] = useState<any | null>(null);
-  const [showTripPopup, setShowTripPopup] = useState(false);
-  const [item, setItem] = useState({});
+  const { show, item } = useAppSelector(state => state.PlacedetailSlice);
   const slideRef = useRef<null | HTMLDivElement>(null);
   const formRef = useRef<null | HTMLDivElement>(null);
 
@@ -230,11 +229,10 @@ const ProductHorizontalSlide = ({
                                   className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
                                   onClick={() => {
                                     console.log("location", location);
-                                    setItem({
+                                    dispatch(setItem({
                                       locaiton_id: location.location_id,
                                       place_id: location.place_id,
-                                    });
-                                    setShowTripPopup(true);
+                                    }));
                                   }}
                                 >
                                   More Info
@@ -439,13 +437,6 @@ const ProductHorizontalSlide = ({
           <BlueButton title="Save" className="w-[150px]" onClick={(e) => storeLocation()} />
         </div>
       </div>
-      <DetailModal
-        item={item}
-        show={showTripPopup}
-        onClose={() => {
-          setShowTripPopup(false);
-        }}
-      />
     </Section>
   );
 };
