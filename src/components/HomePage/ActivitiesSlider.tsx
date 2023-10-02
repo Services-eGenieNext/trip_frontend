@@ -191,6 +191,8 @@ function ActivitiesSlider({activitiesState}:any) {
                       activities: any,
                       index:number
                     ) => {
+                       let City = ""
+                let Country = ""
                         let parseImageArray = JSON.parse(activities.image)
                         let image_path = parseImageArray.image.length > 0 ? parseImageArray.image[0].url : BlankLocation.src
                         let address = activities.details.formatted_address
@@ -230,6 +232,22 @@ function ActivitiesSlider({activitiesState}:any) {
                             <h1 className="text-[18px] mt-3 text-center lato absolute bottom-4 left-0 w-full font-bold text-white z-2">
                               {activities.name}
                             </h1>
+                            <div>
+                            <span className="ml-2 text-center">
+                            {activities?.details?.address_components?.forEach((address: any, index: number) => {
+                                  if(address?.types[0] == "locality"){
+                                    City = address.long_name
+                                  }
+                                  if(address?.types[0] == "country"){
+                                    Country = address.long_name
+                                  }
+                                }
+                              )}
+                                <span className="text-center">
+                              {`${City}${City !== "" && Country !=="" ? "," : ""} ${Country}`}
+                              </span>
+                            </span>
+                            </div>
                             </div>
                           </div>
                         </div>
