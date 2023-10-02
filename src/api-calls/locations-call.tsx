@@ -13,9 +13,9 @@ const _getlocationImages = async (photo_reference: string | number, max_width="4
 }
 
 const _getDetails = async (location_id:string | number) => {
-    let detailData:any = await axios.get(`${API_URL}/google/placedetails?name=${location_id}`)
+    let detailData:any = await axios.get(`${API_URL}/google/placedetails?name=${location_id}&fields=address_components,place_id,name,formatted_address,rating,reviews`)
     .then((response)=>{
-return response.data
+        return response.data
     })
     .catch((error)=>{
         console.log(error,"error")

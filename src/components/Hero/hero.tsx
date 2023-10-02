@@ -5,6 +5,7 @@ import Map from "/public/images/map-transparent.png";
 import Image from "next/image";
 import HeroFilterSection from "./heroFilterSection";
 import styles from './hero.module.css'
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -41,7 +42,7 @@ const Hero = () => {
             PLAN YOUR DREAM TRIP IN SECOND WITH
             </h1>
             <h2 className="leading-10 text-white font-bold text-[22px] sm:text-[48px] lg:text-[68px] lg:my-5 sm:my-3 my-0 text-center w-full gilroy">
-              <a href={'/results'}>WePlan</a>
+              <Link href={'/results'}>WePlan</Link>
             </h2>
             <p className="lg:mb-10 lg:mt-2 text-white sm:text-[22px] text-[16px] max-w-[720px] text-center lato">
               We take away all the hassle associated with trip planning. Be

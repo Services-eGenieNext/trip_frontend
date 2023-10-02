@@ -144,6 +144,7 @@ const TripPlanReviews = ({ automateLocation }:IReviews) => {
             _locations = _sortedLocations.concat(..._locations)
             _locations = [...new Set(_locations)]
 
+            console.log('_locations', _locations)
             setLocationList([..._locations])
         }
         _def()
