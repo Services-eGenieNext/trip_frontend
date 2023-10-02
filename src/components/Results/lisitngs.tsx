@@ -6,12 +6,13 @@ import DetailModal from '../tripPlanningCard/TripPlanPopup';
 import Link from "next/link";
 import NotFound from 'public/images/data-not-found.jpg'
 import CSS from './pageBanner.module.css'
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { setItem } from "@/redux/reducers/PlacedetailSlice";
 
 export default function Lisitngs({ locations, loadData, setClearFilter,setLoadData }: any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","9"];
   const [results, setResults] = useState([]);
-  const [showTripPopup, setShowTripPopup] = useState(false);
-  const [item, setItem] = useState({});
+
   useEffect(() => {
       setResults(locations);
       console.log('locations', locations)
@@ -25,20 +26,23 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
 
   const reviewArr = new Array(5).fill(1);
 
+  const dispatch = useAppDispatch()
+
   return (
     <div className="lg:pl-12 md:pl-12 sm:pl-6 pl-3">
-      {loadData === false ? (
-      <p className="text-[18px] text-[#3F3F3F]">
-        Show listing of {results?.length} Places...
-      </p>
-      ):(
-        <>
-        <p className="text-[18px] text-[#3F3F3F]">Our AI engine is finding best option for you...</p>
-        {/* <div className="h-8 bg-gray-200 rounded-md dark:bg-gray-700 mb-2.5 mx-4 w-[30%]"></div> */}
-        </>
-      )}
+      {
+        loadData === false ? (
+        <p className="text-[18px] text-[#3F3F3F]"> Show listing of {results?.length} Places... </p>
+        ):(
+          <>
+          <p className="text-[18px] text-[#3F3F3F]">Our AI engine is finding best option for you...</p>
+          {/* <div className="h-8 bg-gray-200 rounded-md dark:bg-gray-700 mb-2.5 mx-4 w-[30%]"></div> */}
+          </>
+        )
+      }
       <div className="flex flex-wrap itemns-center lg:justify-start justify-center my-8 gap-y-14 gap-x-10">
-        {loadData === true
+        {
+          loadData === true
           ? skelton.map((show: any, index: number) => {
               return (
                 <div
@@ -71,10 +75,11 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
                   <span className="sr-only">Loading...</span>
                 </div>
               );
-            })
+          })
           : (
             results && results.length > 0 ? results?.map((location: any, index:number) => {
-              let image_path =
+            
+            let image_path =
               location.image.image.length > 0
                 ? location.image.image[0].url
                 : BlankLocation.src;
@@ -87,50 +92,36 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
                   let Country = ""
                 return (
                   <>
-                  {location.details && (
+                  {
+                    location.details && (
                       <div
                         key={index}
                         className="sm:w-[260px] w-[320px] overflow-hidden rounded-lg flex flex-col justify-between items-center"
                       >
-                    <div className={`sm:h-[235px] h-[260px] w-full relative cursor-pointer ${CSS["slider_card"]}`}>
-                    <img src={image_path} alt={image_path} style={{objectFit: "cover",}} className="h-full w-full" />
-                    {location.details.rating && (
-                      <div className="absolute top-2 right-2 flex items-center gap-x-2 bg-white py-1 px-4 rounded-full">
-                        <FilledStar />
-                        <p className="text-[#009DE2] font-semibold">{location?.details?.rating}</p>
-                      </div>
-                    )}
-                      <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
-                          <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
-                            Automate My Trip
-                          </Link>
-                          <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" onClick={()=> {
-                            setItem({
-                              location_id: location.location_id,
-                              place_id: location.place_id,
-                            })
-                            setShowTripPopup(true)
-                            }}>
-                            More Info
-                          </button>
+                        <div className={`sm:h-[235px] h-[260px] w-full relative cursor-pointer ${CSS["slider_card"]}`}>
+                          <img src={image_path} alt={image_path} style={{objectFit: "cover",}} className="h-full w-full" />
+                          {location.details.rating && (
+                            <div className="absolute top-2 right-2 flex items-center gap-x-2 bg-white py-1 px-4 rounded-full">
+                              <FilledStar />
+                              <p className="text-[#009DE2] font-semibold">{location?.details?.rating}</p>
+                            </div>
+                          )}
+                          <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
+                            <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
+                              Automate My Trip
+                            </Link>
+                            <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" 
+                              onClick={()=> {
+                                dispatch(setItem({
+                                  location_id: location.location_id,
+                                  place_id: location.place_id,
+                                }))
+                              }} > More Info </button>
+                          </div>
                         </div>
-                    </div>
-                    <p className="text-[22px] font-semibold text-[#2D2D2D] my-2 flex justify-center">
-                    {location?.details?.address_components?.forEach((address: any, index: number) => {
-                                  // return(
-                                  //   <span key={index}>
-                                  //     {address?.types[0] == "sublocality_level_1" && (
-                                  //       <>
-                                  //       <span className="ml-2 text-center">{address.long_name},</span>
-                                  //       </>
-                                  //     )}
-                                  //     {address?.types[0] == "locality" && (
-                                  //       <>
-                                  //       <span className="ml-2 text-center">{address.long_name}</span>
-                                  //       </>
-                                  //     )}
-                                  //   </span>
-                                  // )
+                        <p className="text-[22px] font-semibold text-[#2D2D2D] my-2 flex justify-center">
+                          {
+                            location?.details?.address_components?.forEach((address: any, index: number) => {
                                   if(address?.types[0] == "sublocality_level_1"){
                                     Place = address.long_name
                                   }
@@ -141,48 +132,52 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
                                     Country = address.long_name
                                   }
                                 }
-                              )}
-                              <span className="text-center">
-                              {location.name ? location.name : `${Place}${Place !== "" ? "," : ""} ${City !== "" ? City : Country}`}
-                              </span>
-                    </p>
-                    <div className="flex items-center gap-x-2">
-                    {reviewArr &&
-              reviewArr.map((review, index) => {
-                if (index < location?.details?.rating) {
-                  return <FilledStar key={index} />;
-                } else {
-                  return <BlankStar key={index} />;
-                }
-              })}
-              {location.details.rating && (
-              <span className="text-gray-500 text-sm">{"("}{location?.details?.rating}{")"}</span>
-              )}
-              {/* {
-                location?.details?.reviews && (
-                  <span className="text-xs">Reviews {`(${location?.details?.reviews?.length})`}</span>
-                )
-              } */}
-              </div>  
-                  </div>
-                    )}
+                              )
+                            }
+                            <span className="text-center">
+                            {location.name ? location.name : `${Place}${Place !== "" ? "," : ""} ${City !== "" ? City : Country}`}
+                            </span>
+                        </p>
+                        <div className="flex items-center gap-x-2">
+                          {
+                            reviewArr &&
+                            reviewArr.map((review, index) => {
+                              if (index < location?.details?.rating) {
+                                return <FilledStar key={index} />;
+                              } else {
+                                return <BlankStar key={index} />;
+                              }
+                            })
+                          }
+                          {
+                            location.details.rating && (
+                              <span className="text-gray-500 text-sm">{"("}{location?.details?.rating}{")"}</span>
+                            )
+                          }
+                          {/* {
+                            location?.details?.reviews && (
+                              <span className="text-xs">Reviews {`(${location?.details?.reviews?.length})`}</span>
+                            )
+                          } */}
+                        </div>
+                      </div>
+                    )
+                  }
                     </>
                 );
-              }) : (
-                <div className="flex flex-col items-center mt-10 w-full">
-                  <img className="w-[500px]" src={NotFound.src} alt="not found"/>
-                  <span className="md:text-[40px] sm:text-[32px] text-[20px] font-bold">Data Not Found</span>
-                  <p className="mt-2 text-[gray]">Please try with another filter</p>
-                  <button className="mt-4 w-[200px] py-2 rounded-md bg-[#009de2] text-white font-bold text-[20px]" onClick={()=>{
-                    setClearFilter(true)
-                  }}>Clear All</button>
-                </div>
-              )
-          )}
+            }) : (
+              <div className="flex flex-col items-center mt-10 w-full">
+                <img className="w-[500px]" src={NotFound.src} alt="not found"/>
+                <span className="md:text-[40px] sm:text-[32px] text-[20px] font-bold">Data Not Found</span>
+                <p className="mt-2 text-[gray]">Please try with another filter</p>
+                <button className="mt-4 w-[200px] py-2 rounded-md bg-[#009de2] text-white font-bold text-[20px]" onClick={()=>{
+                  setClearFilter(true)
+                }}>Clear All</button>
+              </div>
+            )
+          )
+        }
       </div>
-      <DetailModal item={item} show={showTripPopup} onClose={() => {
-                setShowTripPopup(false)
-            }} />
     </div>
   );
 }

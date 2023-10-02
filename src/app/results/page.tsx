@@ -61,16 +61,17 @@ const _TopCountries = async () => {
     dispatch(setTopCountries(res))
 }
 
-  const _locationSearch = async () => {
+  const _locationSearch = async (address = "") => {
     setLoading(true)
     if(paramsAddress){
       // let _occasions = await surveySlice.occassion.map((oc: any) => oc.opt)
       // let res = await SearchLocation(surveySlice.url ? surveySlice.url : `${_occasions ? _occasions.join(',') : 'Best Location'} in ${paramsAddress} for tourist`)
-      let res = await SearchLocation(paramsAddress)
+      let res = await SearchLocation(address ? address : paramsAddress)
       if(res){
         setLocationState(res)
         setLocationsData(res);
       }
+      setLoading(false)
     }
   }
 
@@ -106,6 +107,7 @@ const _TopCountries = async () => {
             <div className="grid grid-cols-1 lg:grid-cols-4">
               <div className="lg:col-span-1 max-w-[300px] w-full ">
                 <FilterSidebar
+                  locationSearch = {_locationSearch}
                   setClearFilter={setClearFilter}
                   locations={locationsState}
                   setLocationsData={setLocationsData}
