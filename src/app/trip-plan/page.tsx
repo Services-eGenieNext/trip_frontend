@@ -102,7 +102,7 @@ const TripPlan = () => {
 
     return (
         <div className='overflow-x-hidden w-full'>
-            <PageBanner automateLocation={automateLocation} survey={surveySlice} />
+            <PageBanner automateLocation={automateLocation} />
             {
                 params_list.address && 
                 <TripPlanningCard 
