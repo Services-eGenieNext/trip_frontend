@@ -14,7 +14,7 @@ const TripPlanPage = () => {
         <div>
             <PageBanner />
           
-            <TripPlanningCard address='' totalOpeningHours={null} />
+            <TripPlanningCard survey={''} totalOpeningHours={null} />
 
             <ProductHorizontalSlide url="variation_2" Title='Bali Location To Visit' Description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet nulla felis. Duis a dolor condimentum, faucibus lacus ac, ullamcorper metus.' isAddButton={true} isDesc={true} locationsState={locationsState} />
 
