@@ -38,7 +38,7 @@ import TopCitiesIncrement from "@/api-calls/fromDB/topCitiesIncrement";
 import ContinentLocation from "@/data/continent.json";
 import TopCountriesIncrement from "@/api-calls/fromDB/topCountriesIncrement";
 
-export default function HeroFilterSection({ surveyData }: any) {
+export default function HeroFilterSection() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const params = useSearchParams();
@@ -57,6 +57,7 @@ export default function HeroFilterSection({ surveyData }: any) {
   const [buttonText, setButtonText] = useState("Look For Inspiration");
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
   const { priorityState } = useAppSelector((state) => state.prioritySlice);
+  const { surveySlice } = useAppSelector((state) => state.surveyReducer);
   const { topCountriesState } = useAppSelector(
     (state) => state.topCountriesSlice
   );
@@ -134,23 +135,26 @@ export default function HeroFilterSection({ surveyData }: any) {
   }, [topCitiesValue, topCountriesValue]);
 
   useEffect(() => {
-    let data = {
-      location: surveyData.location,
-      occassion:
-        surveyData.occassion && surveyData.occassion.length > 0
-          ? surveyData.occassion
-          : [],
-      priority:
-        surveyData.priority && surveyData.priority.length > 0
-          ? surveyData.priority
-          : [],
-      person: surveyData.person ? surveyData.person : "",
-      spending: surveyData.spending ? surveyData.spending : "",
-      dates: "",
-    };
+    console.log(surveySlice,"surveySlice")
     setSaveData(true);
-    setLocationSearch(data);
-  }, [surveyData]);
+    setLocationSearch({...surveySlice});
+    // ...locationSearch,location: surveySlice.location,
+    //   occassion:
+    //     surveySlice.occassion && surveySlice.occassion.length > 0
+    //       ? surveySlice.occassion
+    //       : [],
+    //   priority:
+    //     surveySlice.priority && surveySlice.priority.length > 0
+    //       ? surveySlice.priority
+    //       : [],
+    //   person: surveySlice.person ? surveySlice.person : "",
+    //   spending: surveySlice.spending ? surveySlice.spending : "",
+    //   dates: surveySlice.dates,
+  }, [surveySlice]);
+
+  useEffect(()=>{
+console.log(locationSearch,"locationSearch123")
+  },[locationSearch])
 
   useEffect(() => {
     setLocationSearch({ ...locationSearch, dates: date });

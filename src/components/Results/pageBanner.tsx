@@ -11,20 +11,6 @@ interface ISurvey {
 
 const Hero = ({ survey }: ISurvey) => {
 
-  const [locationSearch, setLocationSearch] = useState({
-    location: "",
-    occassion: [],
-    priority: [],
-    person:"",
-    cuisines: "",
-    message: "",
-    dates:"",
-  });
-
-  useEffect(() => {
-setLocationSearch(survey)
-  }, [survey]);
-
   return (
     <div className="relative lg:mb-10 mt-10">
       <Image
@@ -64,12 +50,12 @@ setLocationSearch(survey)
             <div
               className={`lg:block hidden mt-4 rounded-xl ${styles["result_banner"]}`}
             >
-              <BannerFilter surveyData={locationSearch} />
+              <BannerFilter />
             </div>
           </div>
         </div>
         <div className={`block lg:hidden ${styles["result_banner"]}`}>
-          <BannerFilter surveyData={locationSearch} />
+          <BannerFilter />
         </div>
       </div>
     </div>
