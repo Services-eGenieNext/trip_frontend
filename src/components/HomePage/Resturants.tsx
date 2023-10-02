@@ -346,12 +346,12 @@ const reviewArr = new Array(5).fill(1);
               <span className="text-gray-500 text-sm">{"("}{restaurant?.details?.user_ratings_total}{")"}</span>
                               </div>
               )}
-                          {restaurant?.details?.editorial_summary?.overview && (
+              <div className="h-[50px]">                          
+                {restaurant?.details?.editorial_summary?.overview && (
                             <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)] text-center text-ellipsis overflow-hidden line-clamp-2">{restaurant?.details?.editorial_summary?.overview}</p>
                           )}
-                          <p>
+                          </div>
 
-                          </p>
                         </div>
                       {!isAddButton && (
                             <div
