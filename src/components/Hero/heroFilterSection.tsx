@@ -220,7 +220,7 @@ export default function HeroFilterSection() {
           daysLength
       );
     } else {
-      router.push("/results?address=" + url_address);
+      router.push(`/results?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? url_address : `best locations in ${url_address}`}`);
       dispatch(setSurveyValue(locationSearch));
     }
   };

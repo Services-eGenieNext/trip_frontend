@@ -274,7 +274,7 @@ const reviewArr = new Array(5).fill(1);
                         <div className="p-7">
                           <div className="flex justify-center items-start">
                             <Link href={link}>
-                              <h4 className="text-2xl font-semibold gilroy">
+                              <h4 className="text-2xl font-semibold gilroy text-ellipsis whitespace-nowrap overflow-hidden max-w-[270px] w-max mx-auto">
                                 {restaurant.name}
                               </h4>
                             </Link>

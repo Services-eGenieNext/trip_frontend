@@ -11,6 +11,7 @@ import { VariationType } from "@/interfaces/product";
 import { LocationsCall } from "@/api-calls";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { reset } from "@/redux/reducers/itinerarySlice";
+import Spinloader from "../step-loader/spin-loader";
 
 interface ITripPlanningCard {
     params_list?: any,
@@ -116,7 +117,10 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
             <div className="w-full flex justify-center relative">
                 <div className="flex flex-col sm-width gilroy">
                     <TripPlanningHeader variation="space-between" />
-                    <div className="flex flex-wrap justify-center gap-x-12 gap-y-12">
+                    <div className="flex flex-wrap justify-center gap-x-12 gap-y-12 relative">
+                        {
+                            loading === true && <Spinloader />
+                        }
                         {loading === true ? (
                             skelton.map((list:string,index:number)=>{
                                 return <Card_skelton key={index}/>

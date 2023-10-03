@@ -33,6 +33,7 @@ export default function Results() {
   const [locationsData, setLocationsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [clearFilter, setClearFilter] = useState(false);
+  const [locationsByFilter, setLocationsByFilter] = useState<any[]>([])
 
   const _def = async () => {
     setLoading(true);
@@ -78,7 +79,7 @@ const _TopCountries = async () => {
   useEffect(()=>{
     if(paramsAddress){
       // dispatch(setSurveyValue({...surveySlice, location: paramsAddress}))
-      _locationSearch()
+      // _locationSearch()
     }else{
       _def()
     }
@@ -97,6 +98,53 @@ const _TopCountries = async () => {
       _def();
     }
   }, [clearFilter]);
+
+  useEffect(() => {
+    setLoading(true)
+    const _defOccassions = async () => {
+      if(surveySlice?.occassion?.length>0)
+      {
+        let _locationsByFilter = locationsByFilter
+        for(let i = 0; i < surveySlice.occassion.length; i++)
+        {
+          _locationsByFilter = locationsByFilter
+          let type = surveySlice.occassion[i].opt
+          let check = await _locationsByFilter.findIndex(loc => loc.type === type)
+          if(check === -1)
+          {
+            let res = await SearchLocation(`${surveySlice.occassion[i].opt} in ${surveySlice.location}`)
+            _locationsByFilter = [..._locationsByFilter, {type: type, locations: res}]
+          }
+        }
+        console.log('occassion', _locationsByFilter)
+        setLocationsByFilter(_locationsByFilter)
+      }
+    }
+    _defOccassions()
+
+    const _defPriority = async () => {
+      if(surveySlice?.priority?.length>0)
+      {
+        let _locationsByFilter = locationsByFilter
+        for(let i = 0; i < surveySlice.priority.length; i++)
+        {
+          _locationsByFilter = locationsByFilter
+          let type = surveySlice.priority[i].opt
+          let check = await _locationsByFilter.findIndex(loc => loc.type === type)
+          if(check === -1)
+          {
+            let res = await SearchLocation(`${surveySlice.priority[i].opt} in ${surveySlice.location}`)
+            _locationsByFilter = [{type: type, locations: res}, ..._locationsByFilter]
+          }
+        }
+        console.log('priority', _locationsByFilter)
+        setLocationsByFilter(_locationsByFilter)
+      }
+    }
+    _defPriority()
+  }, [surveySlice])
+
+  // console.log('locationsByFilter', locationsByFilter)
 
   return (
     <div>
@@ -121,6 +169,7 @@ const _TopCountries = async () => {
                   locations={locationsData}
                   loadData={loading}
                   setLoadData={setLoading}
+                  locationsByFilter={locationsByFilter}
                 />
               </div>
             </div>

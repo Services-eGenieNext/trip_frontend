@@ -13,6 +13,7 @@ import { setItineraryDays } from '@/redux/reducers/itinerarySlice';
 import { IDays } from '@/interfaces';
 import { _calculateStartAndEndTime } from './functions';
 import Card_skelton from '@/components/UIComponents/card_skelton';
+import Spinloader from '@/components/step-loader/spin-loader';
 
 interface IPricingCards {
     params_list?: any
@@ -260,6 +261,9 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
 
     return (
         <>
+        {
+            (itineraryLoading || itineraryDays.length == 0) && <Spinloader />
+        }
         {
             (itineraryLoading || itineraryDays.length == 0) ? 
             skelton.map((list:string,index:number)=>{
