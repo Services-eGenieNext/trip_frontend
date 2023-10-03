@@ -52,10 +52,12 @@ export default function HeroFilterSection() {
     (state) => state.topCountriesSlice
   );
   const { topCitiesState } = useAppSelector((state) => state.topCitiesSlice);
+  const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
   const [occasions, setOccasionsArray] = useState<any>([]);
   const [prioritiesValue, setPrioritiesValue] = useState<any>([]);
   const [topCountriesValue, setTopCountriesValue] = useState<any>([]);
   const [topCitiesValue, setTopCitiesValue] = useState<any>([]);
+  const [allLocation, setAllLocation] = useState<any>([]);
   const [invalidLocation, setInvalidLocation] = useState(false);
   const [locationRequired, setLocationRequired] = useState(false);
   const [locationDropdownValue, setLocationDropdownValue] = useState<any[]>([]);
@@ -140,6 +142,14 @@ export default function HeroFilterSection() {
     setSaveData(true);
     setLocationSearch(data);
   }, [surveySlice]);
+
+  useEffect(()=>{
+if(allLocationsState.length > 0){
+  setAllLocation(allLocationsState)
+}else(
+  setAllLocation([])
+)
+  },[allLocationsState])
 
   useEffect(() => {
     setLocationSearch({ ...locationSearch, dates: date });
@@ -300,38 +310,52 @@ export default function HeroFilterSection() {
   };
 
   useEffect(() => {
-    const filteredCity = topCitiesValue.filter((country: any) => {
+    const location = allLocation.filter((country: any) => {
       return (
-        country?.name?.toLocaleLowerCase() ==
+        country?.city?.toLocaleLowerCase() ==
         selectedLocation.toLocaleLowerCase()
       );
     });
 
-    const filteredCountry = topCountriesValue.filter((country: any) => {
-      return (
-        country?.name?.toLocaleLowerCase() ==
-        selectedLocation.toLocaleLowerCase()
-      );
-    });
-
-    const filteredContinent = ContinentLocation.filter((country: any) => {
-      return (
-        country?.name?.toLocaleLowerCase() ==
-        selectedLocation.toLocaleLowerCase()
-      );
-    });
-
-    if (filteredCity.length > 0) {
+    if(location.length > 0){
       setButtonText("Automate My trip");
-    } else {
+    }else{
       setButtonText("Look For Inspiration");
     }
-    if (filteredCountry.length > 0) {
-      setButtonText("Look For Inspiration");
-    }
-    if (filteredContinent.length > 0) {
-      setButtonText("Look For Inspiration");
-    }
+
+
+    // const filteredCity = topCitiesValue.filter((country: any) => {
+    //   return (
+    //     country?.name?.toLocaleLowerCase() ==
+    //     selectedLocation.toLocaleLowerCase()
+    //   );
+    // });
+
+    // const filteredCountry = topCountriesValue.filter((country: any) => {
+    //   return (
+    //     country?.name?.toLocaleLowerCase() ==
+    //     selectedLocation.toLocaleLowerCase()
+    //   );
+    // });
+
+    // const filteredContinent = ContinentLocation.filter((country: any) => {
+    //   return (
+    //     country?.name?.toLocaleLowerCase() ==
+    //     selectedLocation.toLocaleLowerCase()
+    //   );
+    // });
+
+    // if (filteredCity.length > 0) {
+    //   setButtonText("Automate My trip");
+    // } else {
+    //   setButtonText("Look For Inspiration");
+    // }
+    // if (filteredCountry.length > 0) {
+    //   setButtonText("Look For Inspiration");
+    // }
+    // if (filteredContinent.length > 0) {
+    //   setButtonText("Look For Inspiration");
+    // }
   }, [selectedLocation]);
 
   return (
@@ -368,7 +392,7 @@ export default function HeroFilterSection() {
             continent: ContinentLocation,
           }}
           value={locationSearch?.location}
-          items={locationDropdownValue}
+          items={allLocation}
           icon={<SimpleLocation />}
           onChange={(val: any) => {
             setSelectedLocation(val);

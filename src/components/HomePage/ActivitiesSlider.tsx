@@ -268,6 +268,12 @@ function ActivitiesSlider({activitiesState}:any) {
               <span className=" text-sm">{"("}{activities?.details?.user_ratings_total}{")"}</span>
                               </div>
               )}
+              {/* {activities.details.user_ratings_total && (
+                              <div className="flex items-center gap-x-2 justify-center my-2">
+                              <span className="text-white text-sm">Reviews: </span>
+              <span className=" text-sm">{"("}{activities?.details?.user_ratings_total}{")"}</span>
+                              </div>
+              )} */}
                             </div>
                             <div>
                             </div>

@@ -1,5 +1,8 @@
 import React,{useEffect,useState,useRef} from 'react'
 import { Box, Typography } from "@mui/material";
+import SearchLocation from '@/api-calls/fromDB/searchLocation'
+import { setAllLocations } from '@/redux/reducers/allLocations'
+import { useAppDispatch,useAppSelector } from '@/redux/hooks'
 
 interface IInputField {
     className?: string,
@@ -19,6 +22,7 @@ interface IInputField {
 
 const InputWithSuggestion = ({className,name, label, type, placeholder="", onChange= (e)=>{}, icon,items,value,onFocus,locationList}: IInputField) => {
     const ref = useRef<HTMLInputElement>(null);
+    const dispatch = useAppDispatch()
     const wrapperRef = useRef<HTMLInputElement>(null);
     const [showDropDown, setShowDropDown] = useState(false);
     const [values,setValue] = useState<any>("")
@@ -63,30 +67,22 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
 }, [showDropDown])
 
       const filtered = () => {
-        if(values != ""){
-        const filteredCity = locationList?.city?.filter((country:any) => {
-            return country?.name?.toLocaleLowerCase().includes(values?.toLocaleLowerCase());
-          });
-
-          const filteredCountry = locationList?.country?.filter((country:any) => {
-            return country?.name?.toLocaleLowerCase().includes(values?.toLocaleLowerCase());
-          });
-
-          const filteredContinent = locationList?.continent?.filter((country:any) => {
-            return country?.name?.toLocaleLowerCase().includes(values?.toLocaleLowerCase());
-          });
-
-          if(filteredCity.length > 0){
+        if(values !== ""){
+            const filteredCity = items?.filter((country:any) => {
+                return country?.city?.toLocaleLowerCase().includes(values?.toLocaleLowerCase());
+              });
+             if(filteredCity.length > 0){
                 setFilteredArray(filteredCity)
-          }
-          if(filteredCountry.length > 0){
-            setFilteredArray(filteredCountry)
-          }
-          if(filteredContinent.length > 0){
-            setFilteredArray(filteredContinent)
-          }
+             }else{
+                            const _SearchLocation = async () => {
+                                let res = await SearchLocation(values)
+                                dispatch(setAllLocations(res))
+                            }
+                            _SearchLocation()
+                        
+             }
         }else{
-            setFilteredArray(locationList.city)
+            setFilteredArray(items)
         }
       }
 
@@ -99,7 +95,13 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
     //   },[filteredArray])
 
     useEffect(()=>{
-        filtered()
+        onChange(values)
+        const delayDebounceFn = setTimeout(() => {
+            filtered()
+        }, 500)
+
+        return () => clearTimeout(delayDebounceFn)
+        
     },[values])
 
     return (
@@ -113,10 +115,8 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                         type={type ? type : 'text'} 
                         className={`outline-none w-full`} 
                         placeholder={placeholder ? placeholder : label} 
-                        onChange={(e)=>{
-                            setValue(e.target.value)
-                            onChange(e.target.value)
-                        }}
+                        
+                        onChange={(e) => (e.target.value.length == 0 || e.target.value.trim() !== "") && setValue(e.target.value)}
                         value={value}
                         name={name}
                         autoComplete="off"
@@ -159,12 +159,12 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                                         },
                                         }}
                                         onClick={()=>{
-                                            setValue(country.name)
+                                            setValue(country.city)
                                             setShowDropDown(false)
-                                            onChange(country.name)
+                                            onChange(country.city)
                                         }}
                                     >
-                                        <span className="text-[#9e9e9e] mr-2">{country.name}</span>
+                                        <span className="text-[#9e9e9e] mr-2">{country.city}</span>
                                     </Box>
                                     );
                                 })}
