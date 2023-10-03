@@ -248,7 +248,7 @@ responsive: [
                     </div>
                   );
                 })
-              : restaurantData?.map((restaurant: any, index: number) => {
+              : restaurantData?.slice(0, restaurantData.length - (restaurantData.length % 8)).map((restaurant: any, index: number) => {
                 let City = ""
                 let Country = ""
                 let parseImageArray = JSON.parse(restaurant.image)

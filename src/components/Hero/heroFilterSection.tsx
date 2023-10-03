@@ -389,7 +389,7 @@ export default function HeroFilterSection() {
 
       <DateRangeField
         label="Travel Date"
-        placeholder="Select ..."
+        placeholder="Select Date ..."
         className={`sm:mr-2 sm:my-2 my-7 sm:w-[250px] h-[46px] ${styles.inputWrapper}`}
         value={date}
         onChange={(value) => {
