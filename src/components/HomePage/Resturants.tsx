@@ -1,5 +1,6 @@
 
 import { useState, useRef, useEffect } from "react";
+import { FilledStar,BlankStar } from "../icons/Stars";
 import Image from "next/image";
 import React from "react";
 import LocationIcon from "../icons/Location";
@@ -113,6 +114,7 @@ responsive: [
 }
 ]
 };
+const reviewArr = new Array(5).fill(1);
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","9","10","1", "2", "3", "4", "5", "6"];
   const [loading, setLoading] = useState(true);
   const [restaurantData, setRestaurant] = useState([]);
@@ -258,7 +260,7 @@ responsive: [
                     restaurant.location_id ?? ""
                   }&place_id=${restaurant.place_id ?? ""}&restaurants=true`;
                   return (
-                    <div key={index} className="md:my-4 my-8 px-6 lg:mt-0 mt-14">
+                    <div key={index} className="md:my-4 my-8 px-6 lg:mt-0 mt-14 h-full">
                       <div
                         className={`rounded-xl overflow-hidden border border-[#C9D2DD] grid grid-cols-1 lg:grid-cols-2 bg-white h-full w-full relative ${styles["slider_card"]}`}
                       >
@@ -266,7 +268,7 @@ responsive: [
                           <img
                             src={image_path}
                             alt={image_path}
-                            className="object-cover lg:h-[200px] h-[250px] w-full cursor-pointer "
+                            className="object-cover h-[250px] w-full cursor-pointer "
                           />
                         </div>
                         <div className="p-7">
@@ -325,6 +327,25 @@ responsive: [
                               </span>
                             </span>
                           </div>
+                          <div className="flex items-center gap-x-2 justify-center my-2">
+                            {reviewArr &&
+                              reviewArr.map((review, index) => {
+                                if (index < restaurant?.details?.rating) {
+                                  return <FilledStar key={index} />;
+                                } else {
+                                  return <BlankStar key={index} />;
+                                }
+                              })}
+                              {restaurant.details.rating && (
+              <span className="text-gray-500 text-sm">{"("}{restaurant?.details?.rating}{")"}</span>
+              )}
+                              </div>
+                              {restaurant.details.user_ratings_total && (
+                              <div className="flex items-center gap-x-2 justify-center my-2">
+                              <span className="text-black text-sm">Reviews: </span>
+              <span className="text-gray-500 text-sm">{"("}{restaurant?.details?.user_ratings_total}{")"}</span>
+                              </div>
+              )}
                           {restaurant?.details?.editorial_summary?.overview && (
                             <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)] text-center text-ellipsis overflow-hidden line-clamp-2">{restaurant?.details?.editorial_summary?.overview}</p>
                           )}

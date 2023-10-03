@@ -25,7 +25,7 @@ const _getDetails = async (location_id:string | number) => {
 
 const LocationsCall = async (query:any) => {
 
-    return await axios.get(`${API_URL}/google/textsearch?place=best%20locations%20in%20${query}`)
+    return await axios.get(`${API_URL}/google/textsearch?place=${query}`)
     .then(async (response) => {
         let location_res = response.data.results
         console.log(location_res,query,"123")
