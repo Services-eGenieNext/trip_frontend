@@ -20,6 +20,8 @@ import { setTopCountries } from '@/redux/reducers/topCountries'
 import SearchLocation from '@/api-calls/locations-call'
 import TopCities from '@/api-calls/fromDB/topCities'
 import { setTopCities } from '@/redux/reducers/topCities'
+import AllLocations from '@/api-calls/fromDB/AllLocation'
+import { setAllLocations } from '@/redux/reducers/allLocations'
 
 export default function Results() {
   const dispatch = useAppDispatch();
@@ -62,6 +64,11 @@ const _TopCountries = async () => {
     dispatch(setTopCountries(res))
 }
 
+const _AllLocation = async () => {
+  let res = await AllLocations()
+  dispatch(setAllLocations(res))
+}
+
   const _locationSearch = async (address = "") => {
     setLoading(true)
     if(paramsAddress){
@@ -90,6 +97,7 @@ const _TopCountries = async () => {
     _Priorities()
     _TopCities()
     _TopCountries()
+    _AllLocation()
   },[])
 
   useEffect(() => {

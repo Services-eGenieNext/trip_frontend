@@ -1,6 +1,5 @@
-
 import { useState, useRef, useEffect } from "react";
-import { FilledStar,BlankStar } from "../icons/Stars";
+import { FilledStar, BlankStar } from "../icons/Stars";
 import Image from "next/image";
 import React from "react";
 import LocationIcon from "../icons/Location";
@@ -16,7 +15,6 @@ import Slider from "react-slick";
 import { setItem } from "@/redux/reducers/PlacedetailSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-
 interface IProduct {
   title: string;
   isAddButton?: boolean;
@@ -24,7 +22,19 @@ interface IProduct {
   restaurantsState?: any;
 }
 
-const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IProduct) => {
+const Products = ({
+  title = "Title",
+  isAddButton,
+  rows,
+  restaurantsState,
+}: IProduct) => {
+  const PriceLevel = [
+    { price_level: 0, value: "Free" },
+    { price_level: 1, value: "Inexpensive" },
+    { price_level: 2, value: "Moderate" },
+    { price_level: 3, value: "Expensive" },
+    { price_level: 4, value: "Very Expensive" },
+  ];
   function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
     return (
@@ -86,36 +96,53 @@ const Products = ({ title = "Title", isAddButton, rows, restaurantsState }: IPro
       </div>
     );
   }
-const settings = {
-// className: "center",
-// centerMode: true,
-infinite: true,
-centerPadding: "60px",
-slidesToShow: 1,
-speed: 500,
-rows: 4,
-slidesPerRow: 2,
-nextArrow: <SampleNextArrow />,
-prevArrow: <SamplePrevArrow />,
-responsive: [
-{
-  breakpoint: 850,
-  settings: {
-    centerMode: true,
+  const settings = {
+    // className: "center",
+    // centerMode: true,
     infinite: true,
     centerPadding: "60px",
     slidesToShow: 1,
     speed: 500,
     rows: 4,
-    slidesPerRow: 1,
+    slidesPerRow: 2,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
-  },
-}
-]
-};
-const reviewArr = new Array(5).fill(1);
-  const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","9","10","1", "2", "3", "4", "5", "6"];
+    responsive: [
+      {
+        breakpoint: 850,
+        settings: {
+          centerMode: true,
+          infinite: true,
+          centerPadding: "60px",
+          slidesToShow: 1,
+          speed: 500,
+          rows: 4,
+          slidesPerRow: 1,
+          nextArrow: <SampleNextArrow />,
+          prevArrow: <SamplePrevArrow />,
+        },
+      },
+    ],
+  };
+  const reviewArr = new Array(5).fill(1);
+  const skelton = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+  ];
   const [loading, setLoading] = useState(true);
   const [restaurantData, setRestaurant] = useState([]);
   const slideRef = useRef<null | HTMLDivElement>(null);
@@ -133,16 +160,16 @@ const reviewArr = new Array(5).fill(1);
   // const indexOfFirstPost = indexOfLastPost - postPerPage;
   // const currentPost = restaurantData.slice(indexOfFirstPost, indexOfLastPost);
 
-  const {show, item} = useAppSelector(state => state.PlacedetailSlice);
+  const { show, item } = useAppSelector((state) => state.PlacedetailSlice);
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setRestaurant(restaurantsState);
   }, [restaurantsState]);
 
   useEffect(() => {
-    console.log(restaurantData,"restaurantData")
+    console.log(restaurantData, "restaurantData");
     if (restaurantData?.length > 0) {
       setLoading(false);
     }
@@ -163,7 +190,6 @@ const reviewArr = new Array(5).fill(1);
       //   event.clientY -
       //   slideRef.current?.offsetTop -
       //   slideRef.current?.offsetHeight / 3;
-
       // setXPosition(xposition);
       // setYPosition(yposition);
       // setVisible(true);
@@ -195,16 +221,16 @@ const reviewArr = new Array(5).fill(1);
       <div className="w-full flex justify-center px-0">
         <Section className="relative">
           <div className="flex flex-col items-center">
-          <ComponentTitle title={title} />
-          <p className="text-[var(--gray)] sm:max-w-[550px] my-5 text-center">
-            Great food is the make or break between a good and a great travel
-            experience, so never settle with these top restaurants in the entire
-            world!
-          </p>
+            <ComponentTitle title={title} />
+            <p className="text-[var(--gray)] sm:max-w-[550px] my-5 text-center">
+              Great food is the make or break between a good and a great travel
+              experience, so never settle with these top restaurants in the
+              entire world!
+            </p>
           </div>
 
           {/* <div className={`grid grid-cols-1 md:grid-cols-${rows}`}> */}
-            <Slider {...settings}>
+          <Slider {...settings}>
             {loading === true
               ? skelton.map((show: string, index: number) => {
                   return (
@@ -251,16 +277,24 @@ const reviewArr = new Array(5).fill(1);
                   );
                 })
               : restaurantData?.slice(0, restaurantData.length - (restaurantData.length % 8)).map((restaurant: any, index: number) => {
-                let City = ""
-                let Country = ""
-                let parseImageArray = JSON.parse(restaurant.image)
-                      let image_path = parseImageArray.image.length > 0 ? parseImageArray.image[0].url : BlankLocation.src
-                  let address = restaurant.details.formatted_address
+                  console.log(restaurant, "restaurant");
+                  let City = "";
+                  let Country = "";
+                  let pricelevel = "";
+                  let parseImageArray = JSON.parse(restaurant.image);
+                  let image_path =
+                    parseImageArray.image.length > 0
+                      ? parseImageArray.image[0].url
+                      : BlankLocation.src;
+                  let address = restaurant.details.formatted_address;
                   let link = `/trip-plan?address=${address}&location_id=${
                     restaurant.location_id ?? ""
                   }&place_id=${restaurant.place_id ?? ""}&restaurants=true`;
                   return (
-                    <div key={index} className="md:my-4 my-8 px-6 lg:mt-0 mt-14 h-full">
+                    <div
+                      key={index}
+                      className="md:my-4 my-8 px-6 lg:mt-0 mt-14 h-full"
+                    >
                       <div
                         className={`rounded-xl overflow-hidden border border-[#C9D2DD] grid grid-cols-1 lg:grid-cols-2 bg-white h-full w-full relative ${styles["slider_card"]}`}
                       >
@@ -268,13 +302,13 @@ const reviewArr = new Array(5).fill(1);
                           <img
                             src={image_path}
                             alt={image_path}
-                            className="object-cover h-[250px] w-full cursor-pointer "
+                            className="object-cover h-[270px] w-full cursor-pointer "
                           />
                         </div>
                         <div className="p-7">
                           <div className="flex justify-center items-start">
                             <Link href={link}>
-                              <h4 className="text-2xl font-semibold gilroy text-ellipsis whitespace-nowrap overflow-hidden max-w-[270px] w-max mx-auto">
+                              <h4 className="text-2xl font-semibold gilroy text-center text-ellipsis overflow-hidden line-clamp-1 whitespace-nowrap max-w-[270px] w-max mx-auto">
                                 {restaurant.name}
                               </h4>
                             </Link>
@@ -313,17 +347,20 @@ const reviewArr = new Array(5).fill(1);
                               <LocationIcon className="h-4 w-4" />
                             </div>
                             <span className="ml-2 text-center">
-                            {restaurant?.details?.address_components?.forEach((address: any, index: number) => {
-                                  if(address?.types[0] == "locality"){
-                                    City = address.long_name
+                              {restaurant?.details?.address_components?.forEach(
+                                (address: any, index: number) => {
+                                  if (address?.types[0] == "locality") {
+                                    City = address.long_name;
                                   }
-                                  if(address?.types[0] == "country"){
-                                    Country = address.long_name
+                                  if (address?.types[0] == "country") {
+                                    Country = address.long_name;
                                   }
                                 }
                               )}
-                                <span className="text-center">
-                              {`${City}${City !== "" && Country !=="" ? "," : ""} ${Country}`}
+                              <span className="text-center">
+                                {`${City}${
+                                  City !== "" && Country !== "" ? "," : ""
+                                } ${Country}`}
                               </span>
                             </span>
                           </div>
@@ -336,51 +373,83 @@ const reviewArr = new Array(5).fill(1);
                                   return <BlankStar key={index} />;
                                 }
                               })}
-                              {restaurant.details.rating && (
-              <span className="text-gray-500 text-sm">{"("}{restaurant?.details?.rating}{")"}</span>
-              )}
-                              </div>
-                              {restaurant.details.user_ratings_total && (
-                              <div className="flex items-center gap-x-2 justify-center my-2">
-                              <span className="text-black text-sm">Reviews: </span>
-              <span className="text-gray-500 text-sm">{"("}{restaurant?.details?.user_ratings_total}{")"}</span>
-                              </div>
-              )}
-                          {restaurant?.details?.editorial_summary?.overview && (
-                            <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)] text-center text-ellipsis overflow-hidden line-clamp-2">{restaurant?.details?.editorial_summary?.overview}</p>
-                          )}
-                          <p>
-
-                          </p>
-                        </div>
-                      {!isAddButton && (
-                            <div
-                              className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center cursor-pointer ${styles["hover_overlay"]}`}
-                            >
-                              <button
-                                onClick={(e) => onSetAddress(e, link)}
-                                className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px]"
-                              >
-                                Automate My Trip
-                              </button>
-                              <button
-                                className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
-                                onClick={() => {
-                                  dispatch(setItem({
-                                    locaiton_id: restaurant.location_id,
-                                    place_id: restaurant.place_id,
-                                  }));
-                                }}
-                              >
-                                More Info
-                              </button>
+                            {restaurant.details.rating && (
+                              <span className="text-gray-500 text-sm">
+                                {"("}
+                                {restaurant?.details?.rating}
+                                {")"}
+                              </span>
+                            )}
+                          </div>
+                          {restaurant.details.user_ratings_total && (
+                            <div className="flex items-center gap-x-2 justify-center my-2">
+                              <span className="text-black text-sm">
+                                Reviews:{" "}
+                              </span>
+                              <span className="text-gray-500 text-sm">
+                                {"("}
+                                {restaurant?.details?.user_ratings_total}
+                                {")"}
+                              </span>
                             </div>
                           )}
+                          {restaurant.details.price_level && (
+                            PriceLevel.forEach((price:any)=>{
+                             if(price.price_level == restaurant.details.price_level){
+                              pricelevel = price.value
+                             }
+                            })
+                          )}
+                          {pricelevel && <div className="flex items-center gap-x-2 justify-center my-2">
+                              <span className="text-black text-sm">
+                                Price Level:{" "}
+                              </span>
+                              <span className="text-gray-500 text-sm">
+                                {pricelevel}
+                              </span>
+                            </div>}
+                          <div className="h-[50px]">
+                            {restaurant?.details?.editorial_summary
+                              ?.overview && (
+                              <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)] text-center text-ellipsis overflow-hidden line-clamp-2">
+                                {
+                                  restaurant?.details?.editorial_summary
+                                    ?.overview
+                                }
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                        {!isAddButton && (
+                          <div
+                            className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center cursor-pointer ${styles["hover_overlay"]}`}
+                          >
+                            <button
+                              onClick={(e) => onSetAddress(e, link)}
+                              className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px]"
+                            >
+                              Automate My Trip
+                            </button>
+                            <button
+                              className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
+                              onClick={() => {
+                                dispatch(
+                                  setItem({
+                                    locaiton_id: restaurant.location_id,
+                                    place_id: restaurant.place_id,
+                                  })
+                                );
+                              }}
+                            >
+                              More Info
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   );
                 })}
-                </Slider>
+          </Slider>
           {/* </div> */}
           {/* {restaurantData.length > postPerPage && (
             <div className="flex justify-center mt-10">

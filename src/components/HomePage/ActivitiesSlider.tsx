@@ -1,5 +1,6 @@
 import {useEffect,useState} from 'react'
 import Slider from 'react-slick';
+import { FilledStar,BlankStar } from "../icons/Stars";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import CSS from "./style.module.css";
@@ -13,6 +14,7 @@ import ComponentTitle from "../UIComponents/ComponentTitle";
 
 function ActivitiesSlider({activitiesState}:any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","1", "2", "3", "4", "5", "6", "7", "8"];
+  const reviewArr = new Array(5).fill(1);
   const [loading, setLoading] = useState(true);
   const [activity, setActivity] = useState([])
   const [showTripPopup, setShowTripPopup] = useState(false);
@@ -229,11 +231,11 @@ function ActivitiesSlider({activitiesState}:any) {
                                 "linear-gradient(0deg, rgb(0 0 0 / 70%), transparent)",
                             }}
                           ></div>
-                            <h1 className="text-[18px] mt-3 text-center lato absolute bottom-4 left-0 w-full font-bold text-white z-2">
+                          <div className="absolute bottom-4 left-0 w-full z-2 text-[18px] text-white lato  font-bold">
+                            <h1 className=" mt-3 text-center   ">
                               {activities.name}
                             </h1>
-                            <div>
-                            <span className="ml-2 text-center">
+                            <div className="ml-2 text-center">
                             {activities?.details?.address_components?.forEach((address: any, index: number) => {
                                   if(address?.types[0] == "locality"){
                                     City = address.long_name
@@ -246,7 +248,34 @@ function ActivitiesSlider({activitiesState}:any) {
                                 <span className="text-center">
                               {`${City}${City !== "" && Country !=="" ? "," : ""} ${Country}`}
                               </span>
-                            </span>
+                            </div>
+                            <div className="flex items-center gap-x-2 justify-center my-2">
+                            {reviewArr &&
+                              reviewArr.map((review, index) => {
+                                if (index < activities?.details?.rating) {
+                                  return <FilledStar key={index} />;
+                                } else {
+                                  return <BlankStar key={index} />;
+                                }
+                              })}
+                              {activities.details.rating && (
+              <span className="text-white text-sm">{"("}{activities?.details?.rating}{")"}</span>
+              )}
+                              </div>
+                              {activities.details.user_ratings_total && (
+                              <div className="flex items-center gap-x-2 justify-center my-2">
+                              <span className="text-white text-sm">Reviews: </span>
+              <span className=" text-sm">{"("}{activities?.details?.user_ratings_total}{")"}</span>
+                              </div>
+              )}
+              {/* {activities.details.user_ratings_total && (
+                              <div className="flex items-center gap-x-2 justify-center my-2">
+                              <span className="text-white text-sm">Reviews: </span>
+              <span className=" text-sm">{"("}{activities?.details?.user_ratings_total}{")"}</span>
+                              </div>
+              )} */}
+                            </div>
+                            <div>
                             </div>
                             </div>
                           </div>

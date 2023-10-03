@@ -26,7 +26,13 @@ interface ITripDetail {
         place_id: string
     }
 }
-
+const PriceLevel = [
+    { price_level: 0, value: "Free" },
+    { price_level: 1, value: "Inexpensive" },
+    { price_level: 2, value: "Moderate" },
+    { price_level: 3, value: "Expensive" },
+    { price_level: 4, value: "Very Expensive" },
+  ];
 const TripDetail = ({item}: ITripDetail) => {
 
     const slideRef = useRef<HTMLDivElement | null>(null)
@@ -93,11 +99,11 @@ const TripDetail = ({item}: ITripDetail) => {
             }
             else if(item?.place_id)
             {
-                let item_Detail: any = await DetailsCallByGoogle(`${item.place_id}&fields=address_components,place_id,photos,name,geometry,formatted_address,rating,user_ratings_total,editorial_summary,formatted_phone_number,opening_hours,url,reviews,website`)
+                let item_Detail: any = await DetailsCallByGoogle(`${item.place_id}&fields=`)
                 setItemDetail(item_Detail.data.result)
                 
             }
-            setDetailLoading(false)
+            setDetailLoading(false) 
         }
         _def()
     }, [item])
@@ -232,6 +238,8 @@ const TripDetail = ({item}: ITripDetail) => {
     const router = useRouter()
 
     const address = itemDetail?.formatted_address ? itemDetail.formatted_address : itemDetail?.address_obj?.address_string;
+
+    let pricelevel = ""
 
     return (
         <>
@@ -403,6 +411,21 @@ const TripDetail = ({item}: ITripDetail) => {
                                     {itemDetail?.user_ratings_total ? `(${itemDetail?.user_ratings_total})` : ""}
                                 </span>
                             </div>
+                            {itemDetail?.price_level && (
+                            PriceLevel.forEach((price:any)=>{
+                             if(price.price_level == itemDetail.price_level){
+                              pricelevel = price.value
+                             }
+                            })
+                          )}
+                          {pricelevel && <div className="flex items-center gap-x-2 justify-center my-2">
+                              <span className="text-black text-sm">
+                                Price Level:{" "}
+                              </span>
+                              <span className="text-gray-500 text-sm">
+                                {pricelevel}
+                              </span>
+                            </div>}
                             <div className="h-[3px] w-[51px] bg-[var(--blue)] my-5 mx-auto"></div>
                             
                             {

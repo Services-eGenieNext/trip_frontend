@@ -38,6 +38,7 @@ import TopCitiesIncrement from "@/api-calls/fromDB/topCitiesIncrement";
 import ContinentLocation from "@/data/continent.json";
 import TopCountriesIncrement from "@/api-calls/fromDB/topCountriesIncrement";
 
+
 export default function HeroFilterSection() {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -52,9 +53,11 @@ export default function HeroFilterSection() {
   const [locationRequired,setLocationRequired] = useState(false)
   const [topCountriesValue, setTopCountriesValue] = useState<any>([]);
   const [topCitiesValue, setTopCitiesValue] = useState<any>([]);
+  const [allLocation, setAllLocation] = useState<any>([]);
   const [locationDropdownValue, setLocationDropdownValue] = useState<any[]>([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [buttonText, setButtonText] = useState("Look For Inspiration");
+const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
   const { priorityState } = useAppSelector((state) => state.prioritySlice);
   const { surveySlice } = useAppSelector((state) => state.surveyReducer);
@@ -101,6 +104,14 @@ export default function HeroFilterSection() {
       setPrioritiesValue([]);
     }
   }, [priorityState]);
+
+  useEffect(()=>{
+    if(allLocationsState.length > 0){
+      setAllLocation(allLocationsState)
+    }else(
+      setAllLocation([])
+    )
+      },[allLocationsState])
 
   useEffect(() => {
     if (topCountriesState?.length > 0) {
@@ -362,7 +373,7 @@ console.log(locationSearch,"locationSearch123")
             continent: ContinentLocation,
           }}
           value={locationSearch?.location}
-          items={locationDropdownValue}
+          items={allLocation}
           icon={<SimpleLocation />}
           onChange={(val: any) => {
             setSelectedLocation(val);
