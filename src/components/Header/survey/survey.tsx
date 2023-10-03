@@ -447,7 +447,7 @@ setSurvey({...survey, location:"" })
                     className={`sm:mr-2 sm:my-2 my-5 w-[400px] h-[46px]`}
                     placeholder="Select..."
                     onChange={(val: any) =>
-                      setSurvey({...survey, location: "USA"})
+                      setSurvey({...survey, location: ""})
                     }
                     dropdownWidth = "sm:w-full"
                   />

@@ -10,6 +10,7 @@ import prioritySlice from "./reducers/prioritySlice";
 import topCountriesSlice from "./reducers/topCountries";
 import topCitiesSlice from './reducers/topCities'
 import PlacedetailSlice from "./reducers/PlacedetailSlice"
+import allLocationSlice from "./reducers/allLocations";
 
 export const store = configureStore({
     reducer: {
@@ -23,7 +24,8 @@ export const store = configureStore({
         prioritySlice,
         topCountriesSlice,
         topCitiesSlice,
-        PlacedetailSlice
+        PlacedetailSlice,
+        allLocationSlice
     },
     devTools: process.env.NODE_ENV !== "production",
 });

@@ -17,6 +17,8 @@ import TopCountries from '@/api-calls/fromDB/topCountries'
 import { setTopCountries } from '@/redux/reducers/topCountries'
 import TopCities from '@/api-calls/fromDB/topCities'
 import { setTopCities } from '@/redux/reducers/topCities'
+import AllLocations from '@/api-calls/fromDB/AllLocation'
+import { setAllLocations } from '@/redux/reducers/allLocations'
 
 export default function Home() {
     const dispatch = useAppDispatch()
@@ -33,7 +35,7 @@ export default function Home() {
 
         const _restaurants = async () => {
             let res = await RestaurantsCallFromDB()
-            console.log('restaurants', res)
+            console.log('restaurants 123', res)
             setRestaurants(res)
         }
         _restaurants()
@@ -67,6 +69,12 @@ export default function Home() {
             dispatch(setTopCountries(res))
         }
         _TopCountries()
+
+        const _AllLocation = async () => {
+            let res = await AllLocations()
+            dispatch(setAllLocations(res))
+        }
+        _AllLocation()
 
     }, [])
 
