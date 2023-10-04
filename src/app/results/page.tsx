@@ -23,6 +23,11 @@ import { setTopCities } from '@/redux/reducers/topCities'
 import AllLocations from '@/api-calls/fromDB/AllLocation'
 import { setAllLocations } from '@/redux/reducers/allLocations'
 
+interface ILocationsByFilter {
+  type: string,
+  locations: any[]
+}
+
 export default function Results() {
   const dispatch = useAppDispatch();
   const { surveySlice } = useAppSelector((state) => state.surveyReducer);
@@ -35,13 +40,13 @@ export default function Results() {
   const [locationsData, setLocationsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [clearFilter, setClearFilter] = useState(false);
-  const [locationsByFilter, setLocationsByFilter] = useState<any[]>([])
+  const [locationsByFilter, setLocationsByFilter] = useState<ILocationsByFilter[]>([])
 
   const _def = async () => {
     setLoading(true);
-      let res = await LocationsCallFromDB()
-      setLocationState(res)
-      setLocationsData(res);
+    let res = await LocationsCallFromDB()
+    setLocationState(res)
+    setLocationsData(res);
   };
 
   const _Occassions = async () => {
@@ -84,9 +89,8 @@ const _AllLocation = async () => {
   }
 
   useEffect(()=>{
-    if(paramsAddress){
-      // dispatch(setSurveyValue({...surveySlice, location: paramsAddress}))
-      // _locationSearch()
+    if(paramsAddress && (!surveySlice?.occassion && !surveySlice?.priority) ){
+      _locationSearch()
     }else{
       _def()
     }
@@ -110,49 +114,42 @@ const _AllLocation = async () => {
   useEffect(() => {
     setLoading(true)
     const _defOccassions = async () => {
+      let _locationsByFilter = []
       if(surveySlice?.occassion?.length>0)
       {
-        let _locationsByFilter = locationsByFilter
         for(let i = 0; i < surveySlice.occassion.length; i++)
         {
-          _locationsByFilter = locationsByFilter
           let type = surveySlice.occassion[i].opt
           let check = await _locationsByFilter.findIndex(loc => loc.type === type)
           if(check === -1)
           {
             let res = await SearchLocation(`${surveySlice.occassion[i].opt} in ${surveySlice.location}`)
-            _locationsByFilter = [..._locationsByFilter, {type: type, locations: res}]
+            _locationsByFilter.push({type: type, locations: res})
           }
         }
         console.log('occassion', _locationsByFilter)
-        setLocationsByFilter(_locationsByFilter)
       }
-    }
-    _defOccassions()
 
-    const _defPriority = async () => {
       if(surveySlice?.priority?.length>0)
       {
-        let _locationsByFilter = locationsByFilter
         for(let i = 0; i < surveySlice.priority.length; i++)
         {
-          _locationsByFilter = locationsByFilter
+          // _locationsByFilter = locationsByFilter
           let type = surveySlice.priority[i].opt
           let check = await _locationsByFilter.findIndex(loc => loc.type === type)
           if(check === -1)
           {
             let res = await SearchLocation(`${surveySlice.priority[i].opt} in ${surveySlice.location}`)
-            _locationsByFilter = [{type: type, locations: res}, ..._locationsByFilter]
+            _locationsByFilter.push({type: type, locations: res})
           }
         }
         console.log('priority', _locationsByFilter)
         setLocationsByFilter(_locationsByFilter)
+        // setLocationsByFilter(_locationsByFilter)
       }
     }
-    _defPriority()
-  }, [surveySlice])
-
-  // console.log('locationsByFilter', locationsByFilter)
+    _defOccassions()
+  }, [surveySlice.occassion])
 
   return (
     <div>
@@ -164,20 +161,22 @@ const _AllLocation = async () => {
               <div className="lg:col-span-1 max-w-[300px] w-full ">
                 <FilterSidebar
                   locationSearch = {_locationSearch}
+                  clearFilter={clearFilter}
                   setClearFilter={setClearFilter}
                   locations={locationsState}
                   setLocationsData={setLocationsData}
+                  locationsByFilter={locationsByFilter}
                   setLoading={setLoading}
-                  clearFilter={clearFilter}
                 />
               </div>
               <div className="lg:col-span-3 col-span-4">
                 <Lisitngs
                   setClearFilter={setClearFilter}
                   locations={locationsData}
+                  setLocations={setLocationsData}
+                  locationsByFilter={locationsByFilter}
                   loadData={loading}
                   setLoadData={setLoading}
-                  locationsByFilter={locationsByFilter}
                 />
               </div>
             </div>

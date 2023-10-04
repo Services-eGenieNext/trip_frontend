@@ -8,7 +8,7 @@ import Activities from '@/data/priority.json'
 import CardOptionsSearchListing from './filtersOptionsSearch'
 import { useAppSelector } from "@/redux/hooks";
 
-export default function FilterSidebar({locations,setLocationsData,setClearFilter,clearFilter, locationSearch}:any) {
+export default function FilterSidebar({locations, setLocationsData, locationsByFilter, setClearFilter, clearFilter, locationSearch}:any) {
 
   const [locationArray,setLocationArray] = useState([])
 
@@ -32,22 +32,17 @@ export default function FilterSidebar({locations,setLocationsData,setClearFilter
 
   useEffect(()=>{
     const defLoad = async () => {
-      let url = surveySlice.location ? surveySlice.location : "";
 
       let occassion_arr = await selectedOccasions.map(
         (oc: any) => oc.name
       );
       let priority_arr = await selectedActivities.map((pr: any) => pr.name);
 
-      console.log('priority_arr', priority_arr)
-
       let arr = occassion_arr.concat(...priority_arr);
-      if(arr.length > 0)
-      {
-        url = url.trim() != "" && arr.length > 0 ? `${arr.join(",")} in ${url}` : url;
-        console.log('url', url)
-        locationSearch(url)
-      }
+
+      let _locationsByFilter = await locationsByFilter.filter((loc: any) => arr.length > 0 ? arr.includes(loc.type) : true ).map((loc: any) => loc.locations)
+      setLocationsData([].concat(..._locationsByFilter))
+
     }
     defLoad()
   },[selectedActivities, selectedOccasions])
