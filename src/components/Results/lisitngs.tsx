@@ -10,7 +10,7 @@ import { setItem } from "@/redux/reducers/PlacedetailSlice";
 import Loader from "../step-loader/loader";
 import Spinloader from "../step-loader/spin-loader";
 
-export default function Lisitngs({ locations, setLocations, loadData, setClearFilter,setLoadData, locationsByFilter }: any) {
+export default function Lisitngs({ locations, setLocations, Filteredlocations, loadData, setClearFilter,setLoadData, locationsByFilter }: any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
   useEffect(()=>{
@@ -35,7 +35,7 @@ export default function Lisitngs({ locations, setLocations, loadData, setClearFi
     <div className="lg:pl-12 md:pl-12 sm:pl-6 pl-3">
       {
         loadData === false ? (
-        <p className="text-[18px] text-[#3F3F3F]"> Show listing of {locations?.length} Places... </p>
+        <p className="text-[18px] text-[#3F3F3F]"> Show listing of {Filteredlocations?.length} Places... </p>
         ):(
           <>
           <p className="text-[18px] text-[#3F3F3F]">Our AI engine is finding best option for you...</p>
@@ -83,7 +83,7 @@ export default function Lisitngs({ locations, setLocations, loadData, setClearFi
               );
             })
           : (
-            locations && locations.length > 0 ? locations?.map((location: any, index:number) => {
+            Filteredlocations && Filteredlocations.length > 0 ? Filteredlocations?.map((location: any, index:number) => {
             
             let image_path =
               location.image.image.length > 0

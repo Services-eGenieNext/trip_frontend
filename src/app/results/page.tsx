@@ -36,16 +36,17 @@ export default function Results() {
   // const { locationsState }: any = useAppSelector(
   //   (state) => state.locationReducer
   // );
-  const [locationsState, setLocationState] = useState([])
-  const [locationsData, setLocationsData] = useState([]);
+  const [Filteredlocations, setFilteredLocations] = useState<any[]>([]);
+  const [locationsData, setLocationsData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [clearFilter, setClearFilter] = useState(false);
   const [locationsByFilter, setLocationsByFilter] = useState<ILocationsByFilter[]>([])
+  const [occassionLocations, setOccassionLocations] = useState<ILocationsByFilter[]>([])
+  const [priorityLocations, setPriorityLocations] = useState<ILocationsByFilter[]>([])
 
   const _def = async () => {
     setLoading(true);
     let res = await LocationsCallFromDB()
-    setLocationState(res)
     setLocationsData(res);
   };
 
@@ -81,7 +82,6 @@ const _AllLocation = async () => {
       // let res = await SearchLocation(surveySlice.url ? surveySlice.url : `${_occasions ? _occasions.join(',') : 'Best Location'} in ${paramsAddress} for tourist`)
       let res = await SearchLocation(address ? address : paramsAddress)
       if(res){
-        setLocationState(res)
         setLocationsData(res);
       }
       setLoading(false)
@@ -89,9 +89,9 @@ const _AllLocation = async () => {
   }
 
   useEffect(()=>{
-    if(paramsAddress && (!surveySlice?.occassion && !surveySlice?.priority) ){
-      _locationSearch()
-    }else{
+    if(paramsAddress && ((!surveySlice?.occassion || surveySlice?.occassion.length == 0) && (!surveySlice?.priority || surveySlice?.priority.length == 0)) ){
+      _locationSearch(`Best Location in ${paramsAddress}`)
+    }else if(!surveySlice?.occassion && !surveySlice?.priority){
       _def()
     }
   },[paramsAddress])
@@ -117,6 +117,8 @@ const _AllLocation = async () => {
       let _locationsByFilter = []
       if(surveySlice?.occassion?.length>0)
       {
+        setLoading(true)
+        setLocationsData([])
         for(let i = 0; i < surveySlice.occassion.length; i++)
         {
           let type = surveySlice.occassion[i].opt
@@ -127,14 +129,19 @@ const _AllLocation = async () => {
             _locationsByFilter.push({type: type, locations: res})
           }
         }
-        console.log('occassion', _locationsByFilter)
+        setOccassionLocations(_locationsByFilter)
       }
+    }
+    _defOccassions()
 
+    const _defPriority = async () => {
       if(surveySlice?.priority?.length>0)
       {
+        setLoading(true)
+        setLocationsData([])
+        let _locationsByFilter = []
         for(let i = 0; i < surveySlice.priority.length; i++)
         {
-          // _locationsByFilter = locationsByFilter
           let type = surveySlice.priority[i].opt
           let check = await _locationsByFilter.findIndex(loc => loc.type === type)
           if(check === -1)
@@ -143,13 +150,23 @@ const _AllLocation = async () => {
             _locationsByFilter.push({type: type, locations: res})
           }
         }
-        console.log('priority', _locationsByFilter)
-        setLocationsByFilter(_locationsByFilter)
-        // setLocationsByFilter(_locationsByFilter)
+        setPriorityLocations(_locationsByFilter)
       }
     }
-    _defOccassions()
-  }, [surveySlice.occassion])
+    _defPriority()
+  }, [surveySlice])
+  
+  useEffect(() => {
+    setLocationsByFilter([...locationsByFilter, ...priorityLocations])
+  }, [priorityLocations])
+
+  useEffect(() => {
+    setLocationsByFilter([...occassionLocations, ...locationsByFilter])
+  }, [occassionLocations])
+
+  useEffect(() => {
+    setFilteredLocations([...locationsData])
+  }, [locationsData])
 
   return (
     <div>
@@ -160,11 +177,10 @@ const _AllLocation = async () => {
             <div className="grid grid-cols-1 lg:grid-cols-4">
               <div className="lg:col-span-1 max-w-[300px] w-full ">
                 <FilterSidebar
-                  locationSearch = {_locationSearch}
                   clearFilter={clearFilter}
                   setClearFilter={setClearFilter}
-                  locations={locationsState}
-                  setLocationsData={setLocationsData}
+                  locations={locationsData}
+                  setFilteredLocations={setFilteredLocations}
                   locationsByFilter={locationsByFilter}
                   setLoading={setLoading}
                 />
@@ -173,6 +189,7 @@ const _AllLocation = async () => {
                 <Lisitngs
                   setClearFilter={setClearFilter}
                   locations={locationsData}
+                  Filteredlocations={Filteredlocations}
                   setLocations={setLocationsData}
                   locationsByFilter={locationsByFilter}
                   loadData={loading}
