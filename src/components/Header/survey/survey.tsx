@@ -87,11 +87,6 @@ const Survey = ({ show, onClose }: ISurvey) => {
           field: false,
         },
         { 
-          label: "No, but I know where I don’t want to go", 
-          value: "no", 
-          field: false,
-        },
-        { 
           label: "I’m open to all suggestions ", 
           value: "all", 
           field: false,
@@ -189,10 +184,6 @@ const Survey = ({ show, onClose }: ISurvey) => {
     if(survey.selectedOption == "city"){
       setLocationInputLabel("City")
       setDropdownLocationValue(topCities)
-    }
-    if(survey.selectedOption == "no"){
-      setLocationInputLabel("Trending Locations")
-      setDropdownLocationValue(AllLocation)
     }
     if(survey.selectedOption == "all"){
       setLocationInputLabel("Suggested Locations")
@@ -415,7 +406,7 @@ setSurvey({...survey, location:"" })
                   value={survey}
                   checked={options.field}
                 />
-                  {options.field == true && options.value !== "all" && options.value !== "no" && (
+                  {options.field == true && options.value !== "all" && (
                     <InputField
                       className={`sm:mr-2 sm:my-2 my-5 w-full h-[46px]`}
                       name="location"
@@ -435,7 +426,7 @@ setSurvey({...survey, location:"" })
                       }}
                     />
                   )}
-                  {options.value == "no" && options.field == true && (
+                  {/* {options.value == "no" && options.field == true && (
                     <MultiSelectDropdown
                     // searchBar
                     items={dropdownLocationValue}
@@ -451,7 +442,7 @@ setSurvey({...survey, location:"" })
                     }
                     dropdownWidth = "sm:w-full"
                   />
-                  )}
+                  )} */}
                 </div>
                 )
               })

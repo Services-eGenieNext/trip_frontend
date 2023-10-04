@@ -1,5 +1,6 @@
 import { DetailCall } from '@/api-calls'
 import { DetailsCallByGoogle, getLocationImagesById } from '@/api-calls/location-details-call'
+import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide'
 import { _getlocationImages } from '@/api-calls/locations-call'
 import Image from 'next/image'
 import React, { useEffect, useRef, useState } from 'react'
@@ -18,13 +19,18 @@ import BlueButton from '../UIComponents/Buttons/BlueButton'
 import { useRouter } from 'next/navigation'
 import {BsFillTelephoneFill} from 'react-icons/bs'
 import {TbWorld} from 'react-icons/tb'
+import { useSearchParams } from 'next/navigation'
+import LocationApi from '@/api-calls/locations-call'
+import { ListItemSecondaryAction } from '@mui/material'
 
 
 interface ITripDetail {
     item?: {
         location_id: string
         place_id: string
-    }
+    },
+    title?:string
+    show?:any
 }
 const PriceLevel = [
     { price_level: 0, value: "Free" },
@@ -33,10 +39,11 @@ const PriceLevel = [
     { price_level: 3, value: "Expensive" },
     { price_level: 4, value: "Very Expensive" },
   ];
-const TripDetail = ({item}: ITripDetail) => {
+const TripDetail = ({item,title,show}: ITripDetail) => {
 
     const slideRef = useRef<HTMLDivElement | null>(null)
-
+    const params = useSearchParams()
+    const [params_list, setParamsList] = useState<any>({address: '', location_id: '', place_id: '', v_type: '', restaurants: null, start_day_index: '', days_length: ''})
     const [images, setImages] = useState<any[]>([])
     const [image, setImage] = useState('')
     const [detailLoading, setDetailLoading] = useState(false)
@@ -49,8 +56,31 @@ const TripDetail = ({item}: ITripDetail) => {
     const [zoomImagePath, setZoomImagePath] = useState("")
     const [selectedImage, setSelectedImage] = useState<number>(0)
     const [showSlide, setShowSlide] = useState(false)
+    const [existingActivities, setExistingActivities] = useState([])
+    const [exsitingRestaurants, setExsitingRestaurants] = useState([])
 
     const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
+
+    useEffect(() => {
+        let _address: any = params.get('address')
+        let _location_id: any = params.get('location_id')
+        let _place_id: any = params.get('place_id')
+        let _v_type: any = params.get('v_type')
+        let restaurants: any = params.get('restaurants')
+        let start_day_index: any = params.get('start_day_index')
+        let days_length: any = params.get('days_length')
+
+        let initialParams = {
+            address: _address ?? '',
+            location_id: _location_id ?? '',
+            place_id: _place_id ?? '',
+            v_type: _v_type ? _v_type : '2',
+            restaurants: restaurants ?? '',
+            start_day_index: start_day_index ?? '',
+            days_length: days_length ?? ''
+        }
+        setParamsList(initialParams)
+    }, [params])
 
     useEffect(() => {
         const _defItemDetail = async () => {
@@ -108,6 +138,29 @@ const TripDetail = ({item}: ITripDetail) => {
         _def()
     }, [item])
 
+    const _Activities = async () => {
+        let res = await LocationApi(`best activities in ${itemDetail?.name}`)
+        setExistingActivities(res)
+      }
+
+      const _Restaurants = async () => {
+        let res = await LocationApi(`best restaurants in ${itemDetail?.name}`)
+        setExsitingRestaurants(res)
+      }
+
+    useEffect(()=>{
+if(title == "Trending Location" && itemDetail?.name){
+    _Activities()
+    _Restaurants()
+}
+    },[itemDetail])
+
+    useEffect(()=>{
+if(show == true){
+    setExistingActivities([])
+    setExsitingRestaurants([])
+}
+    },[show])
 
     const [prevBtnDisabled, setPrevBtnDisabled] = useState(false)
     const [nextBtnDisabled, setNextBtnDisabled] = useState(false)
@@ -548,7 +601,28 @@ const TripDetail = ({item}: ITripDetail) => {
                         </>
                     )
                 }
-
+                    {title == "Trending Location" && (
+                    <ProductHorizontalSlide 
+                    locationsState={existingActivities} 
+                    url="variation_2" 
+                    Title={`${itemDetail?.name} Best Activities`} 
+                    route = {title}
+                    isDesc={true}
+                    isHover={true}
+                    v_type={"2"}
+                />
+                )}
+                {title == "Trending Location" && (
+                    <ProductHorizontalSlide 
+                    locationsState={exsitingRestaurants} 
+                    url="variation_2" 
+                    Title={`${itemDetail?.name} Best Restaurants`} 
+                    route = {title}
+                    isDesc={true}
+                    isHover={true}
+                    v_type={"2"}
+                />
+                )}
                 {/* Client Reviews */}
                 {
                     !detailLoading && (
@@ -561,6 +635,7 @@ const TripDetail = ({item}: ITripDetail) => {
                         </>
                     )
                 }
+                
             </div>
 
             <AddInItineraryForm show={showInItineraryModel} setShow={setShowInItineraryModel} openLocation={openLocation} />

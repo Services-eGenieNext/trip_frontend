@@ -12,4 +12,5 @@ export interface IProductHorizontalSlide {
     v_type?: VariationType
     slidesToShow?: number
     isAutomate?: boolean
+    route?:string
 }
