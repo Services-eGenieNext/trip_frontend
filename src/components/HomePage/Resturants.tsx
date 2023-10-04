@@ -308,7 +308,7 @@ const Products = ({
                         <div className="p-7">
                           <div className="flex justify-center items-start">
                             <Link href={link}>
-                              <h4 className="text-2xl font-semibold gilroy text-center text-ellipsis overflow-hidden line-clamp-1 whitespace-nowrap max-w-[270px] w-max mx-auto">
+                              <h4 className="text-2xl font-semibold gilroy text-center text-ellipsis overflow-hidden whitespace-nowrap max-w-[270px] w-max mx-auto" title={restaurant.name}>
                                 {restaurant.name}
                               </h4>
                             </Link>
@@ -423,7 +423,7 @@ const Products = ({
                         {!isAddButton && (
                           <div
                             className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center cursor-pointer ${styles["hover_overlay"]}`}
-                          >
+                            title={restaurant.name} >
                             <button
                               onClick={(e) => onSetAddress(e, link)}
                               className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px]"

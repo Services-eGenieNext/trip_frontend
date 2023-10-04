@@ -8,7 +8,7 @@ import Activities from '@/data/priority.json'
 import CardOptionsSearchListing from './filtersOptionsSearch'
 import { useAppSelector } from "@/redux/hooks";
 
-export default function FilterSidebar({locations, setLocationsData, locationsByFilter, setClearFilter, clearFilter, locationSearch}:any) {
+export default function FilterSidebar({locations, setFilteredLocations, locationsByFilter, setClearFilter, clearFilter}:any) {
 
   const [showFilter, setShowFilter] = useState(false)
   const [Ranking, setRanking] = useState("")
@@ -20,21 +20,30 @@ export default function FilterSidebar({locations, setLocationsData, locationsByF
   useEffect(()=>{
     const defLoad = async () => {
 
-      let occassion_arr = await selectedOccasions.map(
-        (oc: any) => oc.name
-      );
-      let priority_arr = await selectedActivities.map((pr: any) => pr.name);
+      if(locationsByFilter.length > 0)
+      {
+        let occassion_arr = await selectedOccasions.map(
+          (oc: any) => oc.name
+        );
+        let priority_arr = await selectedActivities.map((pr: any) => pr.name);
 
-      let arr = occassion_arr.concat(...priority_arr);
+        let arr = occassion_arr.concat(...priority_arr);
 
-      let _locationsByFilter = await locationsByFilter.filter((loc: any) => arr.length > 0 ? arr.includes(loc.type) : true )
-      .map((loc: any) => loc.locations)
-      
-      _locationsByFilter = [].concat(..._locationsByFilter)
-      
-      _locationsByFilter = await _locationsByFilter.filter((loc: any) => Ranking ? (Number(Ranking) <= Number(loc?.rating)) : true)
+        let _locationsByFilter = await locationsByFilter.filter((loc: any) => arr.length > 0 ? arr.includes(loc.type) : true )
+        .map((loc: any) => loc.locations)
+        
+        _locationsByFilter = [].concat(..._locationsByFilter)
+        
+        _locationsByFilter = await _locationsByFilter.filter((loc: any) => Ranking ? (Number(Ranking) <= Number(loc?.rating)) : true)
 
-      setLocationsData([].concat(..._locationsByFilter))
+        setFilteredLocations([].concat(..._locationsByFilter))
+      }
+      else
+      {
+        let _locationsByFilter = await locations.filter((loc: any) => Ranking ? (Number(Ranking) <= Number(loc?.rating) || Number(Ranking) <= Number(loc?.details?.rating)) : true)
+        
+        setFilteredLocations(_locationsByFilter)
+      }
 
     }
     
