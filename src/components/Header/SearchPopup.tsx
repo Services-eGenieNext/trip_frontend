@@ -9,7 +9,7 @@ import { setItem } from '@/redux/reducers/PlacedetailSlice'
 import { useAppDispatch } from '@/redux/hooks'
 import axios from 'axios'
 import { API_URL } from '@/config/constant'
-import { _getlocationImages } from '@/api-calls/locations-call'
+// import { _getlocationImages } from '@/api-calls/locations-call'
 
 interface ISearchPopup {
     show: boolean,
@@ -28,52 +28,88 @@ const SearchPopup = ({show, onClose}: ISearchPopup)=> {
 
     const dispatch = useAppDispatch()
     
+    const _getlocationImages = async (photo_reference: string | number, max_width="400", cancelToken="") => {
+
+        let config: any = { params: { photo_ref: photo_reference, max_width: max_width } }
+        if(cancelToken)
+        {
+            config.cancelToken = cancelToken
+        }
+    
+        let images_Data: any = await axios.get(`${API_URL}/google/placephotos/`, config)
+        .then(img_response => img_response.data.url)
+        .catch((error)=>{
+            if(error.code === "ERR_CANCELED")
+            {
+                setLoadingSearch(true)
+            }
+            return "NOT_FOUND"
+        })
+        return images_Data
+    }
 
     const LocationsCall = async (query:any) => {
 
         setSearchCount(searchCount+1)
+        let result: any;
+        try {
+        
+            result = await axios.get(`${API_URL}/google/textsearch?place=${query}`, {
+                cancelToken: apiSource.current.token
+            })
+            .then(async (response) => {
 
-        return await axios.get(`${API_URL}/google/textsearch?place=${query}`, {
-            cancelToken: apiSource.current.token
-        })
-        .then(async (response) => {
+                multiImageApiSource.current = axios.CancelToken.source()
+                let location_res = response.data.results
+                let canceled = false
+                let _store_locations: any = []
+                for (let index = 0; index < location_res.length; index++) {
 
-            multiImageApiSource.current = axios.CancelToken.source()
-            let location_res = response.data.results
+                    if(location_res[index].photos){
+                        let images_Data: any = await _getlocationImages(location_res[index].photos[0].photo_reference, "400", multiImageApiSource.current.token)
+                        
+                        if(images_Data === "NOT_FOUND")
+                        {
+                            canceled = true
+                            break;
+                        }
 
-            let _store_locations: any = []
-            for (let index = 0; index < location_res.length; index++) {
-
-                if(location_res[index].photos){
-                    let images_Data: any = await _getlocationImages(location_res[index].photos[0].photo_reference, "400", multiImageApiSource.current.token)
-                    
-                    _store_locations.push({
-                        ...location_res[index], images: images_Data, image: {image: [{url:images_Data}]}
-                    })
-                }else{
-                    _store_locations.push({
-                        ...location_res[index], images: "", image: {image: [{url:""}]}
-                    })
+                        _store_locations.push({
+                            ...location_res[index], images: images_Data, image: {image: [{url:images_Data}]}
+                        })
+                    }else{
+                        _store_locations.push({
+                            ...location_res[index], images: "", image: {image: [{url:""}]}
+                        })
+                    }
                 }
-            }
-            return _store_locations
-        })
-        .catch((error)=>{
-            console.log(error,"error")
-        })
+                return canceled ? undefined :_store_locations
+            })
+            .then(resp => {
+                return resp
+            })
+            .catch((error)=>{
+                console.log(error,"error")
+            })
+
+        } catch (error) {
+            console.log(error, 'error')
+        }
+        return result
     }
 
     const searchLocations = async (query: string) => {
         await setLoadingSearch(true)
 
         let res = await LocationsCall(query)
-        console.log('res', res)
-        if(res?.code !== "ERR_CANCELED")
+
+        if(res?.code !== "ERR_CANCELED" && res !== undefined)
         {
             setSearchList(res)
         }
         setLoadingSearch(false)
     }
+
     useEffect(() => {
         const delayDebounceFn = setTimeout(async () => {
             if(searchInput.length > 2)
