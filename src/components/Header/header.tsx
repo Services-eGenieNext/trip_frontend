@@ -110,7 +110,7 @@ const Header = () => {
                             <button className="bg-black py-3 px-4 lg:px-8 rounded-md text-white">Sign Up</button> */}
                         </div>
 
-                        {/* Mobile Search Icon */}
+                        {/* Search Icon for Mobile Responsivness */}
                         <div className="block md:hidden px-4">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6 cursor-pointer ml-auto" 
                             onClick={() => setOpenMobileSearch(!openMobileSearch)}
