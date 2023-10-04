@@ -8,9 +8,7 @@ import Activities from '@/data/priority.json'
 import CardOptionsSearchListing from './filtersOptionsSearch'
 import { useAppSelector } from "@/redux/hooks";
 
-export default function FilterSidebar({locations,setLocationsData,setClearFilter,clearFilter, locationSearch}:any) {
-
-  const [locationArray,setLocationArray] = useState([])
+export default function FilterSidebar({locations, setLocationsData, locationsByFilter, setClearFilter, clearFilter, locationSearch}:any) {
 
   const [showFilter, setShowFilter] = useState(false)
   const [Ranking, setRanking] = useState("")
@@ -18,39 +16,30 @@ export default function FilterSidebar({locations,setLocationsData,setClearFilter
   const [selectedOccasions, setSelectedOccasions] = useState<any[]>([])
 
   const { surveySlice } = useAppSelector(state => state.surveyReducer)
-  
-  useEffect(()=>{
-    setLocationArray(locations)
-  },[locations])
-
-  useEffect(()=>{
-    const filteredArray = locationArray.filter((list:any)=>{
-      return Ranking <= list?.details?.rating
-    })
-    setLocationsData(filteredArray)
-  },[Ranking])
 
   useEffect(()=>{
     const defLoad = async () => {
-      let url = surveySlice.location ? surveySlice.location : "";
 
       let occassion_arr = await selectedOccasions.map(
         (oc: any) => oc.name
       );
       let priority_arr = await selectedActivities.map((pr: any) => pr.name);
 
-      console.log('priority_arr', priority_arr)
-
       let arr = occassion_arr.concat(...priority_arr);
-      if(arr.length > 0)
-      {
-        url = url.trim() != "" && arr.length > 0 ? `${arr.join(",")} in ${url}` : url;
-        console.log('url', url)
-        locationSearch(url)
-      }
+
+      let _locationsByFilter = await locationsByFilter.filter((loc: any) => arr.length > 0 ? arr.includes(loc.type) : true )
+      .map((loc: any) => loc.locations)
+      
+      _locationsByFilter = [].concat(..._locationsByFilter)
+      
+      _locationsByFilter = await _locationsByFilter.filter((loc: any) => Ranking ? (Number(Ranking) <= Number(loc?.rating)) : true)
+
+      setLocationsData([].concat(..._locationsByFilter))
+
     }
+    
     defLoad()
-  },[selectedActivities, selectedOccasions])
+  },[selectedActivities, selectedOccasions, Ranking])
 
   return (
     <>

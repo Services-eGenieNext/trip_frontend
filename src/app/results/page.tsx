@@ -23,6 +23,11 @@ import { setTopCities } from '@/redux/reducers/topCities'
 import AllLocations from '@/api-calls/fromDB/AllLocation'
 import { setAllLocations } from '@/redux/reducers/allLocations'
 
+interface ILocationsByFilter {
+  type: string,
+  locations: any[]
+}
+
 export default function Results() {
   const dispatch = useAppDispatch();
   const { surveySlice } = useAppSelector((state) => state.surveyReducer);
@@ -35,12 +40,13 @@ export default function Results() {
   const [locationsData, setLocationsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [clearFilter, setClearFilter] = useState(false);
+  const [locationsByFilter, setLocationsByFilter] = useState<ILocationsByFilter[]>([])
 
   const _def = async () => {
     setLoading(true);
-      let res = await LocationsCallFromDB()
-      setLocationState(res)
-      setLocationsData(res);
+    let res = await LocationsCallFromDB()
+    setLocationState(res)
+    setLocationsData(res);
   };
 
   const _Occassions = async () => {
@@ -83,8 +89,7 @@ const _AllLocation = async () => {
   }
 
   useEffect(()=>{
-    if(paramsAddress){
-      // dispatch(setSurveyValue({...surveySlice, location: paramsAddress}))
+    if(paramsAddress && (!surveySlice?.occassion && !surveySlice?.priority) ){
       _locationSearch()
     }else{
       _def()
@@ -106,6 +111,46 @@ const _AllLocation = async () => {
     }
   }, [clearFilter]);
 
+  useEffect(() => {
+    setLoading(true)
+    const _defOccassions = async () => {
+      let _locationsByFilter = []
+      if(surveySlice?.occassion?.length>0)
+      {
+        for(let i = 0; i < surveySlice.occassion.length; i++)
+        {
+          let type = surveySlice.occassion[i].opt
+          let check = await _locationsByFilter.findIndex(loc => loc.type === type)
+          if(check === -1)
+          {
+            let res = await SearchLocation(`${surveySlice.occassion[i].opt} in ${surveySlice.location}`)
+            _locationsByFilter.push({type: type, locations: res})
+          }
+        }
+        console.log('occassion', _locationsByFilter)
+      }
+
+      if(surveySlice?.priority?.length>0)
+      {
+        for(let i = 0; i < surveySlice.priority.length; i++)
+        {
+          // _locationsByFilter = locationsByFilter
+          let type = surveySlice.priority[i].opt
+          let check = await _locationsByFilter.findIndex(loc => loc.type === type)
+          if(check === -1)
+          {
+            let res = await SearchLocation(`${surveySlice.priority[i].opt} in ${surveySlice.location}`)
+            _locationsByFilter.push({type: type, locations: res})
+          }
+        }
+        console.log('priority', _locationsByFilter)
+        setLocationsByFilter(_locationsByFilter)
+        // setLocationsByFilter(_locationsByFilter)
+      }
+    }
+    _defOccassions()
+  }, [surveySlice.occassion])
+
   return (
     <div>
       <PageBanner survey={surveySlice} />
@@ -116,17 +161,20 @@ const _AllLocation = async () => {
               <div className="lg:col-span-1 max-w-[300px] w-full ">
                 <FilterSidebar
                   locationSearch = {_locationSearch}
+                  clearFilter={clearFilter}
                   setClearFilter={setClearFilter}
                   locations={locationsState}
                   setLocationsData={setLocationsData}
+                  locationsByFilter={locationsByFilter}
                   setLoading={setLoading}
-                  clearFilter={clearFilter}
                 />
               </div>
               <div className="lg:col-span-3 col-span-4">
                 <Lisitngs
                   setClearFilter={setClearFilter}
                   locations={locationsData}
+                  setLocations={setLocationsData}
+                  locationsByFilter={locationsByFilter}
                   loadData={loading}
                   setLoadData={setLoading}
                 />

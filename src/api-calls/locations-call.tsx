@@ -2,8 +2,15 @@ import React from 'react'
 import axios from "axios"
 import { API_URL } from '@/config/constant'
 
-const _getlocationImages = async (photo_reference: string | number, max_width="400") => {
-    let images_Data: any = await axios.get(`${API_URL}/google/placephotos/`, { params: { photo_ref: photo_reference, max_width: max_width } })
+const _getlocationImages = async (photo_reference: string | number, max_width="400", cancelToken="") => {
+
+    let config: any = { params: { photo_ref: photo_reference, max_width: max_width } }
+    if(cancelToken)
+    {
+        config.cancelToken = cancelToken
+    }
+
+    let images_Data: any = await axios.get(`${API_URL}/google/placephotos/`, config)
     .then(img_response => img_response.data.url)
     .catch((error)=>{
         console.log(error,"photos api failed")

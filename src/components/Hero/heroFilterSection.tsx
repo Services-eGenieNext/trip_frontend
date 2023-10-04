@@ -230,7 +230,7 @@ if(allLocationsState.length > 0){
           daysLength
       );
     } else {
-      router.push("/results?address=" + url_address);
+      router.push(`/results?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? url_address : `best locations in ${url_address}`}`);
       dispatch(setSurveyValue(locationSearch));
     }
   };
@@ -413,7 +413,7 @@ if(allLocationsState.length > 0){
 
       <DateRangeField
         label="Travel Date"
-        placeholder="Select ..."
+        placeholder="Select Date ..."
         className={`sm:mr-2 sm:my-2 my-7 sm:w-[250px] h-[46px] ${styles.inputWrapper}`}
         value={date}
         onChange={(value) => {
