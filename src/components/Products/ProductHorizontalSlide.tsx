@@ -32,7 +32,8 @@ const ProductHorizontalSlide = ({
   type = "detail-card",
   v_type = "",
   slidesToShow = 4,
-  isAutomate = true
+  isAutomate = true,
+  route
 }: IProductHorizontalSlide) => {
 
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
@@ -52,6 +53,8 @@ const ProductHorizontalSlide = ({
   useEffect(() => {
     if (locations.length > 0) {
       setLoading(false);
+    }else{
+      setLoading(true)
     }
   }, [locations]);
 
@@ -154,7 +157,7 @@ const ProductHorizontalSlide = ({
         </div>
         )}
       <div ref={slideRef} id="location-to-visit-slide" className="mt-10">
-        <SliderComponent slidesToShow={slidesToShow} >
+        <SliderComponent slidesToShow={slidesToShow} route={route} >
           {loading === true
             ? skelton.map((limit: string, index: number) => {
                 return (
@@ -196,7 +199,9 @@ const ProductHorizontalSlide = ({
                       <Tooltip title={(v_type === "3") ? "Dragable in itinerary days." : ""}>
                       <div className={`grid grid-cols-1 ${v_type == "3" ? 'rounded-3xl shadow-lg h-max' : 'rounded-xl shadow-sm h-full'} border overflow-hidden relative ${styles["slider_card"]}`} draggable={(v_type === "3") ? true : false} onDragStart={(e) => dragStartFunc(e, location)} >
                         <div className={`${ type == "title-card" ? 'h-[310px]' : 'h-[178px]'} bg-gray-100 relative`} >
-                          <div className={`absolute top-0 left-0 z-[1] ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
+                         {route !== "Trending Location" && (
+                           <div className={`absolute top-0 left-0 z-[1] ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
+                         )}
                           <Image
                             src={image_path}
                             alt={location.name}
