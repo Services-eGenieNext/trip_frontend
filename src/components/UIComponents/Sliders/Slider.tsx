@@ -8,9 +8,10 @@ import "./slide.css"
 interface ISliderComponent {
     children: React.ReactNode
     slidesToShow?: number
+    route?:string
 }
 
-const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
+const SliderComponent = ({children, slidesToShow=4,route}: ISliderComponent) => {
 
       const [prevBtnDisabled, setPrevBtnDisabled] = useState(false)
   const [nextBtnDisabled, setNextBtnDisabled] = useState(false)
@@ -121,6 +122,7 @@ const SliderComponent = ({children, slidesToShow=4}: ISliderComponent) => {
         ],
         // afterChange,
     };
+
 
     return (
         <Slider {...settings}>

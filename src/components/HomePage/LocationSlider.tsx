@@ -240,6 +240,19 @@ const LocationSlider = ({
                                 }
                               )}
                             </div>
+                            <div className="flex items-center gap-x-2 justify-center my-2">
+                            {reviewArr &&
+                              reviewArr.map((review, index) => {
+                                if (index < location?.details?.rating) {
+                                  return <FilledStar key={index} />;
+                                } else {
+                                  return <BlankStar key={index} />;
+                                }
+                              })}
+                              {location.details.rating && (
+              <span className="text-white text-sm">{"("}{location?.details?.rating}{")"}</span>
+              )}
+                              </div>
                           </div>
                         )}
                         {isAddButton == false && (
@@ -372,6 +385,7 @@ const LocationSlider = ({
           onClose={() => {
             setShowTripPopup(false);
           }}
+          title = "Trending Location"
         />
       </Section>
     </div>
