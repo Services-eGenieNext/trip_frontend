@@ -10,25 +10,12 @@ import { useAppSelector } from "@/redux/hooks";
 
 export default function FilterSidebar({locations, setLocationsData, locationsByFilter, setClearFilter, clearFilter, locationSearch}:any) {
 
-  const [locationArray,setLocationArray] = useState([])
-
   const [showFilter, setShowFilter] = useState(false)
   const [Ranking, setRanking] = useState("")
   const [selectedActivities, setSelectedActivities] = useState<any[]>([])
   const [selectedOccasions, setSelectedOccasions] = useState<any[]>([])
 
   const { surveySlice } = useAppSelector(state => state.surveyReducer)
-  
-  useEffect(()=>{
-    setLocationArray(locations)
-  },[locations])
-
-  useEffect(()=>{
-    const filteredArray = locationArray.filter((list:any)=>{
-      return Ranking <= list?.details?.rating
-    })
-    setLocationsData(filteredArray)
-  },[Ranking])
 
   useEffect(()=>{
     const defLoad = async () => {
@@ -40,12 +27,19 @@ export default function FilterSidebar({locations, setLocationsData, locationsByF
 
       let arr = occassion_arr.concat(...priority_arr);
 
-      let _locationsByFilter = await locationsByFilter.filter((loc: any) => arr.length > 0 ? arr.includes(loc.type) : true ).map((loc: any) => loc.locations)
+      let _locationsByFilter = await locationsByFilter.filter((loc: any) => arr.length > 0 ? arr.includes(loc.type) : true )
+      .map((loc: any) => loc.locations)
+      
+      _locationsByFilter = [].concat(..._locationsByFilter)
+      
+      _locationsByFilter = await _locationsByFilter.filter((loc: any) => Ranking ? (Number(Ranking) <= Number(loc?.rating)) : true)
+
       setLocationsData([].concat(..._locationsByFilter))
 
     }
+    
     defLoad()
-  },[selectedActivities, selectedOccasions])
+  },[selectedActivities, selectedOccasions, Ranking])
 
   return (
     <>
