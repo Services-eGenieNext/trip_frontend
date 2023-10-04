@@ -276,7 +276,7 @@ const Products = ({
                     </div>
                   );
                 })
-              : restaurantData?.map((restaurant: any, index: number) => {
+              : restaurantData?.slice(0, restaurantData.length - (restaurantData.length % 8)).map((restaurant: any, index: number) => {
                   console.log(restaurant, "restaurant");
                   let City = "";
                   let Country = "";
@@ -308,7 +308,7 @@ const Products = ({
                         <div className="p-7">
                           <div className="flex justify-center items-start">
                             <Link href={link}>
-                              <h4 className="text-2xl font-semibold gilroy text-center text-ellipsis overflow-hidden line-clamp-1">
+                              <h4 className="text-2xl font-semibold gilroy text-center text-ellipsis overflow-hidden line-clamp-1 whitespace-nowrap max-w-[270px] w-max mx-auto">
                                 {restaurant.name}
                               </h4>
                             </Link>

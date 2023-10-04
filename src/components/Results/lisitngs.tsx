@@ -2,27 +2,30 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { FilledStar,BlankStar } from "../icons/Stars";
 import BlankLocation from "public/images/blank-location.jpg";
-import DetailModal from '../tripPlanningCard/TripPlanPopup';
 import Link from "next/link";
 import NotFound from 'public/images/data-not-found.jpg'
 import CSS from './pageBanner.module.css'
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import { setItem } from "@/redux/reducers/PlacedetailSlice";
+import Loader from "../step-loader/loader";
+import Spinloader from "../step-loader/spin-loader";
 
-export default function Lisitngs({ locations, loadData, setClearFilter,setLoadData }: any) {
-  const skelton = ["1", "2", "3", "4", "5", "6", "7", "8","9"];
-  const [results, setResults] = useState([]);
-
-  useEffect(() => {
-      setResults(locations);
-      console.log('locations', locations)
-  }, [locations]);
+export default function Lisitngs({ locations, setLocations, loadData, setClearFilter,setLoadData, locationsByFilter }: any) {
+  const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
   useEffect(()=>{
-    if(results.length > 0){
+    if(locations.length > 0){
       setLoadData(false)
     }
-  },[results])
+  },[locations])
+
+  useEffect(() => {
+    const _onChangeLocations = async () => {
+      let _locationsByFilter = await locationsByFilter.map((loc: any) => loc.locations)
+      setLocations([].concat(..._locationsByFilter))
+    }
+    _onChangeLocations()
+  }, [locationsByFilter])
 
   const reviewArr = new Array(5).fill(1);
 
@@ -32,7 +35,7 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
     <div className="lg:pl-12 md:pl-12 sm:pl-6 pl-3">
       {
         loadData === false ? (
-        <p className="text-[18px] text-[#3F3F3F]"> Show listing of {results?.length} Places... </p>
+        <p className="text-[18px] text-[#3F3F3F]"> Show listing of {locations?.length} Places... </p>
         ):(
           <>
           <p className="text-[18px] text-[#3F3F3F]">Our AI engine is finding best option for you...</p>
@@ -40,9 +43,12 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
           </>
         )
       }
-      <div className="flex flex-wrap itemns-center lg:justify-start justify-center my-8 gap-y-14 gap-x-10">
+      <div className="flex flex-wrap itemns-center lg:justify-start justify-center my-8 gap-y-14 gap-x-10 relative">
         {
-          loadData === true
+          (loadData == true && locations.length == 0) && <Spinloader />
+        }
+        {
+          loadData === true && locations.length == 0
           ? skelton.map((show: any, index: number) => {
               return (
                 <div
@@ -75,9 +81,9 @@ export default function Lisitngs({ locations, loadData, setClearFilter,setLoadDa
                   <span className="sr-only">Loading...</span>
                 </div>
               );
-          })
+            })
           : (
-            results && results.length > 0 ? results?.map((location: any, index:number) => {
+            locations && locations.length > 0 ? locations?.map((location: any, index:number) => {
             
             let image_path =
               location.image.image.length > 0

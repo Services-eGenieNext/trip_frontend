@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import PopupWithOverlay from '../UIComponents/Popup/PopupWithOverlay'
 import InputField from '../UIComponents/InputField/InputField'
 import ProductImg from "/public/static/restaurants.jpg"
 import LocationIcon from '../icons/Location'
 import Image from 'next/image'
-import { LocationsCall } from '@/api-calls'
 import BlankLocation from "public/images/blank-location.jpg";
 import { setItem } from '@/redux/reducers/PlacedetailSlice'
 import { useAppDispatch } from '@/redux/hooks'
+import axios from 'axios'
+import { API_URL } from '@/config/constant'
+import { _getlocationImages } from '@/api-calls/locations-call'
 
 interface ISearchPopup {
     show: boolean,
@@ -20,20 +22,71 @@ const SearchPopup = ({show, onClose}: ISearchPopup)=> {
     const [searchList, setSearchList] = useState([])
     const [loadingSearch, setLoadingSearch] = useState(false)
     const loadingLength = [1,1,1,1,1]
+    const apiSource = useRef<any>(null)
+    const multiImageApiSource = useRef<any>(null)
+    const [searchCount, setSearchCount] = useState<number>(0)
 
     const dispatch = useAppDispatch()
     
-    const searchLocations = async (query: string) => {
-        setLoadingSearch(true)
-        let res = await LocationsCall(query)
-        setSearchList(res)
 
+    const LocationsCall = async (query:any) => {
+
+        setSearchCount(searchCount+1)
+
+        return await axios.get(`${API_URL}/google/textsearch?place=${query}`, {
+            cancelToken: apiSource.current.token
+        })
+        .then(async (response) => {
+
+            multiImageApiSource.current = axios.CancelToken.source()
+            let location_res = response.data.results
+
+            let _store_locations: any = []
+            for (let index = 0; index < location_res.length; index++) {
+
+                if(location_res[index].photos){
+                    let images_Data: any = await _getlocationImages(location_res[index].photos[0].photo_reference, "400", multiImageApiSource.current.token)
+                    
+                    _store_locations.push({
+                        ...location_res[index], images: images_Data, image: {image: [{url:images_Data}]}
+                    })
+                }else{
+                    _store_locations.push({
+                        ...location_res[index], images: "", image: {image: [{url:""}]}
+                    })
+                }
+            }
+            return _store_locations
+        })
+        .catch((error)=>{
+            console.log(error,"error")
+        })
+    }
+
+    const searchLocations = async (query: string) => {
+        await setLoadingSearch(true)
+
+        let res = await LocationsCall(query)
+        console.log('res', res)
+        if(res?.code !== "ERR_CANCELED")
+        {
+            setSearchList(res)
+        }
         setLoadingSearch(false)
     }
     useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            if(searchInput)
+        const delayDebounceFn = setTimeout(async () => {
+            if(searchInput.length > 2)
             {
+                if(searchCount > 0)
+                {
+                    await apiSource.current.cancel("canceled")
+                    if(typeof multiImageApiSource.current.cancel !== "undefined")
+                    {
+                        await multiImageApiSource.current.cancel("canceled")
+                    }
+                }
+                apiSource.current = axios.CancelToken.source()
                 searchLocations(searchInput)
             }
         }, 500)
