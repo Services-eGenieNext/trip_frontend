@@ -23,6 +23,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/tripPlanningCard/TripDetailGoogleMap.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/components/tripPlanningCard/TripDetailGoogleMap.js", "src/components/tripPlanningCard/right-side-map/itinerary-google-map-view.js"],
   "exclude": ["node_modules"]
 }

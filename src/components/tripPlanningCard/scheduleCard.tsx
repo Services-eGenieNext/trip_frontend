@@ -32,7 +32,7 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
     const [destinationLocations, setDestinationLocations] = useState<any[]>([])
     const [newEvent, setNewEvent] = useState<any>({})
 
-    const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
+    const { itineraryDays, activeLocation } = useAppSelector(state => state.itineraryReducer)
 
     const editTimeRef = useRef<HTMLDivElement | null>(null)
     const addEventRef = useRef<HTMLDivElement | null>(null)
@@ -255,7 +255,7 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
         <div className={`h-full ml-2 ${CSS["divider"]} absolute top-[50%] mt-[1rem]`} />
       </div>
       <span
-        className={`ml-[2rem] text-[13px] w-max hover:text-[#009DE2] p-4 rounded-lg ${CSS["plan-time-wrapper"]} ${variation === "list" ? '' : 'hover:bg-white ml-2 mr-4'} ${isDragOver ? 'bg-white text-[#009DE2] shadow-lg' : 'text-black'}`} >
+        className={`ml-[2rem] text-[13px] w-max hover:text-[#009DE2] p-4 rounded-lg ${CSS["plan-time-wrapper"]} ${variation === "list" ? '' : 'hover:bg-white ml-2 mr-4'} ${isDragOver || activeLocation?.name == time?.location?.name ? 'bg-white text-[#009DE2] shadow-lg' : ''}`} >
         <div className="flex items-center gap-2">
           <p className="gilroy text-[11px] font-semibold cursor-pointer" onClick={() => onClickItem()}>{
                 !time.suggestedTime?.startTime && !time.suggestedTime?.endTime ? (

@@ -14,6 +14,7 @@ import { IDays } from '@/interfaces';
 import { _calculateStartAndEndTime } from './functions';
 import Card_skelton from '@/components/UIComponents/card_skelton';
 import Spinloader from '@/components/step-loader/spin-loader';
+import RightSideMap from '../right-side-map/right-side-map';
 
 interface IPricingCards {
     params_list?: any
@@ -293,8 +294,10 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                     }} />
                     </>       
                 ) : (
-                <div className={`grid grid-cols-1 lg:grid-cols-3 gap-3 ${styles.tripPlanning}`}>
-                    <div className={`lg:col-span-1 flex flex-wrap w-full h-max overflow-auto`} style={{maxHeight: document.querySelector('#second-wrapped-locations')?.scrollHeight ? `${Number(document.querySelector('#second-wrapped-locations')?.scrollHeight) - 30}px` : '1550px'}} >
+                <div className={`grid grid-cols-1 lg:grid-cols-2 gap-3 ${styles.tripPlanning}`}>
+                    <div className={`lg:col-span-1 flex flex-wrap flex-col w-full h-full overflow-auto`} 
+                    // style={{maxHeight: document.querySelector('#second-wrapped-locations')?.scrollHeight ? `${Number(document.querySelector('#second-wrapped-locations')?.scrollHeight) - 30}px` : '1550px'}} 
+                    >
                         {
                         (!loading && itineraryDays) &&
                         itineraryDays.map((_item, index) => {
@@ -312,12 +315,13 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                             );
                         })}
                     </div>
-                    <div className="lg:col-span-2 w-full" id='second-wrapped-locations'>
-                        <div className="w-full">
-                            <div className="large-shadow p-4 rounded-xl">
-                                <TripDetail item={item} />
+                    <div className="lg:col-span-1 w-full" id='second-wrapped-locations'>
+                        <div className="w-full sticky top-0">
+                            <div className="large-shadow rounded-xl overflow-hidden">
+                                {/* <TripDetail item={item} /> */}
+                                <RightSideMap />
                             </div>
-                            {
+                            {/* {
                                 (params_list.v_type === '2' || params_list.v_type === '3') && (
                                     <>
                                     <ProductHorizontalSlide 
@@ -346,8 +350,9 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                                     />
                                     </>
                                 )
-                            }
+                            } */}
                         </div>
+                        {/* <div className="sticky top-0">there</div> */}
                     </div>
                 </div>
             )
