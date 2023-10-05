@@ -81,6 +81,7 @@ export default function SelectCheckBoxSimple({
   const sortRef = useRef<HTMLInputElement>(null);
 
   useEffect(()=>{
+    setSaveData(true)
     if(SelectedData?.length > 0 && saveData == true){
       setOptsSelected(SelectedData)
       setSaveData(false)

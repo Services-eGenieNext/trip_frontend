@@ -40,7 +40,7 @@ const Hero = ({ survey }: ISurvey) => {
             alt="Trip-Banner"
             className="mx-auto select-none w-full h-full"
           />
-          <div className="absolute bottom-0 left-0 top-0 right-0 px-8 flex flex-wrap justify-center items-center xl:my-[4rem] sm-width">
+          <div className="absolute bottom-0 left-0 top-0 right-0 px-8 flex flex-wrap justify-center items-center xl:my-[8rem] sm-width">
             <h2 className="text-white font-bold text-2xl lg:text-6xl lg:my-5 text-center w-full gilroy">
               Results
             </h2>
