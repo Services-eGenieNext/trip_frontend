@@ -94,15 +94,11 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
     //     }
     //   },[filteredArray])
 
-    useEffect(()=>{
-        onChange(values)
-        const delayDebounceFn = setTimeout(() => {
-            filtered()
-        }, 500)
-
-        return () => clearTimeout(delayDebounceFn)
+    // useEffect(()=>{
         
-    },[values])
+    //     // filtered()
+        
+    // },[values])
 
     return (
         <div className={`relative ${className}`}>
@@ -123,6 +119,9 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                         onFocus = {()=>{
                             onFocus()
                             setShowDropDown(!showDropDown)
+                        }}
+                        onBlur={()=>{
+                            onChange(values)
                         }}
                     />
                 </div>

@@ -10,12 +10,14 @@ export default function CardOptionsSearchListing({
   onChange,
   clearData,
   selectedData,
+  setClearFilter
 }: {
   title?: string;
   categories?: any;
   onChange?: (val: any[]) => void;
   clearData?: any;
   selectedData?: any;
+  setClearFilter?:any
 }) {
   const [isShowDropDown, setIsShowDropDown] = useState(false);
   const [opt, setOpt] = useState<any[]>([]);
@@ -83,14 +85,16 @@ export default function CardOptionsSearchListing({
   }, [categories]);
 
   useEffect(() => {
+    console.log(clearData,"clearData")
     if (clearData == true) {
-      // setOptSelected([]);
+      setOptSelected([]);
       const newArray = categories?.map((name: any, index: any) => ({
         name: name?.name,
         checked: false,
         id: name?.id,
       }));
-      // setOpt(newArray);
+      setOpt(newArray);
+      setClearFilter(false)
     }
   }, [clearData]);
 

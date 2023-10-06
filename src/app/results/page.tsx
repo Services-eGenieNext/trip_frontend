@@ -104,12 +104,12 @@ const _AllLocation = async () => {
     _AllLocation()
   },[])
 
-  useEffect(() => {
-    if (clearFilter == true) {
-      setClearFilter(false);
-      _def();
-    }
-  }, [clearFilter]);
+  // useEffect(() => {
+  //   if (clearFilter == true) {
+  //     setClearFilter(false);
+  //     // _def();
+  //   }
+  // }, [clearFilter]);
 
   useEffect(() => {
     setLoading(true)

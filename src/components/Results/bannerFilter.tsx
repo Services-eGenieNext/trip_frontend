@@ -322,6 +322,17 @@ const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
 
    const _SearchLocation = async () => {
                                 let res = await SearchLocation(locationSearch.location)
+                                const filteredLocation =  res.filter((country: any) => {
+                                  return (
+                                    country?.city?.toLocaleLowerCase() ==
+                                    locationSearch.location.toLocaleLowerCase()
+                                  );
+                                });
+                                if(filteredLocation.length > 0){
+                                  setButtonText("Automate My trip");
+                                }else{
+                                  setButtonText("Look For Inspiration")
+                                }
                                 dispatch(setAllLocations(res))
                             }
 
