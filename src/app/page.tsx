@@ -30,20 +30,25 @@ export default function Home() {
     useEffect(() => {
         const _def = async () => {
             let res = await LocationsCallFromDB()
-            setLocation(res)
+            if(res){
+                setLocation(res)
+            }
         }
         _def()
 
         const _restaurants = async () => {
             let res = await RestaurantsCallFromDB()
-            console.log('restaurants 123', res)
-            setRestaurants(res)
+            if(res){
+                setRestaurants(res)
+            }
         }
         _restaurants()
 
         const _activities = async () => {
             let res = await ActivitiesCallFromDB()
-            setActivities(res)
+            if(res){
+                setActivities(res)
+            }
         }
         _activities()
 

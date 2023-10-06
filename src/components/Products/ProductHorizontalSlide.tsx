@@ -254,9 +254,9 @@ const ProductHorizontalSlide = ({
                           }
                         </div>
                         <div className={`${type == "title-card" ? "absolute bottom-4 left-4 text-white font-bold text-[25px] pe-5" : "p-4"}`}>
-                          <div className="grid grid-cols-2 justify-center items-center mb-2 relative px-5">
-                            <div>
-                              <h4 className={`overflow-hidden overflow-ellipsis whitespace-nowrap ${isAddButton ? "col-span-1" : "col-span-2"} `} >
+                          <div className="flex justify-center items-center mb-2 relative px-5">
+                            <div className="w-[90%]">
+                              <h4 className={`overflow-hidden overflow-ellipsis whitespace-nowrap w-full text-center`} >
                                 {location.name}
                               </h4>
                             </div>
