@@ -12,13 +12,15 @@ type ItineraryState = {
     itineraryLoading: boolean;
     destinationModel: boolean;
     destinationDetails: IDestinationDetails | null
+    activeLocation: any
 };
 
 const initialState = {
     itineraryDays: [],
     itineraryLoading: true,
     destinationModel: false,
-    destinationDetails: null
+    destinationDetails: null,
+    activeLocation: null
 } as ItineraryState;
 
 export const itinerarySlice = createSlice({
@@ -39,6 +41,10 @@ export const itinerarySlice = createSlice({
 
         clearDestinationModel: (state) => {
             state.destinationModel = false
+        },
+
+        setActiveLocation: (state, action: PayloadAction<any>) => {
+            state.activeLocation = action.payload
         }
 
     },
@@ -48,6 +54,7 @@ export const {
     setItineraryDays,
     setDestination,
     clearDestinationModel,
+    setActiveLocation,
     reset,
 } = itinerarySlice.actions;
 

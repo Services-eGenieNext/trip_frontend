@@ -62,7 +62,7 @@ const TripPlan = () => {
             else if(params_list.place_id)
             {
                 let item_Detail: any = await DetailsCallByGoogle(`${params_list.place_id}&fields=address_components,place_id,photos,name,formatted_address,editorial_summary,rating,reviews,opening_hours`)
-                if(item_Detail.data?.result)
+                if(item_Detail?.data?.result)
                 {
                     setAutomateLocation(item_Detail.data.result)
                     let province_name = item_Detail.data.result.address_components.find((adr: any) => adr.types[0] === "administrative_area_level_1")?.long_name
@@ -101,7 +101,7 @@ const TripPlan = () => {
     }, [params])
 
     return (
-        <div className='overflow-x-hidden w-full'>
+        <div className='w-full'>
             <PageBanner automateLocation={automateLocation} />
             {
                 params_list.address && 

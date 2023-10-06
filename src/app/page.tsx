@@ -19,6 +19,7 @@ import TopCities from '@/api-calls/fromDB/topCities'
 import { setTopCities } from '@/redux/reducers/topCities'
 import AllLocations from '@/api-calls/fromDB/AllLocation'
 import { setAllLocations } from '@/redux/reducers/allLocations'
+import RightSideMap from '@/components/tripPlanningCard/right-side-map/right-side-map'
 
 export default function Home() {
     const dispatch = useAppDispatch()

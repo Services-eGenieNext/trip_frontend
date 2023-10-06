@@ -9,7 +9,7 @@ import PricingCards from "./pricing-cards/PricingCards";
 import Card_skelton from '@/components/UIComponents/card_skelton';
 import { VariationType } from "@/interfaces/product";
 import { LocationsCall } from "@/api-calls";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch } from "@/redux/hooks";
 import { reset } from "@/redux/reducers/itinerarySlice";
 import Spinloader from "../step-loader/spin-loader";
 
@@ -22,21 +22,20 @@ interface ITripPlanningCard {
 }
 
 export default function TripPlanningCard({params_list, survey, totalOpeningHours, automateLocation, v_type=""}: ITripPlanningCard) {
-    const skelton = ["1","2","3","4","5","6","7","8"]
+    const skelton = ["1","2","3"]
     const ref = useRef<HTMLInputElement>(null);
     const [read, setRead] = useState(false);
     const [showTripPopup, setShowTripPopup] = useState(false);
     const [item, setItem] = useState({});
     const [loading, setLoading] = useState(true)
-    // const {  } = useAppSelector((state) => state.itineraryReducer)
-
+    
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         const handleClickOutside = (event:any) => {
-        if (!ref?.current?.contains(event.target)) {
-            setRead(false);
-        }
+            if (!ref?.current?.contains(event.target)) {
+                setRead(false);
+            }
         };
         document.addEventListener("mousedown", handleClickOutside);
     }, [ref]);
@@ -66,7 +65,7 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
                     }
                     if(_recommendations[index].place_id && _recommendations[index].place_id !== '')
                     {
-                        let res: any = await DetailsCallByGoogle(`${_recommendations[index].place_id}&fields=address_components,place_id,name,formatted_address,current_opening_hours,rating,reviews`)
+                        let res: any = await DetailsCallByGoogle(`${_recommendations[index].place_id}&fields=address_components,place_id,name,formatted_address,geometry,current_opening_hours,rating,reviews`)
                         if(res.data?.result)
                         {
                             _locationDetails.push(res.data.result)
@@ -117,7 +116,7 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
             <div className="w-full flex justify-center relative">
                 <div className="flex flex-col sm-width gilroy">
                     <TripPlanningHeader variation="space-between" />
-                    <div className="flex flex-wrap justify-center gap-x-12 gap-y-12 relative">
+                    <div className="relative">
                         {
                             loading === true && <Spinloader />
                         }
