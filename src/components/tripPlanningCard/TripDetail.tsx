@@ -58,6 +58,12 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
     const [showSlide, setShowSlide] = useState(false)
     const [existingActivities, setExistingActivities] = useState([])
     const [exsitingRestaurants, setExsitingRestaurants] = useState([])
+    const [postPerPage, setPostPerPage] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+  
+    const indexOfLastPost = currentPage * postPerPage;
+    const indexOfFirstPost = indexOfLastPost - postPerPage;
+    const currentPost = itemDetail?.reviews.slice(indexOfFirstPost, indexOfLastPost);
 
     const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
 
@@ -139,12 +145,12 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
     }, [item])
 
     const _Activities = async () => {
-        let res = await LocationApi(`best activities in ${itemDetail?.name}`)
+        let res = await LocationApi(`best activities for tourists in ${itemDetail?.name} to visit`)
         setExistingActivities(res)
       }
 
       const _Restaurants = async () => {
-        let res = await LocationApi(`best restaurants in ${itemDetail?.name}`)
+        let res = await LocationApi(`best restaurants for tourists in ${itemDetail?.name} for good food`)
         setExsitingRestaurants(res)
       }
 
@@ -631,7 +637,16 @@ if(show == true){
                             <span className='text-[23px] leading-[18px] font-bold mb-2'>Client Reviews</span>
                             <div className="h-[3px] w-[51px] bg-[var(--blue)] mt-5 mx-auto"></div>
                         </div>
-                        <Reviews isCenterAlign={true} textSmall={true} show={true} loading={false} data={itemDetail?.reviews ?? []} style={{margin: "0"}} />
+                        <Reviews isCenterAlign={true} textSmall={true} show={true} loading={false} data={currentPost ?? []} style={{margin: "0"}} />
+                        {itemDetail?.reviews.length > postPerPage && (
+                            <div className="flex justify-center">
+        <button className="border-none outline-none bg-[#009DE2] text-white h-[40px] w-[200px] rounded-lg" onClick={() => {
+          setPostPerPage(postPerPage + 4) 
+        }}>
+          Load More Reviews
+        </button>
+        </div>
+      )}
                         </>
                     )
                 }
