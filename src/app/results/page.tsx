@@ -107,7 +107,6 @@ const _AllLocation = async () => {
   useEffect(() => {
     if (clearFilter == true) {
       setClearFilter(false);
-      _def();
     }
   }, [clearFilter]);
 
@@ -178,7 +177,6 @@ const _AllLocation = async () => {
               <div className="lg:col-span-1 max-w-[300px] w-full ">
                 <FilterSidebar
                   clearFilter={clearFilter}
-                  setClearFilter={setClearFilter}
                   locations={locationsData}
                   setFilteredLocations={setFilteredLocations}
                   locationsByFilter={locationsByFilter}

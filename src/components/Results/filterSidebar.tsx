@@ -8,7 +8,7 @@ import Activities from '@/data/priority.json'
 import CardOptionsSearchListing from './filtersOptionsSearch'
 import { useAppSelector } from "@/redux/hooks";
 
-export default function FilterSidebar({locations, setFilteredLocations, locationsByFilter, setClearFilter, clearFilter}:any) {
+export default function FilterSidebar({locations, setFilteredLocations, locationsByFilter, clearFilter}:any) {
 
   const [showFilter, setShowFilter] = useState(false)
   const [Ranking, setRanking] = useState("")
@@ -87,7 +87,8 @@ export default function FilterSidebar({locations, setFilteredLocations, location
         </h1>
         <p className="text-[#009de2] mt-4 text-end cursor-pointer" onClick={()=>{
           setRanking("")
-          setClearFilter(true)
+          setSelectedActivities([])
+          setSelectedOccasions([])
           }}
         >Clear All</p>
       </div>
