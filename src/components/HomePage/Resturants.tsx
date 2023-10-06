@@ -288,6 +288,13 @@ const Products = ({
                   let link = `/trip-plan?address=${address}&location_id=${
                     restaurant.location_id ?? ""
                   }&place_id=${restaurant.place_id ?? ""}&restaurants=true`;
+                  let filterTypes: any = "";
+                  const filter = restaurant?.details?.types?.filter((type:string)=>{
+                    return type !== "point_of_interest" && type !== "establishment"
+                  })
+                  if(filter.length > 0){
+                    filterTypes = filter.toString()
+                  }
                   return (
                     <div
                       key={index}
@@ -300,7 +307,7 @@ const Products = ({
                           <img
                             src={image_path}
                             alt={image_path}
-                            className="object-cover h-[270px] w-full cursor-pointer "
+                            className="object-cover h-[300px] w-full cursor-pointer "
                           />
                         </div>
                         <div className="p-7">
@@ -398,6 +405,11 @@ const Products = ({
                              }
                             })
                           )}
+                          <div className="flex justify-center">
+                            {filterTypes !== "" &&(
+                                <p className="mt-1 capitalize text-center w-[80%]  text-sm flex justify-center">Types: <span className='text-sm ml-2 text-gray-500 text-ellipsis overflow-hidden whitespace-nowrap'>{ filterTypes.replaceAll("_"," ").replaceAll(",",", ") }</span> </p>
+                            )}
+                            </div>
                           {pricelevel && <div className="flex items-center gap-x-2 justify-center my-2">
                               <span className="text-black text-sm">
                                 Price Level:{" "}
