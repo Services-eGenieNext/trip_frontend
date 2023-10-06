@@ -60,6 +60,7 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
     const [exsitingRestaurants, setExsitingRestaurants] = useState([])
     const [postPerPage, setPostPerPage] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
+    const [types, setTypes] = useState("")
   
     const indexOfLastPost = currentPage * postPerPage;
     const indexOfFirstPost = indexOfLastPost - postPerPage;
@@ -130,13 +131,13 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
             setItemDetail(null)
             if(item?.location_id)
             {
-                let item_Detail: any = await DetailCall(item.location_id)
-                setItemDetail(item_Detail.data)
+                let item_Detail: any = await DetailCall(item?.location_id)
+                setItemDetail(item_Detail?.data)
             }
             else if(item?.place_id)
             {
                 let item_Detail: any = await DetailsCallByGoogle(`${item.place_id}&fields=`)
-                setItemDetail(item_Detail.data.result)
+                setItemDetail(item_Detail?.data?.result)
                 
             }
             setDetailLoading(false) 
@@ -167,6 +168,17 @@ if(show == true){
     setExsitingRestaurants([])
 }
     },[show])
+
+    useEffect(()=>{
+        let filteredArray: any = []
+itemDetail?.types.map((type:string)=>{
+    if(type !== "point_of_interest" && type !== "establishment"){
+        filteredArray.push(type)
+    }
+})
+let string = filteredArray.toString()
+setTypes(string)
+    },[itemDetail])
 
     const [prevBtnDisabled, setPrevBtnDisabled] = useState(false)
     const [nextBtnDisabled, setNextBtnDisabled] = useState(false)
@@ -453,7 +465,9 @@ if(show == true){
                                 })</span>
                             </h3>
                             <p>Address: <span className='text-sm text-[var(--gray)]'>{ itemDetail.formatted_address ? itemDetail.formatted_address : itemDetail.address_obj?.address_string }</span> </p>
-
+                            {types !== "" &&(
+                                <p className="mt-1 capitalize">Types: <span className='text-sm text-[var(--gray)]'>{ types.replaceAll("_"," ").replaceAll(",",", ") }</span> </p>
+                            )}
                             <div className="flex flex-wrap justify-center gap-2 items-center my-2">
                                 <span>{itemDetail?.rating ? itemDetail?.rating : ""}</span>
                                 {

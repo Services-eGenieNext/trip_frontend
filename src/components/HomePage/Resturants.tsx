@@ -169,7 +169,6 @@ const Products = ({
   }, [restaurantsState]);
 
   useEffect(() => {
-    console.log(restaurantData, "restaurantData");
     if (restaurantData?.length > 0) {
       setLoading(false);
     }
@@ -277,7 +276,6 @@ const Products = ({
                   );
                 })
               : restaurantData?.slice(0, restaurantData.length - (restaurantData.length % 8)).map((restaurant: any, index: number) => {
-                  console.log(restaurant, "restaurant");
                   let City = "";
                   let Country = "";
                   let pricelevel = "";

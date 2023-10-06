@@ -109,6 +109,7 @@ export default function FilterSidebar({locations, setFilteredLocations, location
             setSelectedActivities(values)
           }}
           clearData={clearFilter}
+          setClearFilter={setClearFilter}
           // selectedData={selectedActivities}
         />
       )}
@@ -131,6 +132,7 @@ export default function FilterSidebar({locations, setFilteredLocations, location
               })
             }
             clearData={clearFilter}
+            setClearFilter={setClearFilter}
             onChange={(values: any[]) => {
               setSelectedOccasions(values)
             }}
