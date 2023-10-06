@@ -17,210 +17,218 @@ interface IScheduleCard extends IPlanningCard {
 }
 
 export default function ScheduleCard({day, distanceObject, items, isDropdownButton, onOpen, time, variation = 'list'}:IScheduleCard) {
-    const [isShowTooltip, setIsShowTooltip] = useState(false);
-    const [editTime, setEditTime] = useState(false)
-    const [isDragOver, setIsDragOver] = useState(false)
-    const [dragOverLocation, setdragOverLocation] = useState<any | null>(null)
-    const [deleteTime, setDeleteTime] = useState(false)
-    const [addEvent, setAddEvent] = useState(false)
-    const [addNewEventValue, setaddNewEventValue] = useState("")
 
-    const initialEditTimeFormValues = {startTime: "", endTime: ""}
-    const [editTimeForm, setEditTimeForm] = useState(initialEditTimeFormValues)
-    const [suggestedLocation, setSuggestedLocation] = useState('')
-    const [duration, setDuration] = useState(null)
-    const [destinationLocations, setDestinationLocations] = useState<any[]>([])
-    const [newEvent, setNewEvent] = useState<any>({})
+  const locationRef = useRef<HTMLSpanElement | null>(null)
 
-    const { itineraryDays, activeLocation } = useAppSelector(state => state.itineraryReducer)
+  const [isShowTooltip, setIsShowTooltip] = useState(false);
+  const [editTime, setEditTime] = useState(false)
+  const [isDragOver, setIsDragOver] = useState(false)
+  const [dragOverLocation, setdragOverLocation] = useState<any | null>(null)
+  const [deleteTime, setDeleteTime] = useState(false)
+  const [addEvent, setAddEvent] = useState(false)
+  const [addNewEventValue, setaddNewEventValue] = useState("")
 
-    const editTimeRef = useRef<HTMLDivElement | null>(null)
-    const addEventRef = useRef<HTMLDivElement | null>(null)
-    const cardRef = useRef<HTMLDivElement | null>(null)
+  const initialEditTimeFormValues = {startTime: "", endTime: ""}
+  const [editTimeForm, setEditTimeForm] = useState(initialEditTimeFormValues)
+  const [suggestedLocation, setSuggestedLocation] = useState('')
+  const [duration, setDuration] = useState(null)
+  const [destinationLocations, setDestinationLocations] = useState<any[]>([])
+  const [newEvent, setNewEvent] = useState<any>({})
 
-    function formatTime(timeString: string) {
-      if(timeString == "" || timeString.search('Open') !== -1)
+  const { itineraryDays, activeLocation } = useAppSelector(state => state.itineraryReducer)
+
+  const editTimeRef = useRef<HTMLDivElement | null>(null)
+  const addEventRef = useRef<HTMLDivElement | null>(null)
+  const cardRef = useRef<HTMLDivElement | null>(null)
+
+  function formatTime(timeString: string) {
+    if(timeString == "" || timeString.search('Open') !== -1)
+    {
+        return timeString
+    }
+
+    const [hourString, minute] = timeString.split(":");
+
+    return (Number(hourString) % 12 || 12) + ":" + (Number(minute.substring(0,2)) < 10 ? '0'+Number(minute.substring(0,2)) : minute) + (Number(hourString) < 12 ? " AM" : " PM");
+  }
+
+  const { showAlert } = useAlertContext()
+  const dispatch = useAppDispatch()
+
+  const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
+    let _loc = e.dataTransfer.getData('product')
+    _loc = JSON.parse(_loc)
+    setdragOverLocation(_loc)
+  }
+
+  const replaceConfirm = () => {
+    let _itineraryDays = [...itineraryDays]
+    let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
+    let timeIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location.name === items.name)
+    _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
+    _itineraryDays[dayIndex].times = [..._itineraryDays[dayIndex].times]
+    _itineraryDays[dayIndex].times[timeIndex] = {..._itineraryDays[dayIndex].times[timeIndex]}
+    _itineraryDays[dayIndex].times[timeIndex].location = dragOverLocation
+
+    dispatch(setItineraryDays([..._itineraryDays]))
+    clearConfirm()
+
+    showAlert({
+      title: `<b>${dragOverLocation.name}</b> replaced successfully`,
+      type: "success"
+    })
+  }
+
+  const clearConfirm = () => {
+    setdragOverLocation(null)
+    setIsDragOver(false)
+
+    showAlert({
+      title: `<b>${dragOverLocation.name}</b> not replaced in itinerary`,
+      type: "error"
+    })
+  }
+
+  const ChangeTimeFunc = () => {
+
+    let _itineraryDays = [...itineraryDays]
+    let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
+    let timeIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location.name === items.name)
+    _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
+    _itineraryDays[dayIndex].times = [..._itineraryDays[dayIndex].times]
+    _itineraryDays[dayIndex].times[timeIndex] = {..._itineraryDays[dayIndex].times[timeIndex]}
+    _itineraryDays[dayIndex].times[timeIndex].suggestedTime = {..._itineraryDays[dayIndex].times[timeIndex].suggestedTime, startTime: editTimeForm.startTime, endTime: editTimeForm.endTime}
+
+    dispatch(setItineraryDays([..._itineraryDays]))
+    setEditTime(false)
+    setIsShowTooltip(false)
+    setEditTimeForm(initialEditTimeFormValues)
+  
+  }
+
+  const delEventFunc = () => {
+    let _itineraryDays = [...itineraryDays]
+    let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
+    _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
+    _itineraryDays[dayIndex].times = _itineraryDays[dayIndex].times.filter(_time => _time.location !== items)
+    dispatch(setItineraryDays([..._itineraryDays]))
+  }
+
+  const addNewEvent = async () => {
+    let _itineraryDays = [...itineraryDays]
+    let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
+    _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
+    let locIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location === items)
+
+    let newTime = newEvent.current_opening_hours?.weekday_text[0].split(': ')[1]
+    _itineraryDays[dayIndex].times = [
+      ..._itineraryDays[dayIndex].times.slice(0, locIndex+1), 
+      {time: newTime, location: newEvent}, 
+      ..._itineraryDays[dayIndex].times.slice(locIndex, _itineraryDays[dayIndex].times.length)
+    ]
+
+    let suggestedTime = await _calculateStartAndEndTime(_itineraryDays[dayIndex].times, locIndex+1)
+    _itineraryDays[dayIndex].times[locIndex+1] = {..._itineraryDays[dayIndex].times[locIndex+1], suggestedTime: suggestedTime}
+
+    dispatch(setItineraryDays([..._itineraryDays]))
+  }
+
+  const onClickItem = () => {
+    onOpen(items);
+  }
+
+  useEffect(() => {
+    const _def = async () => {
+      let duration = await LocationsDurationCall(distanceObject.origin, distanceObject.destination)
+      if(duration.status == 200 && duration.data.rows[0]?.elements[0]?.duration?.text)
       {
-          return timeString
+        setDuration(duration.data.rows[0].elements[0].duration.text)
       }
-
-      const [hourString, minute] = timeString.split(":");
-
-      return (Number(hourString) % 12 || 12) + ":" + (Number(minute.substring(0,2)) < 10 ? '0'+Number(minute.substring(0,2)) : minute) + (Number(hourString) < 12 ? " AM" : " PM");
     }
-
-    const { showAlert } = useAlertContext()
-    const dispatch = useAppDispatch()
-
-    const onDropFunc = (e: React.DragEvent<HTMLDivElement>) => {
-      let _loc = e.dataTransfer.getData('product')
-      _loc = JSON.parse(_loc)
-      setdragOverLocation(_loc)
+    if(distanceObject.origin && distanceObject.destination && (!time.suggestedTime?.duration_time || time.suggestedTime?.duration_time == ""))
+    {
+      _def()
     }
+  }, [distanceObject])
 
-    const replaceConfirm = () => {
-      let _itineraryDays = [...itineraryDays]
-      let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
-      let timeIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location.name === items.name)
-      _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
-      _itineraryDays[dayIndex].times = [..._itineraryDays[dayIndex].times]
-      _itineraryDays[dayIndex].times[timeIndex] = {..._itineraryDays[dayIndex].times[timeIndex]}
-      _itineraryDays[dayIndex].times[timeIndex].location = dragOverLocation
-
-      dispatch(setItineraryDays([..._itineraryDays]))
-      clearConfirm()
-
-      showAlert({
-        title: `<b>${dragOverLocation.name}</b> replaced successfully`,
-        type: "success"
-      })
-    }
-
-    const clearConfirm = () => {
-      setdragOverLocation(null)
-      setIsDragOver(false)
-
-      showAlert({
-        title: `<b>${dragOverLocation.name}</b> not replaced in itinerary`,
-        type: "error"
-      })
-    }
-
-    const ChangeTimeFunc = () => {
-
-      let _itineraryDays = [...itineraryDays]
-      let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
-      let timeIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location.name === items.name)
-      _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
-      _itineraryDays[dayIndex].times = [..._itineraryDays[dayIndex].times]
-      _itineraryDays[dayIndex].times[timeIndex] = {..._itineraryDays[dayIndex].times[timeIndex]}
-      _itineraryDays[dayIndex].times[timeIndex].suggestedTime = {..._itineraryDays[dayIndex].times[timeIndex].suggestedTime, startTime: editTimeForm.startTime, endTime: editTimeForm.endTime}
-
-      dispatch(setItineraryDays([..._itineraryDays]))
-      setEditTime(false)
-      setIsShowTooltip(false)
-      setEditTimeForm(initialEditTimeFormValues)
-    
-    }
-
-    const delEventFunc = () => {
-      let _itineraryDays = [...itineraryDays]
-      let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
-      _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
-      _itineraryDays[dayIndex].times = _itineraryDays[dayIndex].times.filter(_time => _time.location !== items)
-      dispatch(setItineraryDays([..._itineraryDays]))
-    }
-
-    const addNewEvent = async () => {
-      let _itineraryDays = [...itineraryDays]
-      let dayIndex = _itineraryDays.findIndex(itinerary => itinerary.day === day)
-      _itineraryDays[dayIndex] = {..._itineraryDays[dayIndex]}
-      let locIndex = _itineraryDays[dayIndex].times.findIndex(_time => _time.location === items)
-
-      let newTime = newEvent.current_opening_hours?.weekday_text[0].split(': ')[1]
-      _itineraryDays[dayIndex].times = [
-        ..._itineraryDays[dayIndex].times.slice(0, locIndex+1), 
-        {time: newTime, location: newEvent}, 
-        ..._itineraryDays[dayIndex].times.slice(locIndex, _itineraryDays[dayIndex].times.length)
-      ]
-
-      let suggestedTime = await _calculateStartAndEndTime(_itineraryDays[dayIndex].times, locIndex+1)
-      _itineraryDays[dayIndex].times[locIndex+1] = {..._itineraryDays[dayIndex].times[locIndex+1], suggestedTime: suggestedTime}
-
-      dispatch(setItineraryDays([..._itineraryDays]))
-    }
-
-    const onClickItem = () => {
-      onOpen(items);
-      let number = document.querySelector('body .width')?.scrollHeight ?? 0
-      window.scrollTo(0, number)
-    }
-
-    useEffect(() => {
-      const _def = async () => {
-        let duration = await LocationsDurationCall(distanceObject.origin, distanceObject.destination)
-        if(duration.status == 200 && duration.data.rows[0]?.elements[0]?.duration?.text)
+  useEffect(() => {
+    if(cardRef)
+    {
+      window.addEventListener('click', (e) => {
+        if(cardRef.current)
         {
-          setDuration(duration.data.rows[0].elements[0].duration.text)
-        }
-      }
-      if(distanceObject.origin && distanceObject.destination && (!time.suggestedTime?.duration_time || time.suggestedTime?.duration_time == ""))
-      {
-        _def()
-      }
-    }, [distanceObject])
-
-    useEffect(() => {
-      if(cardRef)
-      {
-        window.addEventListener('click', (e) => {
-          if(cardRef.current)
+          if(!cardRef.current.contains((e.target as Element)))
           {
-            if(!cardRef.current.contains((e.target as Element)))
-            {
-              setEditTime(false)
-            }
+            setEditTime(false)
           }
-        })
-      }
-    }, [addEventRef, cardRef])
-
-
-    useEffect(() => {
-      if(editTime)
-      {
-          editTimeRef.current?.classList.remove('hidden')
-          editTimeRef.current?.classList.add('flex')
-          setTimeout(() => {
-            editTimeRef.current?.classList.remove('opacity-0')
-            editTimeRef.current?.classList.remove('-translate-y-5')
-          }, 200);
-      }
-      else
-      {
-        editTimeRef.current?.classList.add('opacity-0')
-        editTimeRef.current?.classList.add('-translate-y-5')
-          setTimeout(() => {
-            editTimeRef.current?.classList.add('hidden')
-            editTimeRef.current?.classList.remove('flex')
-          }, 200);
-      }
-    }, [editTime])
-
-    useEffect(() => {
-      if(addEvent)
-      {
-        if(addEventRef.current?.classList.contains('opacity-0'))
-        {
-          addEventRef.current?.classList.remove('hidden')
-          addEventRef.current?.classList.add('flex')
-          setTimeout(() => {
-            addEventRef.current?.classList.remove('opacity-0')
-            addEventRef.current?.classList.remove('-translate-y-5')
-          }, 200);
         }
-      }
-      else
-      {
-        if(!addEventRef.current?.classList.contains('opacity-0'))
-        {
-          addEventRef.current?.classList.add('opacity-0')
-          addEventRef.current?.classList.add('-translate-y-5')
-          setTimeout(() => {
-            addEventRef.current?.classList.add('hidden')
-            addEventRef.current?.classList.remove('flex')
-          }, 200);
-        }
-      }
-    }, [addEvent])
+      })
+    }
+  }, [addEventRef, cardRef])
 
-    useEffect(() => {
-      const _defDestinationFunc = async () => {
-        let _d : any[] = await itineraryDays.filter(itinerary => itinerary.day !== day).map(itin => itin.times.map(tim => tim.location))
-        setDestinationLocations([].concat(..._d))
+
+  useEffect(() => {
+    if(editTime)
+    {
+        editTimeRef.current?.classList.remove('hidden')
+        editTimeRef.current?.classList.add('flex')
+        setTimeout(() => {
+          editTimeRef.current?.classList.remove('opacity-0')
+          editTimeRef.current?.classList.remove('-translate-y-5')
+        }, 200);
+    }
+    else
+    {
+      editTimeRef.current?.classList.add('opacity-0')
+      editTimeRef.current?.classList.add('-translate-y-5')
+        setTimeout(() => {
+          editTimeRef.current?.classList.add('hidden')
+          editTimeRef.current?.classList.remove('flex')
+        }, 200);
+    }
+  }, [editTime])
+
+  useEffect(() => {
+    if(addEvent)
+    {
+      if(addEventRef.current?.classList.contains('opacity-0'))
+      {
+        addEventRef.current?.classList.remove('hidden')
+        addEventRef.current?.classList.add('flex')
+        setTimeout(() => {
+          addEventRef.current?.classList.remove('opacity-0')
+          addEventRef.current?.classList.remove('-translate-y-5')
+        }, 200);
       }
-      _defDestinationFunc()
-    }, [itineraryDays])
+    }
+    else
+    {
+      if(!addEventRef.current?.classList.contains('opacity-0'))
+      {
+        addEventRef.current?.classList.add('opacity-0')
+        addEventRef.current?.classList.add('-translate-y-5')
+        setTimeout(() => {
+          addEventRef.current?.classList.add('hidden')
+          addEventRef.current?.classList.remove('flex')
+        }, 200);
+      }
+    }
+  }, [addEvent])
+
+  useEffect(() => {
+    const _defDestinationFunc = async () => {
+      let _d : any[] = await itineraryDays.filter(itinerary => itinerary.day !== day).map(itin => itin.times.map(tim => tim.location))
+      setDestinationLocations([].concat(..._d))
+    }
+    _defDestinationFunc()
+  }, [itineraryDays])
+
+  useEffect(() => {
+    if(activeLocation?.name == time?.location?.name && locationRef && locationRef.current)
+    {
+      locationRef?.current.scrollIntoView({block: "center"})
+    }
+  }, [activeLocation])
 
   return (
     <>
@@ -254,7 +262,7 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
         </div>
         <div className={`h-full ml-2 ${CSS["divider"]} absolute top-[50%] mt-[1rem]`} />
       </div>
-      <span
+      <span ref={locationRef}
         className={`ml-[2rem] text-[13px] w-max hover:text-[#009DE2] p-4 rounded-lg ${CSS["plan-time-wrapper"]} ${variation === "list" ? '' : 'hover:bg-white ml-2 mr-4'} ${isDragOver || activeLocation?.name == time?.location?.name ? 'bg-white text-[#009DE2] shadow-lg' : ''}`} >
         <div className="flex items-center gap-2">
           <p className="gilroy text-[11px] font-semibold cursor-pointer" onClick={() => onClickItem()}>{

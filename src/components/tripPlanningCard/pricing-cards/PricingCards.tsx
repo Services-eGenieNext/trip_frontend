@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import DemiData from "@/api/DemiData";
 import PricingCard from "../pricingCard";
-import TripPlanPopup from '../TripPlanPopup';
 import location_testing from "./test.json"
-import TripDetail from '../TripDetail';
 import SmallStory from '@/components/Story/SmallStory';
 import { VariationType } from '@/interfaces/product';
 import ProductHorizontalSlide from '@/components/Products/ProductHorizontalSlide';
@@ -15,6 +13,7 @@ import { _calculateStartAndEndTime } from './functions';
 import Card_skelton from '@/components/UIComponents/card_skelton';
 import Spinloader from '@/components/step-loader/spin-loader';
 import RightSideMap from '../right-side-map/right-side-map';
+import { setItem } from '@/redux/reducers/PlacedetailSlice';
 
 interface IPricingCards {
     params_list?: any
@@ -27,8 +26,6 @@ interface IPricingCards {
 const PricingCards = ({params_list, locationDetails, automateLocation}: IPricingCards) => {
 
     const [LocationDetails, setLocationDetails] = useState<any>([])
-    const [showTripPopup, setShowTripPopup] = useState(false);
-    const [item, setItem] = useState<any>({});
     const [loading, setLoading] = useState<boolean>(true);
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
@@ -253,7 +250,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
         
         if(automateLocation || (itineraryDays.length > 0 && itineraryDays[0].times && itineraryDays[0].times.length > 0))
         {
-            setItem(automateLocation ? {...automateLocation} : {...itineraryDays[0].times[0].location})
+            dispatch(setItem(automateLocation ? {...automateLocation} : {...itineraryDays[0].times[0].location}))
         }
     
     }, [automateLocation, itineraryDays])
@@ -282,18 +279,15 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                                 rows = "2"
                                 data={_item} 
                                 onOpen={(item) => {
-                                    setShowTripPopup(true)
-                                    setItem(item)
+                                    dispatch(setItem(item))
                                 }} />
                             );
                         })
                     }
 
-                    <TripPlanPopup item={item} show={showTripPopup} onClose={() => {
-                        setShowTripPopup(false)
-                    }} />
                     </>       
                 ) : (
+                <>
                 <div className={`grid grid-cols-1 lg:grid-cols-2 gap-3 ${styles.tripPlanning}`}>
                     <div className={`lg:col-span-1 flex flex-wrap flex-col w-full h-full overflow-auto`} 
                     // style={{maxHeight: document.querySelector('#second-wrapped-locations')?.scrollHeight ? `${Number(document.querySelector('#second-wrapped-locations')?.scrollHeight) - 30}px` : '1550px'}} 
@@ -309,52 +303,54 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                                 key={index}
                                 data={_item}
                                 onOpen={(item) => {
-                                    setItem(item)
+                                    dispatch(setItem(item))
                                 }}
                             />
                             );
                         })}
                     </div>
                     <div className="lg:col-span-1 w-full" id='second-wrapped-locations'>
-                        <div className="w-full sticky top-0">
+                        <div className="w-full sticky top-[130px]">
                             <div className="large-shadow rounded-xl overflow-hidden">
                                 {/* <TripDetail item={item} /> */}
                                 <RightSideMap />
                             </div>
-                            {/* {
-                                (params_list.v_type === '2' || params_list.v_type === '3') && (
-                                    <>
-                                    <ProductHorizontalSlide 
-                                        url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
-                                        Title={`${automateLocation?.name ? automateLocation?.name : params_list.address} Location To Visit`} 
-                                        Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} 
-                                        isAddButton={true} 
-                                        isHover={params_list.v_type === "2" ? true : false}
-                                        isDesc={false} 
-                                        locationsState = {locationsState}
-                                        slidesToShow={3}
-                                        v_type={"3"}
-                                        isAutomate={false}
-                                    />
-
-                                    <ProductHorizontalSlide 
-                                        url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
-                                        Title={`Most popular restaurants`} 
-                                        isAddButton={true} 
-                                        isHover={params_list.v_type === "2" ? true : false}
-                                        isDesc={false} 
-                                        locationsState = {restaurantsState}
-                                        slidesToShow={3}
-                                        v_type={"3"}
-                                        isAutomate={false}
-                                    />
-                                    </>
-                                )
-                            } */}
                         </div>
                         {/* <div className="sticky top-0">there</div> */}
                     </div>
                 </div>
+
+                {
+                    (params_list.v_type === '2' || params_list.v_type === '3') && (
+                        <>
+                        <ProductHorizontalSlide 
+                            url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
+                            Title={`${automateLocation?.name ? automateLocation?.name : params_list.address} Location To Visit`} 
+                            Description={automateLocation?.location_id ? automateLocation?.description : (automateLocation?.editorial_summary?.overview ?? '')} 
+                            isAddButton={true} 
+                            isHover={params_list.v_type === "2" ? true : false}
+                            isDesc={false} 
+                            locationsState = {locationsState}
+                            slidesToShow={4}
+                            v_type={"3"}
+                            isAutomate={false}
+                        />
+
+                        <ProductHorizontalSlide 
+                            url = {params_list.v_type === "2" ? 'variation_2' : "variation_3"}
+                            Title={`Most popular restaurants`} 
+                            isAddButton={true} 
+                            isHover={params_list.v_type === "2" ? true : false}
+                            isDesc={false} 
+                            locationsState = {restaurantsState}
+                            slidesToShow={4}
+                            v_type={"3"}
+                            isAutomate={false}
+                        />
+                        </>
+                    )
+                } 
+                </>
             )
         }
         </>

@@ -18,7 +18,7 @@ const RightSideMap = () => {
     }, [itineraryDays])
 
     return (
-        <div className="w-full h-[600px] relative">
+        <div className="w-full h-[700px] relative">
             <ItineraryGoogleMapView locations={locations} />
         </div>
     )
