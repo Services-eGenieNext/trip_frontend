@@ -106,22 +106,24 @@ const TopSearch = () => {
 
     useEffect(() => {
         const delayDebounceFn = setTimeout(async () => {
+
+            if(searchCount > 0)
+            {
+                await apiSource.current.cancel("canceled")
+                if(typeof multiImageApiSource.current.cancel !== "undefined")
+                {
+                    await multiImageApiSource.current.cancel("canceled")
+                }
+            }
+            apiSource.current = axios.CancelToken.source()
+            
             if(searchInput.length > 2)
             {
                 setLoadingSearch(true)
                 await setSearchStatus("Searching")
-                if(searchCount > 0)
-                {
-                    await apiSource.current.cancel("canceled")
-                    if(typeof multiImageApiSource.current.cancel !== "undefined")
-                    {
-                        await multiImageApiSource.current.cancel("canceled")
-                    }
-                }
-                apiSource.current = axios.CancelToken.source()
                 searchLocations(searchInput)
             }
-            else if(searchInput.trim().length == 0)
+            else if(searchInput.trim().length <= 2)
             {
                 setSearchList([])
             }

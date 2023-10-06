@@ -25,13 +25,8 @@ const Header = () => {
 
     useEffect(() => {
         window.addEventListener('scroll', () =>{
-            if(window.scrollY > 10)
+            if(window.scrollY > 5)
             {
-                if(!document.querySelector('#header')?.classList.contains('bg-white'))
-                {
-                    document.querySelector('#header')?.classList.add('bg-white')
-                }
-
                 if(!document.querySelector('#header')?.classList.contains('shadow'))
                 {
                     document.querySelector('#header')?.classList.add('shadow')
@@ -39,11 +34,6 @@ const Header = () => {
             }
             else
             {
-                if(document.querySelector('#header')?.classList.contains('bg-white'))
-                {
-                    document.querySelector('#header')?.classList.remove('bg-white')
-                }
-
                 if(document.querySelector('#header')?.classList.contains('shadow'))
                 {
                     document.querySelector('#header')?.classList.remove('shadow')
@@ -53,7 +43,7 @@ const Header = () => {
     }, [])
 
     return (
-        <div id={'header'} className="w-full sticky top-0 sm:z-20 z-10 transition-all duration-300">
+        <div id={'header'} className="w-full sticky top-0 sm:z-20 z-10 transition-all duration-300 bg-white">
             <div className="sm-width h-[100px] flex items-center">
                 <div className="grid grid-cols-12 mx-auto max-w-[500px] md:max-w-full w-full items-center px-4">
                     <div className="col-span-4">
