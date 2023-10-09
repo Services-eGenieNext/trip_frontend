@@ -8,7 +8,7 @@ import FormLabel from "@mui/material/FormLabel";
 export default function RadioButtonsGroup({ label, setValue, value, checked,setLocationOption }: any) {
   const handleCheck = (option: string) => {
     setLocationOption(option)
-    setValue({ ...value, selectedOption: option });
+    // setValue({ ...value, selectedOption: option });
   };
   return (
     <FormControl>
