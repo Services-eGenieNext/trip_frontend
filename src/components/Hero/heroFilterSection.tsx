@@ -313,11 +313,11 @@ if(allLocationsState.length > 0){
   };
 
   const _SearchLocation = async () => {
-    let res = await SearchLocation(locationSearch.location)
+    let res = await SearchLocation(selectedLocation)
     const filteredLocation =  res.filter((country: any) => {
       return (
         country?.city?.toLocaleLowerCase() ==
-        locationSearch.location.toLocaleLowerCase()
+        selectedLocation.toLocaleLowerCase()
       );
     });
     const response = res?.filter((country:any) => {
@@ -336,27 +336,31 @@ setAllLocation(response)
 
 
 useEffect(() => {
+if(selectedLocation !== ""){
+  const filteredLocation =  allLocation.filter((country: any) => {
+    return (
+    country?.city?.toLocaleLowerCase() ==
+    selectedLocation.toLocaleLowerCase()
+    );
+    });
+    
+    const filteredCity = allLocation?.filter((country:any) => {
+      return country?.city?.toLocaleLowerCase().includes(selectedLocation?.toLocaleLowerCase());
+    });
+    if(filteredCity.length > 0){
+        setAllLocation(filteredCity)
+     }
+    if (filteredLocation.length > 0) {
+    setButtonText("Automate My trip");
+    } else {
+      const delayDebounceFn = setTimeout(() => {
+        _SearchLocation()
+    }, 500)
 
-const filteredLocation =  allLocation.filter((country: any) => {
-return (
-country?.city?.toLocaleLowerCase() ==
-locationSearch.location.toLocaleLowerCase()
-);
-});
-
-const filteredCity = allLocation?.filter((country:any) => {
-  return country?.city?.toLocaleLowerCase().includes(selectedLocation?.toLocaleLowerCase());
-});
-if(filteredCity.length > 0){
-    setAllLocation(filteredCity)
- }
-if (filteredLocation.length > 0) {
-setButtonText("Automate My trip");
-} else {
-_SearchLocation()
-
+    return () => clearTimeout(delayDebounceFn)
+    }
 }
-}, [selectedLocation,locationSearch]);
+}, [selectedLocation]);
 
   return (
     <div
