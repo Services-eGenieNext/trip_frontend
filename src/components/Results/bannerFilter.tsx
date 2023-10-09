@@ -320,38 +320,51 @@ const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
     }
   };
 
-   const _SearchLocation = async () => {
-                                let res = await SearchLocation(locationSearch.location)
-                                const filteredLocation =  res.filter((country: any) => {
-                                  return (
-                                    country?.city?.toLocaleLowerCase() ==
-                                    locationSearch.location.toLocaleLowerCase()
-                                  );
-                                });
-                                if(filteredLocation.length > 0){
-                                  setButtonText("Automate My trip");
-                                }else{
-                                  setButtonText("Look For Inspiration")
-                                }
-                                dispatch(setAllLocations(res))
-                            }
-
-  useEffect(() => {
-
-    const filteredLocation =  allLocation.filter((country: any) => {
+  const _SearchLocation = async () => {
+    let res = await SearchLocation(locationSearch.location)
+    const filteredLocation =  res.filter((country: any) => {
       return (
         country?.city?.toLocaleLowerCase() ==
         locationSearch.location.toLocaleLowerCase()
       );
     });
-
-    if (filteredLocation.length > 0) {
-      setButtonText("Automate My trip");
-    } else {
-      _SearchLocation()
-
+    const response = res?.filter((country:any) => {
+      return country?.city?.toLocaleLowerCase().includes(selectedLocation?.toLocaleLowerCase());
+    });
+    if(response.length > 0){
+        setAllLocation(response)
     }
-  }, [selectedLocation,locationSearch]);
+    if(filteredLocation.length > 0){
+      setButtonText("Automate My trip");
+    }else{
+      setButtonText("Look For Inspiration")
+    }
+    dispatch(setAllLocations(res))
+}
+
+
+useEffect(() => {
+
+const filteredLocation =  allLocation.filter((country: any) => {
+return (
+country?.city?.toLocaleLowerCase() ==
+locationSearch.location.toLocaleLowerCase()
+);
+});
+
+const filteredCity = allLocation?.filter((country:any) => {
+  return country?.city?.toLocaleLowerCase().includes(selectedLocation?.toLocaleLowerCase());
+});
+if(filteredCity.length > 0){
+    setAllLocation(filteredCity)
+ }
+if (filteredLocation.length > 0) {
+setButtonText("Automate My trip");
+} else {
+_SearchLocation()
+
+}
+}, [selectedLocation,locationSearch]);
 
   const [openAdvanceSearch, setOpenAdvanceSearch] = useState(false);
 
