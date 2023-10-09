@@ -34,7 +34,7 @@ import AddCities from "@/api-calls/fromDB/addCities";
 import TopCitiesIncrement from "@/api-calls/fromDB/topCitiesIncrement";
 import ContinentLocation from "@/data/continent.json";
 import TopCountriesIncrement from "@/api-calls/fromDB/topCountriesIncrement";
-import SearchLocation from '@/api-calls/fromDB/searchLocation'
+import SearchLocation from '@/api-calls/fromDB/searchCities'
 import { setAllLocations } from '@/redux/reducers/allLocations'
 
 export default function HeroFilterSection() {
@@ -320,6 +320,14 @@ if(allLocationsState.length > 0){
         locationSearch.location.toLocaleLowerCase()
       );
     });
+    const response = res?.filter((country:any) => {
+      return country?.city?.toLocaleLowerCase().includes(selectedLocation?.toLocaleLowerCase());
+    });
+    if(response.length > 0){
+setAllLocation(response)
+    }else{
+      setAllLocation(allLocation)
+    }
     if(filteredLocation.length > 0){
       setButtonText("Automate My trip");
     }else{
@@ -327,6 +335,7 @@ if(allLocationsState.length > 0){
     }
     dispatch(setAllLocations(res))
 }
+
 
 useEffect(() => {
 
@@ -337,6 +346,12 @@ locationSearch.location.toLocaleLowerCase()
 );
 });
 
+const filteredCity = allLocation?.filter((country:any) => {
+  return country?.city?.toLocaleLowerCase().includes(selectedLocation?.toLocaleLowerCase());
+});
+if(filteredCity.length > 0){
+    setAllLocation(filteredCity)
+ }
 if (filteredLocation.length > 0) {
 setButtonText("Automate My trip");
 } else {
@@ -373,11 +388,11 @@ _SearchLocation()
           type="text"
           label="Location"
           placeholder="Enter Location"
-          locationList={{
-            city: topCitiesValue,
-            country: topCountriesValue,
-            continent: ContinentLocation,
-          }}
+          // locationList={{
+          //   city: topCitiesValue,
+          //   country: topCountriesValue,
+          //   continent: ContinentLocation,
+          // }}
           value={locationSearch?.location}
           items={allLocation}
           icon={<SimpleLocation />}

@@ -37,7 +37,7 @@ import AddCities from "@/api-calls/fromDB/addCities";
 import TopCitiesIncrement from "@/api-calls/fromDB/topCitiesIncrement";
 import ContinentLocation from "@/data/continent.json";
 import TopCountriesIncrement from "@/api-calls/fromDB/topCountriesIncrement";
-import SearchLocation from '@/api-calls/fromDB/searchLocation'
+import SearchLocation from '@/api-calls/fromDB/searchCities'
 import { setAllLocations } from '@/redux/reducers/allLocations'
 
 
