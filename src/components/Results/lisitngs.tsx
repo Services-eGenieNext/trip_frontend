@@ -14,12 +14,6 @@ import LoaderSvg from "../icons/loader-svg";
 export default function Lisitngs({ locations, setLocations, Filteredlocations, loadData, setClearFilter,setLoadData, locationsByFilter, generatedResults, filterable }: any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
-  useEffect(()=>{
-    if(locations.length > 0){
-      setLoadData(false)
-    }
-  },[locations])
-
   useEffect(() => {
     const _onChangeLocations = async () => {
       let _locationsByFilter = await locationsByFilter.map((loc: any) => loc.locations)

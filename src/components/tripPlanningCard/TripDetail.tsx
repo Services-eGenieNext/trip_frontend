@@ -621,28 +621,32 @@ setTypes(string)
                         </>
                     )
                 }
-                    {title == "Trending Location" && (
-                    <ProductHorizontalSlide 
-                    locationsState={existingActivities} 
-                    url="variation_2" 
-                    Title={`${itemDetail?.name} Best Activities`} 
-                    route = {title}
-                    isDesc={true}
-                    isHover={true}
-                    v_type={"2"}
-                />
-                )}
-                {title == "Trending Location" && (
-                    <ProductHorizontalSlide 
-                    locationsState={exsitingRestaurants} 
-                    url="variation_2" 
-                    Title={`${itemDetail?.name} Best Restaurants`} 
-                    route = {title}
-                    isDesc={true}
-                    isHover={true}
-                    v_type={"2"}
-                />
-                )}
+                {
+                    title == "Trending Location" && (
+                        <ProductHorizontalSlide 
+                            locationsState={existingActivities} 
+                            url="variation_2" 
+                            Title={`${itemDetail?.name} Best Activities`} 
+                            route = {title}
+                            isDesc={true}
+                            isHover={true}
+                            v_type={"2"}
+                        />
+                    )
+                }
+                {
+                    title == "Trending Location" && (
+                        <ProductHorizontalSlide 
+                            locationsState={exsitingRestaurants} 
+                            url="variation_2" 
+                            Title={`${itemDetail?.name} Best Restaurants`} 
+                            route = {title}
+                            isDesc={true}
+                            isHover={true}
+                            v_type={"2"}
+                        />
+                    )
+                }
                 {/* Client Reviews */}
                 {
                     !detailLoading && (
@@ -652,15 +656,15 @@ setTypes(string)
                             <div className="h-[3px] w-[51px] bg-[var(--blue)] mt-5 mx-auto"></div>
                         </div>
                         <Reviews isCenterAlign={true} textSmall={true} show={true} loading={false} data={currentPost ?? []} style={{margin: "0"}} />
-                        {itemDetail?.reviews.length > postPerPage && (
-                            <div className="flex justify-center">
-        <button className="border-none outline-none bg-[#009DE2] text-white h-[40px] w-[200px] rounded-lg" onClick={() => {
-          setPostPerPage(postPerPage + 4) 
-        }}>
-          Load More Reviews
-        </button>
-        </div>
-      )}
+                        {
+                            itemDetail?.reviews?.length > postPerPage && (
+                                <div className="flex justify-center">
+                                    <button className="border-none outline-none bg-[#009DE2] text-white h-[40px] w-[200px] rounded-lg" onClick={() => {
+                                        setPostPerPage(postPerPage + 4) 
+                                    }}>Load More Reviews</button>
+                                </div>
+                            )
+                        }
                         </>
                     )
                 }

@@ -189,6 +189,7 @@ export default function Results() {
 
   useEffect(() => {
     setFilteredLocations([...locationsData])
+    setLoading(false)
   }, [locationsData])
 
   return (
