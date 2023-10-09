@@ -64,7 +64,7 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
   
     const indexOfLastPost = currentPage * postPerPage;
     const indexOfFirstPost = indexOfLastPost - postPerPage;
-    const currentPost = itemDetail?.reviews.slice(indexOfFirstPost, indexOfLastPost);
+    const currentPost = itemDetail?.reviews?.slice(indexOfFirstPost, indexOfLastPost);
 
     const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
 
@@ -649,7 +649,7 @@ setTypes(string)
                 }
                 {/* Client Reviews */}
                 {
-                    !detailLoading && (
+                    !detailLoading && itemDetail?.reviews?.length > 0 && (
                         <>
                         <div className="w-full mt-5 text-center">
                             <span className='text-[23px] leading-[18px] font-bold mb-2'>Client Reviews</span>
