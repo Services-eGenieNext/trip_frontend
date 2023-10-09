@@ -1,6 +1,6 @@
 import React,{useEffect,useState,useRef} from 'react'
 import { Box, Typography } from "@mui/material";
-import SearchLocation from '@/api-calls/fromDB/searchLocation'
+import SearchLocation from '@/api-calls/fromDB/searchCities'
 import { setAllLocations } from '@/redux/reducers/allLocations'
 import { useAppDispatch,useAppSelector } from '@/redux/hooks'
 
@@ -65,41 +65,6 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
       }, 200);
   }
 }, [showDropDown])
-
-      const filtered = () => {
-        if(values !== ""){
-            const filteredCity = items?.filter((country:any) => {
-                return country?.city?.toLocaleLowerCase().includes(values?.toLocaleLowerCase());
-              });
-             if(filteredCity.length > 0){
-                setFilteredArray(filteredCity)
-             }else{
-                            const _SearchLocation = async () => {
-                                let res = await SearchLocation(values)
-                                dispatch(setAllLocations(res))
-                            }
-                            _SearchLocation()
-                        
-             }
-        }else{
-            setFilteredArray(items)
-        }
-      }
-
-    //   useEffect(()=>{
-    //     if(filteredArray.length > 0){
-    //         setShowDropDown(true)
-    //     }else{
-    //         setShowDropDown(false)
-    //     }
-    //   },[filteredArray])
-
-    // useEffect(()=>{
-        
-    //     // filtered()
-        
-    // },[values])
-
     return (
         <div className={`relative ${className}`}>
             <div ref={wrapperRef} className="relative">
@@ -112,16 +77,15 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
                         className={`outline-none w-full`} 
                         placeholder={placeholder ? placeholder : label} 
                         
-                        onChange={(e) => (e.target.value.length == 0 || e.target.value.trim() !== "") && setValue(e.target.value)}
+                        onChange={(e) => {
+                            onChange(e.target.value)
+                            setValue(e.target.value)}}
                         value={value}
                         name={name}
                         autoComplete="off"
                         onFocus = {()=>{
                             onFocus()
                             setShowDropDown(!showDropDown)
-                        }}
-                        onBlur={()=>{
-                            onChange(values)
                         }}
                     />
                 </div>
