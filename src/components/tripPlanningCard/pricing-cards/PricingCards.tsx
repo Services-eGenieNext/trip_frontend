@@ -246,14 +246,14 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
         _loadLocations()
     }, [locationDetails])
 
-    useEffect(() => {
+    // useEffect(() => {
         
-        if(automateLocation || (itineraryDays.length > 0 && itineraryDays[0].times && itineraryDays[0].times.length > 0))
-        {
-            dispatch(setItem(automateLocation ? {...automateLocation} : {...itineraryDays[0].times[0].location}))
-        }
+    //     if(automateLocation || (itineraryDays.length > 0 && itineraryDays[0].times && itineraryDays[0].times.length > 0))
+    //     {
+    //         dispatch(setItem(automateLocation ? {...automateLocation} : {...itineraryDays[0].times[0].location}))
+    //     }
     
-    }, [automateLocation, itineraryDays])
+    // }, [automateLocation, itineraryDays])
 
     const skelton = ["1","2","3","4","5","6","7","8"]
 
@@ -264,9 +264,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
         }
         {
             (itineraryLoading || itineraryDays.length == 0) ? 
-            skelton.map((list:string,index:number)=>{
-                return <Card_skelton key={index}/>
-            }) : (
+                <Card_skelton /> : (
                 (params_list.v_type === '1' || params_list.v_type === '') && itineraryDays && itineraryDays.length > 4) ? (
                     <>
                     {
