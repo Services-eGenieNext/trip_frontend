@@ -209,7 +209,7 @@ if(addCustomeOption == false){
 
   useEffect(() => {
     console.log(opts,"opts",optsSelected)
-    // FetchData();
+    FetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [opts, optsSelected]);
 

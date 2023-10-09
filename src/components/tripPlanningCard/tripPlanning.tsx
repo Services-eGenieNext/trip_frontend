@@ -66,8 +66,8 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
                     }
                     if(_recommendations[index].place_id && _recommendations[index].place_id !== '')
                     {
-                        let res: any = await DetailsCallByGoogle(`${_recommendations[index].place_id}&fields=address_components,place_id,name,formatted_address,geometry,current_opening_hours,opening_hours,rating,reviews`)
-                        if(res.data?.result && (res.data.result?.current_opening_hours || res.data.result?.opening_hours))
+                        let res: any = await DetailsCallByGoogle(`${_recommendations[index].place_id}&fields=address_components,place_id,name,formatted_address,geometry,current_opening_hours,opening_hours,rating,reviews,types`)
+                        if(res.data?.result && (res.data.result?.current_opening_hours || res.data.result?.opening_hours) && !res.data.result?.types?.includes('lodging'))
                         {
                             _locationDetails.push(res.data.result)
                         }
