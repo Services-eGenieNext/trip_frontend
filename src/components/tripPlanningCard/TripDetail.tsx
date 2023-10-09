@@ -649,7 +649,7 @@ setTypes(string)
                 }
                 {/* Client Reviews */}
                 {
-                    !detailLoading && (
+                    !detailLoading && itemDetail?.reviews?.length > 0 && (
                         <>
                         <div className="w-full mt-5 text-center">
                             <span className='text-[23px] leading-[18px] font-bold mb-2'>Client Reviews</span>
