@@ -251,72 +251,6 @@ const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
       setLocationRequired(true);
     } else {
       ValidateData();
-      // const filteredCity = topCitiesValue.filter((country: any) => {
-      //   return (
-      //     country?.name?.toLocaleLowerCase() ==
-      //     selectedLocation.toLocaleLowerCase()
-      //   );
-      // });
-
-      // const filteredCountry = topCountriesValue.filter((country: any) => {
-      //   return (
-      //     country?.name?.toLocaleLowerCase() ==
-      //     selectedLocation.toLocaleLowerCase()
-      //   );
-      // });
-
-      // const filteredContinent = ContinentLocation.filter((country: any) => {
-      //   return (
-      //     country?.name?.toLocaleLowerCase() ==
-      //     selectedLocation.toLocaleLowerCase()
-      //   );
-      // });
-
-      // if (
-      //   filteredCity.length > 0 ||
-      //   filteredCountry.length > 0 ||
-      //   filteredContinent.length > 0
-      // ) {
-      //   if (filteredCity.length > 0) {
-      //       let res = await TopCitiesIncrement(filteredCity[0].id);
-      //       if (res) {
-      //         let updatedOccasionsList = await TopCities();
-      //         dispatch(setTopCities(updatedOccasionsList));
-      //         ValidateData();
-      //       }
-      //   }
-      //   if (filteredCountry.length > 0) {
-      //       let res = await TopCountriesIncrement(filteredCountry[0].id);
-      //       if (res) {
-      //         let updatedOccasionsList = await TopCountries();
-      //         dispatch(setTopCountries(updatedOccasionsList));
-      //         ValidateData();
-      //       }
-      //   }
-      //   if (filteredContinent.length > 0) {
-      //     ValidateData();
-      //   }
-      // } else {
-      //     let res = await AddCities(selectedLocation);
-      //     if (res) {
-      //       let updatedOccasionsList = await TopCities();
-      //       dispatch(setTopCities(updatedOccasionsList));
-      //       ValidateData();
-      //   }else{
-      //       let res = await AddLocation(selectedLocation);
-      //       if (res) {
-      //         let updatedOccasionsList = await TopCountries();
-      //         dispatch(setTopCountries(updatedOccasionsList));
-      //         ValidateData();
-      //     }else{
-      //       if (filteredContinent.length > 0) {
-      //         ValidateData();
-      //       }else{
-      //         setInvalidLocation(true);
-      //       }
-      //     }
-      //   }
-      // }
     }
   };
 
@@ -361,7 +295,11 @@ if(filteredCity.length > 0){
 if (filteredLocation.length > 0) {
 setButtonText("Automate My trip");
 } else {
-_SearchLocation()
+  const delayDebounceFn = setTimeout(() => {
+    _SearchLocation()
+}, 500)
+
+return () => clearTimeout(delayDebounceFn)
 
 }
 }, [selectedLocation,locationSearch]);
