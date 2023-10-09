@@ -325,8 +325,6 @@ if(allLocationsState.length > 0){
     });
     if(response.length > 0){
 setAllLocation(response)
-    }else{
-      setAllLocation(allLocation)
     }
     if(filteredLocation.length > 0){
       setButtonText("Automate My trip");
