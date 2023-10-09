@@ -192,7 +192,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
   }, [survey]);
 
   useEffect(()=>{
-setSurvey({...survey, location:"" })
+    setSurvey({ ...survey, selectedOption: locationOption, location: "" })
   },[locationOption])
 
   const [step, setStep] = useState(1);

@@ -54,14 +54,6 @@ const InputWithSuggestion = ({className,name, label, type, placeholder="", onCha
           setFilteredArray(filtered)
       }
 
-    //   useEffect(()=>{
-    //     if(filteredArray.length > 0){
-    //         setShowDropDown(true)
-    //     }else{
-    //         setShowDropDown(false)
-    //     }
-    //   },[filteredArray])
-
     useEffect(()=>{
         filtered()
     },[values])
