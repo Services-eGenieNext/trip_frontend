@@ -64,7 +64,7 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
   
     const indexOfLastPost = currentPage * postPerPage;
     const indexOfFirstPost = indexOfLastPost - postPerPage;
-    const currentPost = itemDetail?.reviews.slice(indexOfFirstPost, indexOfLastPost);
+    const currentPost = itemDetail?.reviews?.slice(indexOfFirstPost, indexOfLastPost);
 
     const { itineraryDays } = useAppSelector(state => state.itineraryReducer)
 
