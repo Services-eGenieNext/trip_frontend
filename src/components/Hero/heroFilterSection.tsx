@@ -232,7 +232,7 @@ if(allLocationsState.length > 0){
           daysLength
       );
     } else {
-      router.push(`/results?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? url_address : `best locations in ${url_address}`}`);
+      router.push(`/results?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? `${locationSearch.location}&occassions=${JSON.stringify(locationSearch.occassion)}&priorities=${JSON.stringify(locationSearch.priority)}` : `best locations in ${url_address}`}`);
       dispatch(setSurveyValue(locationSearch));
     }
   };
