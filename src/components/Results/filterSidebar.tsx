@@ -8,7 +8,7 @@ import Activities from '@/data/priority.json'
 import CardOptionsSearchListing from './filtersOptionsSearch'
 import { useAppSelector } from "@/redux/hooks";
 
-export default function FilterSidebar({locations, setFilteredLocations, locationsByFilter, setClearFilter, clearFilter}:any) {
+export default function FilterSidebar({locations, setFilteredLocations, locationsByFilter, clearFilter, generatedResults}:any) {
 
   const [showFilter, setShowFilter] = useState(false)
   const [Ranking, setRanking] = useState("")
@@ -16,6 +16,12 @@ export default function FilterSidebar({locations, setFilteredLocations, location
   const [selectedOccasions, setSelectedOccasions] = useState<any[]>([])
 
   const { surveySlice } = useAppSelector(state => state.surveyReducer)
+
+  const clearAll = () => {
+    setRanking("1")
+    setSelectedActivities([])
+    setSelectedOccasions([])
+  }
 
   useEffect(()=>{
     const defLoad = async () => {
@@ -49,6 +55,13 @@ export default function FilterSidebar({locations, setFilteredLocations, location
     
     defLoad()
   },[selectedActivities, selectedOccasions, Ranking])
+
+  useEffect(() => {
+    if(clearFilter)
+    {
+      clearAll()
+    }
+  }, [clearFilter])
 
   return (
     <>
@@ -86,8 +99,7 @@ export default function FilterSidebar({locations, setFilteredLocations, location
           Filter By
         </h1>
         <p className="text-[#009de2] mt-4 text-end cursor-pointer" onClick={()=>{
-          setRanking("")
-          setClearFilter(true)
+            clearAll()
           }}
         >Clear All</p>
       </div>
@@ -109,7 +121,8 @@ export default function FilterSidebar({locations, setFilteredLocations, location
             setSelectedActivities(values)
           }}
           clearData={clearFilter}
-          setClearFilter={setClearFilter}
+          disabled={generatedResults.priorities == ""}
+          // setClearFilter={setClearFilter}
           // selectedData={selectedActivities}
         />
       )}
@@ -132,10 +145,11 @@ export default function FilterSidebar({locations, setFilteredLocations, location
               })
             }
             clearData={clearFilter}
-            setClearFilter={setClearFilter}
+            // setClearFilter={setClearFilter}
             onChange={(values: any[]) => {
               setSelectedOccasions(values)
             }}
+            disabled={generatedResults.occassions == ""}
             // selectedData={selectedOccasions}
           />
         )
@@ -144,6 +158,7 @@ export default function FilterSidebar({locations, setFilteredLocations, location
         title="City Ranking"
         clearData={clearFilter}
         setRanking={setRanking}
+        value={Ranking}
       />
 
       {/* <ReviewFilterBox

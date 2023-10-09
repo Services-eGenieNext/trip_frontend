@@ -9,15 +9,10 @@ import { useAppDispatch } from "@/redux/hooks";
 import { setItem } from "@/redux/reducers/PlacedetailSlice";
 import Loader from "../step-loader/loader";
 import Spinloader from "../step-loader/spin-loader";
+import LoaderSvg from "../icons/loader-svg";
 
-export default function Lisitngs({ locations, setLocations, Filteredlocations, loadData, setClearFilter,setLoadData, locationsByFilter }: any) {
+export default function Lisitngs({ locations, setLocations, Filteredlocations, loadData, setClearFilter,setLoadData, locationsByFilter, generatedResults, filterable }: any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
-
-  useEffect(()=>{
-    if(locations.length > 0){
-      setLoadData(false)
-    }
-  },[locations])
 
   useEffect(() => {
     const _onChangeLocations = async () => {
@@ -35,7 +30,7 @@ export default function Lisitngs({ locations, setLocations, Filteredlocations, l
     <div className="lg:pl-12 md:pl-12 sm:pl-6 pl-3">
       {
         loadData === false ? (
-        <p className="text-[18px] text-[#3F3F3F]"> Show listing of {Filteredlocations?.length} Places... </p>
+        <p className="text-[18px] text-[#3F3F3F] flex items-center"> <span className="mr-1">Show listing of {Filteredlocations?.length} Places...</span> { (filterable && (generatedResults.occassions == "" || generatedResults.priorities == "")) && <span> <LoaderSvg /> </span>} </p>
         ):(
           <>
           <p className="text-[18px] text-[#3F3F3F]">Our AI engine is finding best option for you...</p>
@@ -96,80 +91,76 @@ export default function Lisitngs({ locations, setLocations, Filteredlocations, l
                   let City = ""
                   let Place = ""
                   let Country = ""
+                
+                location = location.details ? {...location, ...location.details} : location
                 return (
-                  <>
-                  {
-                    location.details && (
-                      <div
-                        key={index}
-                        className="sm:w-[260px] w-[320px] overflow-hidden rounded-lg flex flex-col justify-between items-center"
-                      >
-                        <div className={`sm:h-[235px] h-[260px] w-full relative cursor-pointer ${CSS["slider_card"]}`}>
-                          <img src={image_path} alt={image_path} style={{objectFit: "cover",}} className="h-full w-full" />
-                          {location.details.rating && (
-                            <div className="absolute top-2 right-2 flex items-center gap-x-2 bg-white py-1 px-4 rounded-full">
-                              <FilledStar />
-                              <p className="text-[#009DE2] font-semibold">{location?.details?.rating}</p>
-                            </div>
-                          )}
-                          <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
-                            <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
-                              Automate My Trip
-                            </Link>
-                            <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" 
-                              onClick={()=> {
-                                dispatch(setItem({
-                                  location_id: location.location_id,
-                                  place_id: location.place_id,
-                                }))
-                              }} > More Info </button>
-                          </div>
+                  <div
+                    key={index}
+                    className="sm:w-[260px] w-[320px] overflow-hidden rounded-lg flex flex-col justify-between items-center"
+                  >
+                    <div className={`sm:h-[235px] h-[260px] w-full relative cursor-pointer ${CSS["slider_card"]}`}>
+                      <img src={image_path} alt={image_path} style={{objectFit: "cover",}} className="h-full w-full" />
+                      {location.rating && (
+                        <div className="absolute top-2 right-2 flex items-center gap-x-2 bg-white py-1 px-4 rounded-full">
+                          <FilledStar />
+                          <p className="text-[#009DE2] font-semibold">{location?.rating}</p>
                         </div>
-                        <p className="text-[22px] font-semibold text-[#2D2D2D] my-2 flex justify-center">
-                          {
-                            location?.details?.address_components?.forEach((address: any, index: number) => {
-                                  if(address?.types[0] == "sublocality_level_1"){
-                                    Place = address.long_name
-                                  }
-                                  if(address?.types[0] == "locality"){
-                                    City = address.long_name
-                                  }
-                                  if(address?.types[0] == "country"){
-                                    Country = address.long_name
-                                  }
-                                }
-                              )
-                            }
-                            <span className="text-center">
-                            {location.name ? location.name : `${Place}${Place !== "" ? "," : ""} ${City !== "" ? City : Country}`}
-                            </span>
-                        </p>
-                        <div className="flex items-center gap-x-2">
-                          {
-                            reviewArr &&
-                            reviewArr.map((review, index) => {
-                              if (index < location?.details?.rating) {
-                                return <FilledStar key={index} />;
-                              } else {
-                                return <BlankStar key={index} />;
-                              }
-                            })
-                          }
-                          {
-                            location.details.rating && (
-                              <span className="text-gray-500 text-sm">{"("}{location?.details?.rating}{")"}</span>
-                            )
-                          }
-                          {/* {
-                            location?.details?.reviews && (
-                              <span className="text-xs">Reviews {`(${location?.details?.reviews?.length})`}</span>
-                            )
-                          } */}
-                        </div>
+                      )}
+                      <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
+                        <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
+                          Automate My Trip
+                        </Link>
+                        <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" 
+                          onClick={()=> {
+                            dispatch(setItem({
+                              location_id: location.location_id,
+                              place_id: location.place_id,
+                            }))
+                          }} > More Info </button>
                       </div>
-                    )
-                  }
-                    </>
+                    </div>
+                    <p className="text-[22px] font-semibold text-[#2D2D2D] my-2 flex justify-center">
+                      {
+                        location?.address_components?.forEach((address: any, index: number) => {
+                              if(address?.types[0] == "sublocality_level_1"){
+                                Place = address.long_name
+                              }
+                              if(address?.types[0] == "locality"){
+                                City = address.long_name
+                              }
+                              if(address?.types[0] == "country"){
+                                Country = address.long_name
+                              }
+                            }
+                          )
+                        }
+                        <span className="text-center">
+                        {location.name ? location.name : `${Place}${Place !== "" ? "," : ""} ${City !== "" ? City : Country}`}
+                        </span>
+                    </p>
+                    <div className="flex items-center gap-x-2">
+                      {
+                        reviewArr &&
+                        reviewArr.map((review, index) => {
+                          if (index < location?.rating) {
+                            return <FilledStar key={index} />;
+                          } else {
+                            return <BlankStar key={index} />;
+                          }
+                        })
+                      }
+                      {
+                        location.rating && (
+                          <span className="text-gray-500 text-sm">{"("}{location?.rating}{")"}</span>
+                        )
+                      }
+                      {/* {
+                        location?.details?.reviews && (
+                          <span className="text-xs">Reviews {`(${location?.details?.reviews?.length})`}</span>
+                        )
+                      } */}
+                    </div>
+                  </div>
                 );
             }) : (
               <div className="flex flex-col items-center mt-10 w-full">

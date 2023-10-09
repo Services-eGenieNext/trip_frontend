@@ -10,14 +10,16 @@ export default function CardOptionsSearchListing({
   onChange,
   clearData,
   selectedData,
-  setClearFilter
+  setClearFilter,
+  disabled = false
 }: {
   title?: string;
   categories?: any;
   onChange?: (val: any[]) => void;
   clearData?: any;
   selectedData?: any;
-  setClearFilter?:any
+  setClearFilter?:any,
+  disabled?: boolean
 }) {
   const [isShowDropDown, setIsShowDropDown] = useState(false);
   const [opt, setOpt] = useState<any[]>([]);
@@ -182,7 +184,7 @@ export default function CardOptionsSearchListing({
       {/* {isShowDropDown && ( */}
         <Box pt="10px" pb="13px">
           {currentPost.length > 0 && currentPost?.map(({ name, checked }: any, index: any) => {
-            console.log('checked', checked)
+            
             return (
               <Box mb="10px" key={index}>
                 <Box display="flex" alignItems="center">
@@ -193,6 +195,7 @@ export default function CardOptionsSearchListing({
                       }}
                       name={name}
                       checked={checked}
+                      disabled={disabled}
                     />
                   </Box>
                   <Box>

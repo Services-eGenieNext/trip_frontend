@@ -318,7 +318,7 @@ setTypes(string)
             {zoomImage == true && (
                 <div className="w-full h-full absolute top-0 left-0 z-10 flex items-center bg-[rgba(0,0,0,0.8)] overflow-hidden rounded-lg">
                     <div className="w-full h-full relative ">
-                    <Image src={zoomImagePath} className="w-full h-full " fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} />
+                    <Image src={zoomImagePath} className="w-full h-full " fill={true} alt={itemDetail?.name ?? ''} style={{objectFit: "cover"}} />
                     <span 
                     className="absolute top-[1rem] right-[0.5rem] w-[30px] h-[30px] bg-[#F9F9F9] flex justify-center items-center rounded-full p-2 cursor-pointer select-none"
                     onClick={() => {
@@ -411,7 +411,7 @@ setTypes(string)
                         ) : (
                             images.slice(0,4).map((img: string, imgIndex: number) => {
                                 return <div key={imgIndex} className="h-[98px] bg-gray-100 rounded-xl overflow-hidden relative">
-                                    <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur"
+                                    <Image src={img} fill={true} alt={`top - ${itemDetail?.name}`} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur"
                                     onClick={() => {
                                         setSelectedImage(imgIndex)
                                         setShowSlide(true)
@@ -434,7 +434,7 @@ setTypes(string)
                             images.slice(4).map((img: string, imgIndex: number) => {
                                 return <div key={imgIndex}  className="px-1">
                                     <div className="h-[98px] w-[100%] bg-gray-100 rounded-xl overflow-hidden relative">
-                                        <Image src={img} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur"
+                                        <Image src={img} fill={true} alt={`slider - ${itemDetail?.name}`} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur"
                                         onClick={() => {
                                             setSelectedImage(imgIndex+4)
                                             setShowSlide(true)
@@ -621,28 +621,32 @@ setTypes(string)
                         </>
                     )
                 }
-                    {title == "Trending Location" && (
-                    <ProductHorizontalSlide 
-                    locationsState={existingActivities} 
-                    url="variation_2" 
-                    Title={`${itemDetail?.name} Best Activities`} 
-                    route = {title}
-                    isDesc={true}
-                    isHover={true}
-                    v_type={"2"}
-                />
-                )}
-                {title == "Trending Location" && (
-                    <ProductHorizontalSlide 
-                    locationsState={exsitingRestaurants} 
-                    url="variation_2" 
-                    Title={`${itemDetail?.name} Best Restaurants`} 
-                    route = {title}
-                    isDesc={true}
-                    isHover={true}
-                    v_type={"2"}
-                />
-                )}
+                {
+                    title == "Trending Location" && (
+                        <ProductHorizontalSlide 
+                            locationsState={existingActivities} 
+                            url="variation_2" 
+                            Title={`${itemDetail?.name} Best Activities`} 
+                            route = {title}
+                            isDesc={true}
+                            isHover={true}
+                            v_type={"2"}
+                        />
+                    )
+                }
+                {
+                    title == "Trending Location" && (
+                        <ProductHorizontalSlide 
+                            locationsState={exsitingRestaurants} 
+                            url="variation_2" 
+                            Title={`${itemDetail?.name} Best Restaurants`} 
+                            route = {title}
+                            isDesc={true}
+                            isHover={true}
+                            v_type={"2"}
+                        />
+                    )
+                }
                 {/* Client Reviews */}
                 {
                     !detailLoading && (
@@ -652,15 +656,15 @@ setTypes(string)
                             <div className="h-[3px] w-[51px] bg-[var(--blue)] mt-5 mx-auto"></div>
                         </div>
                         <Reviews isCenterAlign={true} textSmall={true} show={true} loading={false} data={currentPost ?? []} style={{margin: "0"}} />
-                        {itemDetail?.reviews.length > postPerPage && (
-                            <div className="flex justify-center">
-        <button className="border-none outline-none bg-[#009DE2] text-white h-[40px] w-[200px] rounded-lg" onClick={() => {
-          setPostPerPage(postPerPage + 4) 
-        }}>
-          Load More Reviews
-        </button>
-        </div>
-      )}
+                        {
+                            itemDetail?.reviews?.length > postPerPage && (
+                                <div className="flex justify-center">
+                                    <button className="border-none outline-none bg-[#009DE2] text-white h-[40px] w-[200px] rounded-lg" onClick={() => {
+                                        setPostPerPage(postPerPage + 4) 
+                                    }}>Load More Reviews</button>
+                                </div>
+                            )
+                        }
                         </>
                     )
                 }
@@ -696,7 +700,7 @@ setTypes(string)
                     images.length > 0 && (
                         <div className="px-1 h-[700px] w-[1000px] mx-auto">
                             <div className="h-[100%] w-[100%] rounded-xl overflow-hidden relative mx-auto">
-                                <Image src={images[selectedImage]} fill={true} alt={itemDetail?.name} style={{objectFit: "contain"}} blurDataURL={images[selectedImage]} placeholder="blur" />
+                                <Image src={images[selectedImage]} fill={true} alt={`slide image - ${itemDetail?.name}`} style={{objectFit: "contain"}} blurDataURL={images[selectedImage]} placeholder="blur" />
                             </div>
                         </div>
                     )

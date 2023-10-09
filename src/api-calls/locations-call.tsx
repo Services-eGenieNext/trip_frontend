@@ -40,9 +40,12 @@ const LocationsCall = async (query:any) => {
             if(location_res[index].photos){
                 let images_Data: any = await _getlocationImages(location_res[index].photos[0].photo_reference)
                 let detail_Data: any = await _getDetails(location_res[index].location_id ? location_res[index].location_id : location_res[index].place_id)
-                _store_locations.push({
-                    ...location_res[index], images: images_Data, image: {image: [{url:images_Data}]}, details: detail_Data.result
-                })
+                if(!detail_Data.types?.includes('lodging'))
+                {
+                    _store_locations.push({
+                        ...location_res[index], images: images_Data, image: {image: [{url:images_Data}]}, details: detail_Data.result
+                    })
+                }
             }else{
                 _store_locations.push({
                     ...location_res[index], images: "", image: {image: [{url:""}]}
