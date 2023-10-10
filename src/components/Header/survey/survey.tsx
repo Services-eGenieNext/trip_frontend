@@ -285,7 +285,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
         }
       }
     }
-    if (survey.dates.startDate) {
+    if (survey.selectedOption == "city") {
       let url = survey.location ? survey.location : "";
 
       let occassion_arr = await survey.occassion.map(
@@ -519,9 +519,11 @@ const Survey = ({ show, onClose }: ISurvey) => {
                   type="button"
                   className="rounded-xl text-[#009DE2] border border-[#009DE2] py-[14px] sm:w-[200px] w-full hover:bg-[#009DE2] hover:text-white bg-transparent mt-5 my-2"
                   onClick={()=>{
-                    onClose()
+                    if(step > 1){
+                      setStep(step - 1)
+                    }
                   }}
-                >Exit</button>
+                >Previous</button>
           <BlueButton
             type="button"
             className="text-[20px] py-[10px] sm:w-[200px] w-full mt-5"
@@ -535,6 +537,14 @@ const Survey = ({ show, onClose }: ISurvey) => {
             }}
           />
           </div>
+          <BlueButton
+            type="button"
+            className="text-[20px] py-[10px] sm:w-[200px] w-full mt-5"
+            title={"Exit"}
+            onClick={() => {
+              handleSurvey();
+            }}
+          />
         </div>
       </div>
     </PopupWithOverlay>
