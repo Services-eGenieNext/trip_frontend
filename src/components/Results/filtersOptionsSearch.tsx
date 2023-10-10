@@ -96,7 +96,11 @@ export default function CardOptionsSearchListing({
         id: name?.id,
       }));
       setOpt(newArray);
-      setClearFilter(false)
+
+      if(typeof setClearFilter === 'function')
+      {
+        setClearFilter(false)
+      }
     }
   }, [clearData]);
 

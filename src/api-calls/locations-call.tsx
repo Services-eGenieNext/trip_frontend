@@ -30,7 +30,7 @@ const _getDetails = async (location_id:string | number) => {
     return detailData
 }
 
-const LocationsCall = async (query:any) => {
+const LocationsCall = async (query:any, isDetail = true) => {
 
     return await axios.get(`${API_URL}/google/textsearch?place=${query}`)
     .then(async (response) => {
@@ -39,11 +39,19 @@ const LocationsCall = async (query:any) => {
         for (let index = 0; index < location_res.length; index++) {
             if(location_res[index].photos){
                 let images_Data: any = await _getlocationImages(location_res[index].photos[0].photo_reference)
-                let detail_Data: any = await _getDetails(location_res[index].location_id ? location_res[index].location_id : location_res[index].place_id)
-                if(!detail_Data.types?.includes('lodging'))
+                let validCondition = location_res[index].types && location_res[index].types.length > 2 && !location_res[index].types.includes('lodging')
+
+                if(isDetail && validCondition)
                 {
+                    let detail_Data: any = await _getDetails(location_res[index].location_id ? location_res[index].location_id : location_res[index].place_id)
                     _store_locations.push({
                         ...location_res[index], images: images_Data, image: {image: [{url:images_Data}]}, details: detail_Data.result
+                    })
+                }
+                else if(validCondition)
+                {
+                    _store_locations.push({
+                        ...location_res[index], images: images_Data, image: {image: [{url:images_Data}]}
                     })
                 }
             }else{
