@@ -8,7 +8,7 @@ import Activities from '@/data/priority.json'
 import CardOptionsSearchListing from './filtersOptionsSearch'
 import { useAppSelector } from "@/redux/hooks";
 
-export default function FilterSidebar({locations, setFilteredLocations, locationsByFilter, clearFilter, generatedResults}:any) {
+export default function FilterSidebar({locations, setFilteredLocations, locationsByFilter, clearFilter, setLoading, generatedResults}:any) {
 
   const [showFilter, setShowFilter] = useState(false)
   const [Ranking, setRanking] = useState("")
@@ -43,12 +43,14 @@ export default function FilterSidebar({locations, setFilteredLocations, location
         _locationsByFilter = await _locationsByFilter.filter((loc: any) => Ranking ? (Number(Ranking) <= Number(loc?.rating)) : true)
 
         setFilteredLocations([].concat(..._locationsByFilter))
+        setLoading(false)
       }
       else
       {
         let _locationsByFilter = await locations.filter((loc: any) => Ranking ? (Number(Ranking) <= Number(loc?.rating) || Number(Ranking) <= Number(loc?.details?.rating)) : true)
         
         setFilteredLocations(_locationsByFilter)
+        setLoading(false)
       }
 
     }

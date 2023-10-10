@@ -14,6 +14,10 @@ import LoaderSvg from "../icons/loader-svg";
 export default function Lisitngs({ locations, setLocations, Filteredlocations, loadData, setClearFilter,setLoadData, locationsByFilter, generatedResults, filterable }: any) {
   const skelton = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
+  // useEffect(() => {
+  //   setLoadData(false)
+  // }, [locations])
+
   useEffect(() => {
     const _onChangeLocations = async () => {
       let _locationsByFilter = await locationsByFilter.map((loc: any) => loc.locations)
@@ -43,7 +47,7 @@ export default function Lisitngs({ locations, setLocations, Filteredlocations, l
           (loadData == true && locations.length == 0) && <Spinloader />
         }
         {
-          loadData === true && locations.length == 0
+          loadData === true && locations.length == 0 && generatedResults.occassions == "" && generatedResults.priorities == ""
           ? skelton.map((show: any, index: number) => {
               return (
                 <div
@@ -84,15 +88,13 @@ export default function Lisitngs({ locations, setLocations, Filteredlocations, l
               location.image.image.length > 0
                 ? location.image.image[0].url
                 : BlankLocation.src;
-                let address = location?.details?.formatted_address
-                ? location.details.formatted_address
-                : location.details?.address_components[0]?.long_name +
-                  location.details?.address_components[1]?.long_name;
+                let address = location?.formatted_address
+                ? location.formatted_address
+                : location?.address_components[0]?.long_name +
+                  location?.address_components[1]?.long_name;
                   let City = ""
                   let Place = ""
                   let Country = ""
-                
-                location = location.details ? {...location, ...location.details} : location
                 return (
                   <div
                     key={index}

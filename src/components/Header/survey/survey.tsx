@@ -286,10 +286,20 @@ const Survey = ({ show, onClose }: ISurvey) => {
       }
     }
     if (survey.dates.startDate) {
-      router.push("/trip-plan?address=" + survey.location + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
+      let url = survey.location ? survey.location : "";
+
+      let occassion_arr = await survey.occassion.map(
+        (oc: any) => oc.opt
+      );
+      let priority_arr = await survey.priority.map((pr: any) => pr.opt);
+      let arr = occassion_arr.concat(...priority_arr);
+
+      url = url.trim() != "" && arr.length > 0 ? `${arr.join(",")} in ${url}` : url;
+
+      router.push("/trip-plan?address=" + url + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
       onClose();
     } else {
-      router.push(`/results?address=${survey.location}`);
+      router.push(`/results?address=${survey.occassion.length > 0 || survey.priority.length > 0 ? `${survey.location}&occassions=${JSON.stringify(survey.occassion)}&priorities=${JSON.stringify(survey.priority)}` : `best locations in ${survey.location}`}`);
       onClose();
       setStep(1);
     }
