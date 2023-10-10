@@ -145,7 +145,7 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
         setDuration(duration.data.rows[0].elements[0].duration.text)
       }
     }
-    if(distanceObject.origin && distanceObject.destination && (!time.suggestedTime?.duration_time || time.suggestedTime?.duration_time == ""))
+    if(distanceObject.origin && distanceObject.destination && !duration &&  (!time.suggestedTime?.duration_time || time.suggestedTime?.duration_time == ""))
     {
       _def()
     }
