@@ -89,11 +89,11 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
     }, [filterData]);
 
     return (
-        <div className="w-full flex justify-center" id='reviews'>
+        <div className="w-full flex justify-center sm:px-0 px-3" id='reviews'>
             <Section className="relative">
                 <div className="sm-width sm:px-4 px-0">
-                    <div className="flex flex-wrap sm:justify-between justify-center items-center">
-                        <div>
+                    <div className="flex sm:flex-row flex-col sm:justify-between justify-center items-center">
+                        <div className="sm-mb-0 mb-2">
                             <ComponentTitle title="Client's Reviews" />
                         </div>
 
@@ -111,7 +111,7 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
                             )
                         }
                     </div>
-                    <div id="rating-filter" className={`transition-all duration-300 ${!openModal ? 'overflow-hidden' : 'pt-8'}`} style={{height: openModal ? window.innerWidth < 768 ? "200px" : "74px" : "0px"}}>
+                    <div id="rating-filter" className={`transition-all duration-300 ${!openModal ? 'overflow-hidden' : 'pt-8'}`} style={{height: openModal ? window.innerWidth < 768 ? "200px" : "100px" : "0px"}}>
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <SelectField
                                 label="Locations"

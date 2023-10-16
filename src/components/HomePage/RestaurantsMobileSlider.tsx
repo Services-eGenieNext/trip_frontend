@@ -97,33 +97,15 @@ const Products = ({
     );
   }
   const settings = {
-    // className: "center",
-    // centerMode: true,
+    dots: false,
     infinite: true,
-    // centerPadding: "60px",
-    slidesToShow: 1,
     speed: 500,
-    rows: 4,
-    slidesPerRow: 2,
+    slidesToShow: 1,
+    slidesToScroll: 1,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
-    responsive: [
-      {
-        breakpoint: 850,
-        settings: {
-          centerMode: true,
-          infinite: true,
-          centerPadding: "60px",
-          slidesToShow: 1,
-          speed: 500,
-          rows: 4,
-          slidesPerRow: 1,
-          nextArrow: <SampleNextArrow />,
-          prevArrow: <SamplePrevArrow />,
-        },
-      },
-    ],
-  };
+    // afterChange,
+};
   const reviewArr = new Array(5).fill(1);
   const skelton = [
     "1",
@@ -217,7 +199,7 @@ const Products = ({
         alt="Map 1"
         className="absolute right-10 top-[70%] -z-10 select-none"
       />
-      <div className="w-full flex justify-center px-0">
+      <div className="w-full flex justify-center sm:px-0 px-3">
         <Section className="relative">
           <div className="flex flex-col items-center">
             <ComponentTitle title={title} />
@@ -285,7 +267,7 @@ const Products = ({
                       ? parseImageArray.image[0].url
                       : BlankLocation.src;
                   let address = restaurant.details.formatted_address;
-                  let link = `/trip-plan?address=${JSON.stringify(address)}&location_id=${
+                  let link = `/trip-plan?address=${address}&location_id=${
                     restaurant.location_id ?? ""
                   }&place_id=${restaurant.place_id ?? ""}&restaurants=true`;
                   let filterTypes: any = "";
@@ -298,7 +280,7 @@ const Products = ({
                   return (
                     <div
                       key={index}
-                      className="md:my-4 my-8 sm:px-6 px-2 lg:mt-0 mt-14 h-full"
+                      className="md:my-4 my-8 sm:px-6 lg:mt-0 mt-14 h-full"
                     >
                       <div
                         className={`rounded-xl overflow-hidden border border-[#C9D2DD] grid grid-cols-1 lg:grid-cols-2 bg-white h-full w-full relative ${styles["slider_card"]}`}
