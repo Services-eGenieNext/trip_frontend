@@ -20,7 +20,7 @@ interface ITripPlanningCard {
     v_type?: VariationType
 }
 
-export default function TripPlanningCard({params_list, survey, totalOpeningHours, automateLocation, v_type=""}: ITripPlanningCard) {
+export default function TripPlanningCard({params_list, survey, totalOpeningHours, automateLocation}: ITripPlanningCard) {
     
     const ref = useRef<HTMLInputElement>(null);
     const [read, setRead] = useState(false);

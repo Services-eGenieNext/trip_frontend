@@ -4,7 +4,7 @@ import { IPlanningCard } from "@/interfaces/TripPlan";
 import InputField from "../UIComponents/InputField/InputField";
 import { LocationsDurationCall } from "@/api-calls";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { setDestination, setItineraryDays } from "@/redux/reducers/itinerarySlice";
+import { setActiveLocation, setDestination, setItineraryDays } from "@/redux/reducers/itinerarySlice";
 import SelectField from "../UIComponents/InputField/SelectField";
 import { _calculateStartAndEndTime } from "./pricing-cards/functions";
 import { useAlertContext } from "@/contextapi/Alert";
@@ -263,7 +263,11 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
         <div className={`h-full ml-2 ${CSS["divider"]} absolute top-[50%] mt-[1rem]`} />
       </div>
       <span ref={locationRef}
-        className={`ml-[2rem] text-[13px] w-max hover:text-[#009DE2] p-4 rounded-lg ${CSS["plan-time-wrapper"]} ${variation === "list" ? '' : 'hover:bg-white ml-2 mr-4'} ${isDragOver || activeLocation?.name == time?.location?.name ? 'bg-white text-[#009DE2] shadow-lg' : ''}`} >
+        className={`ml-[2rem] text-[13px] w-max hover:text-[#009DE2] p-4 rounded-lg ${CSS["plan-time-wrapper"]} ${variation === "list" ? '' : 'hover:bg-white ml-2 mr-4'} ${isDragOver || activeLocation?.name == time?.location?.name ? 'bg-white text-[#009DE2] shadow-lg' : ''} cursor-pointer`} 
+        onClick={() => {
+          dispatch(setActiveLocation(time?.location))
+        }}
+        >
         <div className="flex items-center gap-2">
           <p className="gilroy text-[11px] font-semibold cursor-pointer" onClick={() => onClickItem()}>{
                 !time.suggestedTime?.startTime && !time.suggestedTime?.endTime ? (

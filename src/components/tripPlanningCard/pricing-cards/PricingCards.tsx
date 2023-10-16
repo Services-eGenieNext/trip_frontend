@@ -155,7 +155,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                 }
 
                 // when restaurant available in priority
-                let restaurantInPriority = await surveySlice?.priority.find((p: any) => p.opt === "Restaurants")
+                let restaurantInPriority = await surveySlice?.priority ? surveySlice?.priority.find((p: any) => p.opt === "Restaurants") : null
                 if(index == 0 && i == 2 && restaurantInPriority) // display restaurant in between of monday which restaurant open in monday
                 {
                     let _randNum = Math.floor(Math.random() * 10)

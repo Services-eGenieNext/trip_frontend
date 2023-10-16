@@ -285,7 +285,7 @@ const Products = ({
                       ? parseImageArray.image[0].url
                       : BlankLocation.src;
                   let address = restaurant.details.formatted_address;
-                  let link = `/trip-plan?address=${address}&location_id=${
+                  let link = `/trip-plan?address=${JSON.stringify(address)}&location_id=${
                     restaurant.location_id ?? ""
                   }&place_id=${restaurant.place_id ?? ""}&restaurants=true`;
                   let filterTypes: any = "";
