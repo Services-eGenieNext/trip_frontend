@@ -84,10 +84,8 @@ export default function Lisitngs({ locations, setLocations, Filteredlocations, l
           : (
             Filteredlocations && Filteredlocations.length > 0 ? Filteredlocations?.map((location: any, index:number) => {
             
-            let image_path =
-              location.image.image.length > 0
-                ? location.image.image[0].url
-                : BlankLocation.src;
+              location = location?.details ? {...location, ...location.details} : location
+              let image_path = (location.image.image.length > 0 && location.image.image[0].url != "") ? location.image.image[0].url : BlankLocation.src;
                 let address = location?.formatted_address
                 ? location.formatted_address
                 : location?.address_components[0]?.long_name +
@@ -101,13 +99,13 @@ export default function Lisitngs({ locations, setLocations, Filteredlocations, l
                     className="sm:w-[260px] w-[320px] overflow-hidden rounded-lg flex flex-col justify-between items-center"
                   >
                     <div className={`sm:h-[235px] h-[260px] w-full relative cursor-pointer ${CSS["slider_card"]}`}>
-                      <img src={image_path} alt={image_path} style={{objectFit: "cover",}} className="h-full w-full" />
-                      {location.rating && (
+                      <img src={image_path} alt={location.name} style={{objectFit: "cover"}} className="h-full w-full" />
+                      {location.rating ? (
                         <div className="absolute top-2 right-2 flex items-center gap-x-2 bg-white py-1 px-4 rounded-full">
                           <FilledStar />
                           <p className="text-[#009DE2] font-semibold">{location?.rating}</p>
                         </div>
-                      )}
+                      ) : ''}
                       <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
                         <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
                           Automate My Trip
