@@ -485,7 +485,7 @@ if(selectedLocation !== ""){
         label="Budget"
         placeholder="Select..."
         data={SpendingValue}
-        className={`sm:mr-2 sm:my-2 my-5 sm:w-[170px] h-[46px]`}
+        className={`sm:mr-2 sm:my-2 mb-5 mt-7 sm:w-[170px] h-[46px]`}
         value={locationSearch.spending}
         onChange={(val) =>
           setLocationSearch({ ...locationSearch, spending: val })

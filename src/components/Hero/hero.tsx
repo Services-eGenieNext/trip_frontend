@@ -38,7 +38,7 @@ const Hero = () => {
             className="mx-auto select-none w-full h-full"
           />
           <div className="absolute bottom-0 left-0 top-0 right-0 px-8 flex flex-col justify-center items-center xl:my-[8rem] sm-width">
-            <h1 className="uppercase sm:leading-10 text-white font-normal text-[16px] sm:text-[22px] lg:text-[30px] lg:my-5 sm:my-3 my-0 gilroy plan">
+            <h1 className="uppercase sm:leading-10 text-white font-normal text-[16px] sm:text-[22px] lg:text-[30px] lg:my-5 sm:my-3 my-0 gilroy plan text-center">
             PLAN YOUR DREAM TRIP IN SECOND WITH
             </h1>
             <h2 className="leading-10 text-white font-bold text-[22px] sm:text-[48px] lg:text-[68px] lg:my-5 sm:my-3 my-0 text-center w-full gilroy">

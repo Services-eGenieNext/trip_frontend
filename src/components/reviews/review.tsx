@@ -17,8 +17,8 @@ const Review = ({ client, isCenterAlign = false, isboxShadow = true, textSmall =
     const [showMore, setShowMore] = useState(false)
     return (
         <div className={`bg-white rounded-xl p-8 my-10 ${isboxShadow ? styles.testimonialCard : ''}`} >
-            <div className="flex justify-between items-center mb-4">
-                <h5 className={`text-[#333333] italic ${textSmall ? 'text-[18px]' : 'text-[23px]'} leading-[52px] ${isCenterAlign ? 'text-center' : ''}`}>
+            <div className="flex md:flex-row flex-col justify-between items-center mb-4">
+                <h5 className={`text-[#333333] italic ${textSmall ? 'lg:text-[18px] text-[16px]' : 'lg:text-[23px] md:text-[18px] text-[16px]'} md:leading-[52px] sm:leading-[40px] leading-[35px]  ${isCenterAlign ? 'text-center' : 'md:text-start text-center'}`}>
                     {" "}
                     &ldquo;{showMore ? client.text : showText}
                     {
@@ -37,19 +37,20 @@ const Review = ({ client, isCenterAlign = false, isboxShadow = true, textSmall =
                         )
                     }
                 </h5>
-                <span className={`text-black font-semibold text-[15px] text-right leading-[18px] min-w-[150px] ${isCenterAlign ? 'text-center' : ''}`}>
+                <span className={`text-black font-semibold text-[15px] leading-[18px] min-w-[150px] md:order-2 order-1 md:my-0 my-3 ${isCenterAlign ? 'text-center' : 'md:text-right text-center'}`}>
                     {client.relative_time_description}
                 </span>
             </div>
             {/* <p className="text-[#5C5B5B] italic text-[17px] leading-[27px] mb-4">{client.desc}</p> */}
 
-            <div className={`flex flex-wrap gap-8 items-center ${isCenterAlign ? 'justify-center' : ''}`}>
+            <div className={`flex flex-wrap gap-8 items-center ${isCenterAlign ? 'justify-center' : 'md:justify-start justify-center'}`}>
                 <div className="gilroy italic font-bold text-xl h-[50px] w-[50px] relative">
                     <Image src={client.profile_photo_url} fill={true} alt={""} />
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-bold text-[22px] leading-[52px] text-[var(--green)] mr-2">{`${client.author_name}`}</span>
+                <div className="flex sm:flex-row flex-col items-center gap-2">
+                    <span className="font-bold text-[22px] leading-[52px] text-center text-[var(--green)] mr-2">{`${client.author_name}`}</span>
+                    <div className="flex items-center gap-2">
                     {reviewArr &&
                     reviewArr.map((review, index) => {
                         if (index < client.rating) {
@@ -58,6 +59,7 @@ const Review = ({ client, isCenterAlign = false, isboxShadow = true, textSmall =
                             return <BlankStar key={index} />;
                         }
                     })}
+                    </div>
                 </div>
             </div>
         </div>
