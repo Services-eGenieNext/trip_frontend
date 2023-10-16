@@ -72,8 +72,8 @@ const TripPlan = () => {
                     setOpeningHours(item_Detail?.data?.result?.opening_hours?.weekday_text?.filter((_week: any) => _week.toLowerCase().search('closed') == -1 ).length)
                 }
             }
-            _defLocationToVisit(params_list.location_id || params_list.place_id ? locationString : params_list.address)
-            _defRestaurantsToVisit(params_list.location_id || params_list.place_id ? locationString : params_list.address)
+            _defLocationToVisit(params_list.location_id || params_list.place_id ? locationString : surveySlice.location)
+            await _defRestaurantsToVisit(params_list.location_id || params_list.place_id ? locationString : surveySlice.location)
         }
         _defLocation()
 
@@ -89,7 +89,7 @@ const TripPlan = () => {
         let days_length: any = params.get('days_length')
 
         let initialParams = {
-            address: _address ?? 'USA',
+            address: JSON.parse(_address) ?? 'USA',
             location_id: _location_id ?? '',
             place_id: _place_id ?? '',
             v_type: _v_type ? _v_type : '2',
@@ -97,6 +97,7 @@ const TripPlan = () => {
             start_day_index: start_day_index ?? '',
             days_length: days_length ?? ''
         }
+        console.log('initialParams', initialParams)
         setParamsList(initialParams)
     }, [params])
 
@@ -109,8 +110,7 @@ const TripPlan = () => {
                     params_list={params_list}
                     survey={surveySlice}
                     totalOpeningHours={openingHours} 
-                    automateLocation={automateLocation} 
-                    v_type={params_list.v_type}
+                    automateLocation={automateLocation}
                 />
             }
 

@@ -176,7 +176,7 @@ const Products = ({ title = "Title", isAddButton, rows, v_type="", isHover=true 
                   let address = restaurant.formatted_address
                     ? restaurant.formatted_address
                     : restaurant.address_obj?.address_string;
-                  let link = `/trip-plan?address=${address}&location_id=${
+                  let link = `/trip-plan?address=${JSON.stringify(address)}&location_id=${
                     restaurant.location_id ?? ""
                   }&place_id=${restaurant.place_id ?? ""}&restaurants=true&v_type=${v_type}`;
 

@@ -207,7 +207,7 @@ export default function PricingCard({
                 data.times.map((time: any, index: any) => {
                   let origin = null
                   let destination = null
-                  if(index > 0 && data.times[index - 1])
+                  if(index > 0 && data.times[index - 1] && data.times[index].location && data.times[index - 1].location)
                   {
                     origin = data.times[index - 1].location.place_id ? data.times[index - 1].location.formatted_address : data.times[index - 1].location.address_obj.address_string
                     
