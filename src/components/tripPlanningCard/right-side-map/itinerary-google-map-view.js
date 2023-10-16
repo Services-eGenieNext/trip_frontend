@@ -5,7 +5,6 @@ import { setActiveLocation } from '@/redux/reducers/itinerarySlice';
 import BlueButton from '@/components/UIComponents/Buttons/BlueButton';
 import { setItem } from '@/redux/reducers/PlacedetailSlice';
 import WePlanIcon from "public/pin.png"
-import InfoWindowRender from './InfoWindowRender';
 
 const ItineraryGoogleMapView = (props) => {
 
