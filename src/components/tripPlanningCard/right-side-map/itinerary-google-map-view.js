@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Map, GoogleApiWrapper, Marker, InfoWindow as GoogleInfoWindow } from 'google-maps-react';
+import { GoogleApiWrapper } from 'google-maps-react';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setActiveLocation } from '@/redux/reducers/itinerarySlice';
 import BlueButton from '@/components/UIComponents/Buttons/BlueButton';
@@ -10,7 +10,7 @@ const ItineraryGoogleMapView = (props) => {
 
     const mapRef = useRef(null)
     const [allLocations, setAllLocations] = useState([])
-
+    const [insideLoader, setInsideLoader] = useState(false)
     const [infoWindow, setInfoWindow] = useState(null)
     const [map, setMap] = useState(null)
     const [markers, setMarkers] = useState([])
@@ -56,10 +56,6 @@ const ItineraryGoogleMapView = (props) => {
 
     }, [props.locations])
 
-    // const closeInfoWindow = () => {
-    //     dispatch(setActiveLocation(null))
-    // }
-
     const viewDetail = () => {
         console.log('there')
         dispatch(setItem({
@@ -74,24 +70,55 @@ const ItineraryGoogleMapView = (props) => {
             let marker = markers.find(_marker => _marker.loc.name == activeLocation.name)
             if(marker)
             {
-                console.log('marker', marker)
                 infoWindow.close()
                 infoWindow.setContent(`<h3 className="font-semibold text-sm">${marker.loc?.name} </h3> <p>${marker.loc?.formatted_address}</p>`)
                 infoWindow.open(map, marker.marker);
             }
+            setInsideLoader(false)
         }
     }, [activeLocation])
 
     useEffect(() => {
         if(mapRef.current)
         {
-            loadMap()
+            setInsideLoader(true)
+            let map = new props.google.maps.Map(mapRef.current, {
+                center: props.locations[0].geometry.location,
+                zoom: 12,
+            });
+            setMap(map)
+            
+            setInfoWindow(new props.google.maps.InfoWindow())
+    
+            let _markerArr = []
+            for(let i = 0; i<props.locations.length; i ++)
+            {
+                let loc = props.locations[i]
+                const marker = new props.google.maps.Marker({
+                    position: loc.geometry.location,
+                    map: map,
+                    title: loc.name,
+                    icon: customMarkerIcon
+                });
+                _markerArr.push({loc: loc, marker: marker})
+            
+                marker.addListener('click', function() {
+                    setInsideLoader(true)
+                    dispatch(setActiveLocation(loc))
+                });
+            }
+            setMarkers(_markerArr)
+            setInsideLoader(false)
         }
-    }, [mapRef.current])
+    }, [mapRef])
 
-    return allLocations.length > 0 ? (
-        <>
+    return <>
         <div ref={mapRef} className="absolute inset-0"></div>
+        {
+            (allLocations.length == 0 || insideLoader) && (
+                <div className='bg-gray-100 opacity-50 animate-pulse w-full h-full absolute inset-0'></div>
+            )
+        }
         {/* <Map
             google={props.google}
             style={mapStyles}
@@ -131,10 +158,7 @@ const ItineraryGoogleMapView = (props) => {
                 </div>
             </GoogleInfoWindow>
         </Map> */}
-        </>
-    ) : (
-        <div className='bg-gray-100 animate-pulse w-full h-full absolute inset-0'></div>
-    )
+    </>
 }
 
 export default GoogleApiWrapper({
