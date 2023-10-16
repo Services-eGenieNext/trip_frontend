@@ -72,8 +72,8 @@ const TripPlan = () => {
                     setOpeningHours(item_Detail?.data?.result?.opening_hours?.weekday_text?.filter((_week: any) => _week.toLowerCase().search('closed') == -1 ).length)
                 }
             }
-            _defLocationToVisit(params_list.location_id || params_list.place_id ? locationString : params_list.address)
-            _defRestaurantsToVisit(params_list.location_id || params_list.place_id ? locationString : params_list.address)
+            _defLocationToVisit(params_list.location_id || params_list.place_id ? locationString : surveySlice.location)
+            await _defRestaurantsToVisit(params_list.location_id || params_list.place_id ? locationString : surveySlice.location)
         }
         _defLocation()
 
