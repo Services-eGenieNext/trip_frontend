@@ -3,6 +3,7 @@ import {useState, useEffect} from 'react'
 import Hero from '@/components/Hero/hero'
 import ActivitiesSlider from '@/components/HomePage/ActivitiesSlider'
 import Products from '@/components/HomePage/Resturants'
+import MobileProducts from '@/components/HomePage/RestaurantsMobileSlider'
 import LocationSlider from '@/components/HomePage/LocationSlider'
 import LocationsCallFromDB  from '@/api-calls/fromDB/location'
 import RestaurantsCallFromDB  from '@/api-calls/fromDB/restaurants'
@@ -99,7 +100,12 @@ export default function Home() {
             
             <ActivitiesSlider activitiesState={activities} />
             
+            <div className="sm:block hidden">
             <Products title="Top Restaurants In The World" isAddButton={false} rows="2" restaurantsState={restaurants} />
+            </div>
+            <div className="sm:hidden block">
+            <MobileProducts title="Top Restaurants In The World" isAddButton={false} rows="2" restaurantsState={restaurants} />
+            </div>
 
             <HomeReviews locations={[...activities, ...location]} />
         </main>

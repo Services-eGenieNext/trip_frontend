@@ -44,7 +44,7 @@ export default function Footer() {
             Inspiration
           </Link>
           <div
-            className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium sm:border-r-2 border-[#444658] cursor-pointer"
+            className="md:w-[180px] sm:w-[130px] w-[100px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium sm:border-r-2 border-[#444658] cursor-pointer"
             onClick={()=>{
               setShowModal(true)
             }}
