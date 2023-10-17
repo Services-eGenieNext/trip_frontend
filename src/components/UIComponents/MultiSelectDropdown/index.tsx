@@ -654,7 +654,7 @@ if(addCustomeOption == false){
       </Box>
 
       <div ref={sortRef} className={`hidden opacity-0 inset-0 bg-[rgba(0,0,0,0.5)] z-20 transition-all duration-300`} >
-        <div className="absolute top-[50%] -translate-y-1/2 left-[50%] -translate-x-1/2 transition-all duration-300 max-w-[400px] w-full">
+        <div className="absolute top-[50%] -translate-y-1/2 left-[50%] -translate-x-1/2 transition-all duration-300 max-w-[450px] w-full sm:px-0 px-10">
           <div 
             className="bg-white shadow p-4 mx-auto rounded-xl relative">
               <div className="bg-white absolute top-[-0.5rem] right-[-0.5rem] rounded-full">
