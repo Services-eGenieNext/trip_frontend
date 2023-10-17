@@ -141,12 +141,12 @@ const Survey = ({ show, onClose }: ISurvey) => {
     }
   }
 
-  useEffect(()=>{
-    _Occassions()
-    _Priorities()
-    _TopCountries()
-    _TopCities()
-  },[])
+  // useEffect(()=>{
+  //   _Occassions()
+  //   _Priorities()
+  //   _TopCountries()
+  //   _TopCities()
+  // },[])
 
   useEffect(()=>{
     if(ocassionsState?.length > 0){

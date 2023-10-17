@@ -1,7 +1,5 @@
 import React,{useEffect,useState,useRef} from 'react'
 import { Box, Typography } from "@mui/material";
-import SearchLocation from '@/api-calls/fromDB/searchCities'
-import { setAllLocations } from '@/redux/reducers/allLocations'
 import { useAppDispatch,useAppSelector } from '@/redux/hooks'
 
 interface IInputField {
