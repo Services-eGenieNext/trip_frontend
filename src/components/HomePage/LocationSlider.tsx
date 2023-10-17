@@ -17,6 +17,8 @@ import DetailModal from "../tripPlanningCard/TripPlanPopup";
 import SelectField from "../UIComponents/InputField/SelectField";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { setItineraryDays } from "@/redux/reducers/itinerarySlice";
+import { reset } from "@/redux/reducers/surveySlice";
+import { setItem } from "@/redux/reducers/PlacedetailSlice";
 
 const LocationSlider = ({
   Title,
@@ -36,7 +38,6 @@ const LocationSlider = ({
   const [locations, setLocations] = useState([]);
   const [openLocation, setOpenLocation] = useState<any | null>(null);
   const [showTripPopup, setShowTripPopup] = useState(false);
-  const [item, setItem] = useState({});
   const slideRef = useRef<null | HTMLDivElement>(null);
   const formRef = useRef<null | HTMLDivElement>(null);
 
@@ -266,16 +267,19 @@ const LocationSlider = ({
                                 location.place_id ?? ""
                               }&v_type=${v_type}`}
                               className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
+                              onClick={() => {
+                                dispatch(reset())
+                              }}
                             >
                               Automate My Trip
                             </Link>
                             <button
                               className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
                               onClick={() => {
-                                setItem({
+                                dispatch(setItem({
                                   locaiton_id: location.location_id,
                                   place_id: location.place_id,
-                                });
+                                }));
                                 setShowTripPopup(true);
                               }}
                             >
@@ -379,14 +383,6 @@ const LocationSlider = ({
             />
           </div>
         </div>
-        <DetailModal
-          item={item}
-          show={showTripPopup}
-          onClose={() => {
-            setShowTripPopup(false);
-          }}
-          title = "Trending Location"
-        />
       </Section>
     </div>
   );
