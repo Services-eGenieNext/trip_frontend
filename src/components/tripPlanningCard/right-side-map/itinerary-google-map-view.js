@@ -71,7 +71,10 @@ const ItineraryGoogleMapView = (props) => {
             if(marker)
             {
                 infoWindow.close()
-                infoWindow.setContent(`<h3 className="font-semibold text-sm">${marker.loc?.name} </h3> <p>${marker.loc?.formatted_address}</p>`)
+                infoWindow.setContent(`
+                <h3 style="font-weight: 400;"><b>${marker.loc?.name}</b></h3>
+                <p style="font-size: 11px;">${marker.loc?.formatted_address}</p>
+                `)
                 infoWindow.open(map, marker.marker);
             }
             setInsideLoader(false)
