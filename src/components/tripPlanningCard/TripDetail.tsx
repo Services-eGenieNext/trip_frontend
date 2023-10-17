@@ -13,7 +13,7 @@ import CSS from "./TripDetail.module.css"
 import TripDetailGoogleMap from './TripDetailGoogleMap'
 import { BlankStar, FilledStar } from '../icons/Stars'
 import AddInItineraryForm from './add-in-itinerary/add-in-itinerary-form'
-import { useAppSelector } from '@/redux/hooks'
+import { useAppDispatch, useAppSelector } from '@/redux/hooks'
 import Reviews from '../reviews/reviews'
 import BlueButton from '../UIComponents/Buttons/BlueButton'
 import { useRouter } from 'next/navigation'
@@ -22,6 +22,7 @@ import {TbWorld} from 'react-icons/tb'
 import { useSearchParams } from 'next/navigation'
 import LocationApi from '@/api-calls/locations-call'
 import { ListItemSecondaryAction } from '@mui/material'
+import { reset } from '@/redux/reducers/surveySlice'
 
 
 interface ITripDetail {
@@ -312,6 +313,8 @@ setTypes(string)
 
     let pricelevel = ""
 
+    const dispatch = useAppDispatch()
+
     return (
         <>
         <div className='w-full sm:px-0 px-4 relative'>
@@ -526,6 +529,7 @@ setTypes(string)
                             
                             <BlueButton title="Automate my trip" className="mb-5" onClick={(e) => {
                                 e.preventDefault()
+                                dispatch(reset())
                                 router.push(`/trip-plan?address=${address}&location_id=${itemDetail.location_id ?? ''}&place_id=${itemDetail.place_id ?? ''}&v_type=`)
                             }} />
 

@@ -14,6 +14,7 @@ import Section from "../UIComponents/Section";
 import Slider from "react-slick";
 import { setItem } from "@/redux/reducers/PlacedetailSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { reset } from "@/redux/reducers/surveySlice";
 
 interface IProduct {
   title: string;
@@ -201,6 +202,7 @@ const Products = ({
     link: string
   ) => {
     e.preventDefault();
+    dispatch(reset())
     route.push(link);
   };
 

@@ -242,7 +242,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
         for (let index = 0; index < _daysLength; index++) {
             if(daysLength !== 0 && daysLength < 7)
             {
-                let dayIndex = ((startIndex-1)+index) % 7
+                let dayIndex = ((Number(startIndex)-1)+index) % 7
                 
                 _localDays.push({...days[dayIndex]})
             }

@@ -11,6 +11,7 @@ import Section from '@/components/UIComponents/Section'
 import DestinationRotueMap from '@/components/trip-plan/destination-rotue-map'
 import TripPlanReviews from '@/components/trip-plan/trip-plan-reviews'
 import TripPlanningCard from '@/components/tripPlanningCard/tripPlanning'
+import { ITripPlanParams } from '@/interfaces/TripPlan'
 import { useAppSelector } from '@/redux/hooks'
 import { setLocations } from '@/redux/reducers/locationSlice'
 import { setRestaurants } from '@/redux/reducers/restaurantsSlice'
@@ -21,11 +22,12 @@ import { useDispatch } from 'react-redux'
 const TripPlan = () => {
 
     const params = useSearchParams()
-    const [params_list, setParamsList] = useState<any>({address: '', location_id: '', place_id: '', v_type: '', restaurants: null, start_day_index: '', days_length: ''})
+    const [params_list, setParamsList] = useState<ITripPlanParams>({address: '', location_id: '', place_id: '', v_type: '', restaurants: null, start_day_index: '', days_length: '', occassions: [], priorities: []})
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { surveySlice } = useAppSelector((state) => state.surveyReducer);
     const [automateLocation, setAutomateLocation] = useState<any | null>(null)
     const [openingHours, setOpeningHours] = useState<number | null>(null)
+
     const { destinationModel } = useAppSelector((state) => state.itineraryReducer)
 
     const dispatch = useDispatch()
@@ -87,6 +89,8 @@ const TripPlan = () => {
         let restaurants: any = params.get('restaurants')
         let start_day_index: any = params.get('start_day_index')
         let days_length: any = params.get('days_length')
+        let _occassions: any = params.get('occassions')
+        let _priorities: any = params.get('priorities')
 
         let initialParams = {
             address: JSON.parse(_address) ?? 'USA',
@@ -95,10 +99,13 @@ const TripPlan = () => {
             v_type: _v_type ? _v_type : '2',
             restaurants: restaurants ?? '',
             start_day_index: start_day_index ?? '',
-            days_length: days_length ?? ''
+            days_length: days_length ?? '',
+            occassions: _occassions ? JSON.parse(_occassions) : [],
+            priorities: _priorities ? JSON.parse(_priorities) : []
         }
         console.log('initialParams', initialParams)
         setParamsList(initialParams)
+        
     }, [params])
 
     return (

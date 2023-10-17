@@ -11,9 +11,10 @@ import { LocationsCall } from "@/api-calls";
 import { useAppDispatch } from "@/redux/hooks";
 import { reset } from "@/redux/reducers/itinerarySlice";
 import Spinloader from "../step-loader/spin-loader";
+import { ITripPlanParams } from "@/interfaces/TripPlan";
 
 interface ITripPlanningCard {
-    params_list?: any,
+    params_list?: ITripPlanParams,
     survey: any,
     totalOpeningHours: number | null
     automateLocation?: any
@@ -44,7 +45,7 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
         let occassion_arr = await survey?.occassion ? survey?.occassion.map((oc: any) => oc.opt) : []
         let priority_arr = await survey?.priority ? survey?.priority.map((pr: any) => pr.opt) : []
         let arr = occassion_arr.concat(...priority_arr)
-        let search_string = (arr.length > 0 && address) ? (`${arr.join(',')} in ${address}`) : (`places to visit in ${address ?? params_list.address} for tourist`)
+        let search_string = (arr.length > 0 && address) ? (`${arr.join(',')} in ${address}`) : (`places to visit in ${address ?? params_list?.address} for tourist`)
         let res = await LocationsCall(search_string)
         
         setRecommendations([...res])
@@ -89,15 +90,37 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
             let priority_arr = await survey?.priority ? survey?.priority.map((pr: any) => pr.opt) : []
             let arr = occassion_arr.concat(...priority_arr)
 
-            let adrArr = params_list.address.split(',')
-            let filterAddress = survey.location ? survey.location : (adrArr.length < 2 ? params_list.address : `${adrArr[adrArr.length - 2].trim()}, ${adrArr[adrArr.length - 1].trim()}`)
-            axios.post(`${PY_API_URL}/get-recommendation`, {input: filterAddress, types: arr.length > 0 ? arr.join(',') : ''}).then(response => {
+            let adrArr = params_list ? params_list.address.split(',') : []
+            let body = {input: "", types: ""}
+            if(params_list?.place_id && params_list?.place_id != "")
+            {
+                body = {
+                    input: adrArr.length < 2 ? params_list?.address : `${adrArr[adrArr.length - 2].trim()}, ${adrArr[adrArr.length - 1].trim()}`,
+                    types: ""
+                }
+            }
+            else if(survey.location)
+            {
+                body = {
+                    input: survey.location,
+                    types: arr.length > 0 ? arr.join(',') : ''
+                }
+            }
+            else {
+                body = {
+                    input: adrArr.length < 2 ? (params_list?.address ?? '') : (`${adrArr[adrArr.length - 2].trim()}, ${adrArr[adrArr.length - 1].trim()}`),
+                    types: arr.length > 0 ? arr.join(',') : ''
+                }
+            }
+
+            let filterAddress = survey.location ? survey.location : (adrArr.length < 2 ? params_list?.address : `${adrArr[adrArr.length - 2].trim()}, ${adrArr[adrArr.length - 1].trim()}`)
+            axios.post(`${PY_API_URL}/get-recommendation`, body).then(response => {
                 
                 dispatch(reset())
                 
                 if(response.data.recommendations.length == 0)
                 {
-                    setLocationDetailsByAddress(filterAddress)
+                    setLocationDetailsByAddress(body.input)
                 }
                 else
                 {
@@ -105,7 +128,7 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
                 }
             })
         }
-        if(params_list.address && params_list.address!='')
+        if(params_list?.address && params_list.address!='')
         {
             _defLoadRecommendation()
         }

@@ -88,7 +88,7 @@ export default function Results() {
     if(paramsAddress){
       // let _occasions = await surveySlice.occassion.map((oc: any) => oc.opt)
       // let res = await SearchLocation(surveySlice.url ? surveySlice.url : `${_occasions ? _occasions.join(',') : 'Best Location'} in ${paramsAddress} for tourist`)
-      let res = await SearchLocation(address ? address : paramsAddress, false)
+      let res = await SearchLocation(address ? address : JSON.parse(paramsAddress))
       if(res){
         setLocationsData(res);
       }
@@ -98,13 +98,13 @@ export default function Results() {
 
   useEffect(()=>{
     if(paramsAddress && !paramsOccassions && !paramsPriorities && ((!surveySlice?.occassion || surveySlice?.occassion.length == 0) && (!surveySlice?.priority || surveySlice?.priority.length == 0)) ){
-      _locationSearch(`${paramsAddress}`)
+      _locationSearch(`${JSON.parse(paramsAddress)}`)
     }
     else if(paramsOccassions || paramsPriorities)
     {
       setFilterable(true)
       dispatch(setSurveyValue({
-        location: paramsAddress,
+        location: paramsAddress ? JSON.parse(paramsAddress) : '',
         occassion: paramsOccassions ? JSON.parse(paramsOccassions) : [],
         priority: paramsPriorities ? JSON.parse(paramsPriorities) : []
       }))
@@ -132,6 +132,7 @@ export default function Results() {
     const _defPriority = async () => {
       if(surveySlice?.priority?.length>0)
       {
+        setLoading(true)
         let _locationsByFilter = []
         for(let i = 0; i < surveySlice.priority.length; i++)
         {
@@ -139,7 +140,7 @@ export default function Results() {
           let check = await _locationsByFilter.findIndex(loc => loc.type === type)
           if(check === -1)
           {
-            let res = await SearchLocation(`${surveySlice.priority[i].opt} in ${surveySlice.location}`, false)
+            let res = await SearchLocation(`${surveySlice.priority[i].opt} in ${surveySlice.location}`)
             _locationsByFilter.push({type: type, locations: res})
           }
         }
@@ -152,13 +153,14 @@ export default function Results() {
       let _locationsByFilter = []
       if(surveySlice?.occassion?.length>0)
       {
+        setLoading(true)
         for(let i = 0; i < surveySlice.occassion.length; i++)
         {
           let type = surveySlice.occassion[i].opt
           let check = await _locationsByFilter.findIndex(loc => loc.type === type)
           if(check === -1)
           {
-            let res = await SearchLocation(`${surveySlice.occassion[i].opt} in ${surveySlice.location}`, false)
+            let res = await SearchLocation(`${surveySlice.occassion[i].opt} in ${surveySlice.location}`)
             _locationsByFilter.push({type: type, locations: res})
           }
         }
@@ -187,6 +189,7 @@ export default function Results() {
 
   useEffect(() => {
     setFilteredLocations([...locationsData])
+    setLoading(false)
   }, [locationsData])
 
   return (
