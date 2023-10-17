@@ -45,3 +45,20 @@
 .surveyModal{
     display: none;
 }
+
+.navbar-btn{
+    display:none;
+}
+
+.navbar-desktop{
+    display: block;
+}
+
+@media screen and (max-width: 943px) {
+    .navbar-btn{
+        display: block !important;
+    }
+    .navbar-desktop{
+        display: none !important;
+    }
+}
