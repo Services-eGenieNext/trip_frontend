@@ -248,7 +248,7 @@ function ActivitiesSlider({ activitiesState }: any) {
                   const filter = activities?.details?.types?.filter((type:string)=>{
                     return type !== "point_of_interest" && type !== "establishment"
                   })
-                  if(filter.length > 0){
+                  if(filter?.length > 0){
                     filterTypes = filter.toString()
                   }
                   return (

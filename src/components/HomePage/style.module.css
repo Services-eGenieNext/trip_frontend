@@ -31,7 +31,7 @@
     color: white;
     border-radius: 10%;
   }
-  @media screen and (max-width: 767px) {
+  @media screen and (max-width: 820px) {
     .slick-prev,.slick-next{
       top: -30px;
     }
