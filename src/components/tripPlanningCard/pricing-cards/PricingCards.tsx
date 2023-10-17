@@ -25,11 +25,12 @@ interface IPricingCards {
 
 const PricingCards = ({params_list, locationDetails, automateLocation}: IPricingCards) => {
 
-    const [LocationDetails, setLocationDetails] = useState<any>([])
+    const [LocationDetails, setLocationDetails] = useState<any[]>([])
     const [loading, setLoading] = useState<boolean>(true);
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
     const { itineraryDays, itineraryLoading } = useAppSelector((state) => state.itineraryReducer)
+    const { surveySlice } = useAppSelector((state) => state.surveyReducer)
 
     const daysLength = Number(params_list.days_length) ?? 7
 
@@ -69,10 +70,9 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
 
     useEffect(() => {
 
-        // dispatch(setItineraryDays(days.filter((_day: any) => _day.times.length > 0)))
-
         const _defDays = async () => {
             let _days = []
+            console.log('days', days)
             for (let i = 0; i < days.length; i++) {
                 _days.push({...days[i]})
                 if(_days[i].times.length > 0)
@@ -81,25 +81,29 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                         _days[i].times = [..._days[i].times]
                         
                         let _times = [..._days[i].times]
-
-                        let suggestedTime = await _calculateStartAndEndTime(_times, j)
+                        console.log('_times', _times)
+                        if(_days[i].times[j].location)
+                        {
+                            let suggestedTime = await _calculateStartAndEndTime(_times, j)
                         
-                        _days[i].times[j] = {..._times[j], suggestedTime: suggestedTime}
+                            _days[i].times[j] = {..._times[j], suggestedTime: suggestedTime}
+                        }
 
                     }
                 }
             }
-            
+            console.log('_days', _days)
             dispatch(setItineraryDays( [..._days.filter((_day: any) => _day.times.length > 0)] ))
         }
         _defDays()
+
     }, [days])
 
     useEffect(() => {
 
         const timeLoopFunc = async (i:number) => {
-            let start = i * 3
-            let end = start + 3
+            let start = i * 5
+            let end = start + 5
             let result: any[] = []
             
             if(LocationDetails.length <= start)
@@ -134,6 +138,56 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
             
             for (let i = 0; i < _days[index].times.length; i++) {
                 
+                if(index == 0 && i == 0) // display restaurant in start of monday which restaurant open in monday
+                {
+                    let _randNum = Math.floor(Math.random() * 9)
+                    let foundRestaurant = restaurantsState.filter((loc: any) => {
+                        return (loc.place_id && loc.place_id != "") ? 
+                            loc.current_opening_hours?.weekday_text[0].split(': ')[1] !== 'Closed' :
+                            loc.hours?.weekday_text[0].split(': ')[1] !== 'Closed'
+                    })[_randNum < restaurantsState.length ? _randNum : 0]
+                    
+                    if(foundRestaurant)
+                    {
+                        _days[index].times[i].location = foundRestaurant
+                        continue;
+                    }
+                }
+
+                // when restaurant available in priority
+                let restaurantInPriority = await surveySlice?.priority ? surveySlice?.priority.find((p: any) => p.opt === "Restaurants") : null
+                if(index == 0 && i == 2 && restaurantInPriority) // display restaurant in between of monday which restaurant open in monday
+                {
+                    let _randNum = Math.floor(Math.random() * 10)
+                    let foundRestaurant = restaurantsState.filter((loc: any) => {
+                        return (loc.place_id && loc.place_id != "") ? 
+                            loc.current_opening_hours?.weekday_text[0].split(': ')[1] !== 'Closed' :
+                            loc.hours?.weekday_text[0].split(': ')[1] !== 'Closed'
+                    })[_randNum < restaurantsState.length ? _randNum : 4]
+                    
+                    if(foundRestaurant)
+                    {
+                        _days[index].times[i].location = foundRestaurant
+                        continue;
+                    }
+                }
+
+                if(index == 0 && i == _days[index].times.length-1) // display restaurant in end of monday which restaurant open in monday
+                {
+                    let _randNum = Math.floor(Math.random() * 5)
+                    let foundRestaurant = restaurantsState.filter((loc: any) => {
+                        return (loc.place_id && loc.place_id != "") ? 
+                            loc.current_opening_hours?.weekday_text[0].split(': ')[1] !== 'Closed' :
+                            loc.hours?.weekday_text[0].split(': ')[1] !== 'Closed'
+                    })[_randNum < restaurantsState.length ? _randNum : 2]
+
+                    if(foundRestaurant)
+                    {
+                        _days[index].times[i].location = foundRestaurant
+                        continue;
+                    }
+                }
+
                 // found same time locations
                 let sameTimeLocations = await filterLocationByTime(_days[index].times[i].time)
 
@@ -242,9 +296,11 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
             locations = [...new Set(locations)];
             setLocationDetails([...locations])
         }
-        
-        _loadLocations()
-    }, [locationDetails])
+        if(restaurantsState && restaurantsState.length > 0)
+        {
+            _loadLocations()
+        }
+    }, [locationDetails, restaurantsState])
 
     // useEffect(() => {
         

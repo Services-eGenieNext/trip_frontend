@@ -224,12 +224,8 @@ if(allLocationsState.length > 0){
     }
     if (buttonText == "Automate My trip") {
       router.push(
-        "/trip-plan?address=" +
-          url_address +
-          "&start_day_index=" +
-          startedDayIndex +
-          "&days_length=" +
-          daysLength
+        `/trip-plan?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? `${locationSearch.location}&occassions=${JSON.stringify(locationSearch.occassion)}&priorities=${JSON.stringify(locationSearch.priority)}` : `${url_address}`}` +
+          `&start_day_index=${startedDayIndex}&days_length=${daysLength}`
       );
     } else {
       router.push(`/results?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? `${locationSearch.location}&occassions=${JSON.stringify(locationSearch.occassion)}&priorities=${JSON.stringify(locationSearch.priority)}` : `best locations in ${url_address}`}`);

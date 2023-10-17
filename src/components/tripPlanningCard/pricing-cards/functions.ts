@@ -136,7 +136,7 @@ const _calculateStartAndEndTime = async (times: any, i: number) => {
     let destination = null
 
     origin = times[i - 1].location?.place_id ? times[i - 1].location?.formatted_address : times[i - 1].location.address_obj.address_string
-    destination = times[i].location?.place_id ? times[i].location?.formatted_address : times[i].location.address_obj.address_string
+    destination = times[i].location?.place_id ? times[i].location?.formatted_address : times[i].location?.address_obj.address_string
 
     let duration = await LocationsDurationCall(origin, destination)
 

@@ -230,7 +230,7 @@ const ProductHorizontalSlide = ({
                                 {
                                   isAutomate && (
                                     <Link
-                                      href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}
+                                      href={`/trip-plan?address=${JSON.stringify(address)}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}
                                       className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
                                     >
                                       Automate My Trip
@@ -396,7 +396,7 @@ const ProductHorizontalSlide = ({
                                 {
                                   isAutomate && (
                                     <Link
-                                      href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}
+                                      href={`/trip-plan?address=${JSON.stringify(address)}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}&v_type=${v_type}`}
                                       className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
                                     >
                                       Automate My Trip
