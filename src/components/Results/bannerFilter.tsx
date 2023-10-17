@@ -238,9 +238,9 @@ const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
     }
     let _url = await _get_url()
     if (buttonText == "Automate My trip") {
-      router.push("/trip-plan?address=" + _url + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
+      router.push(`/trip-plan?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? `${JSON.stringify(locationSearch.location)}&occassions=${JSON.stringify(locationSearch.occassion)}&priorities=${JSON.stringify(locationSearch.priority)}` : JSON.stringify(`best locations in ${_url}`)}` + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
-      router.push(`/results?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? `${locationSearch.location}&occassions=${JSON.stringify(locationSearch.occassion)}&priorities=${JSON.stringify(locationSearch.priority)}` : `best locations in ${_url}`}`);
+      router.push(`/results?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? `${JSON.stringify(locationSearch.location)}&occassions=${JSON.stringify(locationSearch.occassion)}&priorities=${JSON.stringify(locationSearch.priority)}` : JSON.stringify(`best locations in ${_url}`)}`);
       dispatch(setSurveyValue(locationSearch));
     }
   };

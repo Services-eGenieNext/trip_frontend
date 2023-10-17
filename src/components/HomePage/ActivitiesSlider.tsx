@@ -6,11 +6,13 @@ import "slick-carousel/slick/slick-theme.css";
 import CSS from "./style.module.css";
 import Ballon from "/public/images/baloon-transparent.png";
 import Image from "next/image";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import BlankLocation from "public/images/blank-location.jpg";
 import DetailModal from "../tripPlanningCard/TripPlanPopup";
 import Link from "next/link";
 import ComponentTitle from "../UIComponents/ComponentTitle";
+import { reset } from "@/redux/reducers/surveySlice";
+import { setItem } from "@/redux/reducers/PlacedetailSlice";
 
 function ActivitiesSlider({ activitiesState }: any) {
   const skelton = [
@@ -35,7 +37,6 @@ function ActivitiesSlider({ activitiesState }: any) {
   const [loading, setLoading] = useState(true);
   const [activity, setActivity] = useState([]);
   const [showTripPopup, setShowTripPopup] = useState(false);
-  const [item, setItem] = useState({});
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(false);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(false);
   const [types, setTypes] = useState("");
@@ -173,6 +174,9 @@ function ActivitiesSlider({ activitiesState }: any) {
     ],
     // afterChange,
   };
+
+  const dispatch = useAppDispatch()
+
   return (
     <div className="w-full flex justify-center relative mt-20 bg-[#F9FDFF] py-12 px-10">
       <Image
@@ -273,16 +277,19 @@ function ActivitiesSlider({ activitiesState }: any) {
                                 activities.location_id ?? ""
                               }&place_id=${activities.place_id ?? ""}&v_type=`}
                               className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center"
+                              onClick={() => {
+                                dispatch(reset())
+                              }}
                             >
                               Automate My Trip
                             </Link>
                             <button
                               className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]"
                               onClick={() => {
-                                setItem({
+                                dispatch(setItem({
                                   location_id: activities.location_id,
                                   place_id: activities.place_id,
-                                });
+                                }));
                                 setShowTripPopup(true);
                               }}
                             >
@@ -367,13 +374,6 @@ function ActivitiesSlider({ activitiesState }: any) {
           </Slider>
         </div>
       </div>
-      <DetailModal
-        item={item}
-        show={showTripPopup}
-        onClose={() => {
-          setShowTripPopup(false);
-        }}
-      />
     </div>
   );
 }
