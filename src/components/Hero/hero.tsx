@@ -38,13 +38,13 @@ const Hero = () => {
             className="mx-auto select-none w-full h-full"
           />
           <div className="absolute bottom-0 left-0 top-0 right-0 px-8 flex flex-col justify-center items-center xl:my-[8rem] sm-width">
-            <h1 className="uppercase sm:leading-10 text-white font-normal text-[16px] sm:text-[22px] lg:text-[30px] lg:my-5 sm:my-3 my-0 gilroy plan text-center">
+            <h1 className="uppercase sm:leading-10 text-white font-normal text-[16px] sm:text-[22px] xl:text-[30px] xl:my-5 sm:my-3 my-0 gilroy plan text-center">
             PLAN YOUR DREAM TRIP IN SECOND WITH
             </h1>
-            <h2 className="leading-10 text-white font-bold text-[22px] sm:text-[48px] lg:text-[68px] lg:my-5 sm:my-3 my-0 text-center w-full gilroy">
+            <h2 className="leading-10 text-white font-bold text-[22px] sm:text-[48px] xl:text-[68px] xl:my-5 sm:my-3 my-0 text-center w-full gilroy">
               <Link href={'/results'}>WePlan</Link>
             </h2>
-            <p className="lg:mb-10 lg:mt-2 text-white sm:text-[22px] text-[16px] max-w-[720px] text-center lato">
+            <p className="xl:mb-10 mb-2 lg:mt-2 text-white sm:text-[22px] text-[16px] max-w-[720px] text-center lato">
               We take away all the hassle associated with trip planning. Be
               excited about your vacation, we&lsquo;ve got the details covered!
             </p>

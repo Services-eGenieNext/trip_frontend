@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import Tooltip from '@mui/material/Tooltip';
 import { useAppSelector } from '@/redux/hooks'
 import { setShow } from '@/redux/reducers/surveySlice'
+import Style from './Header.module.css'
 
 const Header = () => {
     const router = useRouter()
@@ -49,7 +50,7 @@ const Header = () => {
                     <div className="col-span-4">
 
                         {/* Menu Bar for Mobile Responsivness */}
-                        <div className="block md:hidden">
+                        <div className={`${Style['navbar-btn']}`}>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-10 h-10"
                             onClick={() => setOpenMobileMenu(!openMobileMenu)}
                             >
@@ -58,7 +59,7 @@ const Header = () => {
                         </div>
 
                         {/* Menu Bar for Desktop */}
-                        <div className="hidden md:block">
+                        <div className={`${Style['navbar-desktop']}`}>
                         <Tooltip title="Click on Inspiration and see all the results.">
                         <Link href={'/results'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300">Inspiration</Link>
                         </Tooltip>
