@@ -91,9 +91,11 @@ const TripPlan = () => {
         let days_length: any = params.get('days_length')
         let _occassions: any = params.get('occassions')
         let _priorities: any = params.get('priorities')
+        _address = JSON.parse(_address)
+        _address = _address.replace(/\b[a-zA-Z]*\d+(?:-\d+)?, \b/g, '')
 
         let initialParams = {
-            address: JSON.parse(_address) ?? 'USA',
+            address: _address ?? 'USA',
             location_id: _location_id ?? '',
             place_id: _place_id ?? '',
             v_type: _v_type ? _v_type : '2',
