@@ -64,7 +64,7 @@ const Header = () => {
                         <Link href={'/results'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300">Inspiration</Link>
                         </Tooltip>
                         <Tooltip title="Click on Build a Trip and create your own trip.">
-                            <Link href={'/trip-plan?address=USA'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300">Build a Trip</Link>
+                            <Link href={'/trip-plan?address="USA"'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300">Build a Trip</Link>
                             </Tooltip>
                             <Tooltip title="Click on Survey and search best option for you.">
                             <Link href={'/'} 
