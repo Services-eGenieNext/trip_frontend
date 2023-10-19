@@ -83,7 +83,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                         _days[i].times = [..._days[i].times]
                         
                         let _times = [..._days[i].times]
-                        console.log('_times', _times)
+                        // console.log('_times', _times)
                         if(_days[i].times[j].location)
                         {
                             let suggestedTime = await _calculateStartAndEndTime(_times, j)
@@ -131,29 +131,46 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
             return time
         }
 
-        const filterLocationByTime = async (time: string) => {
-            return await LocationDetails.filter((loc: any) => {
-                return (loc.place_id && loc.place_id != "") ? 
-                    loc.current_opening_hours?.weekday_text.filter((weekd: any) => {
-                        return weekd.split(': ')[1] == time}
-                    ) :
-                    loc.hours?.weekday_text.filter((weekd: any) => weekd.split(': ')[1] == time)
-            })
+        const storePlace = async (_days: any[], dayIndex: number, timeIndex: number, _LocationDetails: any[], sameTimeLocations: any[]) => {
+            let _LocationIndex = await _LocationDetails.findIndex((loc: any) => loc.name === sameTimeLocations[0].name)
+            _LocationDetails[_LocationIndex] = {..._LocationDetails[_LocationIndex], placed: true}
+            _days[dayIndex].times[timeIndex].location = _LocationDetails[_LocationIndex]
+
+            console.log('location used', _LocationDetails[_LocationIndex])
+
+            return _days
+        }
+
+        const filterLocationByTime = async (_days: any[], dayIndex: number, timeIndex: number, locationDetails: any[]) => {
+            let time = _days[dayIndex].times[timeIndex].time
+
+            let sameTimeLocations = await locationDetails.filter( (loc: any) => loc.placed != true && loc.current_opening_hours?.weekday_text[dayIndex]?.trim().toLowerCase().search('closed') == -1 )
+
+            return storePlace(_days, dayIndex, timeIndex, locationDetails, sameTimeLocations)
+
+            // return await locationDetails.filter((loc: any) => {
+            //     return (loc.place_id && loc.place_id != "") ? 
+            //         loc.current_opening_hours?.weekday_text.filter((weekd: any) => {
+            //             return weekd.split(': ')[1] == time}
+            //         ) :
+            //         loc.hours?.weekday_text.filter((weekd: any) => weekd.split(': ')[1] == time)
+            // })
         }
 
         const timeLocaitonLoopFunc = async (_days: any[], index: number) => {
             let time: any[] = []
-            
+            let _LocationDetails = LocationDetails
+            console.log('_LocationDetails', _LocationDetails)
             for (let i = 0; i < _days[index].times.length; i++) {
                 
-                if(index == 0 && i == 0) // display restaurant in start of monday which restaurant open in monday
+                if(index == 0 && i == 0 && restaurants.length > 0) // display restaurant in start of monday which restaurant open in monday
                 {
                     let _randNum = Math.floor(Math.random() * 9)
-                    let foundRestaurant = restaurantsState.filter((loc: any) => {
+                    let foundRestaurant = restaurants.filter((loc: any) => {
                         return (loc.place_id && loc.place_id != "") ? 
-                            loc.current_opening_hours?.weekday_text[0].split(': ')[1] !== 'Closed' :
+                            loc.current_opening_hours?.weekday_text[index].split(': ')[1] !== 'Closed' :
                             loc.hours?.weekday_text[0].split(': ')[1] !== 'Closed'
-                    })[_randNum < restaurantsState.length ? _randNum : 0]
+                    })[_randNum < restaurants.length ? _randNum : 0]
                     
                     if(foundRestaurant)
                     {
@@ -164,14 +181,14 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
 
                 // when restaurant available in priority
                 let restaurantInPriority = await surveySlice?.priority ? surveySlice?.priority.find((p: any) => p.opt === "Restaurants") : null
-                if(index == 0 && i == 2 && restaurantInPriority) // display restaurant in between of monday which restaurant open in monday
+                if(index == 0 && i == 2 && restaurantInPriority && restaurants.length > 0) // display restaurant in between of monday which restaurant open in monday
                 {
                     let _randNum = Math.floor(Math.random() * 10)
-                    let foundRestaurant = restaurantsState.filter((loc: any) => {
+                    let foundRestaurant = restaurants.filter((loc: any) => {
                         return (loc.place_id && loc.place_id != "") ? 
-                            loc.current_opening_hours?.weekday_text[0].split(': ')[1] !== 'Closed' :
+                            loc.current_opening_hours?.weekday_text[index].split(': ')[1] !== 'Closed' :
                             loc.hours?.weekday_text[0].split(': ')[1] !== 'Closed'
-                    })[_randNum < restaurantsState.length ? _randNum : 4]
+                    })[_randNum < restaurants.length ? _randNum : 4]
                     
                     if(foundRestaurant)
                     {
@@ -180,14 +197,14 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                     }
                 }
 
-                if(index == 0 && i == _days[index].times.length-1) // display restaurant in end of monday which restaurant open in monday
+                if(index == 0 && i == _days[index].times.length-1  && restaurants.length > 0) // display restaurant in end of monday which restaurant open in monday
                 {
                     let _randNum = Math.floor(Math.random() * 5)
-                    let foundRestaurant = restaurantsState.filter((loc: any) => {
+                    let foundRestaurant = restaurants.filter((loc: any) => {
                         return (loc.place_id && loc.place_id != "") ? 
                             loc.current_opening_hours?.weekday_text[0].split(': ')[1] !== 'Closed' :
                             loc.hours?.weekday_text[0].split(': ')[1] !== 'Closed'
-                    })[_randNum < restaurantsState.length ? _randNum : 2]
+                    })[_randNum < restaurants.length ? _randNum : 2]
 
                     if(foundRestaurant)
                     {
@@ -196,48 +213,68 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                     }
                 }
 
-                // found same time locations
-                let sameTimeLocations = await filterLocationByTime(_days[index].times[i].time)
-
-                let availableLocation = false
-                // loop upto current loop days
-                
-                for(let m = 0; m < sameTimeLocations.length; m++)
+                // found same day locations
+                let found = false
+                for (let j = 0; j <=_LocationDetails.length; j++)
                 {
-                    let found = false;
-
-                    // check if exist then make "found" variable true
-                    for(let j = 0; j <= index; j++)
+                    if(_LocationDetails[j].placed != true && _LocationDetails[j].current_opening_hours?.weekday_text[index]?.trim().toLowerCase().search('closed') == -1)
                     {
-                        for(let k = 0; k < _days[j].times.length; k++)
-                        {
-                            if(_days[j].times[k]?.location?.name == sameTimeLocations[m].name)
-                            {
-                                found = true
-                                break
-                            }
-                        }
+                        found = true
+                        _LocationDetails[j] = {..._LocationDetails[j], placed: true}
+                        _days[index].times[i].location = _LocationDetails[j]
 
-                        if(found === true)
-                        {
-                            break
-                        }
-                    }
-
-                    // if location not found then add in current time slot i.e. if "found" variable is false
-                    if(found === false)
-                    {
-                        _days[index].times[i].location = sameTimeLocations[m]
-                        
-                        availableLocation = true
                         break
                     }
                 }
+                // let sameTimeLocations = await filterLocationByTime(_days, index, i, _LocationDetails)
 
-                if(availableLocation == false)
-                {
-                    _days[index].times[i].location = sameTimeLocations[random(0, sameTimeLocations.length-1)]
-                }
+                // if(sameTimeLocations.length > 0)
+                // {
+                //     console.log('sameTimeLocations', sameTimeLocations)
+                //     let _LocationIndex = await _LocationDetails.findIndex((loc: any) => loc.name === sameTimeLocations[0].name)
+                //     _LocationDetails[_LocationIndex] = {..._LocationDetails[_LocationIndex], placed: true}
+                //     _days[index].times[i].location = _LocationDetails[_LocationIndex]
+                // }
+
+                // let availableLocation = false
+                // // loop upto current loop days
+                
+                // for(let m = 0; m < sameTimeLocations.length; m++)
+                // {
+                //     let found = false;
+
+                //     // check if exist then make "found" variable true
+                //     for(let j = 0; j <= index; j++)
+                //     {
+                //         for(let k = 0; k < _days[j].times.length; k++)
+                //         {
+                //             if(_days[j].times[k]?.location?.name == sameTimeLocations[m].name)
+                //             {
+                //                 found = true
+                //                 break
+                //             }
+                //         }
+
+                //         if(found === true)
+                //         {
+                //             break
+                //         }
+                //     }
+
+                //     // if location not found then add in current time slot i.e. if "found" variable is false
+                //     if(found === false)
+                //     {
+                //         _days[index].times[i].location = sameTimeLocations[m]
+                        
+                //         availableLocation = true
+                //         break
+                //     }
+                // }
+
+                // if(availableLocation == false)
+                // {
+                //     _days[index].times[i].location = sameTimeLocations[random(0, sameTimeLocations.length-1)]
+                // }
 
             }
             return time
@@ -297,11 +334,12 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                         return weekd.split(': ')[0] == days[i].day && weekd.toLowerCase().search('closed') == -1
                     }) : false
                 )
-                console.log('filter_locaiton', filter_locaiton)
+
                 locations.push(filter_locaiton)
             }
             locations = [].concat(...locations)
             locations = [...new Set(locations)];
+            console.log('filter_locaiton', locations)
             setLocationDetails([...locations])
         }
         _loadLocations()
