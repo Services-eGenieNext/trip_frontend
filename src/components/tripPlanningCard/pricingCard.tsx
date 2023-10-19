@@ -204,7 +204,7 @@ export default function PricingCard({
           <div className={variation === "cards-list" ? '' : ``}>
             <div className={`pl-5 flex flex-col justify-between w-full ${CSS['bottom-border']} relative`}>
               {data.times &&
-                data.times.map((time: any, index: any) => {
+                data.times.filter((time: any) => time.location !== null).map((time: any, index: any) => {
                   let origin = null
                   let destination = null
                   if(index > 0 && data.times[index - 1] && data.times[index].location && data.times[index - 1].location)
