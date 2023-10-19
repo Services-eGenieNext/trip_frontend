@@ -29,6 +29,7 @@ interface ITripDetail {
     item?: {
         location_id: string
         place_id: string
+        details?:any
     },
     title?:string
     show?:any
@@ -119,31 +120,47 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
                 setImage(_images[0])
             }
         }
-        
-        _defItemDetail()
 
+        if(item?.details && item?.details?.image){
+            let res = JSON.parse(item?.details?.image)
+            let _images: any = res?.image?.map((image:any)=>{
+                return image.url
+            })
+            setImages(_images)
+                setImage(_images[0])
+                    // _defItemDetail(res)
+                }else{
+                    _defItemDetail()
+                }
     }, [itemDetail])
+
+    const _def = async () => {
+        setDetailLoading(true)
+        setItemDetail(null)
+        if(item?.location_id)
+        {
+            let item_Detail: any = await DetailCall(item?.location_id)
+            setItemDetail(item_Detail?.data)
+        }
+        else if(item?.place_id)
+        {
+            let item_Detail: any = await DetailsCallByGoogle(`${item.place_id}&fields=`)
+            setItemDetail(item_Detail?.data?.result)
+            
+        }
+        setDetailLoading(false) 
+    }
 
     useEffect(() => {
         setImages([])
         setImage('')
-        const _def = async () => {
-            setDetailLoading(true)
-            setItemDetail(null)
-            if(item?.location_id)
-            {
-                let item_Detail: any = await DetailCall(item?.location_id)
-                setItemDetail(item_Detail?.data)
+
+            if(item?.details && item?.details?.details){
+                setItemDetail(item.details?.details)
+            }else{
+                _def()
             }
-            else if(item?.place_id)
-            {
-                let item_Detail: any = await DetailsCallByGoogle(`${item.place_id}&fields=`)
-                setItemDetail(item_Detail?.data?.result)
-                
-            }
-            setDetailLoading(false) 
-        }
-        _def()
+        
     }, [item])
 
     const _Activities = async () => {
@@ -336,7 +353,7 @@ setTypes(string)
                 </div>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
-                <div className="h-[200px] min-w-[400px] w-full bg-gray-100 rounded-xl overflow-hidden relative">
+                <div className="h-[200px] w-full bg-gray-100 rounded-xl overflow-hidden relative">
                     {
                         (!detailLoading && image) ? 
                             <Image src={image} fill={true} alt={itemDetail?.name} style={{objectFit: "cover"}} blurDataURL={image} className="cursor-pointer" placeholder="blur" onClick={() => {

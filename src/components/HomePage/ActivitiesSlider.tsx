@@ -289,6 +289,7 @@ function ActivitiesSlider({ activitiesState }: any) {
                                 dispatch(setItem({
                                   location_id: activities.location_id,
                                   place_id: activities.place_id,
+                                  details: activities
                                 }));
                                 setShowTripPopup(true);
                               }}
