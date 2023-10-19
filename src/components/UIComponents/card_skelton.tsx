@@ -25,7 +25,7 @@ export default function Card_skelton({ type = "list" }:ICard_skelton) {
         )
     })
     : (
-        <div className="grid grid-cols-2 w-full">
+        <div className="grid sm:grid-cols-2 grid-cols justify-center w-full">
             <div className="p-2">
             {
                 skelton.map((list:string,skIndex:number)=>{
@@ -46,7 +46,7 @@ export default function Card_skelton({ type = "list" }:ICard_skelton) {
             }
             </div>
             <div className="relative">
-                <div className="min-h-[300px] max-h-[500px] w-full bg-gray-200 rounded-lg dark:bg-gray-700 animate-pulse sticky top-[130px] select-none">
+                <div className="min-h-[300px] max-h-[500px] w-full bg-gray-200 rounded-lg dark:bg-gray-700 animate-pulse sm:sticky sm:top-[130px] select-none">
                     <Image src={WorldMapImage.src} fill={true} alt='world map' className="pointer-events-none" />
                 </div>
             </div>

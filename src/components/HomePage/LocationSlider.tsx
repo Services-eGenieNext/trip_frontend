@@ -279,6 +279,7 @@ const LocationSlider = ({
                                 dispatch(setItem({
                                   locaiton_id: location.location_id,
                                   place_id: location.place_id,
+                                  // details: location
                                 }));
                                 setShowTripPopup(true);
                               }}

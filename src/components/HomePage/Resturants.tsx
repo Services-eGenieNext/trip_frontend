@@ -449,6 +449,7 @@ const Products = ({
                                   setItem({
                                     locaiton_id: restaurant.location_id,
                                     place_id: restaurant.place_id,
+                                    details: restaurant
                                   })
                                 );
                               }}
