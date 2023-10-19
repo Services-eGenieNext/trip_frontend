@@ -14,6 +14,7 @@ import Card_skelton from '@/components/UIComponents/card_skelton';
 import Spinloader from '@/components/step-loader/spin-loader';
 import RightSideMap from '../right-side-map/right-side-map';
 import { setItem } from '@/redux/reducers/PlacedetailSlice';
+import { LocationsCall } from '@/api-calls';
 
 interface IPricingCards {
     params_list?: any
@@ -27,6 +28,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
 
     const [LocationDetails, setLocationDetails] = useState<any[]>([])
     const [loading, setLoading] = useState<boolean>(true);
+    const [restaurants, setRestaurants] = useState<any[]>([])
     const { locationsState } = useAppSelector((state) => state.locationReducer)
     const { restaurantsState }:any = useAppSelector((state) => state.restaurantsReducer)
     const { itineraryDays, itineraryLoading } = useAppSelector((state) => state.itineraryReducer)
@@ -106,21 +108,27 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
             let end = start + 5
             let result: any[] = []
             
-            if(LocationDetails.length <= start)
+            let _LocationDetails = await LocationDetails.filter((loc: any) => loc.current_opening_hours.weekday_text[i].search(":") !== -1 && loc.current_opening_hours.weekday_text[i].split(': ')[1].toLowerCase().search('closed') == -1)
+
+            if(_LocationDetails.length <= start)
             {
                 return result
             }
-
-            result = await LocationDetails?.slice(start, end).map((loc: any) => {
-                return (loc.place_id && loc.place_id != "") ? 
-                    loc.current_opening_hours?.weekday_text.filter((_weekd: any) => _weekd.split(': ')[1].toLowerCase().search('closed') == -1 ).map((weekd: any) => weekd.split(': ')[1]) :
-                    loc.hours?.weekday_text.filter((_weekd: any) => _weekd.split(': ')[1].toLowerCase().search('closed') == -1 ).map((weekd: any) => weekd.split(': ')[1])
+            // console.log('LocationDetails', LocationDetails)
+            
+            result = await _LocationDetails?.slice(start, end).map((loc: any) => {
+                if (loc.place_id && loc.place_id != "")
+                {
+                    return loc.current_opening_hours?.weekday_text[i].split(': ')[1]
+                } 
+                else
+                {
+                    return loc.hours?.weekday_text.filter((_weekd: any) => _weekd.split(': ')[1].toLowerCase().search('closed') == -1 ).map((weekd: any) => weekd.split(': ')[1])
+                }
             })
 
-            let times = [].concat(...result)
-            let uniqueTimes: any[] = [...new Set(times)];
-            uniqueTimes = uniqueTimes.map (tim => { return {time: tim, location: null} })
-            return uniqueTimes
+            let time = result.map (tim => { return {time: tim, location: null} })
+            return time
         }
 
         const filterLocationByTime = async (time: string) => {
@@ -289,18 +297,29 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                         return weekd.split(': ')[0] == days[i].day && weekd.toLowerCase().search('closed') == -1
                     }) : false
                 )
-
+                console.log('filter_locaiton', filter_locaiton)
                 locations.push(filter_locaiton)
             }
             locations = [].concat(...locations)
             locations = [...new Set(locations)];
             setLocationDetails([...locations])
         }
-        if(restaurantsState && restaurantsState.length > 0)
-        {
-            _loadLocations()
+        _loadLocations()
+    }, [restaurants])
+
+    useEffect(() => {
+        const _defRestaurants = async () => {
+            let address = params_list.address.replace(/\b[a-zA-Z]*\d+(?:-\d+)?, \b/g, '')
+            address = address.split(', ')
+            let _restaurants = await LocationsCall(`restaurants in ${address.length > 2 ? `${address[address.length - 2]}, ${address[address.length - 1]}` : params_list.address}`)
+            setRestaurants(_restaurants)
         }
-    }, [locationDetails, restaurantsState])
+        if(locationDetails)
+        {
+            _defRestaurants()
+        }
+
+    }, [locationDetails])
 
     // useEffect(() => {
         
