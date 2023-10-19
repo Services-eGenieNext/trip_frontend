@@ -107,7 +107,7 @@ export default function Lisitngs({ locations, setLocations, Filteredlocations, l
                         </div>
                       ) : ''}
                       <div className={`absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center ${CSS["hover_overlay"]}`}>
-                        <Link href={`/trip-plan?address=${address}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
+                        <Link href={`/trip-plan?address=${JSON.stringify(address)}&location_id=${location.location_id ?? ''}&place_id=${location.place_id ?? ''}`} className="h-[40px] rounded-md bg-[#009DE2] text-white hover:bg-transparent border hover:border-[#009DE2] hover:text-white w-[170px] flex justify-center items-center">
                           Automate My Trip
                         </Link>
                         <button className="h-[40px] rounded-md text-white border border-white mt-5 w-[170px] hover:bg-[#009DE2]" 
