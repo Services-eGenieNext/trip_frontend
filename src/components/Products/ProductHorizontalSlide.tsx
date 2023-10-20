@@ -207,7 +207,7 @@ const ProductHorizontalSlide = ({
                       <div className={`grid grid-cols-1 ${v_type == "3" ? 'rounded-3xl shadow-lg h-max' : 'rounded-xl shadow-sm h-full'} border overflow-hidden relative ${styles["slider_card"]}`} draggable={(v_type === "3") ? true : false} onDragStart={(e) => dragStartFunc(e, location)} >
                         <div className={`${ type == "title-card" ? 'h-[310px]' : 'h-[178px]'} bg-gray-100 relative`} >
                          {route !== "Trending Location" && (
-                           <div className={`absolute top-0 left-0 z-[1] ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
+                           <div className={`absolute top-0 left-0 z-[1] flex sm:justify-center justify-start ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
                          )}
                           <Image
                             src={image_path}
@@ -373,7 +373,7 @@ const ProductHorizontalSlide = ({
                       <div className={`grid grid-cols-1 ${v_type == "3" ? 'rounded-3xl shadow-lg h-max' : 'rounded-xl shadow-sm h-full'} border overflow-hidden relative ${styles["slider_card"]}`} draggable={(v_type === "3") ? true : false} onDragStart={(e) => dragStartFunc(e, location)} >
                         <div className={`${ type == "title-card" ? 'h-[310px]' : 'h-[178px]'} bg-gray-100 relative`} >
                          {route !== "Trending Location" && (
-                           <div className={`absolute top-0 left-0 z-[1] ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
+                           <div className={`absolute top-0 left-0 z-[1] flex sm:justify-center justify-start ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
                          )}
                           <Image
                             src={image_path}

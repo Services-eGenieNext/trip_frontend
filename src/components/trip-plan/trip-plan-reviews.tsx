@@ -195,8 +195,8 @@ const TripPlanReviews = ({ automateLocation }:IReviews) => {
         <div className="w-full flex justify-center">
             <Section className="relative">
                 <div className="sm-width sm:px-4 px-0">
-                    <div className="flex flex-wrap sm:justify-between justify-center items-center">
-                        <div>
+                    <div className="flex sm:flex-row flex-col sm:justify-between justify-center items-center">
+                        <div className="flex flex-col sm:items-start items-center">
                             <ComponentTitle title="Client's Reviews" />
                             <span className="flex flex-wrap gap-2 items-center mt-3">
                                 {reviewArr &&
@@ -225,8 +225,8 @@ const TripPlanReviews = ({ automateLocation }:IReviews) => {
                         }
                     </div>
 
-                    <div id="rating-filter" className={`transition-all duration-300 ${!openModal ? 'overflow-hidden' : 'pt-8'}`} style={{height: openModal ? window.innerWidth < 768 ? "200px" : "74px" : "0px"}}>
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div id="rating-filter" className={`transition-all duration-300 ${!openModal ? 'overflow-hidden' : 'pt-8 mt-5'} ${openModal ? "auto" : "h-[0px]"}`}>
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mx-10">
                             <SelectField
                             label="Locations"
                             placeholder="Select ..."
