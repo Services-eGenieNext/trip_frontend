@@ -122,13 +122,32 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
         }
 
         if(item?.details && item?.details?.image){
-            let res = JSON.parse(item?.details?.image)
-            let _images: any = res?.image?.map((image:any)=>{
-                return image.url
-            })
-            setImages(_images)
-                setImage(_images[0])
-                    // _defItemDetail(res)
+            if(typeof item?.details?.image == "string"){
+                let res = JSON.parse(item?.details?.image)
+                console.log(res,"res")
+                if(res?.image?.length > 4){
+                    let _images: any = res?.image?.map((image:any)=>{
+                        return image.url
+                    })
+                    setImages(_images)
+                        setImage(_images[0])
+                }else{
+                    _defItemDetail()
+                }
+            }else{
+                if(typeof item?.details?.image == "object"){
+                    console.log(item?.details?.image?.image,"res")
+                    if(item?.details?.image?.image?.length > 4){
+                        let _images: any = item?.details?.image?.image?.map((image:any)=>{
+                            return image.url
+                        })
+                        setImages(_images)
+                            setImage(_images[0])
+                    }else{
+                        _defItemDetail()
+                    }
+                }
+            }
                 }else{
                     _defItemDetail()
                 }
@@ -152,6 +171,7 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
     }
 
     useEffect(() => {
+        setViewMore(false)
         setImages([])
         setImage('')
 
@@ -448,7 +468,8 @@ setTypes(string)
             }
             <div className="w-[90%] mx-auto arrow_remove mt-4">
                 {
-                    viewMore && 
+                    viewMore && (
+                        images.length > 6 ? (
                     <Slider {...settings}>
                         {
                             images.slice(4).map((img: string, imgIndex: number) => {
@@ -465,6 +486,22 @@ setTypes(string)
                             })
                         }
                     </Slider>
+                    ):(
+                        <div className="flex justify-center items-center gap-x-10">
+                            {images.slice(4).map((img: string, imgIndex: number) => {
+                                return <div key={imgIndex}  className="px-1">
+                                    <div className="h-[98px] w-[300px] bg-gray-100 rounded-xl overflow-hidden relative">
+                                        <Image src={img} fill={true} alt={`slider - ${itemDetail?.name}`} style={{objectFit: "cover"}} blurDataURL={img} placeholder="blur"
+                                        onClick={() => {
+                                            setSelectedImage(imgIndex+4)
+                                            setShowSlide(true)
+                                        }}
+                                        />
+                                    </div>
+                                </div>
+                            })}
+                        </div>
+                    ))
                 }
             </div>
             <div className="grid grid-cols-1 mt-10">
@@ -622,7 +659,7 @@ setTypes(string)
                         <div className="w-full my-5">
                             <h4 className="text-[15px] leading-[18px] font-bold my-2 text-center">Map: <Link href={itemDetail?.url} target="_blank" className='text-[var(--blue)] font-normal hover:border-b border-[var(--blue)]'>View location</Link></h4>
                             <div className="relative h-[200px]">
-                                <TripDetailGoogleMap location={itemDetail.geometry.location} />
+                                <TripDetailGoogleMap location={itemDetail?.geometry?.location} />
                             </div>
                         </div>
                     )

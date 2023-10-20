@@ -189,7 +189,7 @@ const Products = ({ title = "Title", isAddButton, rows, v_type="", isHover=true 
                       <div
                         className={`rounded-xl overflow-hidden border border-[#C9D2DD] grid grid-cols-1 lg:grid-cols-2 bg-white h-full w-full relative ${styles["slider_card"]}`}
                       >
-                        <div className={`absolute top-0 left-0 z-[1] ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
+                        <div className={`absolute top-0 left-0 z-[1] flex sm:justify-center justify-start ${styles.tag} ${isExistInItinerary ? styles.blue : styles.green}`}> {isExistInItinerary ? 'In' : 'Out'} </div>
                         <div className="relative w-full h-full">
                           <img
                             src={image_path}
