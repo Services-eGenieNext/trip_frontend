@@ -217,7 +217,8 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
 
   useEffect(() => {
     const _defDestinationFunc = async () => {
-      let _d : any[] = await itineraryDays.filter(itinerary => itinerary.day !== day).map(itin => itin.times.map(tim => tim.location))
+      let _d : any[] = await itineraryDays.filter(itinerary => itinerary.day !== day).map(itin => itin.times.filter(tim => tim.location != null).map(tim => tim.location))
+      console.log('_d', [].concat(..._d))
       setDestinationLocations([].concat(..._d))
     }
     _defDestinationFunc()

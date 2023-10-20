@@ -97,18 +97,21 @@ const ItineraryGoogleMapView = (props) => {
             for(let i = 0; i<props.locations.length; i ++)
             {
                 let loc = props.locations[i]
-                const marker = new props.google.maps.Marker({
-                    position: loc.geometry.location,
-                    map: map,
-                    title: loc.name,
-                    icon: customMarkerIcon
-                });
-                _markerArr.push({loc: loc, marker: marker})
-            
-                marker.addListener('click', function() {
-                    setInsideLoader(true)
-                    dispatch(setActiveLocation(loc))
-                });
+                if(loc)
+                {
+                    const marker = new props.google.maps.Marker({
+                        position: loc.geometry.location,
+                        map: map,
+                        title: loc.name,
+                        icon: customMarkerIcon
+                    });
+                    _markerArr.push({loc: loc, marker: marker})
+                
+                    marker.addListener('click', function() {
+                        setInsideLoader(true)
+                        dispatch(setActiveLocation(loc))
+                    });
+                }
             }
             setMarkers(_markerArr)
             setInsideLoader(false)
