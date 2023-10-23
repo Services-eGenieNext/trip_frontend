@@ -96,7 +96,7 @@ const AddInItineraryForm = ({show, openLocation, setShow}: IAddInItineraryForm) 
         <div
             ref={formRef}
             id="location-to-visit-form"
-            className={`block absolute w-[471px] p-8 bg-white rounded-xl border border-[#EBEBEB] left-1/2} z-10 transition-all duration-300`}>
+            className={`block absolute max-w-[471px] p-8 bg-white rounded-xl border border-[#EBEBEB] left-1/2} z-10 transition-all duration-300`}>
             <div className="relative">
                 <span
                     className="absolute top-[-2.5em] right-[-2.4rem] w-[30px] h-[30px] bg-[#F9F9F9] flex justify-center items-center rounded-full p-2 cursor-pointer select-none"

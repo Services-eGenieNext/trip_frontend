@@ -503,7 +503,7 @@ const ProductHorizontalSlide = ({
         id="location-to-visit-form"
         className={`${
           !visible ? "hidden" : "block"
-        } fixed top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-[471px] p-8 bg-white rounded-xl border border-[#EBEBEB] z-10 transition-all duration-300 ${
+        } fixed top-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[471px] p-8 bg-white rounded-xl border border-[#EBEBEB] z-10 transition-all duration-300 ${
           styles.visitCard
         }`}
       >

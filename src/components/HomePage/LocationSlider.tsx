@@ -300,7 +300,7 @@ const LocationSlider = ({
           id="location-to-visit-form"
           className={`${
             !visible ? "hidden" : "block"
-          } absolute w-[471px] p-8 bg-white rounded-xl border border-[#EBEBEB] left-1/2} z-10 transition-all duration-300 ${
+          } absolute max-w-[471px] p-8 bg-white rounded-xl border border-[#EBEBEB] left-1/2} z-10 transition-all duration-300 ${
             styles.visitCard
           }`}
           style={{ top: yPosition, left: xPosition }}
