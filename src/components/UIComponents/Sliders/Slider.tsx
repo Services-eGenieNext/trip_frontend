@@ -26,7 +26,7 @@ const SliderComponent = ({children, slidesToShow=4,route}: ISliderComponent) => 
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            top: "-0.5rem"
+            // top: "-0.5rem"
             }}
             onClick={onClick}
         >
@@ -52,13 +52,13 @@ const SliderComponent = ({children, slidesToShow=4,route}: ISliderComponent) => 
         const { style, onClick } = props;
         return (
         <div
-            className={prevBtnDisabled == true ? `cursor-pointer select-none ${CSS["slick-prev-disabled"]}`  : `cursor-pointer select-none ${CSS["slick-prev"]}`}
+            className={ `cursor-pointer select-none ${CSS["slick-prev"]}`}
             style={{
             ...style,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            top: "-0.5rem"
+            // top: "-0.5rem"
             }}
             onClick={onClick}
         >
