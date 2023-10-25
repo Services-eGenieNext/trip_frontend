@@ -15,6 +15,8 @@ import Spinloader from '@/components/step-loader/spin-loader';
 import RightSideMap from '../right-side-map/right-side-map';
 import { setItem } from '@/redux/reducers/PlacedetailSlice';
 import { LocationsCall } from '@/api-calls';
+import { APP_MODE } from '@/config/constant';
+import { filterDays } from './days-functions';
 
 interface IPricingCards {
     params_list?: any
@@ -73,29 +75,29 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
     useEffect(() => {
 
         const _defDays = async () => {
-            let _days = []
-            console.log('days', days)
-            for (let i = 0; i < days.length; i++) {
-                _days.push({...days[i]})
-                if(_days[i].times.length > 0)
-                {
-                    for (let j = 0; j < _days[i].times.length; j++) {
-                        _days[i].times = [..._days[i].times]
-                        
-                        let _times = [..._days[i].times]
-                        // console.log('_times', _times)
-                        if(_days[i].times[j].location)
-                        {
-                            let suggestedTime = await _calculateStartAndEndTime(_times, j)
-                        
-                            _days[i].times[j] = {..._times[j], suggestedTime: suggestedTime}
-                        }
+            // let _days = []
 
-                    }
-                }
-            }
-            console.log('_days', _days)
-            dispatch(setItineraryDays( [..._days.filter((_day: any) => _day.times.length > 0)] ))
+            // for (let i = 0; i < days.length; i++) {
+            //     _days.push({...days[i]})
+            //     if(_days[i].times.length > 0)
+            //     {
+            //         for (let j = 0; j < _days[i].times.length; j++) {
+            //             _days[i].times = [..._days[i].times]
+                        
+            //             let _times = [..._days[i].times]
+            //             // console.log('_times', _times)
+            //             if(_days[i].times[j].location)
+            //             {
+            //                 let suggestedTime = await _calculateStartAndEndTime(_times, j)
+                        
+            //                 _days[i].times[j] = {..._times[j], suggestedTime: suggestedTime}
+            //             }
+
+            //         }
+            //     }
+            // }
+            console.log('days', days)
+            dispatch(setItineraryDays( [...days.filter((_day: any) => _day.times.length > 0)] ))
         }
         _defDays()
 
@@ -114,7 +116,6 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
             {
                 return result
             }
-            // console.log('LocationDetails', LocationDetails)
             
             result = await _LocationDetails?.slice(start, end).map((loc: any) => {
                 if (loc.place_id && loc.place_id != "")
@@ -142,7 +143,6 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
         }
 
         const filterLocationByTime = async (_days: any[], dayIndex: number, timeIndex: number, locationDetails: any[]) => {
-            let time = _days[dayIndex].times[timeIndex].time
 
             let sameTimeLocations = await locationDetails.filter( (loc: any) => loc.placed != true && loc.current_opening_hours?.weekday_text[dayIndex]?.trim().toLowerCase().search('closed') == -1 )
 
@@ -160,10 +160,10 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
         const timeLocaitonLoopFunc = async (_days: any[], index: number) => {
             let time: any[] = []
             let _LocationDetails = LocationDetails
-            console.log('_LocationDetails', _LocationDetails)
+
             for (let i = 0; i < _days[index].times.length; i++) {
                 
-                if(index == 0 && i == 0 && restaurants.length > 0) // display restaurant in start of monday which restaurant open in monday
+                if(i == 0 && restaurants.length > 0) // display restaurant in start of day which restaurant open in current day
                 {
                     let _randNum = Math.floor(Math.random() * 9)
                     let foundRestaurant = restaurants.filter((loc: any) => {
@@ -181,7 +181,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
 
                 // when restaurant available in priority
                 let restaurantInPriority = await surveySlice?.priority ? surveySlice?.priority.find((p: any) => p.opt === "Restaurants") : null
-                if(index == 0 && i == 2 && restaurantInPriority && restaurants.length > 0) // display restaurant in between of monday which restaurant open in monday
+                if(i == 2 && restaurantInPriority && restaurants.length > 0) // display restaurant in between of day which restaurant open in monday
                 {
                     let _randNum = Math.floor(Math.random() * 10)
                     let foundRestaurant = restaurants.filter((loc: any) => {
@@ -197,7 +197,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                     }
                 }
 
-                if(index == 0 && i == _days[index].times.length-1  && restaurants.length > 0) // display restaurant in end of monday which restaurant open in monday
+                if(i == _days[index].times.length-1  && restaurants.length > 0) // display restaurant in end of day which restaurant open in monday
                 {
                     let _randNum = Math.floor(Math.random() * 5)
                     let foundRestaurant = restaurants.filter((loc: any) => {
@@ -226,6 +226,7 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
                         break
                     }
                 }
+
                 // let sameTimeLocations = await filterLocationByTime(_days, index, i, _LocationDetails)
 
                 // if(sameTimeLocations.length > 0)
@@ -298,17 +299,20 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
         }
 
         const _loadDays = async () => {
-            let _days = _localDays
+            // let _days = _localDays
 
-            for (let i = 0; i < _days.length; i++) {
+            // for (let i = 0; i < _days.length; i++) {
                 
-                let time_loop: any[] = await timeLoopFunc(i)
+            //     let time_loop: any[] = await timeLoopFunc(i)
 
-                _days[i] = {..._days[i], times: time_loop}
+            //     _days[i] = {..._days[i], times: time_loop}
 
-                await timeLocaitonLoopFunc(_days, i)
+            //     await timeLocaitonLoopFunc(_days, i)
             
-            }
+            // }
+            // setDays([..._days])
+            
+            let _days = await filterDays(_localDays, LocationDetails)
             setDays([..._days])
 
             setLoading(false)
@@ -320,29 +324,39 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
 
     }, [LocationDetails])
 
-    useEffect(() => {
-        const _loadLocations = async () => {
-            let locations: any = []
-            for (let i = 0; i < days.length; i++) {
-                
-                let filter_locaiton: any[] = await locationDetails.filter((loc: any) => 
-                    loc.current_opening_hours?.weekday_text || loc?.hours?.weekday_text ?
-                    (typeof loc?.place_id !== undefined && loc?.place_id && loc?.place_id != "") ? 
-                    loc.current_opening_hours?.weekday_text.filter( (weekd: any) => {
-                        return weekd.split(': ')[0] == days[i].day && weekd.toLowerCase().search('closed') == -1
-                    }) : loc?.hours?.weekday_text.filter( (weekd: any) => {
-                        return weekd.split(': ')[0] == days[i].day && weekd.toLowerCase().search('closed') == -1
-                    }) : false
-                )
+    const _loadLocations = async () => {
+        let locations: any = []
+        for (let i = 0; i < days.length; i++) {
+            
+            let filter_locaiton: any[] = await locationDetails.filter((loc: any) => 
+                loc.current_opening_hours?.weekday_text || loc?.hours?.weekday_text ?
+                (typeof loc?.place_id !== undefined && loc?.place_id && loc?.place_id != "") ? 
+                loc.current_opening_hours?.weekday_text.filter( (weekd: any) => {
+                    return weekd.split(': ')[0] == days[i].day && weekd.toLowerCase().search('closed') == -1
+                }) : loc?.hours?.weekday_text.filter( (weekd: any) => {
+                    return weekd.split(': ')[0] == days[i].day && weekd.toLowerCase().search('closed') == -1
+                }) : false
+            )
 
-                locations.push(filter_locaiton)
-            }
-            locations = [].concat(...locations)
-            locations = [...new Set(locations)];
-            console.log('filter_locaiton', locations)
-            setLocationDetails([...locations])
+            locations.push(filter_locaiton)
         }
-        _loadLocations()
+        locations = [].concat(...locations)
+        locations = [...new Set(locations)];
+        console.log('filter_locaiton', locations)
+        setLocationDetails([...locations])
+    }
+
+    useEffect(() => {
+        
+        if(APP_MODE == "Production")
+        {
+            _loadLocations()
+        }
+        else
+        {
+            setLocationDetails([...locationDetails])
+        }
+        
     }, [restaurants])
 
     useEffect(() => {
@@ -352,7 +366,8 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
             let _restaurants = await LocationsCall(`restaurants in ${address.length > 2 ? `${address[address.length - 2]}, ${address[address.length - 1]}` : params_list.address}`)
             setRestaurants(_restaurants)
         }
-        if(locationDetails)
+
+        if(locationDetails && APP_MODE == "Production")
         {
             _defRestaurants()
         }
@@ -367,8 +382,6 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
     //     }
     
     // }, [automateLocation, itineraryDays])
-
-    const skelton = ["1","2","3","4","5","6","7","8"]
 
     return (
         <>

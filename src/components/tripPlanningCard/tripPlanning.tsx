@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Section from "../UIComponents/Section";
 import TripPlanningHeader from "./Header/Header";
 import axios from "axios";
-import { PY_API_URL } from "@/config/constant";
+import { APP_MODE, PY_API_URL } from "@/config/constant";
 import DetailsCall, { DetailsCallByGoogle } from "@/api-calls/location-details-call";
 import PricingCards from "./pricing-cards/PricingCards";
 import Card_skelton from '@/components/UIComponents/card_skelton';
@@ -12,6 +12,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { reset } from "@/redux/reducers/itinerarySlice";
 import Spinloader from "../step-loader/spin-loader";
 import { ITripPlanParams } from "@/interfaces/TripPlan";
+import DummyLocations from "@/data/dummy-locations-list.json"
 
 interface ITripPlanningCard {
     params_list?: ITripPlanParams,
@@ -73,7 +74,7 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
                             let check = await _locationDetails.find((loc:any) => res.data.result.name == loc.name)
                             if(!check)
                             {
-                                _locationDetails.push(res.data.result)
+                                _locationDetails.push(res.data.result.details ? {...res.data.result, ...res.data.result.details} : res.data.result)
                             }
                         }
                     }
@@ -83,8 +84,15 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
                 setLoading(false)
             }
         }
-        
-        _recomendFunc()
+        if(APP_MODE == "Production")
+        {
+            _recomendFunc()
+        }
+        else
+        {
+            setLocationDetails([...DummyLocations.map(loc => loc.details ? {...loc, ...loc.details} : loc).filter(loc => loc.current_opening_hours || loc.opening_hours)])
+            setLoading(false)
+        }
     }, [recommendations])
 
     useEffect(() => {
@@ -117,7 +125,7 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
                 }
             }
 
-            let filterAddress = survey.location ? survey.location : (adrArr.length < 2 ? params_list?.address : `${adrArr[adrArr.length - 2].trim()}, ${adrArr[adrArr.length - 1].trim()}`)
+            // let filterAddress = survey.location ? survey.location : (adrArr.length < 2 ? params_list?.address : `${adrArr[adrArr.length - 2].trim()}, ${adrArr[adrArr.length - 1].trim()}`)
             axios.post(`${PY_API_URL}/get-recommendation`, body).then(response => {
                 
                 dispatch(reset())

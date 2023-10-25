@@ -41,13 +41,16 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
   const addEventRef = useRef<HTMLDivElement | null>(null)
   const cardRef = useRef<HTMLDivElement | null>(null)
 
-  function formatTime(timeString: string) {
-    if(timeString == "" || timeString.search('Open') !== -1)
+  function formatTime(timeString: string | number) {
+    let _timeString = typeof timeString == "number" ? timeString.toString() : timeString
+    if(_timeString == "" || _timeString.search('Open') !== -1)
     {
-        return timeString
+        return _timeString
     }
 
-    const [hourString, minute] = timeString.split(":");
+    // const [hourString, minute] = _timeString.split(":");
+    const hourString = _timeString.substring(0,2)
+    const minute = _timeString.substring(2,4)
 
     return (Number(hourString) % 12 || 12) + ":" + (Number(minute.substring(0,2)) < 10 ? '0'+Number(minute.substring(0,2)) : minute) + (Number(hourString) < 12 ? " AM" : " PM");
   }
@@ -218,7 +221,7 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
   useEffect(() => {
     const _defDestinationFunc = async () => {
       let _d : any[] = await itineraryDays.filter(itinerary => itinerary.day !== day).map(itin => itin.times.filter(tim => tim.location != null).map(tim => tim.location))
-      console.log('_d', [].concat(..._d))
+      
       setDestinationLocations([].concat(..._d))
     }
     _defDestinationFunc()
