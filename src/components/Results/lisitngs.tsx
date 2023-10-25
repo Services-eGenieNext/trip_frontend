@@ -115,6 +115,7 @@ export default function Lisitngs({ locations, setLocations, Filteredlocations, l
                             dispatch(setItem({
                               location_id: location.location_id,
                               place_id: location.place_id,
+                              details: location
                             }))
                           }} > More Info </button>
                       </div>

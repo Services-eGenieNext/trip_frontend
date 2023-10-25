@@ -315,7 +315,7 @@ const Products = ({
                         <div className="p-7">
                           <div className="flex justify-center items-start">
                             <Link href={link}>
-                              <h4 className="text-2xl font-semibold gilroy text-center text-ellipsis overflow-hidden whitespace-nowrap max-w-[270px] w-max mx-auto" title={restaurant.name}>
+                              <h4 className="text-2xl font-semibold gilroy text-centertext-ellipsis overflow-hidden whitespace-nowrap" title={restaurant.name}>
                                 {restaurant.name}
                               </h4>
                             </Link>
@@ -353,7 +353,7 @@ const Products = ({
                             <div className="w-[25px] h-[25px] bg-[#9AB044] rounded-full p-1">
                               <LocationIcon className="h-4 w-4" />
                             </div>
-                            <span className="ml-2 text-center">
+                            <span className="ml-2 text-center text-ellipsis overflow-hidden whitespace-nowrap">
                               {restaurant?.details?.address_components?.forEach(
                                 (address: any, index: number) => {
                                   if (address?.types[0] == "locality") {
@@ -412,11 +412,9 @@ const Products = ({
                                 <p className="mt-1 capitalize text-center w-[80%]  text-sm flex justify-center">Types: <span className='text-sm ml-2 text-gray-500 text-ellipsis overflow-hidden whitespace-nowrap'>{ filterTypes.replaceAll("_"," ").replaceAll(",",", ") }</span> </p>
                             )}
                             </div>
-                          {pricelevel && <div className="flex items-center gap-x-2 justify-center my-2">
-                              <span className="text-black text-sm">
+                          {pricelevel && <div className="text-sm my-2 flex justify-center whitespace-nowrap">
                                 Price Level:{" "}
-                              </span>
-                              <span className="text-gray-500 text-sm">
+                              <span className="text-gray-500 ml-2 text-ellipsis overflow-hidden whitespace-nowrap">
                                 {pricelevel}
                               </span>
                             </div>}

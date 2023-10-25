@@ -81,7 +81,6 @@ export default function SelectCheckBoxSimple({
   const sortRef = useRef<HTMLInputElement>(null);
 
   useEffect(()=>{
-    setSaveData(true)
     if(SelectedData?.length > 0 && saveData == true){
       setOptsSelected(SelectedData)
       setSaveData(false)
@@ -89,23 +88,8 @@ export default function SelectCheckBoxSimple({
       },[SelectedData])
 
   useEffect(() => {
-    // const newArray: any = items?.map((opt: any,index:number) => {
-    //   if(index < 1){
-    //     return { opt:{name: opt.name, id:opt.id}, checked: true }
-    //   }else{
-    //     return { opt:{name: opt.name, id:opt.id}, checked: false }
-    //   }
-    // });
     const newArray: any = items?.map((opt: any) => ({ opt, checked: false }));
     setOpts(newArray);
-    // const selectedOptions = newArray.map((selected:any)=>{
-    //   if(selected.checked == true){
-    //     setOptsSelected([
-    //       ...optsSelected,
-    //       { opt: selected.opt.name, checked: true, id: selected.opt.id },
-    //     ]);
-    //   }
-    // })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 

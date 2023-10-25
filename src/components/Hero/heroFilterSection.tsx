@@ -47,7 +47,7 @@ export default function HeroFilterSection() {
   const [startedDayIndex, setStartedDayIndex] = useState<number | null>(null);
   const [daysLength, setDaysLength] = useState<number | null>(null);
   const { surveySlice } = useAppSelector((state) => state.surveyReducer);
-  const [saveData, setSaveData] = useState(false);
+  const [saveData, setSaveData] = useState(true);
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
   const { priorityState } = useAppSelector((state) => state.prioritySlice);
   const { topCountriesState } = useAppSelector(
@@ -198,12 +198,6 @@ if(allLocationsState.length > 0){
   }, [topCitiesValue, topCountriesValue]);
 
   const ValidateData = async () => {
-    const filteredCity = allLocation.filter((country: any) => {
-      return (
-        country?.city?.toLocaleLowerCase() ==
-        selectedLocation.toLocaleLowerCase()
-      );
-    });
     if (locationSearch.occassion.length > 0) {
       for (var i = 0; i < locationSearch.occassion.length; i++) {
         let res = await OccassionsIncrement(locationSearch.occassion[i].id);
@@ -239,72 +233,6 @@ if(allLocationsState.length > 0){
       setLocationRequired(true);
     } else {
       ValidateData();
-      // const filteredCity = topCitiesValue.filter((country: any) => {
-      //   return (
-      //     country?.name?.toLocaleLowerCase() ==
-      //     selectedLocation.toLocaleLowerCase()
-      //   );
-      // });
-
-      // const filteredCountry = topCountriesValue.filter((country: any) => {
-      //   return (
-      //     country?.name?.toLocaleLowerCase() ==
-      //     selectedLocation.toLocaleLowerCase()
-      //   );
-      // });
-
-      // const filteredContinent = ContinentLocation.filter((country: any) => {
-      //   return (
-      //     country?.name?.toLocaleLowerCase() ==
-      //     selectedLocation.toLocaleLowerCase()
-      //   );
-      // });
-
-      // if (
-      //   filteredCity.length > 0 ||
-      //   filteredCountry.length > 0 ||
-      //   filteredContinent.length > 0
-      // ) {
-      //   if (filteredCity.length > 0) {
-      //       let res = await TopCitiesIncrement(filteredCity[0].id);
-      //       if (res) {
-      //         let updatedOccasionsList = await TopCities();
-      //         dispatch(setTopCities(updatedOccasionsList));
-      //         ValidateData();
-      //       }
-      //   }
-      //   if (filteredCountry.length > 0) {
-      //       let res = await TopCountriesIncrement(filteredCountry[0].id);
-      //       if (res) {
-      //         let updatedOccasionsList = await TopCountries();
-      //         dispatch(setTopCountries(updatedOccasionsList));
-      //         ValidateData();
-      //       }
-      //   }
-      //   if (filteredContinent.length > 0) {
-      //     ValidateData();
-      //   }
-      // } else {
-      //     let res = await AddCities(selectedLocation);
-      //     if (res) {
-      //       let updatedOccasionsList = await TopCities();
-      //       dispatch(setTopCities(updatedOccasionsList));
-      //       ValidateData();
-      //   }else{
-      //       let res = await AddLocation(selectedLocation);
-      //       if (res) {
-      //         let updatedOccasionsList = await TopCountries();
-      //         dispatch(setTopCountries(updatedOccasionsList));
-      //         ValidateData();
-      //     }else{
-      //       if (filteredContinent.length > 0) {
-      //         ValidateData();
-      //       }else{
-      //         setInvalidLocation(true);
-      //       }
-      //     }
-      //   }
-      // }
     }
   };
 

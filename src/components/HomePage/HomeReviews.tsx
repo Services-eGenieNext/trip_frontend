@@ -112,7 +112,7 @@ const HomeReviews = ({ locations }: IHomeReviews) => {
                         }
                     </div>
                     <div id="rating-filter" className={`transition-all duration-300 ${!openModal ? 'overflow-hidden' : 'pt-8'}`} style={{height: openModal ? window.innerWidth < 768 ? "200px" : "100px" : "0px"}}>
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:px-0 px-10">
                             <SelectField
                                 label="Locations"
                                 placeholder="Select ..."

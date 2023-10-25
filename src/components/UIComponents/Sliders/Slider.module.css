@@ -89,6 +89,15 @@
     }
 }
 
+@media screen and (max-width: 890px) {
+    .slick-prev,.slick-next{
+        top: -0.6rem !important;
+    }
+    .slick-prev-disabled,.slick-next-disabled{
+        top: -0.6rem !important;
+    }
+}
+
 @media screen and (max-width: 670px) {
     .slick-prev,.slick-next{
         top: 0.8rem !important;
