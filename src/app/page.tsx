@@ -65,17 +65,17 @@ export default function Home() {
         }
         _Priorities()
 
-        const _TopCities = async () => {
-            let res = await TopCities()
-            dispatch(setTopCities(res))
-        }
-        _TopCities()
+        // const _TopCities = async () => {
+        //     let res = await TopCities()
+        //     dispatch(setTopCities(res))
+        // }
+        // _TopCities()
 
-        const _TopCountries = async () => {
-            let res = await TopCountries()
-            dispatch(setTopCountries(res))
-        }
-        _TopCountries()
+        // const _TopCountries = async () => {
+        //     let res = await TopCountries()
+        //     dispatch(setTopCountries(res))
+        // }
+        // _TopCountries()
 
         const _AllLocation = async () => {
             let res = await AllLocations()

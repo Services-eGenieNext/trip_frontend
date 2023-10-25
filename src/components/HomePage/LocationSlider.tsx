@@ -279,7 +279,8 @@ const LocationSlider = ({
                                 dispatch(setItem({
                                   locaiton_id: location.location_id,
                                   place_id: location.place_id,
-                                  details: location
+                                  details: location,
+                                  title: "Trending Location"
                                 }));
                                 setShowTripPopup(true);
                               }}
