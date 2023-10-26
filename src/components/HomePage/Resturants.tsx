@@ -314,10 +314,10 @@ const Products = ({
                         </div>
                         <div className="p-7">
                           <div className="flex justify-center items-start">
-                            <Link href={link}>
-                              <h4 className="text-2xl font-semibold gilroy text-centertext-ellipsis overflow-hidden whitespace-nowrap" title={restaurant.name}>
+                            <Link href={link} className="flex justify-center">
+                              <div className="text-2xl font-semibold gilroy text-center text-ellipsis overflow-hidden whitespace-nowrap max-w-[180px]" title={restaurant.name}>
                                 {restaurant.name}
-                              </h4>
+                              </div>
                             </Link>
                             {isAddButton && (
                               <div
