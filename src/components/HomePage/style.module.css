@@ -46,7 +46,7 @@
       left:-30px !important;
     }
   }
-  @media screen and (max-width: 620px) {
+  @media screen and (max-width: 639px) {
     .activity_arrow_prev{
       left: -30px !important;
     }
