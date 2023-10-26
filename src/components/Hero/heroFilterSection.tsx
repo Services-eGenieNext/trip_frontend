@@ -146,7 +146,7 @@ export default function HeroFilterSection() {
   }, [surveySlice]);
 
   useEffect(()=>{
-if(allLocationsState.length > 0){
+if(allLocationsState?.length > 0){
   setAllLocation(allLocationsState)
 }else(
   setAllLocation([])
