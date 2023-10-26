@@ -457,7 +457,7 @@ if(addCustomeOption == false){
                           fontSize="10px"
                           fontWeight="400"
                         >
-                          {opt.id}.
+                          {index+1}.
                         </Typography>
                       )}
                       <Typography
@@ -602,9 +602,9 @@ if(addCustomeOption == false){
                         },
                       }}
                     >
-                      {Label !== "Occasion" && Label != "Location" && (
+                      {/* {Label !== "Occasion" && Label != "Location" && (
                       <span className="text-[#9e9e9e] mr-2 w-[20px] flex justify-end">{index+1}.</span>
-                      )}
+                      )} */}
                       <CheckboxLabel
                         label={opt?.name}
                         onChange={handleChange}
