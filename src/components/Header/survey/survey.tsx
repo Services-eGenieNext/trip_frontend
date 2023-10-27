@@ -498,8 +498,6 @@ if(selectedLocation !== ""){
                       }}
                       onFocus = {()=>{
                         console.log("")
-                        // setInvalidLocation(false)
-                        // setLocationRequired(false)
                       }}
                     />
                   )}
