@@ -233,10 +233,10 @@ if(allLocationsState?.length > 0){
   };
 
   const handleRoute = async () => {
-    dispatch(setSurveyValue(locationSearch));
     if (locationSearch.location == "") {
       setLocationRequired(true);
     } else {
+      dispatch(setSurveyValue(locationSearch));
       ValidateData();
     }
   };
