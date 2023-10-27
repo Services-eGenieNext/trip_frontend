@@ -124,6 +124,11 @@ export default function HeroFilterSection() {
     };
 
     _def();
+    if(locationSearch.dates.startDate){
+      setButtonText("Automate My trip");
+    }else{
+      setButtonText("Look For Inspiration")
+    }
   }, [locationSearch]);
 
   useEffect(() => {
@@ -216,7 +221,7 @@ if(allLocationsState?.length > 0){
         }
       }
     }
-    if (buttonText == "Automate My trip") {
+    if (locationSearch.dates.startDate) {
       router.push(
         `/trip-plan?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? `${JSON.stringify(locationSearch.location)}&occassions=${JSON.stringify(locationSearch.occassion)}&priorities=${JSON.stringify(locationSearch.priority)}` : `${JSON.stringify(url_address)}`}` +
           `&start_day_index=${startedDayIndex}&days_length=${daysLength}`
@@ -250,11 +255,11 @@ if(allLocationsState?.length > 0){
     if(response.length > 0){
 setAllLocation(response)
     }
-    if(filteredLocation.length > 0){
-      setButtonText("Automate My trip");
-    }else{
-      setButtonText("Look For Inspiration")
-    }
+    // if(filteredLocation.length > 0){
+    //   setButtonText("Automate My trip");
+    // }else{
+    //   setButtonText("Look For Inspiration")
+    // }
     dispatch(setAllLocations(res))
 }
 
@@ -275,7 +280,7 @@ if(selectedLocation !== ""){
         setAllLocation(filteredCity)
      }
     if (filteredLocation.length > 0) {
-    setButtonText("Automate My trip");
+    // setButtonText("Automate My trip");
     } else {
       const delayDebounceFn = setTimeout(() => {
         _SearchLocation()

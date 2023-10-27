@@ -115,40 +115,7 @@ const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
     )
       },[allLocationsState])
 
-  // useEffect(() => {
-  //   if (topCountriesState?.length > 0) {
-  //     setTopCountriesValue(topCountriesState);
-  //   } else {
-  //     setTopCountriesValue([]);
-  //   }
-  // }, [topCountriesState]);
-
-  // useEffect(() => {
-  //   if (topCitiesValue.length > 0) {
-  //     const newArray: any = topCitiesValue?.map((opt: any) => ({
-  //       ...opt,
-  //       type: "city",
-  //     }));
-  //     setLocationDropdownValue(newArray);
-  //   } else {
-  //     if (topCountriesValue.length > 0) {
-  //       const newArray: any = topCountriesValue?.map((opt: any) => ({
-  //         ...opt,
-  //         type: "country",
-  //       }));
-  //       setLocationDropdownValue(newArray);
-  //     } else {
-  //       const newArray: any = ContinentLocation?.map((opt: any) => ({
-  //         ...opt,
-  //         type: "continent",
-  //       }));
-  //       setLocationDropdownValue(newArray);
-  //     }
-  //   }
-  // }, [topCitiesValue, topCountriesValue]);
-
   useEffect(() => {
-    console.log(surveySlice,"surveySlice 123")
     let data = {
       location: surveySlice.location ? surveySlice.location : "",
       occassion: surveySlice.occassion && surveySlice.occassion.length > 0
@@ -165,23 +132,9 @@ const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
     setSaveData(true);
     setDate(surveySlice.dates)
     setLocationSearch(data)
-    // ...locationSearch,location: surveySlice.location,
-    //   occassion:
-    //     surveySlice.occassion && surveySlice.occassion.length > 0
-    //       ? surveySlice.occassion
-    //       : [],
-    //   priority:
-    //     surveySlice.priority && surveySlice.priority.length > 0
-    //       ? surveySlice.priority
-    //       : [],
-    //   person: surveySlice.person ? surveySlice.person : "",
-    //   spending: surveySlice.spending ? surveySlice.spending : "",
-    //   dates: surveySlice.dates,
   }, [surveySlice]);
 
   useEffect(() => {
-    // setLocationSearch({ ...locationSearch, dates: date });
-
     const calculateDaysRemaining = () => {
       if(date?.endDate && date?.startDate)
       {
@@ -237,7 +190,7 @@ const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
       }
     }
     let _url = await _get_url()
-    if (buttonText == "Automate My trip") {
+    if (locationSearch.dates.startDate) {
       router.push(`/trip-plan?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? `${JSON.stringify(locationSearch.location)}&occassions=${JSON.stringify(locationSearch.occassion)}&priorities=${JSON.stringify(locationSearch.priority)}` : JSON.stringify(`best locations in ${_url}`)}` + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
     } else {
       router.push(`/results?address=${locationSearch.occassion.length > 0 || locationSearch.priority.length > 0 ? `${JSON.stringify(locationSearch.location)}&occassions=${JSON.stringify(locationSearch.occassion)}&priorities=${JSON.stringify(locationSearch.priority)}` : JSON.stringify(`best locations in ${_url}`)}`);
@@ -268,16 +221,21 @@ const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
     if(response.length > 0){
         setAllLocation(response)
     }
-    if(filteredLocation.length > 0){
-      setButtonText("Automate My trip");
-    }else{
-      setButtonText("Look For Inspiration")
-    }
+    // if(filteredLocation.length > 0){
+    //   setButtonText("Automate My trip");
+    // }else{
+    //   setButtonText("Look For Inspiration")
+    // }
     dispatch(setAllLocations(res))
 }
 
 
 useEffect(() => {
+  if(locationSearch.dates.startDate){
+    setButtonText("Automate My trip");
+  }else{
+    setButtonText("Look For Inspiration")
+  }
 
   if(selectedLocation !== ""){
     const filteredLocation =  allLocation.filter((country: any) => {
@@ -294,7 +252,7 @@ useEffect(() => {
           setAllLocation(filteredCity)
        }
       if (filteredLocation.length > 0) {
-      setButtonText("Automate My trip");
+      // setButtonText("Automate My trip");
       } else {
         const delayDebounceFn = setTimeout(() => {
           _SearchLocation()
