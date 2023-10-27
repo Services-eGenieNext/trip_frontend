@@ -36,6 +36,9 @@ import AddLocation from "@/api-calls/fromDB/addLocation";
 import LocationIncrement from "@/api-calls/fromDB/topCountriesIncrement";
 import AddCities from "@/api-calls/fromDB/addCities";
 import TopCitiesIncrement from "@/api-calls/fromDB/topCitiesIncrement";
+import AllLocations from '@/api-calls/fromDB/AllLocation'
+import allLocations, { setAllLocations } from '@/redux/reducers/allLocations'
+import SearchLocation from '@/api-calls/fromDB/searchCities'
 
 const Survey = ({ show, onClose }: ISurvey) => {
   const dispatch = useAppDispatch();
@@ -53,12 +56,15 @@ const Survey = ({ show, onClose }: ISurvey) => {
   const [daysLength, setDaysLength] = useState<number | null>(null)
   const { ocassionsState } = useAppSelector((state) => state.occasionsSlice);
   const { priorityState } = useAppSelector((state) => state.prioritySlice);
+  const { allLocationsState } = useAppSelector((state) => state.allLocationSlice);
   // const { topCountriesState } = useAppSelector((state) => state.topCountriesSlice);
   const [occasions,setOccasionsArray] = useState<any>([])
   const [prioritiesValue, setPrioritiesValue] = useState<any>([])
   const [topCountriesValue, setTopCountriesValue] = useState<any>([])
   const [topCities, setTopCities] = useState<any>([])
   const [locationOption, setLocationOption] = useState("") 
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [allLocation, setAllLocation] = useState<any>([]);
 
   const [date, setDate] = useState<Range>({
     key: "selection",
@@ -66,6 +72,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
   const [dropdownLocationValue,setDropdownLocationValue] = useState<any>([])
   const [locationInputLabel, setLocationInputLabel] = useState("")
   const [saveData, setSaveData] = useState(false)
+  const [url_address, setUrlAddress] = useState("");
   const [questions, setQuestions] = useState<any> ([
     {
       type: "location",
@@ -115,6 +122,13 @@ const Survey = ({ show, onClose }: ISurvey) => {
     },
   ])
 
+  useEffect(()=>{
+    if(allLocationsState?.length > 0){
+      setAllLocation(allLocationsState)
+    }else(
+      setAllLocation([])
+    )
+      },[allLocationsState])
 
   const _Occassions = async () => {
     let res = await Occassions()
@@ -141,9 +155,21 @@ const Survey = ({ show, onClose }: ISurvey) => {
     }
   }
 
+  const _AllLocation = async () => {
+    let res = await AllLocations()
+    if(res?.length > 0){
+      const newArray: any = res?.map((opt: any) => ({ id: opt?.id, name: opt?.city }));
+      setTopCities(newArray)
+    }else{
+      setTopCities([])
+    }
+    dispatch(setAllLocations(res))
+}
+
   useEffect(()=>{
     _TopCountries()
-    _TopCities()
+    // _TopCities()
+    _AllLocation()
   },[])
 
   useEffect(()=>{
@@ -161,14 +187,6 @@ const Survey = ({ show, onClose }: ISurvey) => {
       setPrioritiesValue([])
     }
   },[priorityState])
-    
-          // useEffect(()=>{
-          //   if(topCountriesState?.length > 0){
-          //     setTopCountriesValue(topCountriesState)
-          //   }else{
-          //     setTopCountriesValue([])
-          //   }
-          // },[topCountriesState])
 
   useEffect(() => {
     if(survey.selectedOption == "continent"){
@@ -193,6 +211,46 @@ const Survey = ({ show, onClose }: ISurvey) => {
     setSurvey({ ...survey, selectedOption: locationOption, location: "" })
   },[locationOption])
 
+  const _SearchLocation = async () => {
+    let res = await SearchLocation(selectedLocation)
+    const response = res?.filter((country:any) => {
+      return country?.city?.toLocaleLowerCase().includes(selectedLocation?.toLocaleLowerCase());
+    });
+    if(response.length > 0){
+const newArray: any = response?.map((opt: any) => ({ id: opt?.id, name: opt?.city }));
+setTopCities(newArray)
+    }
+    dispatch(setAllLocations(res))
+}
+
+
+useEffect(() => {
+if(selectedLocation !== ""){
+  const filteredLocation =  allLocation.filter((country: any) => {
+    return (
+    country?.city?.toLocaleLowerCase() ==
+    selectedLocation.toLocaleLowerCase()
+    );
+    });
+    
+    const filteredCity = allLocation?.filter((country:any) => {
+      return country?.city?.toLocaleLowerCase().includes(selectedLocation?.toLocaleLowerCase());
+    });
+    if(filteredCity.length > 0){
+        setAllLocation(filteredCity)
+     }
+    if (filteredLocation.length > 0) {
+    // setButtonText("Automate My trip");
+    } else {
+      const delayDebounceFn = setTimeout(() => {
+        _SearchLocation()
+    }, 500)
+
+    return () => clearTimeout(delayDebounceFn)
+    }
+}
+}, [selectedLocation]);
+
   const [step, setStep] = useState(1);
 
   useEffect(() => {
@@ -216,6 +274,22 @@ const Survey = ({ show, onClose }: ISurvey) => {
   }, [date]);
 
   useEffect(()=>{
+    const _def = async () => {
+      let url = survey.location ? survey.location : "";
+      
+      let occassion_arr = await survey.occassion.map(
+        (oc: any) => oc.opt
+      );
+      let priority_arr = await survey.priority.map((pr: any) => pr.opt);
+      let arr = occassion_arr.concat(...priority_arr);
+
+      url =
+        url.trim() != "" && arr.length > 0 ? `${arr.join(",")} in ${url}` : url;
+
+      setUrlAddress(url);
+    };
+
+    _def();
     let OptionFiltered = questions
     if(survey.selectedOption !== ""){
       OptionFiltered[step -1].options.map((option:any,index:number)=>{
@@ -283,24 +357,18 @@ const Survey = ({ show, onClose }: ISurvey) => {
         }
       }
     }
-    if (survey.selectedOption == "city") {
-      let url = survey.location ? survey.location : "";
-
-      let occassion_arr = await survey.occassion.map(
-        (oc: any) => oc.opt
+    if (survey.dates.startDate) {
+      router.push(
+        `/trip-plan?address=${survey.occassion.length > 0 || survey.priority.length > 0 ? `${JSON.stringify(survey.location)}&occassions=${JSON.stringify(survey.occassion)}&priorities=${JSON.stringify(survey.priority)}` : `${JSON.stringify(url_address)}`}` +
+          `&start_day_index=${startedDayIndex}&days_length=${daysLength}`
       );
-      let priority_arr = await survey.priority.map((pr: any) => pr.opt);
-      let arr = occassion_arr.concat(...priority_arr);
-
-      url = url.trim() != "" && arr.length > 0 ? `${arr.join(",")} in ${url}` : url;
-
-      router.push("/trip-plan?address=" + url + "&start_day_index="+startedDayIndex+"&days_length="+daysLength);
       onClose();
     } else {
-      router.push(`/results?address=${survey.occassion.length > 0 || survey.priority.length > 0 ? `${survey.location}&occassions=${JSON.stringify(survey.occassion)}&priorities=${JSON.stringify(survey.priority)}` : `best locations in ${survey.location}`}`);
+      router.push(`/results?address=${survey.occassion.length > 0 || survey.priority.length > 0 ? `${JSON.stringify(survey.location)}&occassions=${JSON.stringify(survey.occassion)}&priorities=${JSON.stringify(survey.priority)}` : JSON.stringify(`best locations in ${url_address}`)}`);
       onClose();
       setStep(1);
     }
+    dispatch(setSurveyValue(survey));
   };
 
   const handleChange = () => {};
@@ -425,6 +493,7 @@ const Survey = ({ show, onClose }: ISurvey) => {
                       items={dropdownLocationValue}
                       icon={<SimpleLocation />}
                       onChange={(val:any)=>{
+                        setSelectedLocation(val);
                         setSurvey({...survey, location: val})
                       }}
                       onFocus = {()=>{
@@ -434,23 +503,6 @@ const Survey = ({ show, onClose }: ISurvey) => {
                       }}
                     />
                   )}
-                  {/* {options.value == "no" && options.field == true && (
-                    <MultiSelectDropdown
-                    // searchBar
-                    items={dropdownLocationValue}
-                    saveData={saveData}
-                    setSaveData={setSaveData}
-                    Label={"Location"}
-                    heightItemsContainer="300px"
-                    SelectedData={survey.occassion}
-                    className={`sm:mr-2 sm:my-2 my-5 w-[400px] h-[46px]`}
-                    placeholder="Select..."
-                    onChange={(val: any) =>
-                      setSurvey({...survey, location: ""})
-                    }
-                    dropdownWidth = "sm:w-full"
-                  />
-                  )} */}
                 </div>
                 )
               })
