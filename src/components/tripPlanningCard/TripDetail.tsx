@@ -36,11 +36,11 @@ interface ITripDetail {
     show?:any
 }
 const PriceLevel = [
-    { price_level: 0, value: "Free" },
-    { price_level: 1, value: "Inexpensive" },
-    { price_level: 2, value: "Moderate" },
-    { price_level: 3, value: "Expensive" },
-    { price_level: 4, value: "Very Expensive" },
+    { price_level: 0, value: "",type: "Free" },
+    { price_level: 1, value: "$",type: "Inexpensive" },
+    { price_level: 2, value: "$$",type: "Moderate" },
+    { price_level: 3, value: "$$$",type: "Expensive" },
+    { price_level: 4, value: "$$$$",type: "Very Expensive" },
   ];
 const TripDetail = ({item,title,show}: ITripDetail) => {
 
