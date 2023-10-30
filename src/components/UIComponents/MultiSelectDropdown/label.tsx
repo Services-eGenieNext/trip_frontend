@@ -53,8 +53,8 @@ export default function CheckboxLabel({
                     onChange={onChange}
                     name={name}
                     checked={checked}
-                    id={id}
-                    value={Data}
+                    id={id ? id.toString() : ''}
+                    value={Data ? Data.toString(): ''}
                 />}
             label={
                 <Typography
