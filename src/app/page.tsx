@@ -95,7 +95,7 @@ export default function Home() {
             <MobileProducts title="Top Restaurants In The World" isAddButton={false} rows="2" restaurantsState={restaurants} />
             </div>
 
-            <HomeReviews locations={[...activities, ...location]} />
+            <HomeReviews locations={[...activities, ...location]} /> 
         </main>
     )
 }
