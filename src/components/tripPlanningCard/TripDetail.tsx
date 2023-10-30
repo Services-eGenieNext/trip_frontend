@@ -528,7 +528,7 @@ setTypes(string)
                                 })</span>
                             </h3>
                             <p>Address: <span className='text-sm text-[var(--gray)]'>{ itemDetail.formatted_address ? itemDetail.formatted_address : itemDetail.address_obj?.address_string }</span> </p>
-                            {types !== "" &&(
+                            {types !== "" && item?.title !== "Trending Location" &&(
                                 <p className="mt-1 capitalize">Types: <span className='text-sm text-[var(--gray)]'>{ types.replaceAll("_"," ").replaceAll(",",", ") }</span> </p>
                             )}
                             <div className="flex flex-wrap justify-center gap-2 items-center my-2">
@@ -547,14 +547,14 @@ setTypes(string)
                                     {itemDetail?.user_ratings_total ? `(${itemDetail?.user_ratings_total})` : ""}
                                 </span>
                             </div>
-                            {itemDetail?.price_level && (
+                            {itemDetail?.price_level && item?.title !== "Trending Location" && (
                             PriceLevel.forEach((price:any)=>{
                              if(price.price_level == itemDetail.price_level){
                               pricelevel = price.value
                              }
                             })
                           )}
-                          {pricelevel && <div className="flex items-center gap-x-2 justify-center my-2">
+                          {pricelevel && item?.title !== "Trending Location" &&  <div className="flex items-center gap-x-2 justify-center my-2">
                               <span className="text-black text-sm">
                                 Price Level:{" "}
                               </span>
@@ -565,7 +565,7 @@ setTypes(string)
                             <div className="h-[3px] w-[51px] bg-[var(--blue)] my-5 mx-auto"></div>
                             
                             {
-                                itemDetail?.formatted_phone_number && (
+                                itemDetail?.formatted_phone_number && item?.title !== "Trending Location" && (
                                     <div className="flex items-center justify-center gap-x-3">
                                     <BsFillTelephoneFill/>
                                         <Link href={`tel:${itemDetail?.formatted_phone_number?.replaceAll('-', '')}`} className="underline hover:text-[var(--blue)]" >
@@ -576,7 +576,7 @@ setTypes(string)
                             }
 
                             {
-                                itemDetail?.website && (
+                                itemDetail?.website && item?.title !== "Trending Location" && (
                                     <div className="flex items-center justify-center gap-x-3 mt-4">
                                     <TbWorld/>
                                         <Link href={itemDetail?.website} className="underline hover:text-[var(--blue)]" target="_blank
@@ -594,7 +594,7 @@ setTypes(string)
                             }} />
 
                             {
-                                itineraryDays.length > 0 && (
+                                itineraryDays.length > 0 && item?.title !== "Trending Location" && (
                                     <div
                                         className="flex justify-center items-center gap-2 cursor-pointer"
                                         onClick={(e) => {
@@ -626,7 +626,7 @@ setTypes(string)
                             }
 
                             {
-                                itemDetail?.hours?.weekday_text || itemDetail?.opening_hours?.weekday_text && (
+                                itemDetail?.hours?.weekday_text || itemDetail?.opening_hours?.weekday_text && item?.title !== "Trending Location" && (
                                     <>
                                     <h4 className="text-[15px] leading-[18px] font-bold mb-2">Hours:</h4>
                                     <div className="flex flex-wrap justify-center">
@@ -661,7 +661,7 @@ setTypes(string)
                     }
                 </div>
                 {
-                    itemDetail?.url && (
+                    itemDetail?.url && item?.title !== "Trending Location" && (
                         <div className="w-full my-5">
                             <h4 className="text-[15px] leading-[18px] font-bold my-2 text-center">Map: <Link href={itemDetail?.url} target="_blank" className='text-[var(--blue)] font-normal hover:border-b border-[var(--blue)]'>View location</Link></h4>
                             <div className="relative h-[200px]">

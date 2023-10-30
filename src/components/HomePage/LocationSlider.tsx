@@ -70,7 +70,7 @@ const LocationSlider = ({
     const { style, onClick } = props;
     return (
     <div
-        className={`cursor-pointer select-none ${styles["slick-next"]}`}
+        className={`cursor-pointer select-none  ${styles["activity_arrow_next"]}`}
         style={{
         ...style,
         display: "flex",
@@ -102,7 +102,7 @@ function SamplePrevArrow(props: any) {
     const { style, onClick } = props;
     return (
     <div
-        className={ `cursor-pointer select-none ${styles["slick-prev"]}`}
+        className={ `cursor-pointer select-none ${styles["activity_arrow_prev"]}`}
         style={{
         ...style,
         display: "flex",
@@ -244,23 +244,16 @@ const settings = {
   };
 
   return (
-    <div className="w-full flex justify-center">
-      <Section className="relative">
-        {!loading ? (
+    <div className="w-full flex justify-center relative mt-20 px-10">
+      <div className="sm-width flex flex-col items-center relative">
           <div className="flex flex-col items-center">
             <ComponentTitle title={Title} />
             <p className="text-[var(--gray)] max-w-[650px] my-5 md:px-0 px-2 text-center">
               {Description}
             </p>
           </div>
-        ) : (
-          <div className="md:px-0 px-5 flex flex-col items-center">
-            <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[400px] w-full h-[30px]"></div>
-            <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[600px] w-full h-[10px]"></div>
-            <div className="animate-pulse flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 max-w-[300px] w-full h-[10px]"></div>
-          </div>
-        )}
-        <div ref={slideRef} id="location-to-visit-slide" className="mt-10 sm:px-0 px-14">
+        
+        <div ref={slideRef} id="location-to-visit-slide" className="mt-10 w-[90%] arrow_remove">
           <Slider {...settings}>
             {loading === true
               ? skelton.map((limit: string, index: number) => {
@@ -494,7 +487,7 @@ const settings = {
             />
           </div>
         </div>
-      </Section>
+      </div>
     </div>
   );
 };
