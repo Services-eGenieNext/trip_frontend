@@ -227,12 +227,12 @@ export default function ScheduleCard({day, distanceObject, items, isDropdownButt
     _defDestinationFunc()
   }, [itineraryDays])
 
-  useEffect(() => {
-    if(activeLocation?.name == time?.location?.name && locationRef && locationRef.current)
-    {
-      locationRef?.current.scrollIntoView({block: "center"})
-    }
-  }, [activeLocation])
+  // useEffect(() => {
+  //   if(activeLocation?.name == time?.location?.name && locationRef && locationRef.current)
+  //   {
+  //     locationRef?.current.scrollIntoView({block: "center"})
+  //   }
+  // }, [activeLocation])
 
   return (
     <>
