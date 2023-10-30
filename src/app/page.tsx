@@ -88,12 +88,7 @@ export default function Home() {
             
             <ActivitiesSlider activitiesState={activities} />
             
-            <div className="sm:block hidden">
             <Products title="Top Restaurants In The World" isAddButton={false} rows="2" restaurantsState={restaurants} />
-            </div>
-            <div className="sm:hidden block">
-            <MobileProducts title="Top Restaurants In The World" isAddButton={false} rows="2" restaurantsState={restaurants} />
-            </div>
 
             <HomeReviews locations={[...activities, ...location]} /> 
         </main>
