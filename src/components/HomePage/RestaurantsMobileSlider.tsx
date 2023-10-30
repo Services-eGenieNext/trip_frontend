@@ -29,11 +29,11 @@ const Products = ({
   restaurantsState,
 }: IProduct) => {
   const PriceLevel = [
-    { price_level: 0, value: "Free" },
-    { price_level: 1, value: "Inexpensive" },
-    { price_level: 2, value: "Moderate" },
-    { price_level: 3, value: "Expensive" },
-    { price_level: 4, value: "Very Expensive" },
+    { price_level: 0, value: "",type: "Free" },
+    { price_level: 1, value: "$",type: "Inexpensive" },
+    { price_level: 2, value: "$$",type: "Moderate" },
+    { price_level: 3, value: "$$$",type: "Expensive" },
+    { price_level: 4, value: "$$$$",type: "Very Expensive" },
   ];
   function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
