@@ -30,14 +30,19 @@ const getLocationsByTime = async (selectedLocations: any[], index: number, locat
         let opening_hours = loc.current_opening_hours ? loc.current_opening_hours : loc.opening_hours
         if(index == 0)
         {
-            return Number(opening_hours.periods[dayIndex]?.open?.time) > 700 && loc.placed == undefined
+            return Number(opening_hours.periods[dayIndex]?.open?.time) > 700 && loc.types.includes('restaurant') && loc.placed == undefined
         }
         else
         {
             let prevStartTime = Number(selectedLocations[index - 1].suggestedTime.endTime)
 
             // forexample: location time (9:00 AM) < = suggested time (11:00 AM) and location time (9:00 PM) > = suggested time (11:00 AM)
-            return Number(opening_hours.periods[dayIndex]?.open?.time) <= prevStartTime && Number(opening_hours.periods[dayIndex]?.close?.time) >= prevStartTime && loc.placed == undefined
+            let returnConditon = Number(opening_hours.periods[dayIndex]?.open?.time) <= prevStartTime && Number(opening_hours.periods[dayIndex]?.close?.time) >= prevStartTime && loc.placed == undefined
+            if(index == 4)
+            {
+                returnConditon = returnConditon && loc.types.includes('restaurant')
+            }
+            return returnConditon
         }
     })
 
