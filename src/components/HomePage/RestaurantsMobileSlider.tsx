@@ -39,7 +39,7 @@ const Products = ({
     const { className, style, onClick } = props;
     return (
       <div
-        className={`cursor-pointer select-none  ${styles["restaurant-slick-next"]}`}
+        className={`cursor-pointer select-none  ${styles["restaurants_arrow_next_mobile"]}`}
         style={{
           ...style,
           display: "flex",
@@ -70,7 +70,7 @@ const Products = ({
     const { className, style, onClick } = props;
     return (
       <div
-        className={`cursor-pointer select-none ${styles["restaurant-slick-prev"]}`}
+        className={`cursor-pointer select-none ${styles["restaurants_arrow_prev_mobile"]}`}
         style={{
           ...style,
           display: "flex",
@@ -187,7 +187,7 @@ const Products = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative px-14">
       <Image
         src={Map}
         alt="Map 1"

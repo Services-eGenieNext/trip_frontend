@@ -333,7 +333,7 @@ if(addCustomeOption == false){
           style={{background: "linear-gradient(360deg, #fff, #fff, #fff, transparent, transparent)"}}
         >{Label}</label>
       </div>
-      <Tooltip title={`You can select multiple ${Label}`}>
+      <Tooltip title={`You can select multiple ${Label}`}  placement="top-start">
       <Box className="flex items-center justify-center border border-[#C9D2DD] h-[57px] w-full bg-white rounded-2xl py-4 px-2">
         <Box
           className="flex items-center justify-center w-full overflow-hidden cursor-pointer"
@@ -457,7 +457,7 @@ if(addCustomeOption == false){
                           fontSize="10px"
                           fontWeight="400"
                         >
-                          {opt.id}.
+                          {index+1}.
                         </Typography>
                       )}
                       <Typography
@@ -602,9 +602,9 @@ if(addCustomeOption == false){
                         },
                       }}
                     >
-                      {Label !== "Occasion" && Label != "Location" && (
+                      {/* {Label !== "Occasion" && Label != "Location" && (
                       <span className="text-[#9e9e9e] mr-2 w-[20px] flex justify-end">{index+1}.</span>
-                      )}
+                      )} */}
                       <CheckboxLabel
                         label={opt?.name}
                         onChange={handleChange}

@@ -30,6 +30,7 @@ interface ITripDetail {
         location_id: string
         place_id: string
         details?:any
+        title?:string
     },
     title?:string
     show?:any
@@ -171,6 +172,7 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
     }
 
     useEffect(() => {
+        console.log(item,"item")
         setViewMore(false)
         setImages([])
         setImage('')
@@ -179,6 +181,10 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
                 setItemDetail(item.details?.details)
             }else{
                 _def()
+            }
+            if(item?.title == "Trending Location" && item?.details?.name){
+                _Activities()
+                _Restaurants()
             }
         
     }, [item])
@@ -193,12 +199,12 @@ const TripDetail = ({item,title,show}: ITripDetail) => {
         setExsitingRestaurants(res)
       }
 
-    useEffect(()=>{
-if(title == "Trending Location" && itemDetail?.name){
-    _Activities()
-    _Restaurants()
-}
-    },[itemDetail])
+//     useEffect(()=>{
+// if(title == "Trending Location" && itemDetail?.name){
+//     _Activities()
+//     _Restaurants()
+// }
+//     },[itemDetail])
 
     useEffect(()=>{
 if(show == true){
@@ -680,12 +686,12 @@ setTypes(string)
                     )
                 }
                 {
-                    title == "Trending Location" && (
+                    item?.title == "Trending Location" && (
                         <ProductHorizontalSlide 
                             locationsState={existingActivities} 
                             url="variation_2" 
-                            Title={`${itemDetail?.name} Best Activities`} 
-                            route = {title}
+                            Title={`${item?.details?.name} Best Activities`} 
+                            route = {item?.title}
                             isDesc={true}
                             isHover={true}
                             v_type={"2"}
@@ -693,12 +699,12 @@ setTypes(string)
                     )
                 }
                 {
-                    title == "Trending Location" && (
+                    item?.title == "Trending Location" && (
                         <ProductHorizontalSlide 
                             locationsState={exsitingRestaurants} 
                             url="variation_2" 
-                            Title={`${itemDetail?.name} Best Restaurants`} 
-                            route = {title}
+                            Title={`${item?.details?.name} Best Restaurants`} 
+                            route = {item?.title}
                             isDesc={true}
                             isHover={true}
                             v_type={"2"}

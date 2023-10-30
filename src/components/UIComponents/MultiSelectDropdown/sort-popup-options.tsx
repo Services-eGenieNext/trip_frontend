@@ -94,9 +94,10 @@ const SortPopupOptions = ({index, opt, onSort}: ISortPopupOptions) => {
                 }
             }}
             >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 rotate-90 my-auto">
+                <span className="bg-white w-[25px] flex justify-center items-center">{index+1}.</span>
+                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 rotate-90 my-auto">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
-                </svg>
+                </svg> */}
                 <span className="bg-[var(--blue)] text-white text-center p-2 w-full ">{opt.opt}</span>
             </span>
 
