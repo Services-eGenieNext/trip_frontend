@@ -30,17 +30,17 @@ const Products = ({
   restaurantsState,
 }: IProduct) => {
   const PriceLevel = [
-    { price_level: 0, value: "Free" },
-    { price_level: 1, value: "Inexpensive" },
-    { price_level: 2, value: "Moderate" },
-    { price_level: 3, value: "Expensive" },
-    { price_level: 4, value: "Very Expensive" },
+    { price_level: 0, value: "",type: "Free" },
+    { price_level: 1, value: "$",type: "Inexpensive" },
+    { price_level: 2, value: "$$",type: "Moderate" },
+    { price_level: 3, value: "$$$",type: "Expensive" },
+    { price_level: 4, value: "$$$$",type: "Very Expensive" },
   ];
   function SampleNextArrow(props: any) {
     const { className, style, onClick } = props;
     return (
       <div
-        className={`cursor-pointer select-none  ${styles["activity_arrow_next"]}`}
+        className={`cursor-pointer select-none  ${styles["restaurant-slick-next"]}`}
         style={{
           ...style,
           display: "flex",
@@ -71,7 +71,7 @@ const Products = ({
     const { className, style, onClick } = props;
     return (
       <div
-        className={`cursor-pointer select-none ${styles["activity_arrow_prev"]}`}
+        className={`cursor-pointer select-none ${styles["restaurant-slick-prev"]}`}
         style={{
           ...style,
           display: "flex",
@@ -98,49 +98,32 @@ const Products = ({
     );
   }
   const settings = {
-    dots: false,
+    // className: "center",
+    // centerMode: true,
     infinite: true,
+    // centerPadding: "60px",
+    slidesToShow: 1,
     speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
+    rows: 4,
+    slidesPerRow: 2,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     responsive: [
       {
-        breakpoint: 1200,
+        breakpoint: 850,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: false,
-          dots: false,
-          nextArrow: <SampleNextArrow />,
-          prevArrow: <SamplePrevArrow />,
-        },
-      },
-      {
-        breakpoint: 800,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          infinite: false,
-          dots: false,
-          nextArrow: <SampleNextArrow />,
-          prevArrow: <SamplePrevArrow />,
-        },
-      },
-      {
-        breakpoint: 550,
-        settings: {
+          centerMode: true,
+          infinite: true,
+          centerPadding: "60px",
           slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: false,
-          dots: false,
+          speed: 500,
+          rows: 4,
+          slidesPerRow: 1,
           nextArrow: <SampleNextArrow />,
           prevArrow: <SamplePrevArrow />,
         },
       },
     ],
-    // afterChange,
   };
   const reviewArr = new Array(5).fill(1);
   const skelton = [
@@ -224,7 +207,7 @@ const Products = ({
   };
 
   return (
-    <div className="w-full flex justify-center relative mt-20 py-12 px-10">
+    <div className="relative">
       <Image
         src={Map}
         alt="Map 1"
@@ -236,7 +219,8 @@ const Products = ({
         alt="Map 1"
         className="absolute right-10 top-[70%] -z-10 select-none"
       />
-      <div className="sm-width flex flex-col items-center relative">
+      <div className="w-full flex justify-center px-0">
+        <Section className="relative">
           <div className="flex flex-col items-center">
             <ComponentTitle title={title} />
             <p className="text-[var(--gray)] sm:max-w-[550px] my-5 text-center">
@@ -246,7 +230,7 @@ const Products = ({
             </p>
           </div>
 
-          <div className="mt-10 w-[90%] arrow_remove">
+          {/* <div className={`grid grid-cols-1 md:grid-cols-${rows}`}> */}
           <Slider {...settings}>
             {loading === true
               ? skelton.map((show: string, index: number) => {
@@ -254,22 +238,42 @@ const Products = ({
                     <div
                       key={index}
                       role="status"
-                      className="max-w-sm rounded animate-pulse h-[350px] md:max-w-[300px] relative px-3 md:mt-0 mt-10"
+                      className="md:px-6 md:my-4 my-8 px-0 animate-pulse bg-none"
                     >
-                      <div className="flex items-center justify-center mb-4 bg-gray-300 rounded dark:bg-gray-700 h-[350px]">
-                        <svg
-                          className="w-10 h-10 text-gray-200 dark:text-gray-600"
-                          aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="currentColor"
-                          viewBox="0 0 16 20"
-                        >
-                          <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
-                          <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
-                        </svg>
+                      <div className="rounded-xl overflow-hidden grid grid-cols-1 md:grid-cols-2 h-full w-full shadow">
+                        <div className="flex items-center justify-center h-full mb-4 bg-gray-300 rounded dark:bg-gray-700">
+                          <svg
+                            className="w-10 h-10 text-gray-200 dark:text-gray-600"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor"
+                            viewBox="0 0 16 20"
+                          >
+                            <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+                            <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+                          </svg>
+                        </div>
+                        <div className="p-7">
+                          <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+                          <div className="flex items-center mt-4 space-x-3">
+                            <svg
+                              className="w-10 h-10 text-gray-200 dark:text-gray-600"
+                              aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="currentColor"
+                              viewBox="0 0 16 20"
+                            >
+                              <path d="M14.066 0H7v5a2 2 0 0 1-2 2H0v11a1.97 1.97 0 0 0 1.934 2h12.132A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.934-2ZM10.5 6a1.5 1.5 0 1 1 0 2.999A1.5 1.5 0 0 1 10.5 6Zm2.221 10.515a1 1 0 0 1-.858.485h-8a1 1 0 0 1-.9-1.43L5.6 10.039a.978.978 0 0 1 .936-.57 1 1 0 0 1 .9.632l1.181 2.981.541-1a.945.945 0 0 1 .883-.522 1 1 0 0 1 .879.529l1.832 3.438a1 1 0 0 1-.031.988Z" />
+                              <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.98 2.98 0 0 0 .13 5H5Z" />
+                            </svg>
+                            <div>
+                              <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32 mb-2"></div>
+                              <div className="w-32 h-2.5 bg-gray-200 rounded-full dark:bg-gray-700"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <span className="sr-only">Loading...</span>
                       </div>
-                      <div className="h-[40px] bg-gray-200 rounded-md dark:bg-gray-700 w-[50%] mb-4 absolute bottom-4 left-6 z-10"></div>
-                      <span className="sr-only">Loading...</span>
                     </div>
                   );
                 })
@@ -296,31 +300,54 @@ const Products = ({
                   return (
                     <div
                       key={index}
-                      className="px-2 md:max-w-[300px] h-[310px] w-full md:mt-0 mt-10"
+                      className="md:my-4 my-8 sm:px-6 px-2 lg:mt-0 mt-14 h-full"
                     >
                       <div
-                        className={`rounded-xl overflow-hidden border border-[#C9D2DD] bg-white h-full w-full relative ${styles["slider_card"]}`}
+                        className={`rounded-xl overflow-hidden border border-[#C9D2DD] grid grid-cols-1 lg:grid-cols-2 bg-white h-full w-full relative ${styles["slider_card"]}`}
                       >
                         <div className="relative w-full h-full">
                           <img
                             src={image_path}
                             alt={image_path}
-                            className="object-cover h-full w-full cursor-pointer "
+                            className="object-cover h-[300px] w-full cursor-pointer "
                           />
-                          <div
-                            className="absolute inset-0"
-                            style={{
-                              background:
-                                "linear-gradient(0deg, rgb(0 0 0 / 90%), transparent)",
-                            }}
-                          ></div>
-                          <div className="absolute top-0 left-0 text-white w-full h-full flex flex-col items-center justify-center px-5">
+                        </div>
+                        <div className="p-7">
                           <div className="flex justify-center items-start">
                             <Link href={link} className="flex justify-center">
                               <div className="text-2xl font-semibold gilroy text-center text-ellipsis overflow-hidden whitespace-nowrap max-w-[180px]" title={restaurant.name}>
                                 {restaurant.name}
                               </div>
                             </Link>
+                            {isAddButton && (
+                              <div
+                                className="flex justify-end items-center gap-2 cursor-pointer"
+                                onClick={() => {
+                                  setOpenRestaurant(restaurant);
+                                  setOpenModal(true);
+                                }}
+                              >
+                                <span className="text-[11px] text-[var(--green)]">
+                                  Add
+                                </span>
+                                <span className="w-[23px] h-[23px] rounded-full bg-[var(--lite-green)] hover:bg-[var(--green)] text-[var(--green)] hover:text-white flex justify-center items-center transition-all duration-300">
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    strokeWidth={2}
+                                    stroke="currentColor"
+                                    className="w-[15px] h-[15px]"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      d="M12 4.5v15m7.5-7.5h-15"
+                                    />
+                                  </svg>
+                                </span>
+                              </div>
+                            )}
                           </div>
                           <div className="flex my-2 justify-center">
                             <div className="w-[25px] h-[25px] bg-[#9AB044] rounded-full p-1">
@@ -354,7 +381,7 @@ const Products = ({
                                 }
                               })}
                             {restaurant.details.rating && (
-                              <span className="text-sm">
+                              <span className="text-gray-500 text-sm">
                                 {"("}
                                 {restaurant?.details?.rating}
                                 {")"}
@@ -363,10 +390,10 @@ const Products = ({
                           </div>
                           {restaurant.details.user_ratings_total && (
                             <div className="flex items-center gap-x-2 justify-center my-2">
-                              <span className="text-sm">
+                              <span className="text-black text-sm">
                                 Reviews:{" "}
                               </span>
-                              <span className="text-sm">
+                              <span className="text-gray-500 text-sm">
                                 {"("}
                                 {restaurant?.details?.user_ratings_total}
                                 {")"}
@@ -382,19 +409,19 @@ const Products = ({
                           )}
                           <div className="flex justify-center">
                             {filterTypes !== "" &&(
-                                <p className="mt-1 capitalize text-center w-[80%]  text-sm flex justify-center">Types: <span className='text-sm ml-2 text-ellipsis overflow-hidden whitespace-nowrap'>{ filterTypes.replaceAll("_"," ").replaceAll(",",", ") }</span> </p>
+                                <p className="mt-1 capitalize text-center w-[80%]  text-sm flex justify-center">Types: <span className='text-sm ml-2 text-gray-500 text-ellipsis overflow-hidden whitespace-nowrap'>{ filterTypes.replaceAll("_"," ").replaceAll(",",", ") }</span> </p>
                             )}
                             </div>
                           {pricelevel && <div className="text-sm my-2 flex justify-center whitespace-nowrap">
                                 Price Level:{" "}
-                              <span className="ml-2 text-ellipsis overflow-hidden whitespace-nowrap">
+                              <span className="text-gray-500 ml-2 text-ellipsis overflow-hidden whitespace-nowrap">
                                 {pricelevel}
                               </span>
                             </div>}
                           <div className="h-[50px]">
                             {restaurant?.details?.editorial_summary
                               ?.overview && (
-                              <p className="font-normal text-[15px] leading-[28px] text-center text-ellipsis overflow-hidden line-clamp-2">
+                              <p className="font-normal text-[15px] leading-[28px] text-[var(--gray)] text-center text-ellipsis overflow-hidden line-clamp-2">
                                 {
                                   restaurant?.details?.editorial_summary
                                     ?.overview
@@ -402,7 +429,6 @@ const Products = ({
                               </p>
                             )}
                           </div>
-                        </div>
                         </div>
                         {!isAddButton && (
                           <div
@@ -435,7 +461,15 @@ const Products = ({
                   );
                 })}
           </Slider>
-          </div>
+          {/* </div> */}
+          {/* {restaurantData.length > postPerPage && (
+            <div className="flex justify-center mt-10">
+            <BlueButton onClick={() => {
+              setPostPerPage(postPerPage + 8) 
+            }} title={"Load more"} />
+            </div>
+      )} */}
+        </Section>
       </div>
 
       <AddProductModel
