@@ -38,7 +38,7 @@ export default function Footer() {
           className={`sm:h-[70px] px-6 flex sm:flex-row flex-col items-center sm:gap-y-0 gap-y-4 sm:py-0 py-5 sm:my-0 my-5 ${CSS["border_gradient"]}`}
         >
           <Link
-            href={"/results?address=USA"}
+            href={"/results"}
             className="md:w-[180px] sm:w-[130px] w-[80px] sm:px-0 px-3 flex items-center justify-center sm:text-[20px] text-[14px] font-medium sm:border-r-2 border-[#444658] cursor-pointer"
           >
             Inspiration
