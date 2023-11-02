@@ -121,14 +121,7 @@ const getLocationsByTime = async (selectedLocations: any[], index: number, locat
     }
 }
 
-const timeLoopFunc = async (i:number, locations: any[]) => {
-
-    // filter: only fetch open locations from 7:00 AM to 11:00 PM
-    let foundedLocations = await locations.filter((loc: any) => {
-        let opening_hours = loc.current_opening_hours ? loc.current_opening_hours : loc.opening_hours
-        return opening_hours.weekday_text[i].search(":") !== -1 && opening_hours.weekday_text[i].split(': ')[1].toLowerCase().search('closed') == -1 && Number(opening_hours.periods[i]?.open?.time) > 700 && Number(opening_hours.periods[i]?.close?.time) < 2300
-    })
-
+const timeLoopFunc = async (i:number, foundedLocations: any[]) => {
 
     let _locations: any[] = []
     for(let j = 0; j < 5; j++)
@@ -164,6 +157,12 @@ const filterDays = async (days: any, locations: any[]) => {
     console.log('locations', locations)
     
     for (let i = 0; i < _days.length; i++) {
+
+        // filter: only fetch open locations from 7:00 AM to 11:00 PM
+        // let foundedLocations = await locations.filter((loc: any) => {
+        //     let opening_hours = loc.current_opening_hours ? loc.current_opening_hours : loc.opening_hours
+        //     return opening_hours.weekday_text[i].search(":") !== -1 && opening_hours.weekday_text[i].split(': ')[1].toLowerCase().search('closed') == -1 && Number(opening_hours.periods[i]?.open?.time) > 700 && Number(opening_hours.periods[i]?.close?.time) < 2300
+        // })
 
         let time_loop: any[] = await timeLoopFunc(i, locations)
 
