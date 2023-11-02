@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { useAppSelector } from '@/redux/hooks'
 import { setShow } from '@/redux/reducers/surveySlice'
 import Style from './Header.module.css'
+import { setSurveyValue } from "@/redux/reducers/surveySlice";
 
 const Header = () => {
     const router = useRouter()
@@ -61,10 +62,14 @@ const Header = () => {
                         {/* Menu Bar for Desktop */}
                         <div className={`${Style['navbar-desktop']}`}>
                         <Tooltip title="Click on Inspiration and see all the results.">
-                        <Link href={'/results'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300">Inspiration</Link>
+                        <Link href={'/results'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300" onClick={()=>{
+                            dispatch(setSurveyValue({}));
+                        }}>Inspiration</Link>
                         </Tooltip>
                         <Tooltip title="Click on Build a Trip and create your own trip.">
-                            <Link href={'/trip-plan?address="USA"'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300">Build a Trip</Link>
+                            <Link href={'/trip-plan"'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300" onClick={()=>{
+                            dispatch(setSurveyValue({}));
+                        }}>Build a Trip</Link>
                             </Tooltip>
                             <Tooltip title="Take a survey to find your dream vacation">
                             <Link href={'/'} 
@@ -80,7 +85,9 @@ const Header = () => {
                         
                     {/* WebSite Logo */}
                     <div className="m-auto col-span-4">
-                        <Link href={'/'}>
+                        <Link href={'/'} onClick={()=>{
+                            dispatch(setSurveyValue({}));
+                        }}>
                             <Image src={Logo} alt='logo' />
                         </Link>
                     </div>
@@ -129,15 +136,18 @@ const Header = () => {
                 <div className="flex flex-col my-5">
                     <div className="p-4 lg:p-5" onClick={()=>{
                         setOpenMobileMenu(false)
-                        router.push('/results?address=USA')
+                        dispatch(setSurveyValue({}));
+                        router.push('/results')
                     }}>Results</div>
                     <div className="p-4 lg:p-5" onClick={()=>{
                         setOpenMobileMenu(false)
-                        router.push('/trip-plan-v1?address=USA')
+                        dispatch(setSurveyValue({}));
+                        router.push('/trip-plan')
                     }}>Itinerary</div>
                     <div className="p-4 lg:p-5" onClick={()=>{
                         setOpenMobileMenu(false)
                         setShowSurvey(true)
+                        dispatch(setSurveyValue({}));
                     }}>Survey</div>
                 </div>
             </div>
