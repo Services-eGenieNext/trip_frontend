@@ -56,7 +56,7 @@ export default function TripPlanningCard({params_list, survey, totalOpeningHours
         const _recomendFunc = async () => {
             if(recommendations.length > 0) {
                 let _locationDetails: any[] = []
-                let _recommendations = recommendations
+                let _recommendations = recommendations.slice(0,40)
                 for (let index = 0; index < _recommendations.length; index++) {
                     if(_recommendations[index].location_id && _recommendations[index].location_id !== '')
                     {

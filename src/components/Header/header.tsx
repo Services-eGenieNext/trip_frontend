@@ -67,7 +67,7 @@ const Header = () => {
                         }}>Inspiration</Link>
                         </Tooltip>
                         <Tooltip title="Click on Build a Trip and create your own trip.">
-                            <Link href={'/trip-plan"'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300" onClick={()=>{
+                            <Link href={'/trip-plan'} className="px-4 lg:px-5 hover:text-[var(--blue)] transition-all duration-300" onClick={()=>{
                             dispatch(setSurveyValue({}));
                         }}>Build a Trip</Link>
                             </Tooltip>

@@ -357,22 +357,23 @@ const PricingCards = ({params_list, locationDetails, automateLocation}: IPricing
             setLocationDetails([...locationDetails])
         }
         
-    }, [restaurants])
-
-    useEffect(() => {
-        const _defRestaurants = async () => {
-            let address = params_list.address.replace(/\b[a-zA-Z]*\d+(?:-\d+)?, \b/g, '')
-            address = address.split(', ')
-            let _restaurants = await LocationsCall(`restaurants in ${address.length > 2 ? `${address[address.length - 2]}, ${address[address.length - 1]}` : params_list.address}`)
-            setRestaurants(_restaurants)
-        }
-
-        if(locationDetails && APP_MODE == "Production")
-        {
-            _defRestaurants()
-        }
-
     }, [locationDetails])
+
+    // useEffect(() => {
+    //     const _defRestaurants = async () => {
+    //         let address = params_list.address.replace(/\b[a-zA-Z]*\d+(?:-\d+)?, \b/g, '')
+    //         address = address.split(', ')
+    //         let _restaurants = await LocationsCall(`restaurants in ${address.length > 2 ? `${address[address.length - 2]}, ${address[address.length - 1]}` : params_list.address}`)
+    //         setRestaurants(_restaurants)
+    //     }
+
+    //     if(locationDetails && APP_MODE == "Production")
+    //     {
+    //         _defRestaurants()
+    //     }
+
+    // }, [locationDetails])
+    
 
     // useEffect(() => {
         
